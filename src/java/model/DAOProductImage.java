@@ -1,0 +1,192 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package model;
+
+import entity.ProductImage;
+import jakarta.servlet.http.Part;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Base64;
+import java.util.List;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author daova
+ */
+public class DAOProductImage extends DBContext {
+    
+    public void testImg(){
+        
+    }
+
+    public int AddImg(List<Part> fileParts, int pid) throws IOException {
+        int number = 0;
+        String sql = "INSERT INTO ProductImage(ProductID, Image) VALUES(?, ?)";
+        if (!fileParts.isEmpty()) {
+            for (Part file : fileParts) {
+                long fileSize = file.getSize();
+                System.out.println(fileSize);
+                if (file != null && fileSize > 20000) {
+                    try {
+                        PreparedStatement pre = connection.prepareStatement(sql);
+                        pre.setInt(1, pid);
+                        pre.setBinaryStream(2, file.getInputStream());
+                        pre.executeUpdate();
+                        number++;
+                    } catch (Exception e) {
+                    }
+                }
+            }
+        }
+        return number;
+    }
+
+    public String getFileName(Part part) {
+        String contentDisp = part.getHeader("content-disposition");
+        if (contentDisp != null) {
+            String[] tokens = contentDisp.split(";");
+            for (String token : tokens) {
+                if (token.trim().startsWith("filename")) {
+                    return token.substring(token.indexOf("=") + 2, token.length() - 1);
+                }
+            }
+        }
+        return null;
+    }
+
+    public int DeleteProductImg(int id) {
+        int number = 0;
+        String sql = "DELETE ProductImage WHERE ID =?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, id);
+            number = pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOProductImage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return number;
+    }
+
+    //list all productimage
+    public Vector getAllProductImage() {
+        Vector<ProductImage> vector = new Vector<>();
+        String sql = "SELECT * FROM ProductImage";
+        ResultSet rs = getData(sql);
+        try {
+            while (rs.next()) {
+                int id = rs.getInt("ID");
+                int productID = rs.getInt("ProductID");
+                Blob blob = rs.getBlob("Image");
+
+                InputStream inputStream = blob.getBinaryStream();
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[4096];
+                int bytesRead = -1;
+                try {
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                    byte[] imageBytes = outputStream.toByteArray();
+                    String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+                    inputStream.close();
+                    outputStream.close();
+                    vector.add(new ProductImage(id, productID, base64Image));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return vector;
+    }
+
+    public Vector<ProductImage> getAllImageProductByProductID(int productID) {
+        Vector<ProductImage> vector = new Vector<>();
+        String sql = "SELECT * FROM ProductImage WHERE ProductID = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, productID);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("ID");
+                int pID = rs.getInt("ProductID");
+                Blob blob = rs.getBlob("Image");
+                InputStream inputStream = blob.getBinaryStream();
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[4096];
+                int bytesRead = -1;
+                try {
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                    byte[] imageBytes = outputStream.toByteArray();
+                    String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
+                    inputStream.close();
+                    outputStream.close();
+                    vector.add(new ProductImage(id, pID, base64Image));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return vector;
+    }
+
+    /*
+    
+    //Add ProductImage
+    
+    public int InsertProductImage(int productID, InputStream file){
+        int number = 0;
+        String sql = "INSERT INTO ProductImage(ProductID, Image) VALUES(?, ?)";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, productID);
+
+            if (file != null) {
+                pre.setBlob(2, file);
+            }
+            number = pre.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return number;
+    }
+    
+    //Delete ProductImage
+    public int DeleteProductImage(int id){
+        int number = 0;
+        String sql = "DELETE FROM ProductImage WHERE ID = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1,id);
+            number = pre.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return number;
+        
+    }
+     */
+    public static void main(String[] args) {
+        DAOProductImage dao = new DAOProductImage();
+        System.out.println(dao.DeleteProductImg(730));
+    }
+}

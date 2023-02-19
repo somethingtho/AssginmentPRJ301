@@ -1,0 +1,78 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: serif;
+}
+
+.logo {
+    height: 50px;
+    margin-top: 10px;
+    margin-left: 30px;
+}
+
+#logo {
+    height: 100%;
+}
+
+.login_header{
+    background-color: #fff;
+}
+
+.login{
+    background-color: white;
+    height: 800px;
+}
+.login__form{
+    margin: 40px 0 0 100px;
+}
+
+.login__form-password{
+    margin-top: 20px;
+}
+
+.login_title{
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.login_input{
+    width: 500px;
+    height: 50px;
+    padding-left: 10px;
+}
+
+.login__btn button{
+    background-color: #f57224;
+    margin: 20px 0 0 0;
+    width: 500px;
+    height: 50px;
+    border: 0;
+    
+}
+
+.login__btn a{
+    color: white;
+    line-height: 3;
+    font-size: medium;
+    font-weight: bold;
+}
+.img_right img{
+    margin-top: 30px;
+    padding: 0;
+}
+
+.payment{
+    background-color: white;
+}
+
+.app_icon img{
+    width: 200px;
+}
+
+.app_icon{
+    margin: 20px 0;
+}
+
+.website_help{
+    margin-left: 40px;
+}
