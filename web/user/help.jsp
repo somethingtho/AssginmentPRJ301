@@ -30,7 +30,7 @@
                 <div class="form_help col-md-8">
                     <form action="feedback" method="POST">
                         <div class="row ">
-                            <h3 style="color: red">${requestScope.msg}</h3>
+                            <h3 style="color: red;">${requestScope.msg}</h3>
 
                             <div style="margin-top: 30px;">
                                 <h3 class="login_title">Bạn cần hỗ trợ với vai trò là người bán hay người mua?</h3>
