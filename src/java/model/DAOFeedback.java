@@ -20,6 +20,24 @@ import java.util.logging.Logger;
  */
 public class DAOFeedback extends DBContext{
     
+    public int UpdateFeedback(Feedback feedback){
+        int number = 0;
+        String sql = "UPDATE Feedback SET ContentRep = ?, Status = 1 WHERE ID = ?";
+        
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1,feedback.getContentRep());
+            pre.setInt(2, feedback.getId());
+            
+            number = pre.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return number;
+    }
+    
+    
     public int TotalFeedbacks(){
         int number = 0;
         String sql = "SELECT COUNT(*) FROM Feedback";
