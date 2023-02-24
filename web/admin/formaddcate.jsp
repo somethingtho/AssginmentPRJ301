@@ -115,7 +115,7 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addsupplier">Nhà cung cấp</a></li>
-                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addcategory">Loại sản phẩm</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addcategory">Danh mục</a></li>
                                     <li><hr class="dropdown-divider" /></li>
                                     <li>
                                         <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addproduct">Sản phẩm</a>
@@ -275,7 +275,7 @@
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/listallacategories" class="sidebar-link"
                                            ><i class="mdi mdi-group"></i
-                                            ><span class="hide-menu"> Loại sản phẩm </span></a
+                                            ><span class="hide-menu"> Danh mục </span></a
                                         >
                                     </li>
                                     <li class="sidebar-item">
@@ -311,7 +311,7 @@
                                     <li class="sidebar-item active">
                                         <a href="${pageContext.request.contextPath}/admin/addcategory" class="sidebar-link"
                                            ><i class="mdi mdi-group"></i
-                                            ><span class="hide-menu"> Loại sản phẩm </span></a
+                                            ><span class="hide-menu"> Danh mục </span></a
                                         >
                                     </li>
                                     <li class="sidebar-item">

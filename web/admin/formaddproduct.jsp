@@ -118,7 +118,7 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addsupplier">Nhà cung cấp</a></li>
-                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addcategory">Loại sản phẩm</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addcategory">Danh mục</a></li>
                                     <li><hr class="dropdown-divider" /></li>
                                     <li>
                                         <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addproduct">Sản phẩm</a>
@@ -276,7 +276,7 @@
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/listallcategories" class="sidebar-link"
                                            ><i class="mdi mdi-group"></i
-                                            ><span class="hide-menu"> Loại sản phẩm </span></a
+                                            ><span class="hide-menu"> Danh mục </span></a
                                         >
                                     </li>
                                     <li class="sidebar-item">
@@ -312,7 +312,7 @@
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/addcategory" class="sidebar-link"
                                            ><i class="mdi mdi-group"></i
-                                            ><span class="hide-menu"> Loại sản phẩm </span></a
+                                            ><span class="hide-menu"> Danh mục </span></a
                                         >
                                     </li>
                                     <li class="sidebar-item">
@@ -425,7 +425,7 @@
                                             type="text"
                                             class="required form-control"
                                             />
-                                        <label class="col-md-3 mt-3">Loại sản phẩm</label>
+                                        <label class="col-md-3 mt-3">Danh mục</label>
                                         <div class="col-md-12">
                                             <select
                                                 class="select2 form-select shadow-none required"

@@ -115,7 +115,7 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addsupplier">Nhà cung cấp</a></li>
-                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/category">Loại sản phẩm</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/category">Danh mục</a></li>
                                     <li><hr class="dropdown-divider" /></li>
                                     <li>
                                         <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addproduct">Sản phẩm</a>
@@ -343,7 +343,7 @@
                                     ><span class="hide-menu">Xác thực</span></a
                                 >
                                 <ul aria-expanded="false" class="collapse first-level">
-                                    
+
 
                                     <li class="sidebar-item">
                                         <a href="changepass.html" class="sidebar-link"
@@ -358,7 +358,7 @@
                                             ><span class="hide-menu"> Hồ sơ </span></a
                                         >
                                     </li>
-                                    
+
                                     <li class="sidebar-item">
                                         <a href="#" class="sidebar-link"
                                            ><i class="mdi mdi-account-card-details"></i
@@ -448,9 +448,9 @@
                                                 <th><c:choose>
                                                         <c:when test="${c.acc.status}">Hoạt động</c:when>
                                                         <c:when test="${!c.acc.status}">Bị khoá</c:when>
-                                                </c:choose></th>
+                                                    </c:choose></th>
                                                 <th><a href="${pageContext.request.contextPath}/admin/profile?type=customer&id=${c.customerID}">Hồ sơ</a></th>
-                                                
+
                                             </tr>
                                         </c:forEach>
                                     </tbody>
@@ -458,82 +458,6 @@
                             </div>
                         </div>
 
-
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title mb-0">Danh sách người dùng</h5>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">CompanyName</th>
-                                            <th scope="col">Phone</th>
-                                            <th scope="col">Emai</th>
-                                            <th scope="col">HomePage</th>
-                                            <th scope="col">Trạng thái</th>
-                                            <th scope="col">Hồ sơ</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="customtable">
-                                        <c:forEach items="${requestScope.listAllSuppliers}" var="sup">
-                                            <tr>
-                                                <td>${sup.supplierID}</td>
-                                                <td>${sup.companyName}</td>
-                                                <td>${sup.phone}</td>
-                                                <td>${sup.email}</td>
-                                                <td><a href="${sup.homePage}" target="_blank">${sup.companyName}</a></td>
-                                                <th><c:choose>
-                                                        <c:when test="${sup.status}">Hoạt động</c:when>
-                                                        <c:when test="${!sup.status}">Tạm ngưng</c:when>
-                                                </c:choose></th>
-                                                <th><a href="${pageContext.request.contextPath}/admin/profile?type=sup&id=${sup.supplierID}">Hồ sơ</a></th>
-                                                
-                                            </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-
-
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title mb-0">Danh sách đơn vị vận chuyển</h5>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">CompanyName</th>
-                                            <th scope="col">Phone</th>
-                                            <th scope="col">Email</th>
-                                            <th scope="col">Hồ sơ</th>
-                                            <th scope="col">Trạng thái</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="customtable">
-                                        <c:forEach items="${requestScope.listAllShippers}" var="s">
-                                            <tr>
-                                                <td>${s.shipperID}</td>
-                                                <td>${s.companyName}</td>
-                                                <td>${s.phone}</td>
-                                                <td>${s.email}</td>
-                                                <th><c:choose>
-                                                        <c:when test="${s.status}">Hoạt động</c:when>
-                                                        <c:when test="${!s.status}">Tạm ngưng</c:when>
-                                                </c:choose></th>
-                                                <th><a href="${pageContext.request.contextPath}/admin/profile?type=ship&id=${s.shipperID}">Hồ sơ</a></th>
-                                                
-                                            </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -556,7 +480,7 @@
     <!-- footer -->
     <!-- ============================================================== -->
     <footer class="footer text-center">
-        
+
     </footer>
     <!-- ============================================================== -->
     <!-- End footer -->

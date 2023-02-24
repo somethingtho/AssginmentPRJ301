@@ -166,7 +166,7 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addsupplier">Nhà cung cấp</a></li>
-                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addcategory">Loại sản phẩm</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addcategory">Danh mục</a></li>
                                     <li><hr class="dropdown-divider" /></li>
                                     <li>
                                         <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addproduct">Sản phẩm</a>
@@ -324,7 +324,7 @@
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/listallcategories" class="sidebar-link"
                                            ><i class="mdi mdi-group"></i
-                                            ><span class="hide-menu"> Loại sản phẩm </span></a
+                                            ><span class="hide-menu"> Danh mục </span></a
                                         >
                                     </li>
                                     <li class="sidebar-item">
@@ -360,7 +360,7 @@
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/addcategory" class="sidebar-link"
                                            ><i class="mdi mdi-group"></i
-                                            ><span class="hide-menu"> Loại sản phẩm </span></a
+                                            ><span class="hide-menu"> Danh mục </span></a
                                         >
                                     </li>
                                     <li class="sidebar-item">
@@ -471,7 +471,7 @@
                                         value="${requestScope.product.productName}"
                                         class="required form-control"
                                         />
-                                    <label class="col-md-3 mt-3">Loại sản phẩm</label>
+                                    <label class="col-md-3 mt-3">Danh mục</label>
                                     <div class="col-md-12">
                                         <select
                                             name="categoryID"
@@ -479,7 +479,7 @@
                                             style="width: 100%; height: 36px"
                                             >
                                             <option>Select</option>
-                                            <optgroup label="Loại sản phẩm">
+                                            <optgroup label="Danh mục">
                                                 <c:forEach items="${requestScope.listAllCate}" var="c">
                                                     <option value="${c.categoryID}" <c:if test="${requestScope.product.category.categoryID == c.categoryID}">selected</c:if>>${c.categoryName}</option>
                                                 </c:forEach>

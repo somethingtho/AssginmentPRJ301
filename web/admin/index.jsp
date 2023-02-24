@@ -384,7 +384,7 @@
                                             </div>
                                             <div class="comment-text w-100">
                                                 <h6 class="font-medium">${r.cus.customerName}</h6>
-                                                <span class="mb-3 d-block">(${r.rate} <i class="fas fa-star" style="color: gold;"></i>)${r.contentSend}
+                                                <span class="mb-3 d-block">(${r.rate} <i class="fas fa-star" style="color: gold;"></i>)${r.contentSend} (#${r.productID})
                                                 </span>
                                                 <div class="comment-footer">
                                                     <span class="text-muted float-end">${r.dateRate}</span>

@@ -496,7 +496,9 @@ public class DAOCustomers extends DBContext {
             ex.printStackTrace();
         }
 
-        String sql2 = "INSERT INTO dbo.Customers ( CustomerName, Gender, Phone, Email, Address, ID, Password, Image) VALUES(?, 1, NULL, ?, NULL, (SELECT ID FROM dbo.Accounts WHERE UserName = ?), ?, (SELECT * FROM OPENROWSET(BULK N'C:\images\customers\default.png', SINGLE_BLOB) as T1))";
+        String sql2 = "INSERT INTO dbo.Customers ( CustomerName, Gender, Phone, Email, Address, ID, Password, Image) "
+                + "VALUES(?, 1,NULL, ?, NULL, 1, ?,"
+                + " (SELECT * FROM OPENROWSET(BULK N'C:\\images\\customers\\admin.jpg', SINGLE_BLOB) as T1))";
 
         try {
             PreparedStatement pre2 = connection.prepareStatement(sql2);

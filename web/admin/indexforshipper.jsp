@@ -127,7 +127,7 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item" href="#">Nhà cung cấp</a></li>
-                                    <li><a class="dropdown-item" href="#">Loại sản phẩm</a></li>
+                                    <li><a class="dropdown-item" href="#">Danh mục</a></li>
                                     <li>
                                         <hr class="dropdown-divider" />
                                     </li>
@@ -288,7 +288,7 @@
                                     <li class="sidebar-item">
                                         <a href="categories.html" class="sidebar-link"
                                            ><i class="mdi mdi-group"></i
-                                            ><span class="hide-menu"> Loại sản phẩm </span></a
+                                            ><span class="hide-menu"> Danh mục </span></a
                                         >
                                     </li>
                                     <li class="sidebar-item">
@@ -324,7 +324,7 @@
                                     <li class="sidebar-item">
                                         <a href="formaddcate.html" class="sidebar-link"
                                            ><i class="mdi mdi-group"></i
-                                            ><span class="hide-menu"> Loại sản phẩm </span></a
+                                            ><span class="hide-menu"> Danh mục </span></a
                                         >
                                     </li>
                                     <li class="sidebar-item">
@@ -366,7 +366,7 @@
                                     <li class="sidebar-item">
                                         <a href="formupcate.html" class="sidebar-link"
                                            ><i class="mdi mdi-group"></i
-                                            ><span class="hide-menu"> Loại sản phẩm </span></a
+                                            ><span class="hide-menu"> Danh mục </span></a
                                         >
                                     </li>
                                     <li class="sidebar-item">

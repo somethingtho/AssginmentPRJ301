@@ -119,7 +119,7 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addsupplier">Nhà cung cấp</a></li>
-                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addcategory">Loại sản phẩm</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addcategory">Danh mục</a></li>
                                     <li><hr class="dropdown-divider" /></li>
                                     <li>
                                         <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addproduct">Sản phẩm</a>
@@ -297,7 +297,7 @@
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/addcategory" class="sidebar-link"
                                            ><i class="mdi mdi-group"></i
-                                            ><span class="hide-menu"> Loại sản phẩm </span></a
+                                            ><span class="hide-menu"> Danh mục </span></a
                                         >
                                     </li>
                                     <li class="sidebar-item">
@@ -368,7 +368,7 @@
                 <div class="page-breadcrumb">
                     <div class="row">
                         <div class="col-12 d-flex no-block align-items-center">
-                            <h4 class="page-title">Loại sản phẩm</h4>
+                            <h4 class="page-title">Danh mục</h4>
                             <div class="ms-auto text-end">
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
@@ -376,7 +376,7 @@
                                             <a href="${pageContext.request.contextPath}/admin/index">Trang chủ</a>
                                         </li>
                                         <li class="breadcrumb-item active" aria-current="page">
-                                            Loại sản phẩm
+                                            Danh mục
                                         </li>
                                     </ol>
                                 </nav>
