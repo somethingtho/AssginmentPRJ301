@@ -57,7 +57,7 @@ public class ListAllProductsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         DAOProducts daoProducts = new DAOProducts();
-        Vector<Products> listAllProducts = daoProducts.getAllProducts();
+        Vector<Products> listAllProducts = daoProducts.getAllProductsByAdmin();
         
         request.setAttribute("listAllProducts", listAllProducts);
         request.getRequestDispatcher("products.jsp").forward(request, response);
@@ -73,7 +73,17 @@ public class ListAllProductsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        DAOProducts daoProducts = new DAOProducts();
+        String pid_raw = request.getParameter("pid");
+        try {
+            int pid = Integer.parseInt(pid_raw);
+            Products product = daoProducts.getProductByID(pid);
+            if(product == null) request.setAttribute("error", "Không tìm thấy! Vui lòng kiểm tra lại.");
+            request.setAttribute("product", product);
+            request.getRequestDispatcher("searchproduct.jsp").forward(request, response);
+        } catch (Exception e) {
+        }
+        
     }
 
     /** 

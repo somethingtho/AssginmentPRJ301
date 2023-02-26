@@ -9407,7 +9407,9 @@ html body .waves-notransition{
     height:50px;
     padding:14px 15px;
     font-size:18px;
-    line-height:23px
+    line-height:23px;
+    border: none;
+        
 }
 .btn-circle.btn-xl{
     width:70px;
@@ -11453,7 +11455,7 @@ label{
     display:block;
     font-size:10px;
     color:#4f5467;
-    margin:5px 0 15px 65px
+    margin:5px 0 15px 15px
 }
 .chat-list .chat-item.odd .chat-content{
     text-align:right;

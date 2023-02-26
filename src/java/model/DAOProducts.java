@@ -27,12 +27,81 @@ import java.util.logging.Logger;
  * @author daova
  */
 public class DAOProducts extends DBContext {
+    
+    
 
     public static void main(String[] args) throws IOException {
         DAOProducts dao = new DAOProducts();
         int[] id = {1,2};
         dao.getProductsBySuppliers(id, "smartphone", "1", 1, 100000000);
     }
+    
+    public int TotalProductsBySupplier(int sid) {
+        int number = 0;
+        String sql = "SELECT COUNT(*) FROM Products WHERE SupplierID = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, sid);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                number = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return number;
+    }
+    
+    public Vector<Products> getNextProducts(int amount) {
+        Vector<Products> vector = new Vector<>();
+        String sql = "SELECT * FROM Products ORDER BY ProductID ASC OFFSET ? ROWS FETCH NEXT 4 ROWS ONLY";
+        DAOSuppliers daoSuppliers = new DAOSuppliers();
+        DAOCategories daoCategories = new DAOCategories();
+        DAOProductInfo daoProductInfo = new DAOProductInfo();
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, amount);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                int productID = rs.getInt("ProductID");
+                String productName = rs.getString("ProductName");
+                int supplierID = rs.getInt("SupplierID");
+                int categoryID = rs.getInt("CategoryID");
+                double unitprice = rs.getDouble("UnitPrice");
+                int unitsInStock = rs.getInt("UnitsInStock");
+                int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                boolean discontinued = rs.getBoolean("Discontinued");
+                Blob blob = rs.getBlob("Image");
+                InputStream inputStream = blob.getBinaryStream();
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[4096];
+                int bytesRead = -1;
+
+                try {
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                    byte[] imageBytes = outputStream.toByteArray();
+                    String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
+                    inputStream.close();
+                    outputStream.close();
+                    Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
+                    Categories category = daoCategories.getCategoryByCategoryID(categoryID);
+                    ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return vector;
+
+    }
+    
 
     public int AddNewProduct(Products product, List<Part> input, Part filePart) throws IOException {
         int number = 0;
@@ -180,7 +249,7 @@ public class DAOProducts extends DBContext {
         DAOCategories daoCategories = new DAOCategories();
         DAOProductInfo daoProductInfo = new DAOProductInfo();
         Vector<Products> vector = new Vector<>();
-        String sql = "SELECT * FROM Products";
+        String sql = "SELECT TOP 8 * FROM Products ORDER BY ProductID ASC";
         ResultSet rs = getData(sql);
         try {
             while (rs.next()) {

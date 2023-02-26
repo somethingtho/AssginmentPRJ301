@@ -90,10 +90,12 @@ public class RegisterServlet extends HttpServlet {
                 request.setAttribute("error", "Mật khẩu không khớp. Vui lòng nhập lại!!!");
                 request.getRequestDispatcher("register.jsp").forward(request, response);
             }else{
-                request.setAttribute("error", "Đăng ký thành công giờ bạn có thể đăng nhập!!!");
+                
                 Accounts newAcc = new Accounts(user);
                 Customers cus = new Customers(user, email, newAcc, pass);
                 int n = daoCustomers.InsertNewCustomers(cus);
+                if(n >= 2) request.setAttribute("error", "Đăng ký thành công giờ bạn có thể đăng nhập!!!");
+                else request.setAttribute("error", "Error!!!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
         }

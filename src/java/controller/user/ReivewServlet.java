@@ -7,6 +7,7 @@ package controller.user;
 
 import entity.Accounts;
 import entity.Customers;
+import entity.Products;
 import entity.Review;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,6 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.DAOAccounts;
+import model.DAOProducts;
 import model.DAOReview;
 
 /**
@@ -81,11 +83,13 @@ public class ReivewServlet extends HttpServlet {
         String userName = cus.getAcc().getUserName();
         DAOAccounts daoAccounts = new DAOAccounts();
         DAOReview daoReview = new DAOReview();
+        DAOProducts daoProducts = new DAOProducts();
         try {
             int star = Integer.parseInt(star_raw);
             int productID = Integer.parseInt(productID_raw);
             Accounts acc = daoAccounts.getUsername(userName);
-            daoReview.InsertReview(new Review(acc, productID, contentSend, star));
+            Products product = daoProducts.getProductByID(productID);
+            daoReview.InsertReview(new Review(acc, product, contentSend, star));
             response.sendRedirect("item?pid=" + productID);
         } catch (NumberFormatException e) {
             e.printStackTrace();

@@ -12,38 +12,105 @@ import java.util.Vector;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import util.SendEmail;
 
 /**
  *
  * @author daova
  */
-public class DAOFeedback extends DBContext{
-    
-    public int UpdateFeedback(Feedback feedback){
-        int number = 0;
-        String sql = "UPDATE Feedback SET ContentRep = ?, Status = 1 WHERE ID = ?";
-        
+public class DAOFeedback extends DBContext {
+
+    public Vector<Feedback> getAllFeedbackByEmail(Feedback f) {
+        Vector<Feedback> vector = new Vector<>();
+        DAOCustomers daoCustomer = new DAOCustomers();
+        String sql = "SELECT * FROM Feedback WHERE Email = ?";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setString(1,feedback.getContentRep());
-            pre.setInt(2, feedback.getId());
-            
-            number = pre.executeUpdate();
+            pre.setString(1, f.getEmail());
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("ID");
+                Integer idAccount = rs.getInt("IDAccount");
+                String contentSend = rs.getString("ContentSend");
+                String contentRep = rs.getString("ContentRep");
+                boolean status = rs.getBoolean("Status");
+                String email = rs.getString("Email");
+                int role = rs.getInt("Role");
+                String dateSend = rs.getString("DateSend");
+                String dateRep = rs.getString("DateRep");
+                if (idAccount != null) {
+                    Customers customer = daoCustomer.getCustomerByID(idAccount);
+                    vector.add(new Feedback(id, contentSend, contentRep, status, customer, email, role, dateSend, dateRep));
+                } else {
+                    vector.add(new Feedback(id, contentSend, contentRep, status, email, role, dateSend, dateRep));
+                }
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        
+
+        return vector;
+    }
+
+    public Feedback getFeedbackByID(int idSearch) {
+        Feedback f = null;
+        DAOCustomers daoCustomer = new DAOCustomers();
+        String sql = "SELECT * FROM Feedback WHERE ID = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, idSearch);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt("ID");
+                Integer idAccount = rs.getInt("IDAccount");
+                String contentSend = rs.getString("ContentSend");
+                String contentRep = rs.getString("ContentRep");
+                boolean status = rs.getBoolean("Status");
+                String email = rs.getString("Email");
+                int role = rs.getInt("Role");
+                String dateSend = rs.getString("DateSend");
+                String dateRep = rs.getString("DateRep");
+                if (idAccount != null) {
+                    Customers customer = daoCustomer.getCustomerByID(idAccount);
+                    f = new Feedback(id, contentSend, contentRep, status, customer, email, role, dateSend, dateRep);
+                } else {
+                    f = new Feedback(id, contentSend, contentRep, status, email, role, dateSend, dateRep);
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return f;
+    }
+
+    public int UpdateFeedback(Feedback feedback, String contentRep) {
+        SendEmail send = new SendEmail();
+        int number = 0;
+        String sql = "UPDATE Feedback SET ContentRep = ?, Status = 1, DateRep = GETDATE() WHERE ID = ?";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, feedback.getContentRep());
+            pre.setInt(2, feedback.getId());
+
+            number = pre.executeUpdate();
+            if (number > 0) {
+                send.sendFeedBack(feedback.getEmail(), contentRep);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
         return number;
     }
-    
-    
-    public int TotalFeedbacks(){
+
+    public int TotalFeedbacks() {
         int number = 0;
         String sql = "SELECT COUNT(*) FROM Feedback";
-        ResultSet rs= getData(sql);
+        ResultSet rs = getData(sql);
         try {
-            if(rs.next()){
+            if (rs.next()) {
                 number = rs.getInt(1);
             }
         } catch (SQLException ex) {
@@ -51,12 +118,13 @@ public class DAOFeedback extends DBContext{
         }
         return number;
     }
-    
-    
+
     //list all feedback
-    public Vector getAllFeedBack(){
+    public Vector getAllFeedBack() {
+        DAOCustomers daoCustomer = new DAOCustomers();
+
         Vector<Feedback> vector = new Vector<>();
-        String sql = "SELECT * FROM Feedback";
+        String sql = "SELECT * FROM Feedback ORDER BY DateSend DESC";
         try {
             ResultSet rs = getData(sql);
             while (rs.next()) {
@@ -65,19 +133,27 @@ public class DAOFeedback extends DBContext{
                 String contentSend = rs.getString("ContentSend");
                 String contentRep = rs.getString("ContentRep");
                 boolean status = rs.getBoolean("Status");
-                vector.add(new Feedback(id, idAccount, contentSend, contentRep, status));
+                String email = rs.getString("Email");
+                int role = rs.getInt("Role");
+                String dateSend = rs.getString("DateSend");
+                String dateRep = rs.getString("DateRep");
+                Customers customer = daoCustomer.getCustomerByEmail(email);
+                if(customer != null) 
+                    vector.add(new Feedback(id, contentSend, contentRep, status, customer, email, role, dateSend, dateRep));
+                else
+                    vector.add(new Feedback(id, contentSend, contentRep, status, email, role, dateSend, dateRep));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        
+
         return vector;
     }
-    
+
     //Add Feedback
     public int AddFeedback(int idAccount, String email, String contendSend, int role) {
         int number = 0;
-        String sql = "INSERT INTO dbo.Feedback(IDAccount, Email,ContentSend, Role,Status) VALUES(?, ?, ?, ?, 0)";
+        String sql = "INSERT INTO dbo.Feedback(IDAccount, Email,ContentSend, Role,Status, DateSend, DateRep) VALUES(?, ?, ?, ?, 0, GETDATE(), NULL)";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, idAccount);
@@ -90,10 +166,10 @@ public class DAOFeedback extends DBContext{
         }
         return number;
     }
-    
+
     public int AddFeedback(String email, String contendSend, int role) {
         int number = 0;
-        String sql = "INSERT INTO dbo.Feedback(Email,ContentSend, Role,Status) VALUES(?, ?, ?, 0)";
+        String sql = "INSERT INTO dbo.Feedback(Email,ContentSend, Role,Status, DateSend, DateRep) VALUES(?, ?, ?, 0, GETDATE(), NULL)";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setString(1, email);
@@ -138,13 +214,11 @@ public class DAOFeedback extends DBContext{
         }
         return number;
     }
-    
+
     public static void main(String[] args) {
         DAOFeedback dao = new DAOFeedback();
-        DAOCustomers daoCus = new DAOCustomers();
-        Customers cus = daoCus.getCustomerByEmail("daoson03112002@gmail.com");
-        System.out.println(dao.AddFeedback(22, "daoson03112002@gmail.com", "hello", 3));
-        
+//        System.out.println(dao.AddFeedback(6, "monsterduckvjp@gmail.com", "Lag vl", 3));
+        System.out.println(dao.getAllFeedBack().get(3).toString());
     }
-    
+
 }

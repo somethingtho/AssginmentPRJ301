@@ -6,6 +6,7 @@ package model;
 
 import entity.Accounts;
 import entity.Customers;
+import entity.Products;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +18,7 @@ import java.util.Base64;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import util.SendEmail;
 
 /**
  *
@@ -24,6 +26,15 @@ import java.util.logging.Logger;
  */
 public class DAOCustomers extends DBContext {
 
+    public Vector<Customers> getListByPage(Vector<Customers> vector,
+            int start, int end) {
+        Vector<Customers> arr = new Vector<>();
+        for (int i = start; i < end; i++) {
+            arr.add(vector.get(i));
+        }
+        return arr;
+    }
+    
     public Customers LoginAdmin(String pass, String user) {
         Customers cus = null;
         String sql = "SELECT Customers.*, Accounts.UserName, Accounts.Role, Accounts.RegistrationDate, Accounts.Status FROM dbo.Customers INNER JOIN dbo.Accounts ON Accounts.ID = Customers.ID \n"
@@ -72,6 +83,7 @@ public class DAOCustomers extends DBContext {
     }
 
     public int LockCustomers(Customers c) {
+        SendEmail send = new SendEmail();
         int number = 0;
         String sql = "UPDATE Accounts SET Status = ? WHERE ID = ?";
 
@@ -80,6 +92,8 @@ public class DAOCustomers extends DBContext {
             pre.setBoolean(1, c.getAcc().isStatus());
             pre.setInt(2, c.getAcc().getId());
             number = pre.executeUpdate();
+            if(number > 0 && !c.getAcc().isStatus()) send.sendLockAccount(c.getEmail());
+            if(number > 0 && c.getAcc().isStatus()) send.sendUnLockAccount(c.getEmail());
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -486,6 +500,7 @@ public class DAOCustomers extends DBContext {
     }
 
     public int InsertNewCustomers(Customers cus) {
+        SendEmail send = new SendEmail();
         int number = 0;
         String sql1 = "INSERT INTO dbo.Accounts (UserName, Role, Status, RegistrationDate) VALUES (?, 3, 1, GETDATE() )";
         try {
@@ -496,17 +511,18 @@ public class DAOCustomers extends DBContext {
             ex.printStackTrace();
         }
 
-        String sql2 = "INSERT INTO dbo.Customers ( CustomerName, Gender, Phone, Email, Address, ID, Password, Image) "
-                + "VALUES(?, 1,NULL, ?, NULL, 1, ?,"
-                + " (SELECT * FROM OPENROWSET(BULK N'C:\\images\\customers\\admin.jpg', SINGLE_BLOB) as T1))";
+        String sql2 = "INSERT INTO dbo.Customers (CustomerName, Email, ID, Password, Image) "
+                + "VALUES(?, ?, (SELECT ID FROM Accounts WHERE UserName = ?), ?,"
+                + " (SELECT * FROM OPENROWSET(BULK N'C:\\images\\customers\\default.png', SINGLE_BLOB) as T1))";
 
         try {
             PreparedStatement pre2 = connection.prepareStatement(sql2);
             pre2.setString(1, cus.getAcc().getUserName());
             pre2.setString(2, cus.getEmail());
-            pre2.setInt(3, cus.getAcc().getId());
+            pre2.setString(3, cus.getAcc().getUserName());
             pre2.setString(4, cus.getPassword());
-            number = pre2.executeUpdate();
+            number += pre2.executeUpdate();
+            if(number >= 2) send.sendRegister(cus.getEmail());
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -595,6 +611,7 @@ public class DAOCustomers extends DBContext {
 //        for (Customers customers : vector) {
 //            System.out.println(customers);
 //        }
-        System.out.println(dao.getCustomerByEmail("daoson03112002@gmail.com"));
+        System.out.println(dao.getCustomerByID(7));
+        System.out.println(dao.getCustomerByEmail("monsterduckvjpro@gmail.com"));
     }
 }

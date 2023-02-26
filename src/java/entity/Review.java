@@ -12,11 +12,19 @@ public class Review {
     private int id;
     private Accounts acc;
     private Customers cus;
-    private int productID;
+    private Products pro;
     private String contentSend;
     private int rate;
     private String dateRate;
     boolean status;
+
+    public Products getPro() {
+        return pro;
+    }
+
+    public void setPro(Products pro) {
+        this.pro = pro;
+    }
 
     public boolean isStatus() {
         return status;
@@ -36,36 +44,38 @@ public class Review {
         this.dateRate = dateRate;
     }
 
-    public Review(Accounts acc, Customers cus, int productID, String contentSend, int rate) {
+    public Review(Accounts acc, Customers cus, Products pro, String contentSend, int rate) {
         this.acc = acc;
         this.cus = cus;
-        this.productID = productID;
+        this.pro = pro;
         this.contentSend = contentSend;
         this.rate = rate;
     }
 
-    public Review(Accounts acc, int productID, String contentSend, int rate) {
+    public Review(Accounts acc, Products pro, String contentSend, int rate) {
         this.acc = acc;
-        this.productID = productID;
+        this.pro = pro;
         this.contentSend = contentSend;
         this.rate = rate;
     }
 
     
-    public Review(int id, Accounts acc, Customers cus, int productID, String contentSend, int rate, String dateRate) {
+    public Review(int id, Accounts acc, Customers cus, Products pro, String contentSend, int rate, String dateRate, boolean status) {
         this.id = id;
         this.acc = acc;
         this.cus = cus;
-        this.productID = productID;
+        this.pro = pro;
         this.contentSend = contentSend;
         this.rate = rate;
         this.dateRate = dateRate;
+        this.status = status;
     }
 
-    public Review(Accounts acc, Customers cus, int productID, String contentSend, int rate, String dateRate) {
+    
+    public Review(Accounts acc, Customers cus, Products pro, String contentSend, int rate, String dateRate) {
         this.acc = acc;
         this.cus = cus;
-        this.productID = productID;
+        this.pro = pro;
         this.contentSend = contentSend;
         this.rate = rate;
         this.dateRate = dateRate;
@@ -101,14 +111,6 @@ public class Review {
         this.id = id;
     }
 
-
-    public int getProductID() {
-        return productID;
-    }
-
-    public void setProductID(int productID) {
-        this.productID = productID;
-    }
 
     public String getContentSend() {
         return contentSend;

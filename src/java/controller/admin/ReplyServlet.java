@@ -2,53 +2,54 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller.admin;
 
-import entity.Customers;
-import entity.Suppliers;
+import entity.Feedback;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Vector;
-import model.DAOSuppliers;
+import java.util.*;
+import model.DAOFeedback;
 
 /**
  *
  * @author ADMIN
  */
-public class ListAllSuppliersServlet extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+public class ReplyServlet extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListAllSuppliersServlet</title>");  
+            out.println("<title>Servlet ReplyServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ListAllSuppliersServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ReplyServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -56,40 +57,24 @@ public class ListAllSuppliersServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        DAOSuppliers daoSuppliers = new DAOSuppliers();
-        Vector<Suppliers> listAllSuppliers = daoSuppliers.getAllSuppliers();
-        request.setAttribute("listAllSuppliers", listAllSuppliers);
-        
-        int numPs = listAllSuppliers.size();
-        int numperPage = 10;
-        int numpage = numPs / numperPage + (numPs % numperPage == 0 ? 0 : 1);
-        int start, end;
-        String tpage = request.getParameter("page");
-        int page;
+            throws ServletException, IOException {
+        String id_raw = request.getParameter("id");
+        DAOFeedback daoFeedback = new DAOFeedback();
         try {
-            page = Integer.parseInt(tpage);
-        } catch (NumberFormatException e) {
-            page = 1;
-        }
-        start = (page - 1) * numperPage;
-        if (page * numperPage > numPs) {
-            end = numPs;
-        } else {
-            end = page * numperPage;
-        }
-        
-        Vector<Suppliers> vector1 = daoSuppliers.getListByPage(listAllSuppliers, start, end);
-        request.setAttribute("listAllSuppliers", vector1);
-        request.setAttribute("page", page);
-        request.setAttribute("num", numpage);
-        
-        
-        request.getRequestDispatcher("suppliers.jsp").forward(request, response);
-    } 
+            int id = Integer.parseInt(id_raw);
+            Feedback f = daoFeedback.getFeedbackByID(id);
+            Vector<Feedback> listAllMessage = daoFeedback.getAllFeedbackByEmail(f);
 
-    /** 
+            request.setAttribute("listAllMessage", listAllMessage);
+
+            request.getRequestDispatcher("reply.jsp").forward(request, response);
+        } catch (Exception e) {
+        }
+    }
+
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -97,20 +82,25 @@ public class ListAllSuppliersServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        String name = request.getParameter("key");
-        DAOSuppliers daoSuppliers = new DAOSuppliers();
-        Suppliers s = daoSuppliers.GetSupplierByCompanyName(name);
-        Vector<Suppliers> listAllSuppliers = new Vector<>();
-        listAllSuppliers.add(s);
-        if(listAllSuppliers.isEmpty()) request.setAttribute("error", "Không tìm thấy!");
-        request.setAttribute("listAllSuppliers", listAllSuppliers);
-        
-        request.getRequestDispatcher("suppliers.jsp").forward(request, response);
+            throws ServletException, IOException {
+        DAOFeedback daoFeedback = new DAOFeedback();
+        String id_raw = request.getParameter("id");
+        try {
+            int id = Integer.parseInt(id_raw);
+            String contentRep = request.getParameter("contentRep");
+            Feedback f = daoFeedback.getFeedbackByID(id);
+            f.setContentRep(contentRep);
+            int n = daoFeedback.UpdateFeedback(f, contentRep);
+            Vector<Feedback> listAllMessage = daoFeedback.getAllFeedbackByEmail(f);
+            request.setAttribute("listAllMessage", listAllMessage);
+            request.getRequestDispatcher("reply.jsp").forward(request, response);
+        } catch (Exception e) {
+        }
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

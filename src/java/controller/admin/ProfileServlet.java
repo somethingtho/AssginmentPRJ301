@@ -5,6 +5,7 @@
 package controller.admin;
 
 import entity.Customers;
+import entity.Orders;
 import entity.Shippers;
 import entity.Suppliers;
 import java.io.IOException;
@@ -14,7 +15,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.*;
+import model.DAOCategories;
 import model.DAOCustomers;
+import model.DAOOrderDetails;
+import model.DAOOrders;
+import model.DAOProducts;
 import model.DAOShippers;
 import model.DAOSuppliers;
 
@@ -68,6 +73,10 @@ public class ProfileServlet extends HttpServlet {
         DAOSuppliers daoSuppliers = new DAOSuppliers();
         DAOShippers daoShippers = new DAOShippers();
         DAOCustomers daoCustomers = new DAOCustomers();
+        DAOCategories daoCategories = new DAOCategories();
+        DAOOrders daoOrders = new DAOOrders();
+        DAOProducts daoProducts = new DAOProducts();
+        DAOOrderDetails daoOrderDetails = new DAOOrderDetails();
         try {
             int id = Integer.parseInt(id_raw);
             if (type.equals("sup")) {
@@ -75,8 +84,24 @@ public class ProfileServlet extends HttpServlet {
                 if (!entity.isStatus()) {
                     request.setAttribute("msg", "Tài khoản này đã bị khoá hoặc dừng hoạt động!");
                 }
+                int totalCategoriesBySupplier = daoCategories.ToalCategoriesBySuppliers(id);
+                int totalCategories= daoCategories.TotalCategories();
+                int totalOrders = daoOrders.TotalOrderBySupplier(id);
+                int totalProductSale = daoOrderDetails.TotalProductsSaleBySupplier(id);
+                int totalProductsBySupplier = daoProducts.TotalProductsBySupplier(id);
+                double totalMoney = daoOrders.TotalMoneyBySupplier(id);
+                Vector<Orders> listAllOrders = daoOrders.getOrderBySupplier(id);
+                
+                
+                request.setAttribute("totalCategoriesBySupplier", totalCategoriesBySupplier);
+                request.setAttribute("totalCategories", totalCategories);
+                request.setAttribute("totalOrders", totalOrders);
+                request.setAttribute("totalProductSale", totalProductSale);
+                request.setAttribute("totalProductsBySupplier", totalProductsBySupplier);
+                request.setAttribute("totalMoney", totalMoney);
                 request.setAttribute("entity", entity);
                 request.setAttribute("type", type);
+                request.setAttribute("listAllOrders", listAllOrders);
                 request.getRequestDispatcher("profileview.jsp").forward(request, response);
             }
             if (type.equals("ship")) {
@@ -136,6 +161,7 @@ public class ProfileServlet extends HttpServlet {
                     entity.setCompanyName(newName);
                     entity.setPhone(phone);
                     entity.setEmail(email);
+                    entity.setHomePage(page);
                     daoSuppliers.AccountSupplier(entity);
                     if (!entity.isStatus()) {
                         request.setAttribute("msg", "Tài khoản này đã bị khoá hoặc dừng hoạt động!");

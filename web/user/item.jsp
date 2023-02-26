@@ -91,9 +91,9 @@ response.setDateHeader ("Expires", 0);
 
 
     <body>
-        
+
         <fmt:setLocale value = "vi_VN"/>
-        
+
         <c:set var="o" value="${requestScope.cart}"/>
         <header>
             <div class="logo">
@@ -485,17 +485,17 @@ response.setDateHeader ("Expires", 0);
     <div class="row">
         <div class="col-md-4 row">
             <h3 class="text-center">Liên hệ với chúng tôi</h3>
-            <div class="col-md-3 img_mxh"><a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer"><img class="img-responsive" src="${pageContext.request.contextPath}/images/facebook.jpg"
+            <div class="col-sm-3 img_mxh"><a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer"><img class="img-responsive" src="${pageContext.request.contextPath}/images/facebook.jpg"
                                                                                                                             alt=""></a></div>
-            <div class="col-md-3 img_mxh"><a href="https://www.skype.com/en/" target="_blank" rel="noopener noreferrer"><img class="img-responsive" src="${pageContext.request.contextPath}/images/skype.png"
+            <div class="col-sm-3 img_mxh"><a href="https://www.skype.com/en/" target="_blank" rel="noopener noreferrer"><img class="img-responsive" src="${pageContext.request.contextPath}/images/skype.png"
                                                                                                                              alt=""></a></div>
-            <div class="col-md-3 img_mxh"><a href="https://twitter.com/?lang=vi" target="_blank" rel="noopener noreferrer"><img class="img-responsive" src="${pageContext.request.contextPath}/images/twitter.png"
+            <div class="col-sm-3 img_mxh"><a href="https://twitter.com/?lang=vi" target="_blank" rel="noopener noreferrer"><img class="img-responsive" src="${pageContext.request.contextPath}/images/twitter.png"
                                                                                                                                 alt=""></a></div>
-            <div class="col-md-3 img_mxh"><a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"><img class="img-responsive" src="${pageContext.request.contextPath}/images/insta.jpg"
+            <div class="col-sm-3 img_mxh"><a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"><img class="img-responsive" src="${pageContext.request.contextPath}/images/insta.jpg"
                                                                                                                               alt=""></a></div>
 
         </div>
-        <div class="col-md-4 website_help center-block">
+        <div class="col-sm-4 website_help center-block">
             <h3>Website</h3>
             <p><a href="">Bán hàng cùng chúng tôi</a></p>
             <p><a href="">Tuyển dụng</a></p>
@@ -521,11 +521,11 @@ response.setDateHeader ("Expires", 0);
     <div class="row payment">
         <div class="col-md-6">
             <h3 class="text-center">CÁCH THỨC THANH TOÁN</h3>
-            <img class="img-responsive col-md-2" src="${pageContext.request.contextPath}/images/visa.png">
-            <img class="img-responsive col-md-2" src="${pageContext.request.contextPath}/images/mastercard.png">
-            <img class="img-responsive col-md-2" src="${pageContext.request.contextPath}/images/jbc.jpg">
-            <img class="img-responsive col-md-2" src="${pageContext.request.contextPath}/images/cashonde.png">
-            <img class="img-responsive col-md-2" src="${pageContext.request.contextPath}/images/napas.png">
+            <img class="img-responsive col-sm-2" src="${pageContext.request.contextPath}/images/visa.png">
+            <img class="img-responsive col-sm-2" src="${pageContext.request.contextPath}/images/mastercard.png">
+            <img class="img-responsive col-sm-2" src="${pageContext.request.contextPath}/images/jbc.jpg">
+            <img class="img-responsive col-sm-2" src="${pageContext.request.contextPath}/images/cashonde.png">
+            <img class="img-responsive col-sm-2" src="${pageContext.request.contextPath}/images/napas.png">
         </div>
 
         <div class="col-md-6">
@@ -540,15 +540,16 @@ response.setDateHeader ("Expires", 0);
     </div>
 </footer>
 <script src="${pageContext.request.contextPath}/js/item.js" type="text/javascript"></script>
-<script>
-                        function buy(id) {
-                            var m = document.f.num.value;
-                            document.f.action = "buy?pid=" + id + "&num=" + m;
-                            document.f.submit();
-                        }
-</script>
 
 <script>
+
+    function buy(id) {
+        var m = document.f.num.value;
+        document.f.action = "buy?pid=" + id + "&num=" + m;
+        document.f.submit();
+    }
+    
+    
     window.onscroll = function () {
         myFunction()
     };

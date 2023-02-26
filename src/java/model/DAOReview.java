@@ -7,6 +7,7 @@ package model;
 import entity.Accounts;
 import entity.Categories;
 import entity.Customers;
+import entity.Products;
 import entity.Review;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -20,12 +21,70 @@ import java.util.Base64;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import util.SendEmail;
 
 /**
  *
  * @author daova
  */
 public class DAOReview extends DBContext {
+
+    public Review getReviewByID(int rid) {
+        Review r = null;
+        DAOAccounts daoAccounts = new DAOAccounts();
+        DAOProducts daoProducts = new DAOProducts();
+        DAOCustomers daoCustomers = new DAOCustomers();
+
+        String sql = "SELECT * FROM Review WHERE Review.ID = ?";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, rid);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt("ID");
+                int idAccount = rs.getInt("IDAccount");
+                int productID = rs.getInt("ProductID");
+                String content = rs.getString("ContentSend");
+                int rate = rs.getInt("Rate");
+                String postDate = rs.getString("DateRate");
+                boolean status = rs.getBoolean("Status");
+                Accounts acc = daoAccounts.getID(idAccount);
+                Customers customer = daoCustomers.getCustomerByUserName(acc.getUserName());
+                Products product = daoProducts.getProductByID(productID);
+                r = new Review(id, acc, customer, product, content, rate, postDate, status);
+
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return r;
+    }
+
+    public int changeReview(Review r, String type) {
+        SendEmail send = new SendEmail();
+        int number = 0;
+        String sql = "UPDATE Review SET Status = ? WHERE ID = ?";
+        boolean status = type.equals("public");
+        String txt = "Hello! We send this email to inform that your comment at " + r.getDateRate() + " with content \"" + r.getContentSend() + "\" (#" + r.getPro().getProductID() + ")~" + r.getPro().getProductName()
+                + ". Violation of our standards so we decided to hide this comment!"
+                + " If you have any questions, please reply to this message to get it resolved! Thank you very much!";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setBoolean(1, status);
+            pre.setInt(2, r.getId());
+            number = pre.executeUpdate();
+            if (number > 0 && !status) {
+                send.sendHiddenReview(r.getCus().getEmail(), txt);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        System.out.println(txt);
+        return number;
+
+    }
 
     public int TotalReviewBySupplier(int supplierID) {
         int number = 0;
@@ -35,7 +94,7 @@ public class DAOReview extends DBContext {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, supplierID);
             ResultSet rs = pre.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 number = rs.getInt(1);
             }
         } catch (SQLException ex) {
@@ -44,105 +103,42 @@ public class DAOReview extends DBContext {
 
         return number;
     }
-    
-    
-    public Vector<Review> getTop5ReviewBySupplier(int supplierID) {
-        Vector<Review> vector = new Vector<>();
-        String sql = "SELECT TOP 5 Review.*, Customers.Image, Customers.CustomerName, Accounts.UserName FROM dbo.Review INNER JOIN dbo.Accounts\n" +
-"                ON Accounts.ID = Review.IDAccount INNER JOIN dbo.Customers ON Customers.ID = Accounts.ID\n" +
-"				WHERE Review.ProductID IN (SELECT Products.ProductID FROM dbo.Products WHERE Products.SupplierID = ?)\n" +
-"                ORDER BY Review.ID DESC";
-
-        try {
-            PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setInt(1, supplierID);
-            ResultSet rs = pre.executeQuery();  
-            while (rs.next()) {
-                int id = rs.getInt("ID");
-                int idAccount = rs.getInt("IDAccount");
-                int productID = rs.getInt("ProductID");
-                String content = rs.getString("ContentSend");
-                int rate = rs.getInt("Rate");
-                String userName = rs.getString("UserName");
-                String postDate = rs.getString("DateRate");
-                String customerName = rs.getString("CustomerName");
-                Accounts acc = new Accounts(userName);
-                Blob blob = rs.getBlob("Image");
-                InputStream inputStream = blob.getBinaryStream();
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                byte[] buffer = new byte[4096];
-                int bytesRead = -1;
-                try {
-                    while ((bytesRead = inputStream.read(buffer)) != -1) {
-                        outputStream.write(buffer, 0, bytesRead);
-                    }
-                    byte[] imageBytes = outputStream.toByteArray();
-                    String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-
-                    inputStream.close();
-                    outputStream.close();
-                    Customers cus = new Customers(idAccount, customerName,base64Image);
-                    vector.add(new Review(id, acc, cus, productID, content, rate, postDate));
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DAOReview.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return vector;
-    }
 
     public Vector<Review> getTop5Review() {
+        DAOAccounts daoAccounts = new DAOAccounts();
+        DAOCustomers daoCustomers = new DAOCustomers();
+        DAOProducts daoProducts = new DAOProducts();
         Vector<Review> vector = new Vector<>();
-        String sql = "SELECT TOP 5 Review.*, Customers.Image,Accounts.UserName FROM dbo.Review INNER JOIN dbo.Accounts \n"
-                + "ON Accounts.ID = Review.IDAccount INNER JOIN dbo.Customers ON Customers.ID = Accounts.ID\n"
-                + " ORDER BY Review.ID DESC";
+        String sql = "SELECT TOP 5 * FROM dbo.Review ORDER BY Review.ID DESC";
 
         ResultSet rs = getData(sql);
         try {
             while (rs.next()) {
                 int id = rs.getInt("ID");
+                boolean status = rs.getBoolean("Status");
                 int idAccount = rs.getInt("IDAccount");
                 int productID = rs.getInt("ProductID");
                 String content = rs.getString("ContentSend");
                 int rate = rs.getInt("Rate");
-                String userName = rs.getString("UserName");
                 String postDate = rs.getString("DateRate");
-                Accounts acc = new Accounts(userName);
-                Blob blob = rs.getBlob("Image");
-                InputStream inputStream = blob.getBinaryStream();
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                byte[] buffer = new byte[4096];
-                int bytesRead = -1;
-                try {
-                    while ((bytesRead = inputStream.read(buffer)) != -1) {
-                        outputStream.write(buffer, 0, bytesRead);
-                    }
-                    byte[] imageBytes = outputStream.toByteArray();
-                    String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-
-                    inputStream.close();
-                    outputStream.close();
-                    Customers cus = new Customers(idAccount, base64Image);
-                    vector.add(new Review(id, acc, cus, productID, content, rate, postDate));
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+                Accounts acc = daoAccounts.getID(idAccount);
+                Products product = daoProducts.getProductByID(productID);
+                Customers cus = daoCustomers.getCustomerByUserName(acc.getUserName());
+                vector.add(new Review(id, acc, cus, product, content, rate, postDate, status));
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DAOReview.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
 
         return vector;
     }
 
     public Vector<Review> getAllReviewByProductID(int pid) {
+        DAOAccounts daoAccounts = new DAOAccounts();
+        DAOCustomers daoCustomers = new DAOCustomers();
+        DAOProducts daoProducts = new DAOProducts();
         Vector<Review> vector = new Vector<>();
-        String sql = "SELECT Review.*, Customers.Image,Accounts.UserName FROM dbo.Review INNER JOIN dbo.Accounts \n"
-                + "ON Accounts.ID = Review.IDAccount INNER JOIN dbo.Customers ON Customers.ID = Accounts.ID\n"
-                + "WHERE ProductID = ? AND Status = 1 ORDER BY Review.ID DESC";
+        String sql = "SELECT * FROM dbo.Review WHERE ProductID = ? AND Review.Status = 1 ORDER BY Review.ID DESC";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, pid);
@@ -153,29 +149,12 @@ public class DAOReview extends DBContext {
                 int productID = pid;
                 String content = rs.getString("ContentSend");
                 int rate = rs.getInt("Rate");
-                String userName = rs.getString("UserName");
                 String postDate = rs.getString("DateRate");
-                Accounts acc = new Accounts(userName);
-                Blob blob = rs.getBlob("Image");
-                InputStream inputStream = blob.getBinaryStream();
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                byte[] buffer = new byte[4096];
-                int bytesRead = -1;
-                try {
-                    while ((bytesRead = inputStream.read(buffer)) != -1) {
-                        outputStream.write(buffer, 0, bytesRead);
-                    }
-                    byte[] imageBytes = outputStream.toByteArray();
-                    String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-
-                    inputStream.close();
-                    outputStream.close();
-                    Customers cus = new Customers(idAccount, base64Image);
-                    vector.add(new Review(id, acc, cus, productID, content, rate, postDate));
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-
+                boolean status = rs.getBoolean("Status");
+                Accounts acc = daoAccounts.getID(idAccount);
+                Customers cus = daoCustomers.getCustomerByUserName(acc.getUserName());
+                Products product = daoProducts.getProductByID(productID);
+                vector.add(new Review(id, acc, cus, product, content, rate, postDate, status));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -214,7 +193,7 @@ public class DAOReview extends DBContext {
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, review.getAcc().getId());
-            pre.setInt(2, review.getProductID());
+            pre.setInt(2, review.getPro().getProductID());
             pre.setString(3, review.getContentSend());
             pre.setInt(4, review.getRate());
             number = pre.executeUpdate();
@@ -240,9 +219,6 @@ public class DAOReview extends DBContext {
 
     public static void main(String[] args) {
         DAOReview dao = new DAOReview();
-        Vector<Review> vector = dao.getTop5ReviewBySupplier(1);
-        for (Review review : vector) {
-            System.out.println(review);
-        }
+        dao.changeReview(dao.getReviewByID(1), "hidden");
     }
 }

@@ -25,6 +25,60 @@ import java.util.logging.Logger;
  */
 public class DAOSuppliers extends DBContext {
     
+    public Vector<Suppliers> getListByPage(Vector<Suppliers> vector,
+            int start, int end) {
+        Vector<Suppliers> arr = new Vector<>();
+        for (int i = start; i < end; i++) {
+            arr.add(vector.get(i));
+        }
+        return arr;
+    }
+    
+    public Vector<Suppliers> getNextSuppliersByAdmin(int amount) {
+        Vector<Suppliers> vector = new Vector<>();
+        String sql = "SELECT TOP 5 * FROM Suppliers ORDER BY SupplierID ASC OFFSET ? ROWS FETCH NEXT 5 ROWS ONLY";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, amount);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                int supplierID = rs.getInt("SupplierID");
+                String supplierName = rs.getString("CompanyName");
+                String phone = rs.getString("Phone");
+                String homePage = rs.getString("HomePage");
+                String email = rs.getString("Email");
+                boolean status = rs.getBoolean("Status");
+                vector.add(new Suppliers(supplierID, supplierName, phone, email, homePage, status));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return vector;
+    }
+    
+    
+    public Vector<Suppliers> getAllSuppliersByAdmin() {
+        Vector<Suppliers> vector = new Vector<>();
+        String sql = "SELECT TOP 5 * FROM Suppliers ORDER BY SupplierID ASC";
+        ResultSet rs = getData(sql);
+        try {
+            while (rs.next()) {
+                int supplierID = rs.getInt("SupplierID");
+                String supplierName = rs.getString("CompanyName");
+                String phone = rs.getString("Phone");
+                String homePage = rs.getString("HomePage");
+                String email = rs.getString("Email");
+                boolean status = rs.getBoolean("Status");
+                vector.add(new Suppliers(supplierID, supplierName, phone, email, homePage, status));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return vector;
+    }
+    
     public int UpdateSupplier(Suppliers s){
         int number = 0;
         String sql = "UPDATE Suppliers SET CompanyName = ?, Phone = ?, HomePage = ?, Email =?, Status = ? WHERE SupplierID = ?";

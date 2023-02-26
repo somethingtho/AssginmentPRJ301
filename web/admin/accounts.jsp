@@ -38,7 +38,32 @@
           <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
+
+    <style>
+        #myBtn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            z-index: 99;
+            font-size: 18px;
+            border: none;
+            outline: none;
+            background-color: gray;
+            color: white;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+        }
+
+        #myBtn:hover {
+            background-color: black;
+        }
+    </style>
+
     <body>
+        <button onclick="topFunction()" id="myBtn" title="Go to top"><i style="text-align: center" class="ti-arrow-up"></i></button>
         <div class="preloader">
             <div class="lds-ripple">
                 <div class="lds-pos"></div>
@@ -131,11 +156,12 @@
                                     href="javascript:void(0)"
                                     ><i class="mdi mdi-magnify fs-4"></i
                                     ></a>
-                                <form class="app-search position-absolute">
+                                <form class="app-search position-absolute" action="${pageContext.request.contextPath}/admin/listallaccounts" method="POST">
                                     <input
-                                        type="text"
+                                        type="email"
+                                        name="key"
                                         class="form-control"
-                                        placeholder="Search &amp; enter"
+                                        placeholder="Search by Email &amp; enter"
                                         />
                                     <a class="srh-btn"><i class="mdi mdi-window-close"></i></a>
                                 </form>
@@ -244,6 +270,16 @@
                                 >
                             </li>
 
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/feedbacks"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-help-circle"></i
+                                    ><span class="hide-menu">Feedbacks</span></a
+                                >
+                            </li>
+
 
 
                             <li class="sidebar-item selected">
@@ -288,7 +324,7 @@
                                         >
                                     </li>
                                     <li class="sidebar-item">
-                                        <a href="supplier.html" class="sidebar-link"
+                                        <a href="${pageContext.request.contextPath}/admin/listallsuppliers" class="sidebar-link"
                                            ><i class="mdi mdi-human-greeting"></i
                                             ><span class="hide-menu"> Thương hiệu </span></a
                                         >
@@ -346,25 +382,19 @@
 
 
                                     <li class="sidebar-item">
-                                        <a href="changepass.html" class="sidebar-link"
+                                        <a href="changepass.jsp" class="sidebar-link"
                                            ><i class="mdi mdi-key-change"></i
                                             ><span class="hide-menu"> Đổi mật khẩu </span></a
                                         >
                                     </li>
 
                                     <li class="sidebar-item">
-                                        <a href="profile.html" class="sidebar-link"
+                                        <a href="profile.jsp" class="sidebar-link"
                                            ><i class="mdi mdi-account-card-details"></i
                                             ><span class="hide-menu"> Hồ sơ </span></a
                                         >
                                     </li>
 
-                                    <li class="sidebar-item">
-                                        <a href="#" class="sidebar-link"
-                                           ><i class="mdi mdi-account-card-details"></i
-                                            ><span class="hide-menu"> Hồ sơ người dùng </span></a
-                                        >
-                                    </li>
                                 </ul>
                             </li>
                         </ul>
@@ -390,7 +420,7 @@
                             <div class="ms-auto text-end">
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                                        <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/admin/index">Trang chủ</a></li>
                                         <li class="breadcrumb-item active" aria-current="page">
                                             Người dùng
                                         </li>
@@ -414,6 +444,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title mb-0">Danh sách người dùng</h5>
+                                <h3 style="color: red; margin: 10px 0;">${requestScope.error}</h3>
                             </div>
                             <div class="table-responsive">
                                 <table class="table">
@@ -421,8 +452,8 @@
                                         <tr>
                                             <th>#</th>
                                             <th scope="col">Họ và tên</th>
-                                            <th scope="col">Email</th>
                                             <th scope="col">Số điện thoại</th>
+                                            <th scope="col">Email</th>
                                             <th scope="col">Địa chỉ</th>
                                             <th scope="col">Giới tính</th>
                                             <th scope="col">Quyền truy cập</th>
@@ -450,11 +481,34 @@
                                                         <c:when test="${!c.acc.status}">Bị khoá</c:when>
                                                     </c:choose></th>
                                                 <th><a href="${pageContext.request.contextPath}/admin/profile?type=customer&id=${c.customerID}">Hồ sơ</a></th>
-
                                             </tr>
                                         </c:forEach>
                                     </tbody>
                                 </table>
+                                <c:set var="page" value="${requestScope.page}"/>
+                                <div style="display: grid; place-items: center;">
+                                    <form action="${pageContext.request.contextPath}/admin/listallaccounts" method="get">
+                                        <div class="col-md-4">
+                                            <nav aria-label="...">
+                                                <ul class="pagination">
+                                                    <li class="page-item <c:if test="${requestScope.page == 1}">disabled</c:if>">
+                                                        <a  class="page-link" href="${pageContext.request.contextPath}/admin/listallaccounts?page=${page-1}" tabindex="-1"
+                                                           >Previous</a
+                                                        >
+                                                    </li>
+                                                    <c:forEach begin="${1}" end="${requestScope.num}" var="i">
+                                                    <li class="page-item ${i==page?"active":""}">
+                                                        <a class="page-link" href="${pageContext.request.contextPath}/admin/listallaccounts?page=${i}">${i}</a>
+                                                    </li>
+                                                    </c:forEach>
+                                                    <li class="page-item <c:if test="${requestScope.page == num}">disabled</c:if>">
+                                                        <a class="page-link" href="${pageContext.request.contextPath}/admin/listallaccounts?page=${page+1}">Next</a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
 
@@ -511,5 +565,25 @@
 <!-- this page js -->
 <script src="assets/libs/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
 <script src="assets/libs/magnific-popup/meg.init.js"></script>
+<script>
+            window.onscroll = function () {
+                scrollFunction();
+            };
+
+            let mybutton = document.getElementById("myBtn");
+
+            function scrollFunction() {
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                    mybutton.style.display = "block";
+                } else {
+                    mybutton.style.display = "none";
+                }
+            }
+
+            function topFunction() {
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+            }
+</script>
 </body>
 </html>

@@ -13,9 +13,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        
+
         <meta name="robots" content="noindex,nofollow" />
-        <title>Profile for me!!</title>
+        <title>Profile for ${requestScope.entity.companyName}</title>
         <!-- Favicon icon -->
         <link
             rel="icon"
@@ -126,7 +126,7 @@
                                         ></span>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addsupplier">Nhà cung cấp</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addsupplier">Thương hiệu</a></li>
                                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addcategory">Danh mục</a></li>
                                     <li><hr class="dropdown-divider" /></li>
                                     <li>
@@ -256,6 +256,16 @@
                             </li>
 
 
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/feedbacks"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-help-circle"></i
+                                    ><span class="hide-menu">Feedbacks</span></a
+                                >
+                            </li>
+
 
                             <li class="sidebar-item">
                                 <a
@@ -301,7 +311,7 @@
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/listallsuppliers" class="sidebar-link"
                                            ><i class="mdi mdi-human-greeting"></i
-                                            ><span class="hide-menu"> Nhà cung cấp </span></a
+                                            ><span class="hide-menu"> Thương hiệu </span></a
                                         >
                                     </li>
                                 </ul>
@@ -337,7 +347,7 @@
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/addsupplier" class="sidebar-link"
                                            ><i class="mdi mdi-human-greeting"></i
-                                            ><span class="hide-menu"> Nhà cung cấp </span></a
+                                            ><span class="hide-menu"> Thương hiệu </span></a
                                         >
                                     </li>
                                 </ul>
@@ -354,7 +364,7 @@
                                     ><span class="hide-menu">Xác thực</span></a
                                 >
                                 <ul aria-expanded="false" class="collapse first-level">
-                                    
+
 
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/changepass.jsp" class="sidebar-link"
@@ -369,14 +379,8 @@
                                             ><span class="hide-menu"> Hồ sơ </span></a
                                         >
                                     </li>
-                                    
-                                    <li class="sidebar-item active">
-                                        <a href="${pageContext.request.contextPath}/admin/listallaccounts" class="sidebar-link"
-                                           ><i class="mdi mdi-account-card-details"></i
-                                            ><span class="hide-menu"> Hồ sơ người dùng</span></a
-                                        >
-                                    </li>
-                                    
+
+
                                 </ul>
                             </li>
                         </ul>
@@ -432,12 +436,91 @@
                                             <h4>${requestScope.entity.companyName}</h4>
                                             <h4>Email: ${requestScope.entity.email}</h4>
                                             <h4>Số điện thoại: ${requestScope.entity.phone}</h4>
+                                            <c:if test="${requestScope.type == 'sup'}"><h4><a href="#">Số lượng sản phẩm: ${requestScope.totalProductsBySupplier}</a></h4></c:if>
+                                            </div>
                                         </div>
-                                    </div>
+                                    <c:if test="${requestScope.type == 'sup'}">
+                                        <div class="row">
+                                            <div class="col-6 mt-3">
+                                                <div class="bg-dark p-10 text-white text-center">
+                                                    <i class="mdi mdi-group fs-3 font-16"></i>
+                                                    <h5 class="mb-0 mt-1">${requestScope.totalCategoriesBySupplier}/${requestScope.totalCategories}</h5>
+                                                    <small class="font-light">Total Categories</small>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6 mt-3">
+                                                <div class="bg-dark p-10 text-white text-center">
+                                                    <i class="mdi mdi-tag-multiple fs-3 mb-1 font-16"></i>
+                                                    <h5 class="mb-0 mt-1">${requestScope.totalOrders}</h5>
+                                                    <small class="font-light">Total Orders</small>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6 mt-3">
+                                                <div class="bg-dark p-10 text-white text-center">
+                                                    <i class="mdi mdi-cart fs-3 mb-1 font-16"></i>
+                                                    <h5 class="mb-0 mt-1">${requestScope.totalProductSale}</h5>
+                                                    <small class="font-light">Total Products Sale</small>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6 mt-3">
+                                                <div class="bg-dark p-10 text-white text-center">
+                                                    <i class="mdi mdi-credit-card fs-3 mb-1 font-16"></i>
+                                                    <h5 class="mb-0 mt-1"><fmt:formatNumber type="currency" value="${requestScope.totalMoney}"/></h5>
+                                                    <small class="font-light">Total Money</small>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </c:if>
+
+
+                                    <c:if test="${requestScope.type == 'ship'}">
+                                        <div class="row">
+
+                                            <div class="col-6 mt-3">
+                                                <div class="bg-dark p-10 text-white text-center">
+                                                    <i class="mdi mdi-human-greeting fs-3 mb-1 font-16"></i>
+                                                    <h5 class="mb-0 mt-1">${requestScope.totalSuppliersByShipper}/${requestScope.totalSuppliers}</h5>
+                                                    <small class="font-light">Total Suppliers</small>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-6 mt-3">
+                                                <div class="bg-dark p-10 text-white text-center">
+                                                    <i class="mdi mdi-truck fs-3 mb-1 font-16"></i>
+                                                    <h5 class="mb-0 mt-1">${requestScope.totalOrders}</h5>
+                                                    <small class="font-light">Total Order Delivered</small>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-6 mt-3">
+                                                <div class="bg-dark p-10 text-white text-center">
+                                                    <i class="mdi mdi-cart fs-3 mb-1 font-16"></i>
+                                                    <h5 class="mb-0 mt-1">${requestScope.totalProducts}</h5>
+                                                    <small class="font-light">Total Product Delivered</small>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6 mt-3">
+                                                <div class="bg-dark p-10 text-white text-center">
+                                                    <i class="mdi mdi-tag fs-3 mb-1 font-16"></i>/<i class="mdi mdi-tag-remove fs-3 mb-1 font-16"></i>
+                                                    <h5 class="mb-0 mt-1">${requestScope.totalOrderSuccess}/${requestScope.totalOrderFail}</h5>
+                                                    <small class="font-light">OrderSuccess/OrderFail</small>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </c:if>        
+
+
                                 </div>
                             </div>
                         </div>
-
                         <div class="col-md-6">
                             <div class="card">
                                 <form class="form-horizontal" action="profile" method="post">
@@ -530,6 +613,7 @@
                                                         name="lock"
                                                         required
                                                         value="OFF"
+                                                        onclick="handleClick(this);"
                                                         <c:if test="${requestScope.entity.status}">checked</c:if>
                                                             />
                                                         <label
@@ -546,39 +630,184 @@
                                                             name="lock"
                                                             required
                                                             value="ON"
+                                                            onclick="handleClick(this);"
                                                         <c:if test="${!requestScope.entity.status}">checked</c:if>
-                                                        />
-                                                    <label
-                                                        class="form-check-label mb-0"
-                                                        for="customControlValidation2"
-                                                        >Dừng</label
-                                                    >
+                                                            />
+                                                        <label
+                                                            class="form-check-label mb-0"
+                                                            for="customControlValidation2"
+                                                            >Dừng</label
+                                                        >
+                                                    </div>
+
                                                 </div>
+                                            </div>
 
+                                            <div class="border-top">
+                                                <div class="card-body">
+                                                    <button type="submit" class="btn btn-primary">
+                                                        Submit
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
-
-                                        <div class="border-top">
-                                            <div class="card-body">
-                                                <button type="submit" class="btn btn-primary">
-                                                    Submit
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
-                        <!-- ============================================================== -->
-                        <!-- End PAge Content -->
-                        <!-- ============================================================== -->
-                        <!-- ============================================================== -->
-                        <!-- Right sidebar -->
-                        <!-- ============================================================== -->
-                        <!-- .right-sidebar -->
-                        <!-- ============================================================== -->
-                        <!-- End Right sidebar -->
-                        <!-- ============================================================== -->
+                            <!-- ============================================================== -->
+                            <!-- End PAge Content -->
+                            <!-- ============================================================== -->
+                            <!-- ============================================================== -->
+                            <!-- Right sidebar -->
+                            <!-- ============================================================== -->
+                            <!-- .right-sidebar -->
+                            <!-- ============================================================== -->
+                            <!-- End Right sidebar -->
+                            <!-- ============================================================== -->
+
+                        <c:if test="${requestScope.type == 'sup'}">
+                            <div class="cold-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-0">Đơn hàng đã bán (${requestScope.listAllOrders.size()})</h5>
+                                    </div>
+                                    <table class="table text-center">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">CustomerName</th>
+                                                <th scope="col">OrderDate</th>
+                                                <th scope="col">RequiredDate</th>
+                                                <th scope="col">ShippedDate</th>
+                                                <th scope="col">Đơn vị vận chuyển</th>
+                                                <th scope="col">Địa chỉ giao hàng</th>
+                                                <th scope="col">Payment</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">TotalMoney</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${requestScope.listAllOrders}" var="o">
+                                                <tr>
+                                                    <th><a href="#">${o.orderID}</a></th>
+                                                    <td><a href="#">${o.cus.customerName}</a></td>
+                                                    <td>${o.orderDate}</td>
+                                                    <td>${o.requireDate}</td>
+                                                    <td>${o.shippedDate}</td>
+                                                    <td><a href="#">${o.shipper.companyName}</a></td>
+                                                    <td>${o.address}</td>
+                                                    <td>
+                                                        <c:if test="${o.payments}">Delivered</c:if>
+                                                        <c:if test="${!o.payments}">QR Code</c:if>
+                                                        </td>
+                                                        <td>
+                                                        <c:if test="${o.status}">Success</c:if>
+                                                        <c:if test="${!o.status}">Fail</c:if>
+                                                        </td>
+                                                        <td>
+
+                                                        <c:if test="${o.status}"><fmt:formatNumber type="currency" value="${o.totalMoney}"/></c:if>
+                                                        <c:if test="${!o.status}"><fmt:formatNumber type="currency" value="0"/></c:if>
+                                                        </td>
+                                                    </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </c:if>
+
+
+                        <c:if test="${requestScope.type == 'ship'}">
+                            <div class="cold-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-0">Đơn hàng đã giao</h5>
+                                    </div>
+                                    <table class="table text-center">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th scope="col">Họ và tên</th>
+                                                <th scope="col">Số điện thoại</th>
+                                                <th scope="col">Giới tính</th>
+                                                <th scope="col">Ngày yêu cầu</th>
+                                                <th scope="col">Ngày giao</th>
+                                                <th scope="col">Địa chỉ giao hàng</th>
+                                                <th scope="col">Hình thức thanh toán</th>
+                                                <th scope="col">Tổng tiền</th>
+                                                <th scope="col">Trạng thái</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${requestScope.listNewOrders}" var="sample">
+                                                <tr>
+                                                    <td>${sample.od.orderID}</td>
+                                                    <td>${sample.cus.customerName}</td>
+                                                    <td>${sample.cus.phone}</td>
+                                                    <td>
+                                                        <c:choose>
+                                                            <c:when test="${sample.cus.gender}">Nam</c:when>
+                                                            <c:otherwise>Nữ</c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                    <td>${sample.od.requireDate}</td>
+                                                    <td>${sample.od.shippedDate}</td>
+                                                    <td>${sample.od.address}</td>
+                                                    <td>
+                                                        <c:choose>
+                                                            <c:when test="${sample.od.payments}">Thanh toán qua QR</c:when>
+                                                            <c:otherwise>Thanh toán khi nhận hàng</c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                    <td>${sample.totalMoney}</td>
+                                                    <td>
+                                                        <c:choose>
+                                                            <c:when test="${sample.od.status}">Thành công</c:when>
+                                                            <c:otherwise>Thất bại</c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="cold-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-0">Tổng đơn hàng của từng thương hiệu</h5>
+                                    </div>
+                                    <table class="table text-center">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th scope="col">Tên nhà cung cấp</th>
+                                                <th scope="col">Số điện thoại</th>
+                                                <th scope="col">Email</th>
+                                                <th scope="col">Trang chủ</th>
+                                                <th scope="col">Số lượng sản phẩm</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${requestScope.listSuppliers}" var="supp">
+                                                <tr>
+                                                    <td>${supp.sup.supplierID}</td>
+                                                    <td>${supp.sup.companyName}</td>
+                                                    <td>${supp.sup.phone}</td>
+                                                    <td>${supp.sup.email}</td>
+                                                    <td><a href="${supp.sup.homePage}">${supp.sup.companyName}</a></td>
+                                                    <td>${supp.number}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>        
+                        </c:if>     
+
+
                     </div>
                     <!-- ============================================================== -->
                     <!-- End Container fluid  -->
@@ -587,7 +816,7 @@
                     <!-- footer -->
                     <!-- ============================================================== -->
                     <footer class="footer text-center">
-                        
+
                     </footer>
                     <!-- ============================================================== -->
                     <!-- End footer -->
@@ -620,10 +849,19 @@
             <script src="assets/extra-libs/multicheck/jquery.multicheck.js"></script>
             <script src="assets/extra-libs/DataTables/datatables.min.js"></script>
             <script>
-                /****************************************
-                 *       Basic Table                   *
-                 ****************************************/
-                $("#zero_config").DataTable();
+                                                                /****************************************
+                                                                 *       Basic Table                   *
+                                                                 ****************************************/
+                                                                $("#zero_config").DataTable();
+
+                                                                function handleClick(lock) {
+                                                                    let txt;
+                                                                    if (lock.value === 'ON')
+                                                                        txt = " khoá ";
+                                                                    else
+                                                                        txt = " mở khoá ";
+                                                                    alert("Bạn đang" + txt + "tài khoản này!");
+                                                                }
             </script>
     </body>
 </html>

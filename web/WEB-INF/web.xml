@@ -184,6 +184,22 @@
         <servlet-name>ProfileServlet</servlet-name>
         <servlet-class>controller.admin.ProfileServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ListAllFeedbacksServlet</servlet-name>
+        <servlet-class>controller.admin.ListAllFeedbacksServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReplyServlet</servlet-name>
+        <servlet-class>controller.admin.ReplyServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateReviewServlet</servlet-name>
+        <servlet-class>controller.admin.UpdateReviewServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadMoreServlet</servlet-name>
+        <servlet-class>controller.admin.LoadMoreServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>IndexServlet</servlet-name>
         <url-pattern>/user/index</url-pattern>
@@ -351,6 +367,22 @@
     <servlet-mapping>
         <servlet-name>ProfileServlet</servlet-name>
         <url-pattern>/admin/profile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListAllFeedbacksServlet</servlet-name>
+        <url-pattern>/admin/feedbacks</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReplyServlet</servlet-name>
+        <url-pattern>/admin/reply</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateReviewServlet</servlet-name>
+        <url-pattern>/admin/updatereview</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadMoreServlet</servlet-name>
+        <url-pattern>/admin/loadmore</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

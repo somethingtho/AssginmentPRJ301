@@ -68,20 +68,21 @@ public class TablesServlet extends HttpServlet {
         DAOShippers daoShippers = new DAOShippers();
         DAOProducts daoProducts = new DAOProducts();
         DAOCustomers daoCustomers = new DAOCustomers();
-        
+
         Vector<Categories> listAllCategories = daoCategories.getAllCategories();
         Vector<Suppliers> listAllSuppliers = daoSuppliers.getAllSuppliers();
         Vector<Shippers> listAllShippers = daoShippers.getAllShippersByAdmin();
         Vector<Customers> listAllCustomers = daoCustomers.getAllCustomers();
-        Vector<Products> listAllProducts = daoProducts.getAllProductsByAdmin();
-        
-        
-        
+        Vector<Products> listAllProducts = daoProducts.getAllProducts();
+
         request.setAttribute("listAllProducts", listAllProducts);
         request.setAttribute("listAllCustomers", listAllCustomers);
         request.setAttribute("listAllShippers", listAllShippers);
         request.setAttribute("listAllSuppliers", listAllSuppliers);
         request.setAttribute("listAllCategories", listAllCategories);
+        
+        
+        
         request.getRequestDispatcher("tables.jsp").forward(request, response);
 
     }
@@ -97,7 +98,6 @@ public class TablesServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     /**

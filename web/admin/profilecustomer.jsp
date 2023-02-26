@@ -125,7 +125,7 @@
                                         ></span>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addsupplier">Nhà cung cấp</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addsupplier">Thương hiệu</a></li>
                                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addcategory">Danh mục</a></li>
                                     <li><hr class="dropdown-divider" /></li>
                                     <li>
@@ -202,7 +202,7 @@
                                     <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/changepass.jsp"
                                        ><i class="mdi mdi-settings me-1 ms-1"></i> Đổi mật khẩu</a
                                     >
-                                    
+
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/logoutadmin"
                                        ><i class="fa fa-power-off me-1 ms-1"></i> Đăng xuất</a
@@ -259,6 +259,16 @@
 
                             <li class="sidebar-item">
                                 <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/feedbacks"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-help-circle"></i
+                                    ><span class="hide-menu">Feedbacks</span></a
+                                >
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a
                                     class="sidebar-link has-arrow waves-effect waves-dark"
                                     href="javascript:void(0)"
                                     aria-expanded="false"
@@ -301,7 +311,7 @@
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/listallsuppliers" class="sidebar-link"
                                            ><i class="mdi mdi-human-greeting"></i
-                                            ><span class="hide-menu"> Nhà cung cấp </span></a
+                                            ><span class="hide-menu"> Thương hiệu </span></a
                                         >
                                     </li>
                                 </ul>
@@ -337,7 +347,7 @@
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/addsupplier" class="sidebar-link"
                                            ><i class="mdi mdi-human-greeting"></i
-                                            ><span class="hide-menu"> Nhà cung cấp </span></a
+                                            ><span class="hide-menu"> Thương hiệu </span></a
                                         >
                                     </li>
                                 </ul>
@@ -355,7 +365,7 @@
                                     ><span class="hide-menu">Xác thực</span></a
                                 >
                                 <ul aria-expanded="false" class="collapse first-level">
-                                      
+
 
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/changepass.jsp" class="sidebar-link"
@@ -371,12 +381,6 @@
                                         >
                                     </li>
 
-                                    <li class="sidebar-item active">
-                                        <a href="${pageContext.request.contextPath}/admin/listallaccounts" class="sidebar-link"
-                                           ><i class="mdi mdi-account-card-details"></i
-                                            ><span class="hide-menu"> Hồ sơ người dùng </span></a
-                                        >
-                                    </li>
                                 </ul>
                             </li>
                         </ul>
@@ -445,7 +449,7 @@
 
                         <div class="col-md-6">
                             <div class="card">
-                                <form class="form-horizontal" action="profile" method="POST">
+                                <form class="form-horizontal" action="profile" method="POST" id="profile">
                                     <input type="hidden" value="${entity.customerID}" name="customerID">
                                     <input type="hidden" value="${requestScope.type}" name="type">
                                     <div class="card-body">
@@ -532,6 +536,7 @@
                                                         name="lock"
                                                         required
                                                         value="OFF"
+                                                        onclick="handleClick(this);"
                                                         <c:if test="${requestScope.entity.acc.status}">checked</c:if>
                                                             />
                                                         <label
@@ -548,85 +553,98 @@
                                                             name="lock"
                                                             required
                                                             value="ON"
+                                                            onclick="handleClick(this);"
                                                         <c:if test="${!requestScope.entity.acc.status}">checked</c:if>
-                                                        />
-                                                    <label
-                                                        class="form-check-label mb-0"
-                                                        for="customControlValidation2"
-                                                        >Dừng</label
-                                                    >
+                                                            />
+                                                        <label
+                                                            class="form-check-label mb-0"
+                                                            for="customControlValidation2"
+                                                            >Dừng</label
+                                                        >
+                                                    </div>
+
                                                 </div>
-
                                             </div>
-                                        </div>
 
-                                        <div class="border-top">
-                                            <div class="card-body">
-                                                <button type="submit" class="btn btn-primary">
-                                                    Submit
-                                                </button>
+                                            <div class="border-top">
+                                                <div class="card-body">
+                                                    <button type="submit" class="btn btn-primary">
+                                                        Submit
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                    </div>
-                                </form>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
+                            <!-- ============================================================== -->
+                            <!-- End PAge Content -->
+                            <!-- ============================================================== -->
+                            <!-- ============================================================== -->
+                            <!-- Right sidebar -->
+                            <!-- ============================================================== -->
+                            <!-- .right-sidebar -->
+                            <!-- ============================================================== -->
+                            <!-- End Right sidebar -->
+                            <!-- ============================================================== -->
                         </div>
                         <!-- ============================================================== -->
-                        <!-- End PAge Content -->
+                        <!-- End Container fluid  -->
                         <!-- ============================================================== -->
                         <!-- ============================================================== -->
-                        <!-- Right sidebar -->
+                        <!-- footer -->
                         <!-- ============================================================== -->
-                        <!-- .right-sidebar -->
+                        <footer class="footer text-center">
+
+                        </footer>
                         <!-- ============================================================== -->
-                        <!-- End Right sidebar -->
+                        <!-- End footer -->
                         <!-- ============================================================== -->
                     </div>
                     <!-- ============================================================== -->
-                    <!-- End Container fluid  -->
-                    <!-- ============================================================== -->
-                    <!-- ============================================================== -->
-                    <!-- footer -->
-                    <!-- ============================================================== -->
-                    <footer class="footer text-center">
-
-                    </footer>
-                    <!-- ============================================================== -->
-                    <!-- End footer -->
+                    <!-- End Page wrapper  -->
                     <!-- ============================================================== -->
                 </div>
                 <!-- ============================================================== -->
-                <!-- End Page wrapper  -->
+                <!-- End Wrapper -->
                 <!-- ============================================================== -->
-            </div>
-            <!-- ============================================================== -->
-            <!-- End Wrapper -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- All Jquery -->
-            <!-- ============================================================== -->
-            <script src="assets/libs/jquery/dist/jquery.min.js"></script>
-            <!-- Bootstrap tether Core JavaScript -->
-            <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-            <!-- slimscrollbar scrollbar JavaScript -->
-            <script src="assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
-            <script src="assets/extra-libs/sparkline/sparkline.js"></script>
-            <!--Wave Effects -->
-            <script src="dist/js/waves.js"></script>
-            <!--Menu sidebar -->
-            <script src="dist/js/sidebarmenu.js"></script>
-            <!--Custom JavaScript -->
-            <script src="dist/js/custom.min.js"></script>
-            <!-- this page js -->
-            <script src="assets/extra-libs/multicheck/datatable-checkbox-init.js"></script>
-            <script src="assets/extra-libs/multicheck/jquery.multicheck.js"></script>
-            <script src="assets/extra-libs/DataTables/datatables.min.js"></script>
-            <script>
-                /****************************************
-                 *       Basic Table                   *
-                 ****************************************/
-                $("#zero_config").DataTable();
+                <!-- ============================================================== -->
+                <!-- All Jquery -->
+                <!-- ============================================================== -->
+                <script src="assets/libs/jquery/dist/jquery.min.js"></script>
+                <!-- Bootstrap tether Core JavaScript -->
+                <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+                <!-- slimscrollbar scrollbar JavaScript -->
+                <script src="assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+                <script src="assets/extra-libs/sparkline/sparkline.js"></script>
+                <!--Wave Effects -->
+                <script src="dist/js/waves.js"></script>
+                <!--Menu sidebar -->
+                <script src="dist/js/sidebarmenu.js"></script>
+                <!--Custom JavaScript -->
+                <script src="dist/js/custom.min.js"></script>
+                <!-- this page js -->
+                <script src="assets/extra-libs/multicheck/datatable-checkbox-init.js"></script>
+                <script src="assets/extra-libs/multicheck/jquery.multicheck.js"></script>
+                <script src="assets/extra-libs/DataTables/datatables.min.js"></script>
+                <script>
+                    /****************************************
+                     *       Basic Table                   *
+                     ****************************************/
+                    $("#zero_config").DataTable();
+                    
+                    
+                    
+                    function handleClick(lock) {
+                    let txt;
+                    if(lock.value === 'ON') txt = " khoá ";
+                    else txt =" mở khoá ";
+                    alert("Bạn đang" + txt + "tài khoản này!");
+                }
+                    
+                    
+                    
             </script>
     </body>
 </html>

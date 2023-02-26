@@ -15,7 +15,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         <meta name="robots" content="noindex,nofollow" />
-        <title>Confirm Products</title>
+        <title>#${requestScope.product.productID}~${requestScope.product.productName}</title>
         <!-- Favicon icon -->
         <link
             rel="icon"
@@ -165,7 +165,7 @@
                                         ></span>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addsupplier">Nhà cung cấp</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addsupplier">Thương hiệu</a></li>
                                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addcategory">Danh mục</a></li>
                                     <li><hr class="dropdown-divider" /></li>
                                     <li>
@@ -293,6 +293,17 @@
                                 >
                             </li>
 
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/feedbacks"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-help-circle"></i
+                                    ><span class="hide-menu">Feedbacks</span></a
+                                >
+                            </li>
+
                             <li class="sidebar-item">
                                 <a
                                     class="sidebar-link has-arrow waves-effect waves-dark"
@@ -336,7 +347,7 @@
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/listallsuppliers" class="sidebar-link"
                                            ><i class="mdi mdi-human-greeting"></i
-                                            ><span class="hide-menu"> Nhà cung cấp </span></a
+                                            ><span class="hide-menu"> Thương hiệu </span></a
                                         >
                                     </li>
                                 </ul>
@@ -372,7 +383,7 @@
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/addsupplier" class="sidebar-link"
                                            ><i class="mdi mdi-human-greeting"></i
-                                            ><span class="hide-menu"> Nhà cung cấp </span></a
+                                            ><span class="hide-menu"> Thương hiệu </span></a
                                         >
                                     </li>
                                 </ul>
@@ -403,12 +414,6 @@
                                         >
                                     </li>
 
-                                    <li class="sidebar-item">
-                                        <a href="${pageContext.request.contextPath}/admin/listallaccounts" class="sidebar-link"
-                                           ><i class="mdi mdi-account-card-details"></i
-                                            ><span class="hide-menu"> Hồ sơ người dùng</span></a
-                                        >
-                                    </li>
 
                                 </ul>
                             </li>
@@ -487,7 +492,7 @@
                                         </select>
                                     </div>
 
-                                    <label class="col-md-3 mt-3">Nhà cung cấp</label>
+                                    <label class="col-md-3 mt-3">Thương hiệu</label>
                                     <div class="col-md-12">
                                         <select
                                             name="supplierID"
@@ -495,7 +500,7 @@
                                             style="width: 100%; height: 36px"
                                             >
                                             <option>Select</option>
-                                            <optgroup label="Nhà cung cấp">
+                                            <optgroup label="Thương hiệu">
                                                 <c:forEach items="${requestScope.listAllSup}" var="s">
                                                     <option value="${s.supplierID}" 
                                                             <c:if test="${s.supplierID eq requestScope.product.supplier.supplierID}">selected</c:if>
@@ -567,13 +572,13 @@
                                             </div>
                                         </div>
 
-                                        <label class="col-md-3 mt-3">Hình ảnh đại diện</label>
+                                        <label class="col-md-3 mt-3">Hình ảnh đại diện<br>(Chỉ có thể thay thế không thể để trống)</label>
                                         <div class="col-md-12">
                                             <div class="image-area" style="margin-left: 400px; border: none">
                                                 <img  src="data:image/jpg;base64,${requestScope.product.base64Image}" alt="Preview" />
-                                            <a class="remove-image" href="updateproduct?pid=${requestScope.product.productID}" style="display: inline">&#215;</a>
+                                            <a  onclick="return confirm('Are you sure you want delete image?')" class="remove-image" href="updateproduct?pid=${requestScope.product.productID}" style="display: inline">&#215;</a>
                                         </div>
-                                            <div class="custom-file" style="margin-left: 400px">
+                                        <div class="custom-file" style="margin-left: 400px">
                                             <input
                                                 type="file"
                                                 name="photo"
@@ -679,26 +684,28 @@
                                         <c:forEach items="${requestScope.listAllImage}" var="img">
                                             <div class="image-area col-md-6">
                                                 <img src="data:image/jpg;base64,${img.base64Image}" alt="Preview" />
-                                                <a class="remove-image" href="updateproduct?pid=${requestScope.product.productID}&imgid=${img.id}" style="display: inline"
+                                                <a class="remove-image" href="updateproduct?pid=${requestScope.product.productID}&imgid=${img.id}" onclick="return confirm('Are you sure you want delete image?')" style="display: inline"
                                                    >&#215;</a
                                                 >
                                             </div>
                                         </c:forEach>
                                     </div>
 
-                                    <input type="file" name="file" multiple /> <br />
+                                    <input style="margin-bottom: 20px" type="file" name="file" multiple /> <br />
                                     <input
                                         id="acceptTerms"
                                         name="acceptTerms"
                                         type="checkbox"
                                         class="required"
+                                        required
+                                        style="margin: 20px 0"
                                         />
                                     <label for="acceptTerms"
                                            >Tôi đồng ý với các Điều khoản và Điều kiện.</label
                                     >
                                 </div>
                                 <button
-                                    type="submit"
+                                    onclick="confirmAndSubmit()"
                                     style="
                                     background-color: orange;
                                     border: none;
@@ -763,34 +770,12 @@
         <script src="assets/libs/jquery-steps/build/jquery.steps.min.js"></script>
         <script src="assets/libs/jquery-validation/dist/jquery.validate.min.js"></script>
         <script>
-            // Basic Example with form
-            var form = $("#example-form");
-            form.validate({
-                errorPlacement: function errorPlacement(error, element) {
-                    element.before(error);
-                },
-                rules: {
-                    confirm: {
-                        equalTo: "#password",
-                    },
-                },
-            });
-            form.children("div").steps({
-                headerTag: "h3",
-                bodyTag: "section",
-                transitionEffect: "slideLeft",
-                onStepChanging: function (event, currentIndex, newIndex) {
-                    form.validate().settings.ignore = ":disabled,:hidden";
-                    return form.valid();
-                },
-                onFinishing: function (event, currentIndex) {
-                    form.validate().settings.ignore = ":disabled";
-                    return form.valid();
-                },
-                onFinished: function (event, currentIndex) {
-                    alert("Submitted!");
-                },
-            });
+
+                                            alert('Submit the form successfully!')
+                                            document.getElementById('example-form').action = '${pageContext.request.contextPath}/admin/updateproduct'; // change the form action to the new URL
+                                            document.getElementById('example-form').submit(); // submit the form
+                                        }
+
         </script>
     </body>
 </html>

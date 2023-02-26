@@ -15,7 +15,59 @@ public class Feedback {
     private Customers cus;
     private String email;
     private int role;
+    private String dateSend, dateRep;
 
+    public String getDateSend() {
+        return dateSend;
+    }
+
+    public void setDateSend(String dateSend) {
+        this.dateSend = dateSend;
+    }
+
+    public String getDateRep() {
+        return dateRep;
+    }
+
+    public void setDateRep(String dateRep) {
+        this.dateRep = dateRep;
+    }
+    
+    
+
+    @Override
+    public String toString() {
+        return "Feedback{" + "id=" + id + ", idAccount=" + idAccount + ", contentSend=" + contentSend + ", contentRep=" + contentRep + ", status=" + status + ", cus=" + cus + ", email=" + email + ", role=" + role + '}';
+    }
+
+    
+    
+    
+    public Feedback(int id, String contentSend, String contentRep, boolean status, Customers cus, String email, int role, String dateSend, String dateRep) {
+        this.id = id;
+        this.contentSend = contentSend;
+        this.contentRep = contentRep;
+        this.status = status;
+        this.cus = cus;
+        this.email = email;
+        this.role = role;
+        this.dateSend = dateSend;
+        this.dateRep = dateRep;
+    }
+
+    public Feedback(int id, String contentSend, String contentRep, boolean status, String email, int role, String dateSend, String dateRep) {
+        this.id = id;
+        this.contentSend = contentSend;
+        this.contentRep = contentRep;
+        this.status = status;
+        this.email = email;
+        this.role = role;
+        this.dateSend = dateSend;
+        this.dateRep = dateRep;
+    }
+
+    
+    
     public int getRole() {
         return role;
     }

@@ -55,10 +55,12 @@
                                     </c:choose>
                                 </select>
                             </div>
-                            <div class="login__form-username">
-                                <h3 class="login_title">Tên đăng nhập (Nếu có)</h3>
-                                <input class="login_input" type="text" placeholder="Enter Username..." name="userName" value="${sessionScope.account.acc.userName}">
-                            </div>
+                            <c:if test="${not empty sessionScope.account}">
+                                <div class="login__form-username">
+                                    <h3 class="login_title">Tên đăng nhập</h3>
+                                    <input class="login_input" type="text" placeholder="Enter Username..." name="username" value="${sessionScope.account.acc.userName}">
+                                </div>
+                            </c:if>
                             <div class="login__form-password">
                                 <h3 class="login_title">Email</h3>
                                 <input class="login_input" type="email" placeholder="Enter Email..." name="email" required value="${sessionScope.account.email}" >

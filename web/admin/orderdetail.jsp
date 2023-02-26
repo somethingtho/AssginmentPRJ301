@@ -1,6 +1,6 @@
 <%-- 
-    Document   : formaddsup
-    Created on : Feb 8, 2023, 8:04:20 PM
+    Document   : profile
+    Created on : Feb 10, 2023, 1:06:20 AM
     Author     : ADMIN
 --%>
 
@@ -13,9 +13,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        
+
         <meta name="robots" content="noindex,nofollow" />
-        <title>Add new Suppliers</title>
+        <title>Profile for ${requestScope.entity.companyName}</title>
         <!-- Favicon icon -->
         <link
             rel="icon"
@@ -24,7 +24,15 @@
             href="assets/images/logo.png"
             />
         <!-- Custom CSS -->
-        <link href="assets/libs/flot/css/float-chart.css" rel="stylesheet" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="assets/extra-libs/multicheck/multicheck.css"
+            />
+        <link
+            href="assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css"
+            rel="stylesheet"
+            />
         <link href="dist/css/style.min.css" rel="stylesheet" />
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -33,8 +41,13 @@
           <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-
     <body>
+        <fmt:setLocale value = "vi_VN"/>
+        <%
+            response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
+            response.setHeader("Pragma", "no-cache"); //HTTP 1.0
+            response.setDateHeader("Expires", 0);
+        %>
         <!-- ============================================================== -->
         <!-- Preloader - style you can find in spinners.css -->
         <!-- ============================================================== -->
@@ -187,9 +200,8 @@
                                         tôi</a
                                     >
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/changepass.jsp"
-                                       ><i class="mdi mdi-settings me-1 ms-1"></i> Đổi mật khẩu</a
-                                    >
+                                    <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/changepass.jsp"><i class="mdi mdi-settings me-1 ms-1"></i> Đổi mật
+                                        khẩu</a>
 
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/logoutadmin"
@@ -242,8 +254,8 @@
                                     ><span class="hide-menu">Thống kê</span></a
                                 >
                             </li>
-                            
-                            
+
+
                             <li class="sidebar-item">
                                 <a
                                     class="sidebar-link waves-effect waves-dark sidebar-link"
@@ -254,6 +266,7 @@
                                 >
                             </li>
 
+
                             <li class="sidebar-item">
                                 <a
                                     class="sidebar-link has-arrow waves-effect waves-dark"
@@ -263,6 +276,7 @@
                                     ><span class="hide-menu">Danh sách </span></a
                                 >
                                 <ul aria-expanded="false" class="collapse first-level">
+
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/tables" class="sidebar-link"
                                            ><i class="mdi mdi-table"></i
@@ -303,7 +317,7 @@
                                 </ul>
                             </li>
 
-                            <li class="sidebar-item selected">
+                            <li class="sidebar-item">
                                 <a
                                     class="sidebar-link has-arrow waves-effect waves-dark"
                                     href="javascript:void(0)"
@@ -330,7 +344,7 @@
                                             ><span class="hide-menu"> Đơn vị vận chuyển </span></a
                                         >
                                     </li>
-                                    <li class="sidebar-item active">
+                                    <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/addsupplier" class="sidebar-link"
                                            ><i class="mdi mdi-human-greeting"></i
                                             ><span class="hide-menu"> Thương hiệu </span></a
@@ -339,10 +353,9 @@
                                 </ul>
                             </li>
 
-                            
-                            
-                            
-                            <li class="sidebar-item">
+
+
+                            <li class="sidebar-item selected">
                                 <a
                                     class="sidebar-link has-arrow waves-effect waves-dark"
                                     href="javascript:void(0)"
@@ -351,7 +364,7 @@
                                     ><span class="hide-menu">Xác thực</span></a
                                 >
                                 <ul aria-expanded="false" class="collapse first-level">
-                                    
+
 
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/changepass.jsp" class="sidebar-link"
@@ -360,15 +373,14 @@
                                         >
                                     </li>
 
-                                    <li class="sidebar-item">
+                                    <li class="sidebar-item active">
                                         <a href="${pageContext.request.contextPath}/admin/profileadmin" class="sidebar-link"
                                            ><i class="mdi mdi-account-card-details"></i
                                             ><span class="hide-menu"> Hồ sơ </span></a
                                         >
                                     </li>
-                                    
-                                    
-                                    
+
+
                                 </ul>
                             </li>
                         </ul>
@@ -390,13 +402,13 @@
                 <div class="page-breadcrumb">
                     <div class="row">
                         <div class="col-12 d-flex no-block align-items-center">
-                            <h4 class="page-title">Thương hiệu</h4>
+                            <h4 class="page-title">Invoice #${requestScope.order.orderID}</h4>
                             <div class="ms-auto text-end">
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/admin/index">Trang chủ</a></li>
                                         <li class="breadcrumb-item active" aria-current="page">
-                                            Thêm mới thương hiệu
+                                            Invoice
                                         </li>
                                     </ol>
                                 </nav>
@@ -404,256 +416,174 @@
                         </div>
                     </div>
                 </div>
+                <!-- ============================================================== -->
+                <!-- End Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- Container fluid  -->
+                <!-- ============================================================== -->
                 <div class="container-fluid">
                     <!-- ============================================================== -->
                     <!-- Start Page Content -->
                     <!-- ============================================================== -->
                     <div class="row">
                         <div class="col-md-12">
-                            <form action="addsupplier" method="post">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h3 class="card-title">${requestScope.message}</h3>
-                                        <div class="form-group row">
-                                            <table class="table">
+                            <div class="card card-body printableArea">
+                                <h3><b>INVOICE</b> <span class="pull-right">#${requestScope.order.orderID}</span></h3>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="pull-left">
+                                            <address>
+                                                <h3>
+                                                    &nbsp;<b class="text-danger">Material Pro Admin</b>
+                                                </h3>
+                                                <p class="text-muted ms-1">
+                                                    E 104, Dharti-2, <br />
+                                                    Nr' Viswakarma Temple, <br />
+                                                    Talaja Road, <br />
+                                                    Bhavnagar - 364002
+                                                </p>
+                                            </address>
+                                        </div>
+                                        <div class="pull-right text-end">
+                                            <address>
+                                                <h3>To,</h3>
+                                                <h4 class="font-bold">Gaala & Sons,</h4>
+                                                <p class="text-muted ms-4">
+                                                    E 104, Dharti-2, <br />
+                                                    Nr' Viswakarma Temple, <br />
+                                                    Talaja Road, <br />
+                                                    Bhavnagar - 364002
+                                                </p>
+                                                <p class="mt-4">
+                                                    <b>Invoice Date :</b>
+                                                    <i class="mdi mdi-calendar"></i> 23rd Jan 2018
+                                                </p>
+                                                <p>
+                                                    <b>Due Date :</b>
+                                                    <i class="mdi mdi-calendar"></i> 25th Jan 2018
+                                                </p>
+                                            </address>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="table-responsive mt-5" style="clear: both">
+                                            <table class="table table-hover">
                                                 <thead>
                                                     <tr>
-                                                        <th scope="col">#</th>
-                                                        <th scope="col">Tên công ty</th>
-                                                        <th scope="col">Số điện thoại</th>
-                                                        <th scope="col">Email</th>
-                                                        <th scope="col">Trang chủ</th>
-                                                        <th scope="col">Status</th>
+                                                        <th class="text-center">#</th>
+                                                        <th>Description</th>
+                                                        <th class="text-end">Quantity</th>
+                                                        <th class="text-end">Unit Cost</th>
+                                                        <th class="text-end">Total</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <c:forEach items="${requestScope.listAllSup}" var="s">
-                                                        <tr>
-                                                            <th scope="row">${s.supplierID}</th>
-                                                            <td>${s.companyName}</td>
-                                                            <td>${s.phone}</td>
-                                                            <td>${s.email}</td>
-                                                            <td><a href="${s.homePage}">${s.companyName}</a></td>
-                                                            <td><c:if test="${s.status}">Hoạt động</c:if><c:if test="${!s.status}">Ngừng hoạt động</c:if></td>
-                                                        </tr>
-                                                    </c:forEach>
+                                                    <tr>
+                                                        <td class="text-center">1</td>
+                                                        <td>Milk Powder</td>
+                                                        <td class="text-end">2</td>
+                                                        <td class="text-end">$24</td>
+                                                        <td class="text-end">$48</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">2</td>
+                                                        <td>Air Conditioner</td>
+                                                        <td class="text-end">3</td>
+                                                        <td class="text-end">$500</td>
+                                                        <td class="text-end">$1500</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">3</td>
+                                                        <td>RC Cars</td>
+                                                        <td class="text-end">20</td>
+                                                        <td class="text-end">%600</td>
+                                                        <td class="text-end">$12000</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">4</td>
+                                                        <td>Down Coat</td>
+                                                        <td class="text-end">60</td>
+                                                        <td class="text-end">$5</td>
+                                                        <td class="text-end">$300</td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
-
-
-                                        <div class="form-group row">
-                                            <p style="color: red;">Vui lòng không nhập những thông tin đã có ở trên!</p>
-                                            <label
-                                                for="companyname"
-                                                class="col-md-3 ">Tên công ty</label>
-                                            <div class="col-md-9">
-                                                <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    id="companyname"
-                                                    name="companyname"
-                                                    placeholder="Input"
-                                                    />
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label
-                                                for="phone"
-                                                class="col-md-3 ">Số điện thoại</label>
-                                            <div class="col-md-9">
-                                                <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    id="phone"
-                                                    name="phone"
-                                                    placeholder="Input"
-                                                    />
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="form-group row">
-                                            <label
-                                                for="email"
-                                                class="col-md-3 ">Email</label>
-                                            <div class="col-md-9">
-                                                <input
-                                                    type="email"
-                                                    class="form-control"
-                                                    id="email"
-                                                    name="email"
-                                                    placeholder="Input"
-                                                    />
-                                            </div>
-                                        </div>
-                                        
-
-
-                                        <div class="form-group row">
-                                            <label
-                                                for="homepage"
-                                                class="col-md-3 ">Trang chủ</label>
-                                            <div class="col-md-9">
-                                                <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    id="homepage"
-                                                    name="homepage"
-                                                    placeholder="Input"
-                                                    />
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="form-group row">
-                                            <label class="col-md-3">Trạng thái</label>
-                                            <div class="col-md-3" style="display: flex;justify-content: space-between;">
-                                                <div class="form-check">
-                                                    <input
-                                                        type="radio"
-                                                        class="form-check-input"
-                                                        id="customControlValidation1"
-                                                        name="status"
-                                                        value="ON"
-                                                        required
-                                                        />
-                                                    <label
-                                                        class="form-check-label mb-0"
-                                                        for="customControlValidation1"
-                                                        >Hoạt động</label
-                                                    >
-                                                </div>
-                                                <div class="form-check">
-                                                    <input
-                                                        type="radio"
-                                                        class="form-check-input"
-                                                        id="customControlValidation2"
-                                                        name="status"
-                                                        value="OFF"
-                                                        required
-                                                        />
-                                                    <label
-                                                        class="form-check-label mb-0"
-                                                        for="customControlValidation2"
-                                                        >Ngưng</label
-                                                    >
-                                                </div>
-                                            </div>
-                                        </div>
-
                                     </div>
-                                    <div class="border-top">
-                                        <div class="card-body">
-                                            <button type="submit" class="btn btn-primary">
-                                                Submit
+                                    <div class="col-md-12">
+                                        <div class="pull-right mt-4 text-end">
+                                            <p>Sub - Total amount: $13,848</p>
+                                            <p>vat (10%) : $138</p>
+                                            <hr />
+                                            <h3><b>Total :</b> $13,986</h3>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <hr />
+                                        <div class="text-end">
+                                            <button class="btn btn-danger text-white" type="submit">
+                                                Proceed to payment
                                             </button>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
+                    <!-- ============================================================== -->
+                    <!-- End Container fluid  -->
+                    <!-- ============================================================== -->
+                    <!-- ============================================================== -->
+                    <!-- footer -->
+                    <!-- ============================================================== -->
+                    <footer class="footer text-center">
+
+                    </footer>
+                    <!-- ============================================================== -->
+                    <!-- End footer -->
+                    <!-- ============================================================== -->
                 </div>
                 <!-- ============================================================== -->
-                <!-- End PAge Content -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- Right sidebar -->
-                <!-- ============================================================== -->
-                <!-- .right-sidebar -->
-                <!-- ============================================================== -->
-                <!-- End Right sidebar -->
+                <!-- End Page wrapper  -->
                 <!-- ============================================================== -->
             </div>
             <!-- ============================================================== -->
-            <!-- End Container fluid  -->
+            <!-- End Wrapper -->
             <!-- ============================================================== -->
             <!-- ============================================================== -->
-            <!-- footer -->
+            <!-- All Jquery -->
             <!-- ============================================================== -->
-            <footer class="footer text-center">
-                
-            </footer>
-            <!-- ============================================================== -->
-            <!-- End footer -->
-            <!-- ============================================================== -->
-        </div>
-        <!-- ============================================================== -->
-        <!-- End Page wrapper  -->
-        <!-- ============================================================== -->
-    </div>
-    <!-- ============================================================== -->
-    <!-- End Wrapper -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- All Jquery -->
-    <!-- ============================================================== -->
-    <script src="assets/libs/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap tether Core JavaScript -->
-    <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- slimscrollbar scrollbar JavaScript -->
-    <script src="assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
-    <script src="assets/extra-libs/sparkline/sparkline.js"></script>
-    <!--Wave Effects -->
-    <script src="dist/js/waves.js"></script>
-    <!--Menu sidebar -->
-    <script src="dist/js/sidebarmenu.js"></script>
-    <!--Custom JavaScript -->
-    <script src="dist/js/custom.min.js"></script>
-    <!-- This Page JS -->
-    <script src="assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
-    <script src="dist/js/pages/mask/mask.init.js"></script>
-    <script src="assets/libs/select2/dist/js/select2.full.min.js"></script>
-    <script src="assets/libs/select2/dist/js/select2.min.js"></script>
-    <script src="assets/libs/jquery-asColor/dist/jquery-asColor.min.js"></script>
-    <script src="assets/libs/jquery-asGradient/dist/jquery-asGradient.js"></script>
-    <script src="assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js"></script>
-    <script src="assets/libs/jquery-minicolors/jquery.minicolors.min.js"></script>
-    <script src="assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-    <script src="assets/libs/quill/dist/quill.min.js"></script>
-    <script>
-        //***********************************//
-        // For select 2
-        //***********************************//
-        $(".select2").select2();
+            <script src="assets/libs/jquery/dist/jquery.min.js"></script>
+            <!-- Bootstrap tether Core JavaScript -->
+            <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+            <!-- slimscrollbar scrollbar JavaScript -->
+            <script src="assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+            <script src="assets/extra-libs/sparkline/sparkline.js"></script>
+            <!--Wave Effects -->
+            <script src="dist/js/waves.js"></script>
+            <!--Menu sidebar -->
+            <script src="dist/js/sidebarmenu.js"></script>
+            <!--Custom JavaScript -->
+            <script src="dist/js/custom.min.js"></script>
+            <!-- this page js -->
+            <script src="assets/extra-libs/multicheck/datatable-checkbox-init.js"></script>
+            <script src="assets/extra-libs/multicheck/jquery.multicheck.js"></script>
+            <script src="assets/extra-libs/DataTables/datatables.min.js"></script>
+            <script>
+                /****************************************
+                 *       Basic Table                   *
+                 ****************************************/
+                $("#zero_config").DataTable();
 
-        /*colorpicker*/
-        $(".demo").each(function () {
-            //
-            // Dear reader, it's actually very easy to initialize MiniColors. For example:
-            //
-            //  $(selector).minicolors();
-            //
-            // The way I've done it below is just for the demo, so don't get confused
-            // by it. Also, data- attributes aren't supported at this time...they're
-            // only used for this demo.
-            //
-            $(this).minicolors({
-                control: $(this).attr("data-control") || "hue",
-                position: $(this).attr("data-position") || "bottom left",
-
-                change: function (value, opacity) {
-                    if (!value)
-                        return;
-                    if (opacity)
-                        value += ", " + opacity;
-                    if (typeof console === "object") {
-                        console.log(value);
-                    }
-                },
-                theme: "bootstrap",
-            });
-        });
-        /*datwpicker*/
-        jQuery(".mydatepicker").datepicker();
-        jQuery("#datepicker-autoclose").datepicker({
-            autoclose: true,
-            todayHighlight: true,
-        });
-        var quill = new Quill("#editor", {
-            theme: "snow",
-        });
-    </script>
-
-</body>
+                function handleClick(lock) {
+                    let txt;
+                    if (lock.value === 'ON')
+                        txt = " khoá ";
+                    else
+                        txt = " mở khoá ";
+                    alert("Bạn đang" + txt + "tài khoản này!");
+                }
+            </script>
+    </body>
 </html>

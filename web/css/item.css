@@ -37,7 +37,7 @@
 }
 
 .btn_review button{
-    width: 1140px;
+    width: 100%;
     height: 50px;
     background-color: orange;
     border: none;

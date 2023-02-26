@@ -35,9 +35,6 @@ public class Orders {
         this.totalMoney=totalMoney;
     }
     
-    
-    
-    
     public Orders(int orderID, int customerID, String orderDate, String requireDate, String shippedDate, Shippers shipper,  String address, boolean payments, boolean status, Vector<OrderDetails> orderDetails) {
         this.orderID = orderID;
         this.customerID = customerID;
@@ -70,9 +67,6 @@ public class Orders {
         this.cus = cus;
     }
 
-    
-    
-    
     public Vector<OrderDetails> getOrderDetails() {
         return orderDetails;
     }
@@ -81,10 +75,20 @@ public class Orders {
         this.orderDetails = orderDetails;
     }
 
-    
+    public Orders(int orderID, String orderDate, String requireDate, String shippedDate, Shippers shipper, String address, boolean payments, boolean status, Vector<OrderDetails> orderDetails, double totalMoney, Customers cus) {
+        this.orderID = orderID;
+        this.orderDate = orderDate;
+        this.requireDate = requireDate;
+        this.shippedDate = shippedDate;
+        this.shipper = shipper;
+        this.address = address;
+        this.payments = payments;
+        this.status = status;
+        this.orderDetails = orderDetails;
+        this.totalMoney = totalMoney;
+        this.cus = cus;
+    }
 
-    
-    
     public Orders() {
     }
     
@@ -115,9 +119,7 @@ public class Orders {
     public void setStatus(boolean status) {
         this.status = status;
     }
-
     
-
     public int getOrderID() {
         return orderID;
     }
@@ -166,8 +168,6 @@ public class Orders {
         this.shipper = shipper;
     }
 
-
-
     public String getAddress() {
         return address;
     }
@@ -189,7 +189,4 @@ public class Orders {
         return "Orders{" + "orderID=" + orderID + ", customerID=" + customerID + ", orderDate=" + orderDate + ", requireDate=" + requireDate + ", shippedDate=" + shippedDate + ", shipper=" + shipper + ", address=" + address + ", payments=" + payments + ", status=" + status + ", orderDetails=" + orderDetails + ", totalMoney=" + totalMoney + ", cus=" + cus + '}';
     }
 
-    
-    
-    
 }

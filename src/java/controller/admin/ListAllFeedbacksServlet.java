@@ -5,11 +5,7 @@
 
 package controller.admin;
 
-import entity.Accounts;
-import entity.Customers;
-import entity.Products;
-import entity.Shippers;
-import entity.Suppliers;
+import entity.Feedback;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,15 +13,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.*;
-import model.DAOAccounts;
-import model.DAOCustomers;
-import model.DAOShippers;
-import model.DAOSuppliers;
+import model.DAOFeedback;
 /**
  *
  * @author ADMIN
  */
-public class ListAlLAccountsServlet extends HttpServlet {
+public class ListAllFeedbacksServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -42,10 +35,10 @@ public class ListAlLAccountsServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListAlLAccountsServlet</title>");  
+            out.println("<title>Servlet ListAllFeedbacksServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ListAlLAccountsServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ListAllFeedbacksServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,32 +55,13 @@ public class ListAlLAccountsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        DAOCustomers daoCustomers = new DAOCustomers();
-        Vector<Customers> listAllCustomers = daoCustomers.getAllCustomersByAdmin();
+        DAOFeedback daoFeedback = new DAOFeedback();
+        Vector<Feedback> listAllFeedbacks = daoFeedback.getAllFeedBack();
         
-        int numPs = listAllCustomers.size();
-        int numperPage = 10;
-        int numpage = numPs / numperPage + (numPs % numperPage == 0 ? 0 : 1);
-        int start, end;
-        String tpage = request.getParameter("page");
-        int page;
-        try {
-            page = Integer.parseInt(tpage);
-        } catch (NumberFormatException e) {
-            page = 1;
-        }
-        start = (page - 1) * numperPage;
-        if (page * numperPage > numPs) {
-            end = numPs;
-        } else {
-            end = page * numperPage;
-        }
         
-        Vector<Customers> vector1 = daoCustomers.getListByPage(listAllCustomers, start, end);
-        request.setAttribute("listAllCustomers", vector1);
-        request.setAttribute("page", page);
-        request.setAttribute("num", numpage);
-        request.getRequestDispatcher("accounts.jsp").forward(request, response);
+        request.setAttribute("listAllFeedbacks", listAllFeedbacks);
+        
+        request.getRequestDispatcher("feedbacks.jsp").forward(request, response);
     } 
 
     /** 
@@ -100,15 +74,7 @@ public class ListAlLAccountsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String email = request.getParameter("key");
-        DAOCustomers daoCustomer = new DAOCustomers();
-        Customers cus = daoCustomer.getCustomerByEmail(email);
-        Vector<Customers> listAllCustomers = new Vector<>();
-        listAllCustomers.add(cus);
-        if(listAllCustomers.isEmpty()) request.setAttribute("error", "Không tìm thấy!");
-        request.setAttribute("listAllCustomers", listAllCustomers);
-        request.getRequestDispatcher("accounts.jsp").forward(request, response);
-
+        processRequest(request, response);
     }
 
     /** 

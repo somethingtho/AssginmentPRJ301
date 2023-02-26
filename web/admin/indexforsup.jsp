@@ -92,7 +92,7 @@
                                     <span class="d-block d-md-none"><i class="fa fa-plus"></i></span>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="#">Nhà cung cấp</a></li>
+                                    <li><a class="dropdown-item" href="#">Thương hiệu</a></li>
                                     <li><a class="dropdown-item" href="#">Danh mục</a></li>
                                     <li>
                                         <hr class="dropdown-divider" />
@@ -199,6 +199,16 @@
                                 >
                             </li>
 
+                            
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/feedbacks"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-help-circle"></i
+                                    ><span class="hide-menu">Feedbacks</span></a
+                                >
+                            </li>
 
 
                             <li class="sidebar-item">
@@ -245,7 +255,7 @@
                                     <li class="sidebar-item">
                                         <a href="supplier.html" class="sidebar-link"
                                            ><i class="mdi mdi-human-greeting"></i
-                                            ><span class="hide-menu"> Nhà cung cấp </span></a
+                                            ><span class="hide-menu"> Thương hiệu </span></a
                                         >
                                     </li>
                                 </ul>
@@ -281,7 +291,7 @@
                                     <li class="sidebar-item">
                                         <a href="formaddsup.html" class="sidebar-link"
                                            ><i class="mdi mdi-human-greeting"></i
-                                            ><span class="hide-menu"> Nhà cung cấp </span></a
+                                            ><span class="hide-menu"> Thương hiệu </span></a
                                         >
                                     </li>
                                 </ul>
@@ -325,7 +335,7 @@
                                     <li class="sidebar-item">
                                         <a href="formupsup.html" class="sidebar-link"
                                            ><i class="mdi mdi-human-greeting"></i
-                                            ><span class="hide-menu"> Nhà cung cấp </span></a
+                                            ><span class="hide-menu"> Thương hiệu </span></a
                                         >
                                     </li>
                                 </ul>

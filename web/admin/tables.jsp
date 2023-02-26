@@ -40,6 +40,145 @@
           <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
+
+    <style>
+        .button{
+            display: grid;
+            place-items: center;
+        }
+        .fancy {
+            background-color: transparent;
+            border: 2px solid #000;
+            border-radius: 0;
+            box-sizing: border-box;
+            color: #fff;
+            cursor: pointer;
+            display: inline-block;
+            float: right;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin: 0;
+            outline: none;
+            overflow: visible;
+            padding: 1.25em 2em;
+            position: relative;
+            text-align: center;
+            text-decoration: none;
+            text-transform: none;
+            transition: all 0.3s ease-in-out;
+            user-select: none;
+            font-size: 13px;
+            width: 16%;
+        }
+
+        .fancy::before {
+            content: " ";
+            width: 1.5625rem;
+            height: 2px;
+            background: black;
+            top: 50%;
+            left: 1.5em;
+            position: absolute;
+            transform: translateY(-50%);
+            transform-origin: center;
+            transition: background 0.3s linear, width 0.3s linear;
+        }
+
+        .fancy .text {
+            font-size: 1.125em;
+            line-height: 1.33333em;
+            padding-left: 2em;
+            display: block;
+            text-align: left;
+            transition: all 0.3s ease-in-out;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: black;
+        }
+
+        .fancy .top-key {
+            height: 2px;
+            width: 1.5625rem;
+            top: -2px;
+            left: 0.625rem;
+            position: absolute;
+            background: #e8e8e8;
+            transition: width 0.5s ease-out, left 0.3s ease-out;
+        }
+
+        .fancy .bottom-key-1 {
+            height: 2px;
+            width: 1.5625rem;
+            right: 1.875rem;
+            bottom: -2px;
+            position: absolute;
+            background: #e8e8e8;
+            transition: width 0.5s ease-out, right 0.3s ease-out;
+        }
+
+        .fancy .bottom-key-2 {
+            height: 2px;
+            width: 0.625rem;
+            right: 0.625rem;
+            bottom: -2px;
+            position: absolute;
+            background: #e8e8e8;
+            transition: width 0.5s ease-out, right 0.3s ease-out;
+        }
+
+        .fancy:hover {
+            color: white;
+            background: black;
+        }
+
+        .fancy:hover::before {
+            width: 0.9375rem;
+            background: white;
+        }
+
+        .fancy:hover .text {
+            color: white;
+            padding-left: 1.5em;
+        }
+
+        .fancy:hover .top-key {
+            left: -2px;
+            width: 0px;
+        }
+
+        .fancy:hover .bottom-key-1,
+        .fancy:hover .bottom-key-2 {
+            right: 0;
+            width: 0;
+        }
+
+
+
+        #myBtn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            z-index: 99;
+            font-size: 18px;
+            border: none;
+            outline: none;
+            background-color: gray;
+            color: white;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+        }
+
+        #myBtn:hover {
+            background-color: black;
+        }
+
+
+
+    </style>
+
     <body>
         <fmt:setLocale value = "vi_VN"/>
         <%
@@ -71,6 +210,7 @@
             <!-- ============================================================== -->
             <!-- Topbar header - style you can find in pages.scss -->
             <!-- ============================================================== -->
+            <button onclick="topFunction()" id="myBtn" title="Go to top"><i style="text-align: center" class="ti-arrow-up"></i></button>
             <header class="topbar" data-navbarbg="skin5">
                 <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                     <div class="navbar-header" data-logobg="skin5">
@@ -281,6 +421,15 @@
                                 >
                             </li>
 
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/feedbacks"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-help-circle"></i
+                                    ><span class="hide-menu">Feedbacks</span></a
+                                >
+                            </li>
 
 
                             <li class="sidebar-item selected">
@@ -380,7 +529,7 @@
                                     ><span class="hide-menu">Xác thực</span></a
                                 >
                                 <ul aria-expanded="false" class="collapse first-level">
-                                   
+
 
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/changepass.jsp" class="sidebar-link"
@@ -395,13 +544,7 @@
                                             ><span class="hide-menu"> Hồ sơ </span></a
                                         >
                                     </li>
-                                    
-                                    <li class="sidebar-item">
-                                        <a href="${pageContext.request.contextPath}/admin/listallaccounts" class="sidebar-link"
-                                           ><i class="mdi mdi-account-card-details"></i
-                                            ><span class="hide-menu"> Hồ sơ người dùng </span></a
-                                        >
-                                    </li>
+
                                 </ul>
                             </li>
                         </ul>
@@ -489,10 +632,10 @@
                                             <th scope="col">Hồ sơ</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="suppliers_body">
 
                                         <c:forEach items="${requestScope.listAllSuppliers}" var="sup">
-                                            <tr>
+                                            <tr class="supplier_entity">
                                                 <th scope="row">${sup.supplierID}</th>
                                                 <td>${sup.companyName}</td>
                                                 <td>${sup.phone}</td>
@@ -502,8 +645,10 @@
                                             </tr>
                                         </c:forEach>
 
+
                                     </tbody>
                                 </table>
+
                             </div>
 
                             <div class="card">
@@ -532,6 +677,8 @@
                                         </c:forEach>
                                     </tbody>
                                 </table>
+
+                                
                             </div>
 
                             <div class="card">
@@ -578,6 +725,9 @@
 
                                         </tbody>
                                     </table>
+
+
+                                    
                                 </div>
                             </div>
 
@@ -618,6 +768,7 @@
 
                                         </tbody>
                                     </table>
+
                                 </div>
                             </div>
 
@@ -676,10 +827,33 @@
     <script src="assets/extra-libs/multicheck/jquery.multicheck.js"></script>
     <script src="assets/extra-libs/DataTables/datatables.min.js"></script>
     <script>
-        /****************************************
-         *       Basic Table                   *
-         ****************************************/
-        $("#zero_config").DataTable();
+                /****************************************
+                 *       Basic Table                   *
+                 ****************************************/
+                $("#zero_config").DataTable();
+
+                window.onscroll = function () {
+                    scrollFunction();
+                };
+
+                let mybutton = document.getElementById("myBtn");
+
+                function scrollFunction() {
+                    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                        mybutton.style.display = "block";
+                    } else {
+                        mybutton.style.display = "none";
+                    }
+                }
+
+                function topFunction() {
+                    document.body.scrollTop = 0;
+                    document.documentElement.scrollTop = 0;
+                }
+
+
+
+
     </script>
 </body>
 </html>

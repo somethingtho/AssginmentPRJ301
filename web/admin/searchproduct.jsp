@@ -1,6 +1,6 @@
 <%-- 
-    Document   : formaddsup
-    Created on : Feb 8, 2023, 8:04:20 PM
+    Document   : Products
+    Created on : Feb 10, 2023, 1:06:00 AM
     Author     : ADMIN
 --%>
 
@@ -13,9 +13,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        
         <meta name="robots" content="noindex,nofollow" />
-        <title>Add new Suppliers</title>
+        <title>Products</title>
         <!-- Favicon icon -->
         <link
             rel="icon"
@@ -24,7 +23,10 @@
             href="assets/images/logo.png"
             />
         <!-- Custom CSS -->
-        <link href="assets/libs/flot/css/float-chart.css" rel="stylesheet" />
+        <link
+            href="assets/libs/magnific-popup/dist/magnific-popup.css"
+            rel="stylesheet"
+            />
         <link href="dist/css/style.min.css" rel="stylesheet" />
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -33,8 +35,74 @@
           <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
+    <style>
+        .btn_sample:link,
+        .btn_sample:visited {
+            text-transform: uppercase;
+            text-decoration: none;
+            color: rgb(27, 27, 27);
+            padding: 10px 30px;
+            border: 1px solid;
+            border-radius: 1000px;
+            display: inline-block;
+            transition: all .2s;
+            position: relative;
+        }
 
+        .btn_sample:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(27, 27, 27, .5);
+        }
+
+        .btn_sample:active {
+            transform: translateY(-3px);
+        }
+
+        .btn_sample::after {
+            content: "";
+            display: inline-block;
+            height: 100%;
+            width: 100%;
+            border-radius: 100px;
+            top: 0;
+            left: 0;
+            position: absolute;
+            z-index: -1;
+            transition: all .3s;
+        }
+
+        .btn_sample:hover::after {
+            background-color: rgb(0, 238, 255);
+            transform: scaleX(1.4) scaleY(1.5);
+            opacity: 0;
+        }
+
+        .btn_sample{
+            margin: 10px 0;
+            height: 50px;
+            border-radius: 1000px;
+        }
+
+
+        .card:hover{
+            border: 2px solid black;
+        }
+
+
+
+
+
+
+
+
+    </style>
     <body>
+        <fmt:setLocale value = "vi_VN"/>
+        <%
+            response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
+            response.setHeader("Pragma", "no-cache"); //HTTP 1.0
+            response.setDateHeader("Expires", 0);
+        %>
         <!-- ============================================================== -->
         <!-- Preloader - style you can find in spinners.css -->
         <!-- ============================================================== -->
@@ -130,11 +198,12 @@
                                     href="javascript:void(0)"
                                     ><i class="mdi mdi-magnify fs-4"></i
                                     ></a>
-                                <form class="app-search position-absolute">
+                                <form class="app-search position-absolute" action="${pageContext.request.contextPath}/admin/listallproducts" method="post">
                                     <input
+                                        name="pid"
                                         type="text"
                                         class="form-control"
-                                        placeholder="Search &amp; enter"
+                                        placeholder="Search by ID &amp; enter"
                                         />
                                     <a class="srh-btn"><i class="mdi mdi-window-close"></i></a>
                                 </form>
@@ -186,12 +255,11 @@
                                        ><i class="mdi mdi-account me-1 ms-1"></i> Thông tin của
                                         tôi</a
                                     >
-                                    <div class="dropdown-divider"></div>
+
                                     <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/changepass.jsp"
                                        ><i class="mdi mdi-settings me-1 ms-1"></i> Đổi mật khẩu</a
                                     >
 
-                                    <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/logoutadmin"
                                        ><i class="fa fa-power-off me-1 ms-1"></i> Đăng xuất</a
                                     >
@@ -242,8 +310,8 @@
                                     ><span class="hide-menu">Thống kê</span></a
                                 >
                             </li>
-                            
-                            
+
+
                             <li class="sidebar-item">
                                 <a
                                     class="sidebar-link waves-effect waves-dark sidebar-link"
@@ -254,7 +322,7 @@
                                 >
                             </li>
 
-                            <li class="sidebar-item">
+                            <li class="sidebar-item selected">
                                 <a
                                     class="sidebar-link has-arrow waves-effect waves-dark"
                                     href="javascript:void(0)"
@@ -276,7 +344,7 @@
                                             ><span class="hide-menu"> Người dùng </span></a
                                         >
                                     </li>
-                                    <li class="sidebar-item">
+                                    <li class="sidebar-item active">
                                         <a href="${pageContext.request.contextPath}/admin/listallproducts" class="sidebar-link"
                                            ><i class="fab fa-product-hunt"></i
                                             ><span class="hide-menu"> Sản phẩm </span></a
@@ -303,7 +371,7 @@
                                 </ul>
                             </li>
 
-                            <li class="sidebar-item selected">
+                            <li class="sidebar-item">
                                 <a
                                     class="sidebar-link has-arrow waves-effect waves-dark"
                                     href="javascript:void(0)"
@@ -330,7 +398,7 @@
                                             ><span class="hide-menu"> Đơn vị vận chuyển </span></a
                                         >
                                     </li>
-                                    <li class="sidebar-item active">
+                                    <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/addsupplier" class="sidebar-link"
                                            ><i class="mdi mdi-human-greeting"></i
                                             ><span class="hide-menu"> Thương hiệu </span></a
@@ -339,9 +407,8 @@
                                 </ul>
                             </li>
 
-                            
-                            
-                            
+
+
                             <li class="sidebar-item">
                                 <a
                                     class="sidebar-link has-arrow waves-effect waves-dark"
@@ -351,7 +418,7 @@
                                     ><span class="hide-menu">Xác thực</span></a
                                 >
                                 <ul aria-expanded="false" class="collapse first-level">
-                                    
+
 
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/changepass.jsp" class="sidebar-link"
@@ -366,9 +433,9 @@
                                             ><span class="hide-menu"> Hồ sơ </span></a
                                         >
                                     </li>
-                                    
-                                    
-                                    
+
+
+
                                 </ul>
                             </li>
                         </ul>
@@ -390,13 +457,13 @@
                 <div class="page-breadcrumb">
                     <div class="row">
                         <div class="col-12 d-flex no-block align-items-center">
-                            <h4 class="page-title">Thương hiệu</h4>
+                            <h4 class="page-title">Sản phẩm</h4>
                             <div class="ms-auto text-end">
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/admin/index">Trang chủ</a></li>
                                         <li class="breadcrumb-item active" aria-current="page">
-                                            Thêm mới thương hiệu
+                                            Sản phẩm
                                         </li>
                                     </ol>
                                 </nav>
@@ -404,256 +471,110 @@
                         </div>
                     </div>
                 </div>
+                <!-- ============================================================== -->
+                <!-- End Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- Container fluid  -->
+                <!-- ============================================================== -->
                 <div class="container-fluid">
                     <!-- ============================================================== -->
                     <!-- Start Page Content -->
                     <!-- ============================================================== -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <form action="addsupplier" method="post">
+
+
+                    <div id="content" class="row el-element-overlay">
+
+
+                        <h3 style="color: red">${requestScope.error}</h3>
+                        <c:if test="${not empty requestScope.product}">
+
+                            <div class="col-lg-3 col-md-6">
                                 <div class="card">
-                                    <div class="card-body">
-                                        <h3 class="card-title">${requestScope.message}</h3>
-                                        <div class="form-group row">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">#</th>
-                                                        <th scope="col">Tên công ty</th>
-                                                        <th scope="col">Số điện thoại</th>
-                                                        <th scope="col">Email</th>
-                                                        <th scope="col">Trang chủ</th>
-                                                        <th scope="col">Status</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <c:forEach items="${requestScope.listAllSup}" var="s">
-                                                        <tr>
-                                                            <th scope="row">${s.supplierID}</th>
-                                                            <td>${s.companyName}</td>
-                                                            <td>${s.phone}</td>
-                                                            <td>${s.email}</td>
-                                                            <td><a href="${s.homePage}">${s.companyName}</a></td>
-                                                            <td><c:if test="${s.status}">Hoạt động</c:if><c:if test="${!s.status}">Ngừng hoạt động</c:if></td>
-                                                        </tr>
-                                                    </c:forEach>
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-
-                                        <div class="form-group row">
-                                            <p style="color: red;">Vui lòng không nhập những thông tin đã có ở trên!</p>
-                                            <label
-                                                for="companyname"
-                                                class="col-md-3 ">Tên công ty</label>
-                                            <div class="col-md-9">
-                                                <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    id="companyname"
-                                                    name="companyname"
-                                                    placeholder="Input"
-                                                    />
+                                    <div class="el-card-item">
+                                        <div class="el-card-avatar el-overlay-1">
+                                            <img src="data:image/jpg;base64,${requestScope.product.base64Image}" alt="user" />
+                                            <div class="el-overlay">
+                                                <ul class="list-style-none el-info">
+                                                    <li class="el-item">
+                                                        <a
+                                                            class="btn default btn-outline image-popup-vertical-fit el-link"
+                                                            href="data:image/jpg;base64,${requestScope.product.base64Image}"
+                                                            ><i class="mdi mdi-magnify-plus"></i
+                                                            ></a>
+                                                    </li>
+                                                </ul>
                                             </div>
                                         </div>
-
-                                        <div class="form-group row">
-                                            <label
-                                                for="phone"
-                                                class="col-md-3 ">Số điện thoại</label>
-                                            <div class="col-md-9">
-                                                <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    id="phone"
-                                                    name="phone"
-                                                    placeholder="Input"
-                                                    />
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="form-group row">
-                                            <label
-                                                for="email"
-                                                class="col-md-3 ">Email</label>
-                                            <div class="col-md-9">
-                                                <input
-                                                    type="email"
-                                                    class="form-control"
-                                                    id="email"
-                                                    name="email"
-                                                    placeholder="Input"
-                                                    />
-                                            </div>
-                                        </div>
-                                        
-
-
-                                        <div class="form-group row">
-                                            <label
-                                                for="homepage"
-                                                class="col-md-3 ">Trang chủ</label>
-                                            <div class="col-md-9">
-                                                <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    id="homepage"
-                                                    name="homepage"
-                                                    placeholder="Input"
-                                                    />
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="form-group row">
-                                            <label class="col-md-3">Trạng thái</label>
-                                            <div class="col-md-3" style="display: flex;justify-content: space-between;">
-                                                <div class="form-check">
-                                                    <input
-                                                        type="radio"
-                                                        class="form-check-input"
-                                                        id="customControlValidation1"
-                                                        name="status"
-                                                        value="ON"
-                                                        required
-                                                        />
-                                                    <label
-                                                        class="form-check-label mb-0"
-                                                        for="customControlValidation1"
-                                                        >Hoạt động</label
-                                                    >
-                                                </div>
-                                                <div class="form-check">
-                                                    <input
-                                                        type="radio"
-                                                        class="form-check-input"
-                                                        id="customControlValidation2"
-                                                        name="status"
-                                                        value="OFF"
-                                                        required
-                                                        />
-                                                    <label
-                                                        class="form-check-label mb-0"
-                                                        for="customControlValidation2"
-                                                        >Ngưng</label
-                                                    >
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="border-top">
-                                        <div class="card-body">
-                                            <button type="submit" class="btn btn-primary">
-                                                Submit
+                                        <div
+                                            class="el-card-content"
+                                            style="display: flex; flex-direction: column"
+                                            >
+                                            <button
+                                                class="btn_sample">
+                                                <a href="${pageContext.request.contextPath}/user/item?pid=${requestScope.product.productID}" class="mb-0">(#${requestScope.product.productID}) - ${requestScope.product.productName}</a>
+                                            </button>
+                                            <button
+                                                class="btn_sample">
+                                                <a href="${pageContext.request.contextPath}/admin/updateproduct?pid=${requestScope.product.productID}">Chỉnh sửa</a>
                                             </button>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
-                    </div>
+                    </c:if>
+
+
+                    <!-- ============================================================== -->
+                    <!-- End PAge Content -->
+                    <!-- ============================================================== -->
+                    <!-- ============================================================== -->
+                    <!-- Right sidebar -->
+                    <!-- ============================================================== -->
+                    <!-- .right-sidebar -->
+                    <!-- ============================================================== -->
+                    <!-- End Right sidebar -->
+                    <!-- ============================================================== -->
                 </div>
                 <!-- ============================================================== -->
-                <!-- End PAge Content -->
+                <!-- End Container fluid  -->
                 <!-- ============================================================== -->
                 <!-- ============================================================== -->
-                <!-- Right sidebar -->
+                <!-- footer -->
                 <!-- ============================================================== -->
-                <!-- .right-sidebar -->
+                <footer class="footer text-center">
+
+                </footer>
                 <!-- ============================================================== -->
-                <!-- End Right sidebar -->
+                <!-- End footer -->
                 <!-- ============================================================== -->
             </div>
             <!-- ============================================================== -->
-            <!-- End Container fluid  -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- footer -->
-            <!-- ============================================================== -->
-            <footer class="footer text-center">
-                
-            </footer>
-            <!-- ============================================================== -->
-            <!-- End footer -->
+            <!-- End Page wrapper  -->
             <!-- ============================================================== -->
         </div>
         <!-- ============================================================== -->
-        <!-- End Page wrapper  -->
+        <!-- End Wrapper -->
         <!-- ============================================================== -->
-    </div>
-    <!-- ============================================================== -->
-    <!-- End Wrapper -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- All Jquery -->
-    <!-- ============================================================== -->
-    <script src="assets/libs/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap tether Core JavaScript -->
-    <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- slimscrollbar scrollbar JavaScript -->
-    <script src="assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
-    <script src="assets/extra-libs/sparkline/sparkline.js"></script>
-    <!--Wave Effects -->
-    <script src="dist/js/waves.js"></script>
-    <!--Menu sidebar -->
-    <script src="dist/js/sidebarmenu.js"></script>
-    <!--Custom JavaScript -->
-    <script src="dist/js/custom.min.js"></script>
-    <!-- This Page JS -->
-    <script src="assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
-    <script src="dist/js/pages/mask/mask.init.js"></script>
-    <script src="assets/libs/select2/dist/js/select2.full.min.js"></script>
-    <script src="assets/libs/select2/dist/js/select2.min.js"></script>
-    <script src="assets/libs/jquery-asColor/dist/jquery-asColor.min.js"></script>
-    <script src="assets/libs/jquery-asGradient/dist/jquery-asGradient.js"></script>
-    <script src="assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js"></script>
-    <script src="assets/libs/jquery-minicolors/jquery.minicolors.min.js"></script>
-    <script src="assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-    <script src="assets/libs/quill/dist/quill.min.js"></script>
-    <script>
-        //***********************************//
-        // For select 2
-        //***********************************//
-        $(".select2").select2();
+        <!-- ============================================================== -->
+        <!-- All Jquery -->
+        <!-- ============================================================== -->
+        <script src="assets/libs/jquery/dist/jquery.min.js"></script>
+        <!-- Bootstrap tether Core JavaScript -->
+        <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- slimscrollbar scrollbar JavaScript -->
+        <script src="assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+        <script src="assets/extra-libs/sparkline/sparkline.js"></script>
+        <!--Wave Effects -->
+        <script src="dist/js/waves.js"></script>
+        <!--Menu sidebar -->
+        <script src="dist/js/sidebarmenu.js"></script>
+        <!--Custom JavaScript -->
+        <script src="dist/js/custom.min.js"></script>
+        <!-- this page js -->
+        <script src="assets/libs/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
+        <script src="assets/libs/magnific-popup/meg.init.js"></script>
 
-        /*colorpicker*/
-        $(".demo").each(function () {
-            //
-            // Dear reader, it's actually very easy to initialize MiniColors. For example:
-            //
-            //  $(selector).minicolors();
-            //
-            // The way I've done it below is just for the demo, so don't get confused
-            // by it. Also, data- attributes aren't supported at this time...they're
-            // only used for this demo.
-            //
-            $(this).minicolors({
-                control: $(this).attr("data-control") || "hue",
-                position: $(this).attr("data-position") || "bottom left",
-
-                change: function (value, opacity) {
-                    if (!value)
-                        return;
-                    if (opacity)
-                        value += ", " + opacity;
-                    if (typeof console === "object") {
-                        console.log(value);
-                    }
-                },
-                theme: "bootstrap",
-            });
-        });
-        /*datwpicker*/
-        jQuery(".mydatepicker").datepicker();
-        jQuery("#datepicker-autoclose").datepicker({
-            autoclose: true,
-            todayHighlight: true,
-        });
-        var quill = new Quill("#editor", {
-            theme: "snow",
-        });
-    </script>
-
-</body>
+    </body>
 </html>

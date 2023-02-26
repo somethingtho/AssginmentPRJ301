@@ -92,13 +92,14 @@ public class FeedbackServlet extends HttpServlet {
             if (cus != null) {
                 int n = daoFeedback.AddFeedback(cus.getAcc().getId(), cus.getEmail(), contentSend, cus.getAcc().getRole());
                 if (n > 0) {
-                    request.setAttribute("msg", "Phản hồi của bạn đã được chúng tôi ghi lại! Xin chân thành cảm ơn! Hãy kiểm tra hòm thư thường xuyên!");
+                    request.setAttribute("msg", "Phản hồi của bạn đã được chúng tôi ghi lại! Xin chân thành cảm ơn!");
                     send.sendVerifiedFeedBack(email, txt);
                 } else request.setAttribute("msg", "Error");
             } else {
                 int n = daoFeedback.AddFeedback(email, contentSend, role);
                 if (n > 0) {
-                    request.setAttribute("msg", "Phản hồi của bạn đã được chúng tôi ghi lại! Xin chân thành cảm ơn! Hãy kiểm tra hòm thư thường xuyên!");
+                    request.setAttribute("msg", "Phản hồi của bạn đã được chúng tôi ghi lại! \n"
+                            + "Xin chân thành cảm ơn!");
                     send.sendVerifiedFeedBack(email, txt);
                 } else request.setAttribute("msg", "Error");
             }

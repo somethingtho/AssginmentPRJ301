@@ -13,10 +13,109 @@ import javax.mail.internet.MimeMessage;
 
 public class SendEmail {
 
+    public void sendHiddenReview(String to, String contendRep) {
+        final String username = "sendotp1234@gmail.com";
+        final String password = "ifeahpwziexwuuqo";
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        System.setProperty("mail.mime.charset", "false");
+        Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("sendotp1234@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(to));
+            message.setSubject("Reply Feedback");
+            message.setText("Hello! Upon receiving your feedback, we have the following solution: " +contendRep);
+            Transport.send(message);
+
+            System.out.println("Review sent successfully");
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
     
     
+    public void sendRegister(String to) {
+        final String username = "sendotp1234@gmail.com";
+        final String password = "ifeahpwziexwuuqo";
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("sendotp1234@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(to));
+            message.setSubject("Feedback");
+            message.setText("Hello! Thank you for registering an account! This is the notification email and you will use it to retrieve your password!");
+            Transport.send(message);
+            System.out.println("Verified register successfully");
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
     
-    public void sendLockAccount(String to, String contendRep) {
+    public void sendUnLockAccount(String to) {
+        final String username = "sendotp1234@gmail.com";
+        final String password = "ifeahpwziexwuuqo";
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        System.setProperty("mail.mime.charset", "false");
+        Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("sendotp1234@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(to));
+            message.setSubject("UnLock Account");
+            message.setText("Your account has been unlocked! Claim compliance with our standards! Thank you very much!");
+            Transport.send(message);
+
+            System.out.println("Feedback sent successfully");
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    
+    public void sendLockAccount(String to) {
         final String username = "sendotp1234@gmail.com";
         final String password = "ifeahpwziexwuuqo";
 
@@ -75,8 +174,8 @@ public class SendEmail {
             message.setFrom(new InternetAddress("sendotp1234@gmail.com"));
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(to));
-            message.setSubject("Feedback");
-            message.setText(contendRep);
+            message.setSubject("Reply Feedback");
+            message.setText("Hello! Upon receiving your feedback, we have the following solution: " +contendRep);
             Transport.send(message);
 
             System.out.println("Feedback sent successfully");
@@ -109,7 +208,6 @@ public class SendEmail {
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(to));
             message.setSubject("Feedback");
-//            message.setText(text);
             message.setText("Hello! Thank you for your feedback. We are sending this letter to confirm that we have received a response from you!"
                     + " We will reply soon! Thank you very much for your contribution! Have a nice day!!!!");
             Transport.send(message);

@@ -223,6 +223,16 @@
                                 >
                             </li>
 
+                            
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/feedbacks"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-help-circle"></i
+                                    ><span class="hide-menu">Feedbacks</span></a
+                                >
+                            </li>
 
 
                             <li class="sidebar-item">
@@ -341,12 +351,6 @@
                                     </li>
                                     
                                     
-                                    <li class="sidebar-item active">
-                                        <a href="${pageContext.request.contextPath}/admin/listallaccounts" class="sidebar-link"
-                                           ><i class="mdi mdi-account-card-details"></i
-                                            ><span class="hide-menu"> Hồ sơ người dùng</span></a
-                                        >
-                                    </li>
                                     
                                 </ul>
                             </li>

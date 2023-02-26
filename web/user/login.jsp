@@ -60,7 +60,7 @@ response.setDateHeader ("Expires", 0);
                                 <label style="margin-top: 30px; " for="remember" >Ghi nhớ</label>
                             </div>
 
-                            <div class="login__btn "><button style="color: white;">Đăng nhập</button></div>
+                                <div class="login__btn "><button onclick="this.form.submit()" style="color: white;">Đăng nhập</button></div>
                             <div class="login__btn "><button><a href="register.jsp">Đăng ký</a></button></div>
                             <div class="login__btn "><button><a href="forgotpassword.jsp">Quên mật khẩu?</a></button></div>
                             <div class="login__btn "><button><a href="${pageContext.request.contextPath}/admin/authentication-login.jsp">Đăng nhập kênh người bán hàng</a></button></div>

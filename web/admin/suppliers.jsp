@@ -13,7 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        
+
         <title>Suppliers</title>
         <!-- Favicon icon -->
         <link
@@ -120,7 +120,7 @@
                                         ></span>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addsupplier">Nhà cung cấp</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addsupplier">Thương hiệu</a></li>
                                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addcategory">Danh mục</a></li>
                                     <li><hr class="dropdown-divider" /></li>
                                     <li>
@@ -137,11 +137,12 @@
                                     href="javascript:void(0)"
                                     ><i class="mdi mdi-magnify fs-4"></i
                                     ></a>
-                                <form class="app-search position-absolute">
+                                <form class="app-search position-absolute" action="${pageContext.request.contextPath}/admin/listallsuppliers" method="POST">
                                     <input
                                         type="text"
+                                        name="key"
                                         class="form-control"
-                                        placeholder="Search &amp; enter"
+                                        placeholder="Search supplier by companyName &amp; enter"
                                         />
                                     <a class="srh-btn"><i class="mdi mdi-window-close"></i></a>
                                 </form>
@@ -250,6 +251,15 @@
                             </li>
 
 
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/feedbacks"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-help-circle"></i
+                                    ><span class="hide-menu">Feedbacks</span></a
+                                >
+                            </li>
 
                             <li class="sidebar-item selected">
                                 <a
@@ -295,7 +305,7 @@
                                     <li class="sidebar-item active">
                                         <a href="${pageContext.request.contextPath}/admin/listallsuppliers" class="sidebar-link"
                                            ><i class="mdi mdi-human-greeting"></i
-                                            ><span class="hide-menu"> Nhà cung cấp </span></a
+                                            ><span class="hide-menu"> Thương hiệu </span></a
                                         >
                                     </li>
                                 </ul>
@@ -331,7 +341,7 @@
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/addsupplier" class="sidebar-link"
                                            ><i class="mdi mdi-human-greeting"></i
-                                            ><span class="hide-menu"> Nhà cung cấp </span></a
+                                            ><span class="hide-menu"> Thương hiệu </span></a
                                         >
                                     </li>
                                 </ul>
@@ -349,7 +359,7 @@
                                     ><span class="hide-menu">Xác thực</span></a
                                 >
                                 <ul aria-expanded="false" class="collapse first-level">
-                                    
+
 
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/changepass.jsp" class="sidebar-link"
@@ -364,15 +374,9 @@
                                             ><span class="hide-menu"> Hồ sơ </span></a
                                         >
                                     </li>
-                                    
-                                    
-                                    <li class="sidebar-item">
-                                        <a href="${pageContext.request.contextPath}/admin/listallaccounts" class="sidebar-link"
-                                           ><i class="mdi mdi-account-card-details"></i
-                                            ><span class="hide-menu"> Hồ sơ người dùng</span></a
-                                        >
-                                    </li>
-                                    
+
+
+
                                 </ul>
                             </li>
                         </ul>
@@ -394,7 +398,7 @@
                 <div class="page-breadcrumb">
                     <div class="row">
                         <div class="col-12 d-flex no-block align-items-center">
-                            <h4 class="page-title">Nhà cung cấp</h4>
+                            <h4 class="page-title">Thương hiệu</h4>
                             <div class="ms-auto text-end">
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
@@ -422,6 +426,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title mb-0">Danh sách các thương hiệu</h5>
+                                <h3 style="margin 10px 0; color: red;">${requestScope.error}</h3>
                             </div>
                             <div class="table-responsive">
                                 <table class="table">
@@ -444,13 +449,37 @@
                                                 <td>${supplier.email}</td>
                                                 <td>${supplier.phone}</td>
                                                 <td><a href="${supplier.homePage}">${supplier.companyName}</a></td>
-                                                
+
                                                 <th><a href="${pageContext.request.contextPath}/admin/profile?type=sup&id=${supplier.supplierID}">Hồ sơ</a></th>
                                             </tr>
                                         </c:forEach>
 
                                     </tbody>
                                 </table>
+                                <c:set var="page" value="${requestScope.page}"/>
+                                <div style="display: grid; place-items: center;">
+                                    <form action="${pageContext.request.contextPath}/admin/listallsuppliers" method="get">
+                                        <div class="col-md-4">
+                                            <nav aria-label="...">
+                                                <ul class="pagination">
+                                                    <li class="page-item <c:if test="${requestScope.page == 1}">disabled</c:if>">
+                                                        <a  class="page-link" href="${pageContext.request.contextPath}/admin/listallsuppliers?page=${page-1}" tabindex="-1"
+                                                            >Previous</a
+                                                        >
+                                                    </li>
+                                                    <c:forEach begin="${1}" end="${requestScope.num}" var="i">
+                                                        <li class="page-item ${i==page?"active":""}">
+                                                            <a class="page-link" href="${pageContext.request.contextPath}/admin/listallsuppliers?page=${i}">${i}</a>
+                                                        </li>
+                                                    </c:forEach>
+                                                    <li class="page-item <c:if test="${requestScope.page == num}">disabled</c:if>">
+                                                        <a class="page-link" href="${pageContext.request.contextPath}/admin/listallsuppliers?page=${page+1}">Next</a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -475,7 +504,7 @@
     <!-- footer -->
     <!-- ============================================================== -->
     <footer class="footer text-center">
-       
+
     </footer>
     <!-- ============================================================== -->
     <!-- End footer -->

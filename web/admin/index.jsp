@@ -75,7 +75,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            
+
                             <li class="nav-item search-box">
                                 <a class="nav-link waves-effect waves-dark" href="javascript:void(0)"><i
                                         class="mdi mdi-magnify fs-4"></i></a>
@@ -136,6 +136,16 @@
                                     aria-expanded="false"
                                     ><i class="mdi mdi-chart-bar"></i
                                     ><span class="hide-menu">Thống kê</span></a
+                                >
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/feedbacks"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-help-circle"></i
+                                    ><span class="hide-menu">Feedbacks</span></a
                                 >
                             </li>
 
@@ -252,13 +262,7 @@
                                             ><span class="hide-menu"> Hồ sơ </span></a
                                         >
                                     </li>
-                                    
-                                    <li class="sidebar-item">
-                                        <a href="${pageContext.request.contextPath}/admin/listallaccounts" class="sidebar-link"
-                                           ><i class="mdi mdi-account-card-details"></i
-                                            ><span class="hide-menu"> Hồ sơ người dùng </span></a
-                                        >
-                                    </li>
+
                                 </ul>
                             </li>
                         </ul>
@@ -384,16 +388,21 @@
                                             </div>
                                             <div class="comment-text w-100">
                                                 <h6 class="font-medium">${r.cus.customerName}</h6>
-                                                <span class="mb-3 d-block">(${r.rate} <i class="fas fa-star" style="color: gold;"></i>)${r.contentSend} (#${r.productID})
-                                                </span>
-                                                <div class="comment-footer">
-                                                    <span class="text-muted float-end">${r.dateRate}</span>
-                                                    <button type="button" class="btn btn-success btn-sm text-white">
-                                                        Publish
-                                                    </button>
-                                                    <button type="button" class="btn btn-danger btn-sm text-white">
-                                                        Hidden
-                                                    </button>
+                                                <span class="mb-3 d-block">(${r.rate} <i class="fas fa-star" style="color: gold;"></i>)${r.contentSend}
+                                                    (<a href="${pageContext.request.contextPath}/user/item?pid=${r.pro.productID}">&nbsp; ${r.pro.productName}&nbsp;</a>)
+                                                    <c:if test="${r.status}"><i class="mdi mdi-check-circle"></i></c:if>
+                                                    <c:if test="${!r.status}"><i class="mdi mdi-block-helper"></i></c:if>
+                                                    </span>
+                                                    <div class="comment-footer">
+                                                        <span class="text-muted float-end">${r.dateRate}</span>
+                                                    <form action="" method="POST" id="review" name="review">
+                                                        <button type="button" onclick="changeReview('public', '${r.id}')" class="  btn btn-success btn-sm text-white <c:if test="${r.status}">disabled</c:if>">
+                                                            Publish
+                                                        </button>
+                                                        <button type="button" onclick="changeReview('hidden', '${r.id}')" class="btn btn-danger btn-sm text-white <c:if test="${!r.status}">disabled</c:if>">
+                                                            Hidden
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
@@ -421,7 +430,7 @@
                                             <c:forEach items="${requestScope.newCustomers}" var="c">
                                                 <tr>
                                                     <td>${c.customerID}</td>
-                                                    <td>${c.customerName}</td>
+                                                    <td><a href="${pageContext.request.contextPath}/admin/profile?type=customer&id=${c.customerID}">${c.customerName}</a></td>
                                                     <td>${c.email}</td>
                                                     <td>${c.phone}</td>
                                                     <td><c:choose>
@@ -438,7 +447,7 @@
                         </div>
                     </div>
                     <footer class="footer text-center">
-                        
+
                     </footer>
                 </div>
             </div>
@@ -461,5 +470,18 @@
             <script src="assets/libs/flot/jquery.flot.crosshair.js"></script>
             <script src="assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
             <script src="dist/js/pages/chart/chart-page-init.js"></script>
+            <script>
+                                                            function changeReview(type, id) {
+                                                                let text;
+                                                                if (type === 'hidden')
+                                                                    text = "ẩn";
+                                                                else
+                                                                    text = "hiển thị";
+                                                                if (confirm("Bạn có chắc muốn " + text + " bình luận này?") === true) {
+                                                                    document.getElementById("review").action = "${pageContext.request.contextPath}/admin/updatereview?rid=" + id + "&type=" + type;
+                                                                    document.getElementById("review").submit();
+                                                                }
+                                                            }
+            </script>
     </body>
 </html>

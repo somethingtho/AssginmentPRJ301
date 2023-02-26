@@ -76,13 +76,13 @@
             transform: scaleX(1.4) scaleY(1.5);
             opacity: 0;
         }
-        
+
         .btn_sample{
             margin: 10px 0;
             height: 50px;
             border-radius: 1000px;
         }
-        
+
 
         .card:hover{
             border: 2px solid black;
@@ -97,6 +97,80 @@
 
 
 
+        .box {
+            width: 140px;
+            height: auto;
+            float: left;
+            transition: .2s linear;
+            position: relative;
+            display: block;
+            overflow: hidden;
+            padding: 15px;
+            text-align: center;
+            margin: 0 5px;
+            background: transparent;
+            text-transform: uppercase;
+            font-weight: 900;
+        }
+
+        .box:before {
+            position: absolute;
+            content: '';
+            left: 0;
+            bottom: 0;
+            height: 4px;
+            width: 100%;
+            border-bottom: 4px solid transparent;
+            border-left: 4px solid transparent;
+            box-sizing: border-box;
+            transform: translateX(100%);
+        }
+
+        .box:after {
+            position: absolute;
+            content: '';
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            border-top: 4px solid transparent;
+            border-right: 4px solid transparent;
+            box-sizing: border-box;
+            transform: translateX(-100%);
+        }
+
+        .box:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .box:hover:before {
+            border-color: #262626;
+            height: 100%;
+            transform: translateX(0);
+            transition: .1s transform linear, .1s height linear .1s;
+        }
+
+        .box:hover:after {
+            border-color: #262626;
+            height: 100%;
+            transform: translateX(0);
+            transition: .1s transform linear, .1s height linear .2s;
+        }
+
+        .button {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+            outline: none;
+            border: none;
+            background: transparent;
+
+        }
+
+        .load_more{
+            display: grid;
+            place-items: center;
+        }
 
 
 
@@ -190,7 +264,7 @@
                                         ></span>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addsupplier">Nhà cung cấp</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addsupplier">Thương hiệu</a></li>
                                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/addcategory">Danh mục</a></li>
                                     <li><hr class="dropdown-divider" /></li>
                                     <li>
@@ -207,11 +281,12 @@
                                     href="javascript:void(0)"
                                     ><i class="mdi mdi-magnify fs-4"></i
                                     ></a>
-                                <form class="app-search position-absolute">
+                                <form class="app-search position-absolute" action="${pageContext.request.contextPath}/admin/listallproducts" method="post">
                                     <input
+                                        name="pid"
                                         type="text"
                                         class="form-control"
-                                        placeholder="Search &amp; enter"
+                                        placeholder="Search by ID &amp; enter"
                                         />
                                     <a class="srh-btn"><i class="mdi mdi-window-close"></i></a>
                                 </form>
@@ -319,6 +394,17 @@
                                 >
                             </li>
 
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/feedbacks"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-help-circle"></i
+                                    ><span class="hide-menu">Feedbacks</span></a
+                                >
+                            </li>
+
                             <li class="sidebar-item selected">
                                 <a
                                     class="sidebar-link has-arrow waves-effect waves-dark"
@@ -362,7 +448,7 @@
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/listallsuppliers" class="sidebar-link"
                                            ><i class="mdi mdi-human-greeting"></i
-                                            ><span class="hide-menu"> Nhà cung cấp </span></a
+                                            ><span class="hide-menu"> Thương hiệu </span></a
                                         >
                                     </li>
                                 </ul>
@@ -398,7 +484,7 @@
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/addsupplier" class="sidebar-link"
                                            ><i class="mdi mdi-human-greeting"></i
-                                            ><span class="hide-menu"> Nhà cung cấp </span></a
+                                            ><span class="hide-menu"> Thương hiệu </span></a
                                         >
                                     </li>
                                 </ul>
@@ -432,12 +518,6 @@
                                     </li>
 
 
-                                    <li class="sidebar-item">
-                                        <a href="${pageContext.request.contextPath}/admin/listallaccounts" class="sidebar-link"
-                                           ><i class="mdi mdi-account-card-details"></i
-                                            ><span class="hide-menu"> Hồ sơ người dùng </span></a
-                                        >
-                                    </li>
 
                                 </ul>
                             </li>
@@ -484,9 +564,9 @@
                     <!-- ============================================================== -->
                     <!-- Start Page Content -->
                     <!-- ============================================================== -->
-                    
-                    
-                    <div class="row el-element-overlay">
+
+
+                    <div id="content" class="row el-element-overlay">
 
 
 
@@ -513,14 +593,12 @@
                                             style="display: flex; flex-direction: column"
                                             >
                                             <button
-                                                class="btn_sample"
-                                                <a href="#" class="mb-0"
-                                                >(#${product.productID}) - ${product.productName}</a
-                                                >
+                                                class="btn_sample">
+                                                <a href="${pageContext.request.contextPath}/user/item?pid=${product.productID}" class="mb-0">(#${product.productID}) - ${product.productName}</a>
                                             </button>
                                             <button
-                                                class="btn_sample"
-                                                <a href="#">Chỉnh sửa</a>
+                                                class="btn_sample">
+                                                <a href="${pageContext.request.contextPath}/admin/updateproduct?pid=${product.productID}">Chỉnh sửa</a>
                                             </button>
                                         </div>
                                     </div>
@@ -528,29 +606,15 @@
                             </div>
                         </c:forEach>
                     </div>
-                    <div class="col-md-12">
-                        <nav aria-label="...">
-                            <ul class="pagination">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">1</a>
-                                </li>
-                                <li class="page-item active">
-                                    <a class="page-link" href="#"
-                                       >2 <span class="sr-only">(current)</span></a
-                                    >
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">3</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
-                            </ul>
-                        </nav>
+
+                    <div class="load_more">
+                        <button class="button" onclick="loadMore()">
+                            <span class="box">
+                                Load More!
+                            </span>
+                        </button>
                     </div>
+
                     <!-- ============================================================== -->
                     <!-- End PAge Content -->
                     <!-- ============================================================== -->
@@ -600,5 +664,25 @@
         <!-- this page js -->
         <script src="assets/libs/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
         <script src="assets/libs/magnific-popup/meg.init.js"></script>
+        <script>
+                            function loadMore() {
+                                var amount = document.getElementsByClassName('card').length;
+
+                                $.ajax({
+                                    url: "${pageContext.request.contextPath}/admin/loadmore",
+                                    type: "get",
+                                    data: {
+                                        total: amount
+                                    },
+                                    success: function (data) {
+                                        var row = document.getElementById('content');
+                                        row.innerHTML += data;
+                                    },
+                                    error: function (xhr) {
+                                        //Do Something to handle error
+                                    }
+                                });
+                            }
+        </script>
     </body>
 </html>
