@@ -631,7 +631,7 @@ public class DAOCustomers extends DBContext {
 
         String sql2 = "INSERT INTO dbo.Customers (CustomerName, Email, ID, Password, Image) "
                 + "VALUES(?, ?, (SELECT ID FROM Accounts WHERE UserName = ?), ?,"
-                + " (SELECT * FROM OPENROWSET(BULK N'C:\\images\\customers\\default.png', SINGLE_BLOB) as T1))";
+                + " (SELECT * FROM OPENROWSET(BULK N'C:/images/customers/default.png', SINGLE_BLOB) as T1))";
 
         try {
             PreparedStatement pre2 = connection.prepareStatement(sql2);

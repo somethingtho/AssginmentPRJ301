@@ -21,14 +21,13 @@
 
     <body class="content">
 
-        <button onclick="topFunction()" id="myBtn" title="Go to top"><i style="text-align: center" class="ti-arrow-up"></i></button>
         <fmt:setLocale value = "vi_VN"/>
         <%
             response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
             response.setHeader("Pragma", "no-cache"); //HTTP 1.0
             response.setDateHeader("Expires", 0);
-    //prevents caching at the proxy server
-        %>
+            //prevents caching at the proxy server
+%>
         <c:set var="o" value="${requestScope.cart}"/>
         <header>
             <div class="logo">
