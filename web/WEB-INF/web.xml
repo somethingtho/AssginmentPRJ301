@@ -200,6 +200,14 @@
         <servlet-name>LoadMoreServlet</servlet-name>
         <servlet-class>controller.admin.LoadMoreServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>OrderDetailsServlet</servlet-name>
+        <servlet-class>controller.admin.OrderDetailsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChartsServlet</servlet-name>
+        <servlet-class>controller.admin.ChartsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>IndexServlet</servlet-name>
         <url-pattern>/user/index</url-pattern>
@@ -383,6 +391,14 @@
     <servlet-mapping>
         <servlet-name>LoadMoreServlet</servlet-name>
         <url-pattern>/admin/loadmore</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderDetailsServlet</servlet-name>
+        <url-pattern>/admin/orderdetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChartsServlet</servlet-name>
+        <url-pattern>/admin/charts</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -13,8 +13,22 @@ public class Suppliers {
     private String companyName, phone, email,homePage;
     private int number;
     private Suppliers sup;
-    
+    private Categories cate;
     private boolean status;
+
+    public Suppliers(Suppliers sup, Categories cate, int number) {
+        this.sup = sup;
+        this.cate = cate;
+        this.number=number;
+    }
+
+    public Categories getCate() {
+        return cate;
+    }
+
+    public void setCate(Categories cate) {
+        this.cate = cate;
+    }
 
     public Suppliers(int supplierID, String companyName, String phone, String email, String homePage, boolean status) {
         this.supplierID = supplierID;
@@ -142,6 +156,11 @@ public class Suppliers {
 
     public void setHomePage(String homePage) {
         this.homePage = homePage;
+    }
+
+    @Override
+    public String toString() {
+        return "Suppliers{" + "supplierID=" + supplierID + ", companyName=" + companyName + ", phone=" + phone + ", email=" + email + ", homePage=" + homePage + ", number=" + number + ", sup=" + sup + ", cate=" + cate + ", status=" + status + '}';
     }
 
     

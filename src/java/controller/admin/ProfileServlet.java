@@ -4,8 +4,10 @@
  */
 package controller.admin;
 
+import entity.Categories;
 import entity.Customers;
 import entity.Orders;
+import entity.Products;
 import entity.Shippers;
 import entity.Suppliers;
 import java.io.IOException;
@@ -85,14 +87,18 @@ public class ProfileServlet extends HttpServlet {
                     request.setAttribute("msg", "Tài khoản này đã bị khoá hoặc dừng hoạt động!");
                 }
                 int totalCategoriesBySupplier = daoCategories.ToalCategoriesBySuppliers(id);
-                int totalCategories= daoCategories.TotalCategories();
+                int totalCategories = daoCategories.TotalCategories();
                 int totalOrders = daoOrders.TotalOrderBySupplier(id);
                 int totalProductSale = daoOrderDetails.TotalProductsSaleBySupplier(id);
                 int totalProductsBySupplier = daoProducts.TotalProductsBySupplier(id);
                 double totalMoney = daoOrders.TotalMoneyBySupplier(id);
                 Vector<Orders> listAllOrders = daoOrders.getOrderBySupplier(id);
+                Vector<Products> productBestSale = daoProducts.getProductBestSaleBySupplier(id);
+                Vector<Categories> numberProductsOfCategory = daoSuppliers.NumberOfProductsBySupplier(id);
                 
                 
+                request.setAttribute("numberProductsOfCategory", numberProductsOfCategory);
+                request.setAttribute("productBestSale", productBestSale);
                 request.setAttribute("totalCategoriesBySupplier", totalCategoriesBySupplier);
                 request.setAttribute("totalCategories", totalCategories);
                 request.setAttribute("totalOrders", totalOrders);
@@ -109,6 +115,24 @@ public class ProfileServlet extends HttpServlet {
                 if (!entity.isStatus()) {
                     request.setAttribute("msg", "Tài khoản này đã bị khoá hoặc dừng hoạt động!");
                 }
+
+                int totalSuppliersByShipper = daoSuppliers.TotalSuppliersByShipper(id);
+                int totalSuppliers = daoSuppliers.TotalSuppliers();
+                int totalOrders = daoOrders.TotalOrdersByShipper(id);
+                int totalProducts = daoOrderDetails.TotalProductsByShipper(id);
+                int totalOrderSuccess = daoOrders.TotalOrderSuccessByShipper(id);
+                int totalOrderFail = daoOrders.TotalOrderFailByShipper(id);
+                Vector<Suppliers> listSuppliers = daoSuppliers.GetNumberProductsByShipper(id);
+                Vector<Orders> listOrdersByShipperID = daoOrders.getAllOrders();
+
+                request.setAttribute("listSuppliers", listSuppliers);
+                request.setAttribute("totalOrderSuccess", totalOrderSuccess);
+                request.setAttribute("totalOrderFail", totalOrderFail);
+                request.setAttribute("totalProducts", totalProducts);
+                request.setAttribute("totalOrders", totalOrders);
+                request.setAttribute("totalSuppliers", totalSuppliers);
+                request.setAttribute("listOrdersByShipperID", listOrdersByShipperID);
+                request.setAttribute("totalSuppliersByShipper", totalSuppliersByShipper);
                 request.setAttribute("entity", entity);
                 request.setAttribute("type", type);
                 request.getRequestDispatcher("profileview.jsp").forward(request, response);
@@ -118,6 +142,14 @@ public class ProfileServlet extends HttpServlet {
                 if (!entity.getAcc().isStatus()) {
                     request.setAttribute("msg", "Tài khoản này đã bị khoá hoặc dừng hoạt động!");
                 }
+
+                Vector<Orders> listAllOrders = daoOrders.getOrdersByCustomerID(id);
+                double rate = daoCustomers.rateOrders(id);
+                double total = daoOrders.getTotalMoneyByCustomerID(id);
+
+                request.setAttribute("total", total);
+                request.setAttribute("rate", rate);
+                request.setAttribute("listAllOrders", listAllOrders);
                 request.setAttribute("entity", entity);
                 request.setAttribute("type", type);
                 request.getRequestDispatcher("profilecustomer.jsp").forward(request, response);

@@ -18,6 +18,71 @@ import java.util.logging.Logger;
  */
 public class DAOAccounts extends DBContext {
 
+    
+    public double rateAccountActive() {
+        double rate = 0;
+        int total = TotalAccounts();
+        int active = AccountActive();
+        if (total != 0) {
+            rate = (double) total / active;
+        }
+        return rate;
+    }
+
+    public int AccountActive() {
+        int number = 0;
+        String sql = "SELECT COUNT(*) FROM dbo.Accounts WHERE Status =1 ";
+        try {
+            ResultSet rs = getData(sql);
+            while (rs.next()) {
+                number = rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+
+        return number;
+    }
+
+    public int TotalAccounts() {
+        String sql = "SELECT COUNT(*) AS Number FROM dbo.Accounts";
+        int total = 0;
+        try {
+            ResultSet rs = getData(sql);
+            while (rs.next()) {
+                total = rs.getInt("Number");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return total;
+    }
+
+    public double rateNewAccount() {
+        double rate = 0;
+
+        int total = TotalAccounts();
+        if (total != 0) {
+            rate = (double) newUserInMonth() / total;
+        }
+        return rate;
+    }
+
+    public int newUserInMonth() {
+        int number = 0;
+        String sql = "SELECT COUNT(*) FROM dbo.Accounts WHERE MONTH(RegistrationDate) = MONTH(GETDATE()) ";
+        try {
+            ResultSet rs = getData(sql);
+            while (rs.next()) {
+                number = rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+
+        return number;
+    }
+
     //List all Accounts
     public Vector getAllAccounts() {
         Vector<Accounts> vector = new Vector<>();
@@ -78,7 +143,5 @@ public class DAOAccounts extends DBContext {
 
         return acc;
     }
-    
-    
 
 }

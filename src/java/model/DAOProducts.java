@@ -17,7 +17,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Base64;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,37 +32,184 @@ import java.util.logging.Logger;
  * @author daova
  */
 public class DAOProducts extends DBContext {
-    
-    
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         DAOProducts dao = new DAOProducts();
-        int[] id = {1,2};
-        dao.getProductsBySuppliers(id, "smartphone", "1", 1, 100000000);
+        int[] id = {1,2,3,4};
+        String cateID = "1";
+        String idorder = "DateCreated1";
+        String idDiscontinued = "OFF";
+        Vector<Products> list = dao.getNextProducts(id, cateID, idorder, idDiscontinued, 8);
+        for (Products products : list) {
+            System.out.println(products);
+        }
     }
-    
-    public int TotalProductsBySupplier(int sid) {
-        int number = 0;
-        String sql = "SELECT COUNT(*) FROM Products WHERE SupplierID = ?";
+
+    public Vector<Products> getProductsBySuppliersByAdmin(int[] id, String cateID, String idorder, String idDiscontinued) {
+        DAOSuppliers daoSuppliers = new DAOSuppliers();
+        DAOCategories daoCategories = new DAOCategories();
+        DAOProductInfo daoProductInfo = new DAOProductInfo();
+        Vector<Products> vector = new Vector<>();
+        String sql = "SELECT TOP 8 Products.* FROM Products INNER JOIN dbo.ProductInfo ON Products.ProductID = ProductInfo.ProductID WHERE 1 = 1 ";
+        if (id != null && id.length >0) {
+            sql += "AND Products.SupplierID IN(";
+            for (int i = 0; i < id.length; i++) {
+                sql += id[i] + ",";
+            }
+            if (sql.endsWith(",")) {
+                sql = sql.substring(0, sql.length() - 1);
+            }
+            sql += ") ";
+        }
+        String orderby = " ProductName ";
+        if (idorder == null || idorder.equalsIgnoreCase("select") || idorder.equals("ProductName")) {
+            orderby = " ProductName ";
+        }
+        if (cateID != null && !cateID.equalsIgnoreCase("Select")) {
+            sql = sql + " AND CategoryID = " + cateID;
+        }
+        if (idDiscontinued != null && idDiscontinued.equalsIgnoreCase("ON")) {
+            sql = sql + " AND Discontinued = 1 ";
+        }
+        if (idDiscontinued != null && idDiscontinued.equalsIgnoreCase("OFF")) {
+            sql = sql + " AND Discontinued = 0 ";
+        }
+        if (idorder != null && idorder.equals("UnitPrice1")) {
+            orderby = " UnitPrice ASC ";
+        }
+        if (idorder != null && idorder.equals("UnitPrice2")) {
+            orderby = " UnitPrice DESC ";
+        }
+
+        if (idorder != null && idorder.equals("DateCreated1")) {
+            orderby = " DateCreated ASC ";
+        }
+
+        if (idorder != null && idorder.equals("DateCreated2")) {
+            orderby = "DateCreated DESC";
+        }
+
+        if (idorder != null && idorder.equals("UnitsOnOrder1")) {
+            orderby = "UnitsOnOrder ASC";
+        }
+
+        if (idorder != null && idorder.equals("UnitsOnOrder2")) {
+            orderby = "UnitsOnOrder DESC";
+        }
+
+        if (idorder != null && idorder.equals("UnitsInStock1")) {
+            orderby = "UnitsInStock ASC";
+        }
+
+        if (idorder != null && idorder.equals("UnitsInStock2")) {
+            orderby = "UnitsInStock DESC";
+        }
+
+        sql = sql + " ORDER BY " + orderby;
+
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setInt(1, sid);
             ResultSet rs = pre.executeQuery();
-            if (rs.next()) {
-                number = rs.getInt(1);
+            while (rs.next()) {
+                int productID = rs.getInt("ProductID");
+                String productName = rs.getString("ProductName");
+                int supplierID = rs.getInt("SupplierID");
+                int categoryID = rs.getInt("CategoryID");
+                double unitprice = rs.getDouble("UnitPrice");
+                int unitsInStock = rs.getInt("UnitsInStock");
+                int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                boolean discontinued = rs.getBoolean("Discontinued");
+                Blob blob = rs.getBlob("Image");
+                InputStream inputStream = blob.getBinaryStream();
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[4096];
+                int bytesRead = -1;
+
+                try {
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                    byte[] imageBytes = outputStream.toByteArray();
+                    String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
+                    inputStream.close();
+                    outputStream.close();
+                    Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
+                    Categories category = daoCategories.getCategoryByCategoryID(categoryID);
+                    ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return number;
+        return vector;
     }
-    
-    public Vector<Products> getNextProducts(int amount) {
+
+    public Vector<Products> getNextProducts(int[] id, String cateID, String idorder, String idDiscontinued, int amount) {
         Vector<Products> vector = new Vector<>();
-        String sql = "SELECT * FROM Products ORDER BY ProductID ASC OFFSET ? ROWS FETCH NEXT 4 ROWS ONLY";
+        String sql = "SELECT * FROM Products INNER JOIN ProductInfo ON Products.ProductID = ProductInfo.ProductID WHERE 1 = 1 ";
         DAOSuppliers daoSuppliers = new DAOSuppliers();
         DAOCategories daoCategories = new DAOCategories();
         DAOProductInfo daoProductInfo = new DAOProductInfo();
+        
+        if (id != null && id.length > 0) {
+            sql += "AND Products.SupplierID IN(";
+            for (int i = 0; i < id.length; i++) {
+                sql += id[i] + ",";
+            }
+            if (sql.endsWith(",")) {
+                sql = sql.substring(0, sql.length() - 1);
+            }
+            sql += ") ";
+        }
+        String orderby = "ProductName";
+        if (idorder == null || idorder.equalsIgnoreCase("select") || idorder.equals("ProductName")) {
+            orderby = "ProductName";
+        }
+        if (cateID != null && !cateID.equalsIgnoreCase("Select")) {
+            sql = sql + "AND CategoryID = " + cateID;
+        }
+        if (idDiscontinued != null && idDiscontinued.equalsIgnoreCase("ON")) {
+            sql = sql + "AND Discontinued = 1 ";
+        }
+        if (idDiscontinued != null && idDiscontinued.equalsIgnoreCase("OFF")) {
+            sql = sql + "AND Discontinued = 0 ";
+        }
+        if (idorder != null && idorder.equals("UnitPrice1")) {
+            orderby = "UnitPrice ASC";
+        }
+        if (idorder != null && idorder.equals("UnitPrice2")) {
+            orderby = "UnitPrice DESC";
+        }
+
+        if (idorder != null && idorder.equals("DateCreated1")) {
+            orderby = "UnitPrice ASC";
+        }
+
+        if (idorder != null && idorder.equals("DateCreated2")) {
+            orderby = "DateCreated DESC";
+        }
+
+        if (idorder != null && idorder.equals("UnitsOnOrder1")) {
+            orderby = "UnitsOnOrder ASC";
+        }
+
+        if (idorder != null && idorder.equals("UnitsOnOrder2")) {
+            orderby = "UnitsOnOrder DESC";
+        }
+
+        if (idorder != null && idorder.equals("UnitsInStock1")) {
+            orderby = "UnitsInStock ASC";
+        }
+
+        if (idorder != null && idorder.equals("UnitsInStock2")) {
+            orderby = "UnitsInStock DESC";
+        }
+
+        sql = sql + " ORDER BY " + orderby + " OFFSET ? ROWS FETCH NEXT 4 ROWS ONLY";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, amount);
@@ -101,7 +253,75 @@ public class DAOProducts extends DBContext {
         return vector;
 
     }
-    
+
+    public Vector<Products> getProductBestSaleBySupplier(int id) {
+        DAOSuppliers daoSuppliers = new DAOSuppliers();
+        DAOCategories daoCategories = new DAOCategories();
+        DAOProductInfo daoProductInfo = new DAOProductInfo();
+        Vector<Products> vector = new Vector<>();
+        String sql = "SELECT TOP 5 * FROM dbo.Products\n"
+                + "WHERE SupplierID =?\n"
+                + "ORDER BY UnitsOnOrder DESC";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, id);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                int productID = rs.getInt("ProductID");
+                String productName = rs.getString("ProductName");
+                int supplierID = rs.getInt("SupplierID");
+                int categoryID = rs.getInt("CategoryID");
+                double unitprice = rs.getDouble("UnitPrice");
+                int unitsInStock = rs.getInt("UnitsInStock");
+                int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                boolean discontinued = rs.getBoolean("Discontinued");
+                Blob blob = rs.getBlob("Image");
+                InputStream inputStream = blob.getBinaryStream();
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[4096];
+                int bytesRead = -1;
+
+                try {
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                    byte[] imageBytes = outputStream.toByteArray();
+                    String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
+                    inputStream.close();
+                    outputStream.close();
+                    Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
+                    Categories category = daoCategories.getCategoryByCategoryID(categoryID);
+                    ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return vector;
+    }
+
+    public int TotalProductsBySupplier(int sid) {
+        int number = 0;
+        String sql = "SELECT COUNT(*) FROM Products WHERE SupplierID = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, sid);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                number = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return number;
+    }
 
     public int AddNewProduct(Products product, List<Part> input, Part filePart) throws IOException {
         int number = 0;
@@ -110,7 +330,6 @@ public class DAOProducts extends DBContext {
         DAOProductInfo daoInfo = new DAOProductInfo();
         String sql = "INSERT INTO dbo.Products(ProductName, SupplierID, CategoryID, UnitPrice, UnitsInStock, UnitsOnOrder, Discontinued, Image) "
                 + "VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
-
 
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -136,8 +355,6 @@ public class DAOProducts extends DBContext {
             number += daoImg.AddImg(input, proNew.getProductID());
         } catch (SQLException ex) {
         }
-
-
 
         return number;
     }

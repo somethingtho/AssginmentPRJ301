@@ -3,24 +3,25 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller.user;
+package controller.admin;
 
-import static controller.user.LoginServlet.activeSessions;
-import entity.Customers;
+import entity.Orders;
+import entity.Suppliers;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import jakarta.servlet.http.HttpSessionEvent;
-
+import java.util.*;
+import model.DAOOrderDetails;
+import model.DAOOrders;
+import model.DAOSuppliers;
 /**
  *
- * @author daova
+ * @author ADMIN
  */
-public class LogoutServlet extends HttpServlet {
+public class OrderDetailsServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -37,10 +38,10 @@ public class LogoutServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LogoutServlet</title>");  
+            out.println("<title>Servlet OrderDetailsServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LogoutServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet OrderDetailsServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,15 +58,24 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        HttpSession sesssion = request.getSession();
-        Customers ad = (Customers)sesssion.getAttribute("account");
-        if(ad != null){
-            activeSessions--;
-            System.out.println(activeSessions);
-            sesssion.removeAttribute("account");
+        String oid_raw = request.getParameter("oid");
+        String supid_raw= request.getParameter("id");
+        DAOOrders daoOrders = new DAOOrders();
+        DAOSuppliers daoSuppliers = new DAOSuppliers();
+        DAOOrderDetails daoOrderDetails = new DAOOrderDetails();
+        try {
+            int supid = Integer.parseInt(supid_raw);
+            Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supid);
+            int oid = Integer.parseInt(oid_raw);
+            Orders order = daoOrders.getOrdersByOrderID(oid);
+            
+            
+            
+            request.setAttribute("supplier", supplier);
+            request.setAttribute("order", order);
+            request.getRequestDispatcher("orderdetail.jsp").forward(request, response);
+        } catch (Exception e) {
         }
-        response.sendRedirect("index");
-        
     } 
 
     /** 
@@ -90,11 +100,4 @@ public class LogoutServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    
-        public void sessionDestroyed(HttpSessionEvent event) {
-        synchronized (this) {
-            activeSessions--;
-        }
-    }
-    
 }

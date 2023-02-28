@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html>
@@ -26,6 +27,13 @@
         <!-- Custom CSS -->
         <link href="assets/libs/flot/css/float-chart.css" rel="stylesheet" />
         <link href="dist/css/style.min.css" rel="stylesheet" />
+        
+        <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />-->
+        
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.28.2/dist/apexcharts.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.25.0/dist/apexcharts.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -34,7 +42,7 @@
         <![endif]-->
     </head>
 
-    <body>
+    <body onload="drawChart()">
         <!-- ============================================================== -->
         <!-- Preloader - style you can find in spinners.css -->
         <!-- ============================================================== -->
@@ -242,8 +250,8 @@
                                     ><span class="hide-menu">Thống kê</span></a
                                 >
                             </li>
-                            
-                            
+
+
                             <li class="sidebar-item">
                                 <a
                                     class="sidebar-link waves-effect waves-dark sidebar-link"
@@ -349,7 +357,7 @@
                                     ><span class="hide-menu">Xác thực</span></a
                                 >
                                 <ul aria-expanded="false" class="collapse first-level">
-                                    
+
 
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/changepass.jsp" class="sidebar-link"
@@ -364,8 +372,8 @@
                                             ><span class="hide-menu"> Hồ sơ </span></a
                                         >
                                     </li>
-                                    
-                                    
+
+
                                 </ul>
                             </li>
                         </ul>
@@ -411,35 +419,14 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Real Time Chart</h5>
-                                    <div id="real-time" style="height: 400px"></div>
-                                    <p>
-                                        Time between updates:
-                                        <input
-                                            id="updateInterval"
-                                            type="text"
-                                            value=""
-                                            style="text-align: right; width: 5em"
-                                            />
-                                        milliseconds
-                                    </p>
+                                    <div id="chart1"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- ENd chart-1 -->
                     <!-- Chart-2 -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Turning-series chart</h5>
-                                    <div id="placeholder" style="height: 400px"></div>
-                                    <p id="choices" class="mt-3"></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Chart-2 -->
+
                     <!-- Cards -->
                     <div class="row">
                         <div class="col-md-3">
@@ -451,11 +438,11 @@
                                                 ><span style="display: none">10,15,8,14,13,10,10</span>
                                                 <canvas width="50" height="24"></canvas>
                                             </span>
-                                            <h6>10%</h6>
+                                            <h6><fmt:formatNumber type = "percent" maxIntegerDigits="3" value = "${requestScope.rateNewAccount}" /></h6>
                                         </div>
                                     </div>
                                     <div class="col-md-6 border-left text-center pt-2">
-                                        <h3 class="mb-0 fw-bold">150</h3>
+                                        <h3 class="mb-0 fw-bold">${requestScope.newAccount}</h3>
                                         <span class="text-muted">New Users</span>
                                     </div>
                                 </div>
@@ -470,11 +457,11 @@
                                                 ><span style="display: none">3,5,6,16,8,10,6</span>
                                                 <canvas width="50" height="24"></canvas>
                                             </span>
-                                            <h6>-40%</h6>
+                                            <h6><fmt:formatNumber type = "percent" maxIntegerDigits="3" value = "${requestScope.rateOrders}" /></h6>
                                         </div>
                                     </div>
                                     <div class="col-md-6 border-left text-center pt-2">
-                                        <h3 class="mb-0 fw-bold">4560</h3>
+                                        <h3 class="mb-0 fw-bold">${requestScope.newOrders}</h3>
                                         <span class="text-muted">Orders</span>
                                     </div>
                                 </div>
@@ -489,11 +476,11 @@
                                                 ><span style="display: none">12,6,9,23,14,10,17</span>
                                                 <canvas width="50" height="24"></canvas>
                                             </span>
-                                            <h6>+60%</h6>
+                                            <h6><fmt:formatNumber type = "percent" maxIntegerDigits="3" value = "${requestScope.rateActive}" /></h6>
                                         </div>
                                     </div>
                                     <div class="col-md-6 border-left text-center pt-2">
-                                        <h3 class="mb-0">5672</h3>
+                                        <h3 class="mb-0">${requestScope.active}</h3>
                                         <span class="text-muted">Active Users</span>
                                     </div>
                                 </div>
@@ -505,11 +492,11 @@
                                     <div class="col-md-6">
                                         <div class="peity_bar_good left text-center mt-2">
                                             <span>12,6,9,23,14,10,13</span>
-                                            <h6>+30%</h6>
+                                            <h6><fmt:formatNumber type = "percent" maxIntegerDigits="3" value = "${requestScope.rateNewAccount}" /></h6>
                                         </div>
                                     </div>
                                     <div class="col-md-6 border-left text-center pt-2">
-                                        <h3 class="mb-0 fw-bold">2560</h3>
+                                        <h3 class="mb-0 fw-bold">${requestScope.newAccount}</h3>
                                         <span class="text-muted">Register</span>
                                     </div>
                                 </div>
@@ -518,98 +505,351 @@
                     </div>
                     <!-- End cards -->
                     <!-- Chart-3 -->
-                    <div class="row">
+                    <div class="row" style="margin: 20px 0;">
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Bar Chart</h5>
-                                    <div class="flot-chart">
-                                        <div class="flot-chart-content" id="flot-line-chart"></div>
+                                    <form action="${pageContext.request.contextPath}/admin/charts" method="get">
+                                        <select name="year" onchange="this.form.submit()">
+                                            <optgroup label="Year">
+                                                <option value="2023" <c:if test="${requestScope.year == 2023}">selected</c:if>>2023</option>
+                                                <option value="2022" <c:if test="${requestScope.year == 2022}">selected</c:if>>2022</option>
+                                            </select>
+                                        </form>
+                                        <div class="flot-chart">
+                                            <div id="chart2"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- End chart-3 -->
-                    <!-- Charts -->
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Pie Chart</h5>
-                                    <div class="pie" style="height: 400px"></div>
+                        <!-- End chart-3 -->
+                        <!-- Charts -->
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Pie Chart</h5>
+                                        <canvas id="myChart2" style="width:100%;max-width:650px;height: 400px"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Number Products Of Suppliers</h5>
+                                        <div id="chart3" style="width:100%;max-width:650px; height: 400px;"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Line Chart</h5>
-                                    <div class="bars" style="height: 400px"></div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- End Charts -->
+                        <!-- ============================================================== -->
+                        <!-- End PAge Content -->
+                        <!-- ============================================================== -->
+                        <!-- ============================================================== -->
+                        <!-- Right sidebar -->
+                        <!-- ============================================================== -->
+                        <!-- .right-sidebar -->
+                        <!-- ============================================================== -->
+                        <!-- End Right sidebar -->
+                        <!-- ============================================================== -->
                     </div>
-                    <!-- End Charts -->
                     <!-- ============================================================== -->
-                    <!-- End PAge Content -->
+                    <!-- End Container fluid  -->
                     <!-- ============================================================== -->
                     <!-- ============================================================== -->
-                    <!-- Right sidebar -->
+                    <!-- footer -->
                     <!-- ============================================================== -->
-                    <!-- .right-sidebar -->
+                    <footer class="footer text-center">
+
+                    </footer>
                     <!-- ============================================================== -->
-                    <!-- End Right sidebar -->
+                    <!-- End footer -->
                     <!-- ============================================================== -->
                 </div>
                 <!-- ============================================================== -->
-                <!-- End Container fluid  -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- footer -->
-                <!-- ============================================================== -->
-                <footer class="footer text-center">
-                    
-                </footer>
-                <!-- ============================================================== -->
-                <!-- End footer -->
+                <!-- End Page wrapper  -->
                 <!-- ============================================================== -->
             </div>
             <!-- ============================================================== -->
-            <!-- End Page wrapper  -->
+            <!-- End Wrapper -->
             <!-- ============================================================== -->
-        </div>
-        <!-- ============================================================== -->
-        <!-- End Wrapper -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- All Jquery -->
-        <!-- ============================================================== -->
-        <script src="assets/libs/jquery/dist/jquery.min.js"></script>
-        <!-- Bootstrap tether Core JavaScript -->
-        <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- slimscrollbar scrollbar JavaScript -->
-        <script src="assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
-        <script src="assets/extra-libs/sparkline/sparkline.js"></script>
-        <!--Wave Effects -->
-        <script src="dist/js/waves.js"></script>
-        <!--Menu sidebar -->
-        <script src="dist/js/sidebarmenu.js"></script>
-        <!--Custom JavaScript -->
-        <script src="dist/js/custom.min.js"></script>
-        <!-- this page js -->
-        <script src="assets/libs/chart/matrix.interface.js"></script>
-        <script src="assets/libs/chart/excanvas.min.js"></script>
-        <script src="assets/libs/flot/jquery.flot.js"></script>
-        <script src="assets/libs/flot/jquery.flot.pie.js"></script>
-        <script src="assets/libs/flot/jquery.flot.time.js"></script>
-        <script src="assets/libs/flot/jquery.flot.stack.js"></script>
-        <script src="assets/libs/flot/jquery.flot.crosshair.js"></script>
-        <script src="assets/libs/chart/jquery.peity.min.js"></script>
-        <script src="assets/libs/chart/matrix.charts.js"></script>
-        <script src="assets/libs/chart/jquery.flot.pie.min.js"></script>
-        <script src="assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
-        <script src="assets/libs/chart/turning-series.js"></script>
-        <script src="dist/js/pages/chart/chart-page-init.js"></script>
+            <!-- ============================================================== -->
+            <!-- All Jquery -->
+            <!-- ============================================================== -->
+            <script src="assets/libs/jquery/dist/jquery.min.js"></script>
+            <!-- Bootstrap tether Core JavaScript -->
+            <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+            <!-- slimscrollbar scrollbar JavaScript -->
+            <script src="assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+            <script src="assets/extra-libs/sparkline/sparkline.js"></script>
+            <!--Wave Effects -->
+            <script src="dist/js/waves.js"></script>
+            <!--Menu sidebar -->
+            <script src="dist/js/sidebarmenu.js"></script>
+            <!--Custom JavaScript -->
+            <script src="dist/js/custom.min.js"></script>
+            <!-- this page js -->
+            <script src="assets/libs/chart/matrix.interface.js"></script>
+            <script src="assets/libs/chart/excanvas.min.js"></script>
+            <script src="assets/libs/flot/jquery.flot.js"></script>
+            <script src="assets/libs/flot/jquery.flot.pie.js"></script>
+            <script src="assets/libs/flot/jquery.flot.time.js"></script>
+            <script src="assets/libs/flot/jquery.flot.stack.js"></script>
+            <script src="assets/libs/flot/jquery.flot.crosshair.js"></script>
+            <script src="assets/libs/chart/jquery.peity.min.js"></script>
+            <script src="assets/libs/chart/matrix.charts.js"></script>
+            <script src="assets/libs/chart/jquery.flot.pie.min.js"></script>
+            <script src="assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+            <script src="assets/libs/chart/turning-series.js"></script>
+            <script src="dist/js/pages/chart/chart-page-init.js"></script>
+            
+            <script>
+                                            var now = new Date();
+                                            var offset = +7 * 60; // offset in minutes
+                                            var lastDate = now.getTime() + offset * 60 * 1000;
+                                            var data = [];
+                                            var TICKINTERVAL = 1000;
+                                            var XAXISRANGE = 10000;
+                                            function getNewSeries(baseval, yrange) {
+                                                var newDate = baseval + TICKINTERVAL;
+                                                lastDate = newDate;
+                                                for (var i = 0; i < data.length - 10; i++) {
+                                                    // IMPORTANT
+                                                    // we reset the x and y of the data which is out of drawing area
+                                                    // to prevent memory leaks
+                                                    data[i].x = newDate - XAXISRANGE - TICKINTERVAL
+                                                    data[i].y = 0
+                                                }
+
+                                                data.push({
+                                                    x: newDate,
+                                                    y: ${requestScope.activeSessions}
+                                                })
+                                            }
+
+                                            getNewSeries(lastDate, {
+                                                min: 10,
+                                                max: 90
+                                            })
+
+                                            var options = {
+                                                series: [{
+                                                        data: data
+                                                    }],
+                                                chart: {
+                                                    id: 'realtime',
+                                                    height: 350,
+                                                    type: 'line',
+                                                    animations: {
+                                                        enabled: true,
+                                                        easing: 'linear',
+                                                        dynamicAnimation: {
+                                                            speed: 1000
+                                                        }
+                                                    },
+                                                    toolbar: {
+                                                        show: false
+                                                    },
+                                                    zoom: {
+                                                        enabled: false
+                                                    }
+                                                },
+                                                dataLabels: {
+                                                    enabled: false
+                                                },
+                                                stroke: {
+                                                    curve: 'smooth'
+                                                },
+                                                title: {
+                                                    text: 'Dynamic Updating Chart',
+                                                    align: 'left'
+                                                },
+                                                markers: {
+                                                    size: 0
+                                                },
+                                                xaxis: {
+                                                    type: 'datetime',
+                                                    range: XAXISRANGE,
+                                                },
+                                                yaxis: {
+                                                    max: 100
+                                                },
+                                                legend: {
+                                                    show: false
+                                                },
+                                            };
+                                            var chart = new ApexCharts(document.querySelector("#chart1"), options);
+                                            chart.render();
+                                            window.setInterval(function () {
+                                                getNewSeries(lastDate, {
+                                                    min: 10,
+                                                    max: 90
+                                                })
+
+                                                chart.updateSeries([{
+                                                        data: data
+                                                    }])
+                                            }, 1000)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            if (${requestScope.year eq requestScope.yearNow}) {
+                                                var now = new Date();
+                                                var year = now.getFullYear();
+                                                var month = now.getMonth();
+                                                var monthNames = Array.from({length: month + 1}, (_, i) => {
+                                                    var date = new Date(year, i, 1);
+                                                    return date.toLocaleString('default', {month: 'long'});
+                                                });
+                                            } else {
+                                                var year = new Date().getFullYear();
+                                                var monthNames = [];
+                                                for (let month = 0; month < 12; month++) {
+                                                    var date = new Date(year, month, 1);
+                                                    monthName = date.toLocaleString('default', {month: 'long'});
+                                                    monthNames.push(monthName);
+                                                }
+
+                                            }
+
+
+                                            var data1 = [];
+                                            var data2 = [];
+            <c:forEach var="item" items="${requestScope.accessByMonth}">
+                                            data1.push(${item});
+            </c:forEach>
+
+            <c:forEach var="item" items="${requestScope.ordersByMonth}">
+                                            data2.push(${item});
+            </c:forEach>
+                                            function drawChart() {
+                                                var chartData = {
+                                                    series: [
+                                                        {
+                                                            name: "Number Orders",
+                                                            type: "column",
+                                                            data: data2,
+                                                        },
+                                                        {
+                                                            name: "Active Users",
+                                                            type: "line",
+                                                            data: data1,
+                                                        },
+                                                    ],
+                                                    xaxis: {
+                                                        categories: monthNames,
+                                                    },
+                                                };
+                                                // Define options for chart
+                                                var chartOptions = {
+                                                    chart: {
+                                                        height: 350,
+                                                        type: "line",
+                                                        stacked: false,
+                                                    },
+                                                    dataLabels: {
+                                                        enabled: false,
+                                                    },
+                                                    colors: ["#008FFB", "#00E396"],
+                                                    series: chartData.series,
+                                                    xaxis: chartData.xaxis,
+                                                };
+                                                // Initialize ApexCharts object with chart data and options
+                                                var chart = new ApexCharts(document.querySelector("#chart2"), chartOptions);
+                                                // Render the chart
+                                                chart.render();
+                                            }
+
+
+
+
+                                            var xValues = [];
+                                            var yValues = [];
+            <c:forEach var="item" items="${requestScope.numberProductsOfCategory}">
+                                            xValues.push("${fn:escapeXml(item.categoryName)}");
+                                            yValues.push(${item.number});
+            </c:forEach>
+
+                                            var barColors = [
+                                                "#b91d47",
+                                                "#00aba9",
+                                                "#2b5797"
+                                            ];
+                                            new Chart("myChart2", {
+                                                type: "pie",
+                                                data: {
+                                                    labels: xValues,
+                                                    datasets: [{
+                                                            backgroundColor: barColors,
+                                                            data: yValues
+                                                        }]
+                                                },
+                                                options: {
+                                                    title: {
+                                                        display: true,
+                                                        text: "Number of Devices"
+                                                    }
+                                                }
+                                            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            var dataa = [];
+                                            var datab = [];
+
+            <c:forEach var="item" items="${requestScope.productsBySupplier}">
+                                            dataa.push("${fn:escapeXml(item.companyName)}");
+                                            datab.push(${item.number});
+            </c:forEach>
+                console.log(dataa);
+                console.log(datab);
+
+                                            var options = {
+                                                chart: {
+                                                    type: 'bar',
+                                                    height: 350
+                                                },
+                                                series: [{
+                                                        name: 'Products',
+                                                        data: datab
+                                                    }],
+                                                xaxis: {
+                                                    categories: dataa
+                                                }
+                                            }
+
+                                            var chart3 = new ApexCharts(document.querySelector("#chart3"), options);
+
+                                            chart3.render();
+
+
+
+        </script>
     </body>
 </html>

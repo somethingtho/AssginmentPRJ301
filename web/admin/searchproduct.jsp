@@ -28,6 +28,7 @@
             rel="stylesheet"
             />
         <link href="dist/css/style.min.css" rel="stylesheet" />
+        <link href="dist/css/searchproduct.css" rel="stylesheet" type="text/css"/>
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -35,67 +36,6 @@
           <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <style>
-        .btn_sample:link,
-        .btn_sample:visited {
-            text-transform: uppercase;
-            text-decoration: none;
-            color: rgb(27, 27, 27);
-            padding: 10px 30px;
-            border: 1px solid;
-            border-radius: 1000px;
-            display: inline-block;
-            transition: all .2s;
-            position: relative;
-        }
-
-        .btn_sample:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(27, 27, 27, .5);
-        }
-
-        .btn_sample:active {
-            transform: translateY(-3px);
-        }
-
-        .btn_sample::after {
-            content: "";
-            display: inline-block;
-            height: 100%;
-            width: 100%;
-            border-radius: 100px;
-            top: 0;
-            left: 0;
-            position: absolute;
-            z-index: -1;
-            transition: all .3s;
-        }
-
-        .btn_sample:hover::after {
-            background-color: rgb(0, 238, 255);
-            transform: scaleX(1.4) scaleY(1.5);
-            opacity: 0;
-        }
-
-        .btn_sample{
-            margin: 10px 0;
-            height: 50px;
-            border-radius: 1000px;
-        }
-
-
-        .card:hover{
-            border: 2px solid black;
-        }
-
-
-
-
-
-
-
-
-    </style>
     <body>
         <fmt:setLocale value = "vi_VN"/>
         <%

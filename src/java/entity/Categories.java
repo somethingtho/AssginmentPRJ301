@@ -13,6 +13,7 @@ public class Categories {
     private String categoryName;
     private int number;
 
+    
     public int getNumber() {
         return number;
     }
@@ -55,6 +56,11 @@ public class Categories {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    @Override
+    public String toString() {
+        return "Categories{" + "categoryID=" + categoryID + ", categoryName=" + categoryName + ", number=" + number + '}';
     }
 
     

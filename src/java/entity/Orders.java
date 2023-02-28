@@ -21,6 +21,21 @@ public class Orders {
     private Customers cus;
     private Orders od;
 
+    public Orders(int orderID, String orderDate, String requireDate, String shippedDate, Shippers shipper, String address, boolean payments, boolean status, double totalMoney, Customers cus) {
+        this.orderID = orderID;
+        this.orderDate = orderDate;
+        this.requireDate = requireDate;
+        this.shippedDate = shippedDate;
+        this.shipper = shipper;
+        this.address = address;
+        this.payments = payments;
+        this.status = status;
+        this.totalMoney = totalMoney;
+        this.cus = cus;
+    }
+    
+    
+
     public Orders getOd() {
         return od;
     }

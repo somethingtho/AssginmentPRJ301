@@ -23,6 +23,28 @@ import java.util.logging.Logger;
  */
 public class DAOCategories extends DBContext {
     
+    public Vector<Categories> NumberProductsByCategories(){
+        Vector<Categories> vector = new Vector<>();
+        
+        String sql = "SELECT CategoryID,COUNT(CategoryID) AS Number FROM dbo.Products GROUP BY CategoryID ";
+        try {
+            PreparedStatement pre =connection.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            while(rs.next()){
+                int cateID = rs.getInt("CategoryID");
+                int number = rs.getInt("Number");
+                Categories cate = getCategoryByCategoryID(cateID);
+                cate.setNumber(number);
+                vector.add(cate);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return vector;
+        
+    }
+    
     public int AddNewCategory(Categories cate){
         int number = 0;
         String sql = "INSERT INTO Categories(CategoryName) VALUES(?)";

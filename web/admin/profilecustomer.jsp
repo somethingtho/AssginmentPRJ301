@@ -33,6 +33,8 @@
             rel="stylesheet"
             />
         <link href="dist/css/style.min.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -429,7 +431,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body" style="height: 400px;">
                                     <div style="text-align: center">
                                         <h3 style="color: red">${requestScope.msg}</h3>
                                         <div style="margin-bottom: 20px;">
@@ -440,7 +442,8 @@
                                             <h4>${entity.acc.userName}</h4>
                                             <h4>Email: ${entity.email}</h4>
                                             <h4>Số điện thoại: ${entity.phone}</h4>
-                                            <h4>Tỉ lệ nhận hàng: 80%</h4>
+                                            <h4>Tỉ lệ nhận hàng: <fmt:formatNumber type = "percent" maxIntegerDigits="3" value = "${requestScope.rate}" /></h4>
+                                            <h4>Tổng tiền: <fmt:formatNumber type="currency" value="${requestScope.total}"/></h4>
                                         </div>
                                     </div>
                                 </div>
@@ -588,63 +591,149 @@
                             <!-- ============================================================== -->
                             <!-- End Right sidebar -->
                             <!-- ============================================================== -->
-                        </div>
-                        <!-- ============================================================== -->
-                        <!-- End Container fluid  -->
-                        <!-- ============================================================== -->
-                        <!-- ============================================================== -->
-                        <!-- footer -->
-                        <!-- ============================================================== -->
-                        <footer class="footer text-center">
+                            <div class="cold-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-0">Đơn hàng đã mua (${requestScope.listAllOrders.size()})</h5>
+                                </div>
+                                <table class="table text-center">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">OrderDate</th>
+                                            <th scope="col">RequiredDate</th>
+                                            <th scope="col">ShippedDate</th>
+                                            <th scope="col">Đơn vị vận chuyển</th>
+                                            <th scope="col">Địa chỉ giao hàng</th>
+                                            <th scope="col">Payment</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">TotalMoney</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach items="${requestScope.listAllOrders}" var="o">
+                                            <tr>
+                                                <th><a href="${pageContext.request.contextPath}/admin/orderdetail?id=${requestScope.entity.customerID}&oid=${o.orderID}">${o.orderID}</a></th>
+                                                <td>${o.orderDate}</td>
+                                                <td>${o.requireDate}</td>
+                                                <td>${o.shippedDate}</td>
+                                                <td><a href="${pageContext.request.contextPath}/admin/profile?type=ship&id=${o.shipper.shipperID}">${o.shipper.companyName}</a></td>
+                                                <td>${o.address}</td>
+                                                <td>
+                                                    <c:if test="${o.payments}">Delivered</c:if>
+                                                    <c:if test="${!o.payments}">QR Code</c:if>
+                                                    </td>
+                                                    <td>
+                                                    <c:if test="${o.status}">Success</c:if>
+                                                    <c:if test="${!o.status}">Fail</c:if>
+                                                    </td>
+                                                    <td>
 
-                        </footer>
-                        <!-- ============================================================== -->
-                        <!-- End footer -->
-                        <!-- ============================================================== -->
+                                                    <fmt:formatNumber type="currency" value="${o.totalMoney}"/>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="cold-md-12">
+                            <div class="card">
+                                <canvas style="min-width: 450px; "  id="chartSuccess"></canvas>
+                            </div>
+                        </div>  
                     </div>
                     <!-- ============================================================== -->
-                    <!-- End Page wrapper  -->
+                    <!-- End Container fluid  -->
+                    <!-- ============================================================== -->
+                    <!-- ============================================================== -->
+                    <!-- footer -->
+                    <!-- ============================================================== -->
+                    <footer class="footer text-center">
+
+                    </footer>
+                    <!-- ============================================================== -->
+                    <!-- End footer -->
                     <!-- ============================================================== -->
                 </div>
                 <!-- ============================================================== -->
-                <!-- End Wrapper -->
+                <!-- End Page wrapper  -->
                 <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- All Jquery -->
-                <!-- ============================================================== -->
-                <script src="assets/libs/jquery/dist/jquery.min.js"></script>
-                <!-- Bootstrap tether Core JavaScript -->
-                <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-                <!-- slimscrollbar scrollbar JavaScript -->
-                <script src="assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
-                <script src="assets/extra-libs/sparkline/sparkline.js"></script>
-                <!--Wave Effects -->
-                <script src="dist/js/waves.js"></script>
-                <!--Menu sidebar -->
-                <script src="dist/js/sidebarmenu.js"></script>
-                <!--Custom JavaScript -->
-                <script src="dist/js/custom.min.js"></script>
-                <!-- this page js -->
-                <script src="assets/extra-libs/multicheck/datatable-checkbox-init.js"></script>
-                <script src="assets/extra-libs/multicheck/jquery.multicheck.js"></script>
-                <script src="assets/extra-libs/DataTables/datatables.min.js"></script>
-                <script>
-                    /****************************************
-                     *       Basic Table                   *
-                     ****************************************/
-                    $("#zero_config").DataTable();
-                    
-                    
-                    
-                    function handleClick(lock) {
-                    let txt;
-                    if(lock.value === 'ON') txt = " khoá ";
-                    else txt =" mở khoá ";
-                    alert("Bạn đang" + txt + "tài khoản này!");
-                }
-                    
-                    
-                    
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Wrapper -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- All Jquery -->
+            <!-- ============================================================== -->
+            <script src="assets/libs/jquery/dist/jquery.min.js"></script>
+            <!-- Bootstrap tether Core JavaScript -->
+            <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+            <!-- slimscrollbar scrollbar JavaScript -->
+            <script src="assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+            <script src="assets/extra-libs/sparkline/sparkline.js"></script>
+            <!--Wave Effects -->
+            <script src="dist/js/waves.js"></script>
+            <!--Menu sidebar -->
+            <script src="dist/js/sidebarmenu.js"></script>
+            <!--Custom JavaScript -->
+            <script src="dist/js/custom.min.js"></script>
+            <!-- this page js -->
+            <script src="assets/extra-libs/multicheck/datatable-checkbox-init.js"></script>
+            <script src="assets/extra-libs/multicheck/jquery.multicheck.js"></script>
+            <script src="assets/extra-libs/DataTables/datatables.min.js"></script>
+            <script>
+                                                                /****************************************
+                                                                 *       Basic Table                   *
+                                                                 ****************************************/
+                                                                $("#zero_config").DataTable();
+
+
+
+                                                                function handleClick(lock) {
+                                                                    let txt;
+                                                                    if (lock.value === 'ON')
+                                                                        txt = " khoá ";
+                                                                    else
+                                                                        txt = " mở khoá ";
+                                                                    alert("Bạn đang" + txt + "tài khoản này!");
+                                                                }
+
+
+
+
+
+
+
+
+                                                                var mValues = ["Success", "Fail"];
+                                                                var nValues = [${requestScope.rate*100}, ${100 - requestScope.rate*100}];
+
+
+console.log(${requestScope.rate});
+                                                                var barColors = [
+                                                                    "#b91d47",
+                                                                    "#2b5797"
+                                                                ];
+
+                                                                new Chart("chartSuccess", {
+                                                                    type: "pie",
+                                                                    data: {
+                                                                        labels: mValues,
+                                                                        datasets: [{
+                                                                                backgroundColor: barColors,
+                                                                                data: nValues
+                                                                            }]
+                                                                    },
+                                                                    options: {
+                                                                        title: {
+                                                                            display: true,
+                                                                            text: "Number Orders Successes/Fails"
+                                                                        }
+                                                                    }
+                                                                });
+
             </script>
     </body>
 </html>

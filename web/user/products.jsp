@@ -18,74 +18,17 @@
         <link href="${pageContext.request.contextPath}/css/products.css" rel="stylesheet" type="text/css"/>
         <title>${requestScope.titlePage}</title>
 
-        <style>
-            .card {
-                background-color: #fff;
-                border-radius: 5px;
-                padding: 20px 0px;
-            }
-
-            .price-content {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                margin: 0 30px;
-            }
-
-            label.min lable.max {
-                font-size: 13px;
-                font-weight: 500;
-            }
-
-            p.min, p.max {
-                font-size: 18px;
-                font-weight: 600;
-            }
-
-            .range-slider {
-                width: 400px;
-                position: relative;
-                margin: 15px 0 30px 0;
-            }
-
-            input[type=range] {
-                -webkit-appearance: none;
-                width: 280px;
-                background: transparent;
-                position: absolute;
-                left: 0;
-            }
-
-            input[type=range]::-webkit-slider-thumb {
-                -webkit-appearance: none;
-                height: 15px;
-                width: 15px;
-                border-radius: 50%;
-                background: #36b37e;
-                cursor: pointer;
-                margin-top: -5px;
-                position: relative;
-                z-index: 1;
-            }
-
-            input[type=range]::-webkit-slider-runnable-track {
-                width: 300px;
-                height: 5px;
-                background: #e8e8e8;
-                border-radius: 3px;
-                border: none;
-            }
-        </style>
     </head>
     <body>
-        <fmt:setLocale value = "vi_VN"/>
+        <button onclick="topFunction()" id="myBtn" title="Go to top"><i style="text-align: center" class="ti-arrow-up"></i></button>
+            <fmt:setLocale value = "vi_VN"/>
             <%
-response.setHeader("Cache-Control","no-cache"); //HTTP 1.1
-response.setHeader("Pragma","no-cache"); //HTTP 1.0
-response.setDateHeader ("Expires", 0);
-//prevents caching at the proxy server
-    %>
-         <c:set var="o" value="${requestScope.cart}"/>
+                response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
+                response.setHeader("Pragma", "no-cache"); //HTTP 1.0
+                response.setDateHeader("Expires", 0);
+    //prevents caching at the proxy server
+%>
+            <c:set var="o" value="${requestScope.cart}"/>
         <header>
             <div class="logo">
                 <a href="index"><img id="logo" src="${pageContext.request.contextPath}/images/logo.png" /></a>
@@ -401,6 +344,34 @@ response.setDateHeader ("Expires", 0);
         });
 
         validateRange(inputElements[0].value, inputElements[1].value);
+
+
+
+
+
+
+
+        window.onscroll = function () {
+            scrollFunction();
+        };
+
+        let mybutton = document.getElementById("myBtn");
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                mybutton.style.display = "block";
+            } else {
+                mybutton.style.display = "none";
+            }
+        }
+
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+
+
+
 
     </script>
 </body>

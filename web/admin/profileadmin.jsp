@@ -413,7 +413,7 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <form class="form-horizontal">
-                                    <div class="card-body">
+                                    <div class="card-body" style="height: 382px;">
                                         <h4 class="card-title">Thông tin của bạn</h4>
                                         <div class="form-group row">
                                             <label

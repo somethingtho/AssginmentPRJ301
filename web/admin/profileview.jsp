@@ -7,6 +7,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 
 <!DOCTYPE html>
 <html>
@@ -34,6 +36,8 @@
             rel="stylesheet"
             />
         <link href="dist/css/style.min.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -428,7 +432,7 @@
                     <!-- ============================================================== -->
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="card">
+                            <div class="card" style="height: 350px;">
                                 <div class="card-body">
                                     <div style="text-align: center">
                                         <h3 style="color: red">${requestScope.msg}</h3>
@@ -436,7 +440,7 @@
                                             <h4>${requestScope.entity.companyName}</h4>
                                             <h4>Email: ${requestScope.entity.email}</h4>
                                             <h4>Số điện thoại: ${requestScope.entity.phone}</h4>
-                                            <c:if test="${requestScope.type == 'sup'}"><h4><a href="#">Số lượng sản phẩm: ${requestScope.totalProductsBySupplier}</a></h4></c:if>
+                                            <c:if test="${requestScope.type == 'sup'}"><h4><a href="${pageContext.request.contextPath}/admin/listallproducts?supplierID=${requestScope.entity.supplierID}&categoryID=Select&orderby=Select">Số lượng sản phẩm: ${requestScope.totalProductsBySupplier}</a></h4></c:if>
                                             </div>
                                         </div>
                                     <c:if test="${requestScope.type == 'sup'}">
@@ -474,6 +478,9 @@
                                             </div>
 
                                         </div>
+
+
+
                                     </c:if>
 
 
@@ -669,6 +676,38 @@
                             <div class="cold-md-12">
                                 <div class="card">
                                     <div class="card-body">
+                                        <h5 class="card-title mb-0">Top 5 sản phẩm bán chạy</h5>
+                                    </div>
+                                    <table class="table text-center">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Tên sản phẩm</th>
+                                                <th scope="col">Danh mục</th>
+                                                <th scope="col">Giá</th>
+                                                <th scope="col">Kho</th>
+                                                <th scope="col">Đã bán</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${requestScope.productBestSale}" var="p">
+                                                <tr>
+                                                    <th><a href="${pageContext.request.contextPath}/admin/updateproduct?pid=${p.productID}">${p.productID}</a></th>
+                                                    <td><a href="${pageContext.request.contextPath}/user/item?pid=${p.productID}">${p.productName}</a></td>
+                                                    <td>${p.category.categoryName}</td>
+                                                    <td><fmt:formatNumber type="currency" value="${p.unitPrice}"/></td>
+                                                    <td>${p.unitsInStock}</td>
+                                                    <td>${p.unitsOnOrder}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="cold-md-12">
+                                <div class="card">
+                                    <div class="card-body">
                                         <h5 class="card-title mb-0">Đơn hàng đã bán (${requestScope.listAllOrders.size()})</h5>
                                     </div>
                                     <table class="table text-center">
@@ -689,12 +728,12 @@
                                         <tbody>
                                             <c:forEach items="${requestScope.listAllOrders}" var="o">
                                                 <tr>
-                                                    <th><a href="#">${o.orderID}</a></th>
-                                                    <td><a href="#">${o.cus.customerName}</a></td>
+                                                    <th><a href="${pageContext.request.contextPath}/admin/orderdetail?id=${requestScope.entity.supplierID}&oid=${o.orderID}">${o.orderID}</a></th>
+                                                    <td><a href="${pageContext.request.contextPath}/admin/profile?type=customer&id=${o.cus.customerID}">${o.cus.customerName}</a></td>
                                                     <td>${o.orderDate}</td>
                                                     <td>${o.requireDate}</td>
                                                     <td>${o.shippedDate}</td>
-                                                    <td><a href="#">${o.shipper.companyName}</a></td>
+                                                    <td><a href="${pageContext.request.contextPath}/admin/profile?type=ship&id=${o.shipper.shipperID}">${o.shipper.companyName}</a></td>
                                                     <td>${o.address}</td>
                                                     <td>
                                                         <c:if test="${o.payments}">Delivered</c:if>
@@ -706,21 +745,32 @@
                                                         </td>
                                                         <td>
 
-                                                        <c:if test="${o.status}"><fmt:formatNumber type="currency" value="${o.totalMoney}"/></c:if>
-                                                        <c:if test="${!o.status}"><fmt:formatNumber type="currency" value="0"/></c:if>
-                                                        </td>
-                                                    </tr>
+                                                        <fmt:formatNumber type="currency" value="${o.totalMoney}"/>
+                                                    </td>
+                                                </tr>
                                             </c:forEach>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
+                            <div class="cold-md-12">
+                                <div class="card" style="display: grid; place-items: center;">
+                                    <canvas id="myChart1" style="width:100%;max-width:600px"></canvas>
+                                </div>
+                            </div>
+
+                            <div class="cold-md-12">
+                                <div class="card" style="display: grid; place-items: center;">
+                                    <canvas id="myChart2" style="width:100%;max-width:600px"></canvas>
+                                </div>
+                            </div>
+
                         </c:if>
 
 
                         <c:if test="${requestScope.type == 'ship'}">
                             <div class="cold-md-12">
-                                <div class="card">
+                                <div class="card" >
                                     <div class="card-body">
                                         <h5 class="card-title mb-0">Đơn hàng đã giao</h5>
                                     </div>
@@ -740,10 +790,10 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <c:forEach items="${requestScope.listNewOrders}" var="sample">
+                                            <c:forEach items="${requestScope.listOrdersByShipperID}" var="sample">
                                                 <tr>
-                                                    <td>${sample.od.orderID}</td>
-                                                    <td>${sample.cus.customerName}</td>
+                                                    <td>${sample.orderID}</td>
+                                                    <td><a href="${pageContext.request.contextPath}/admin/profile?type=customer&id=${sample.cus.customerID}">${sample.cus.customerName}</a></td>
                                                     <td>${sample.cus.phone}</td>
                                                     <td>
                                                         <c:choose>
@@ -751,20 +801,22 @@
                                                             <c:otherwise>Nữ</c:otherwise>
                                                         </c:choose>
                                                     </td>
-                                                    <td>${sample.od.requireDate}</td>
-                                                    <td>${sample.od.shippedDate}</td>
-                                                    <td>${sample.od.address}</td>
+                                                    <td>${sample.requireDate}</td>
+                                                    <td>${sample.shippedDate}</td>
+                                                    <td>${sample.address}</td>
                                                     <td>
                                                         <c:choose>
-                                                            <c:when test="${sample.od.payments}">Thanh toán qua QR</c:when>
-                                                            <c:otherwise>Thanh toán khi nhận hàng</c:otherwise>
+                                                            <c:when test="${sample.payments}">QR Code</c:when>
+                                                            <c:otherwise>Delivered</c:otherwise>
                                                         </c:choose>
                                                     </td>
-                                                    <td>${sample.totalMoney}</td>
+                                                    <td>
+                                                        <fmt:formatNumber type="currency" value="${sample.totalMoney}"/>
+                                                    </td>
                                                     <td>
                                                         <c:choose>
-                                                            <c:when test="${sample.od.status}">Thành công</c:when>
-                                                            <c:otherwise>Thất bại</c:otherwise>
+                                                            <c:when test="${sample.status}">Success</c:when>
+                                                            <c:otherwise>Fail</c:otherwise>
                                                         </c:choose>
                                                     </td>
                                                 </tr>
@@ -777,7 +829,7 @@
                             <div class="cold-md-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h5 class="card-title mb-0">Tổng đơn hàng của từng thương hiệu</h5>
+                                        <h5 class="card-title mb-0">Tổng sản phẩm các đã giao thương hiệu</h5>
                                     </div>
                                     <table class="table text-center">
                                         <thead>
@@ -794,7 +846,7 @@
                                             <c:forEach items="${requestScope.listSuppliers}" var="supp">
                                                 <tr>
                                                     <td>${supp.sup.supplierID}</td>
-                                                    <td>${supp.sup.companyName}</td>
+                                                    <td><a href="${pageContext.request.contextPath}/admin/profile?type=sup&id=${supp.sup.supplierID}">${supp.sup.companyName}</a></td>
                                                     <td>${supp.sup.phone}</td>
                                                     <td>${supp.sup.email}</td>
                                                     <td><a href="${supp.sup.homePage}">${supp.sup.companyName}</a></td>
@@ -804,8 +856,26 @@
                                         </tbody>
                                     </table>
                                 </div>
+                            </div> 
+                            <div class="row">
+                                <div  class="col-md-5">
+                                    <div class="card" style="height: 450px">
+                                        <canvas style="min-width: 450px; "  id="chartSuccess"></canvas>
+                                    </div>
+                                </div>
+                                
+                                <div  class="col-md-7">
+                                    <div class="card">
+                                        <div id="chartShip" style="min-width: 700px; " class="col-md-6"></div>
+                                    </div>
+                                </div>
+                                
                             </div>        
+
+
+
                         </c:if>     
+
 
 
                     </div>
@@ -862,6 +932,158 @@
                                                                         txt = " mở khoá ";
                                                                     alert("Bạn đang" + txt + "tài khoản này!");
                                                                 }
+
+
+
+
+
+
+
+
+
+
+                                                                var xValues = [];
+                                                                var yValues = [];
+
+                <c:forEach var="item" items="${requestScope.numberProductsOfCategory}">
+                                                                xValues.push("${fn:escapeXml(item.categoryName)}");
+                                                                yValues.push(${item.number});
+                </c:forEach>
+
+                                                                var barColors = [
+                                                                    "#b91d47",
+                                                                    "#00aba9",
+                                                                    "#2b5797"
+                                                                ];
+
+                                                                new Chart("myChart1", {
+                                                                    type: "pie",
+                                                                    data: {
+                                                                        labels: xValues,
+                                                                        datasets: [{
+                                                                                backgroundColor: barColors,
+                                                                                data: yValues
+                                                                            }]
+                                                                    },
+                                                                    options: {
+                                                                        title: {
+                                                                            display: true,
+                                                                            text: "Number of Devices"
+                                                                        }
+                                                                    }
+                                                                });
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                var aValues = [];
+                                                                var bValues = [];
+
+                <c:forEach var="item" items="${requestScope.productBestSale}">
+                                                                aValues.push("${fn:escapeXml(item.productName)}");
+                                                                bValues.push(${item.unitsOnOrder});
+                </c:forEach>
+
+                                                                var barColors = ["red", "green", "blue", "orange", "brown"];
+
+                                                                new Chart("myChart2", {
+                                                                    type: "bar",
+                                                                    data: {
+                                                                        labels: aValues,
+                                                                        datasets: [{
+                                                                                backgroundColor: barColors,
+                                                                                data: bValues
+                                                                            }]
+                                                                    },
+                                                                    options: {
+                                                                        legend: {display: false},
+                                                                        title: {
+                                                                            display: true,
+                                                                            text: "Top 5 Products Best Sale"
+                                                                        }
+                                                                    }
+                                                                });
+
+
+
+
+
+
+
+                                                                var data1 = [];
+                                                                var data2 = [];
+                <c:forEach items="${requestScope.listSuppliers}" var="supp">
+                                                                data1.push("${fn:escapeXml(supp.sup.companyName)}");
+                                                                data2.push(${supp.number});
+                </c:forEach>
+
+
+
+                                                                var options = {
+                                                                    chart: {
+                                                                        type: 'bar'
+                                                                    },
+                                                                    series: [{
+                                                                            name: 'Number Products Delivered',
+                                                                            data: data2
+                                                                        }],
+                                                                    xaxis: {
+                                                                        categories: data1
+                                                                    },
+                                                                    options: {
+                                                                        title: {
+                                                                            display: true,
+                                                                            text: "Number Products Delivered"
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                var chartShip = new ApexCharts(document.querySelector("#chartShip"), options);
+                                                                chartShip.render();
+
+
+
+
+
+
+
+
+
+
+                                                                var mValues = ["Success", "Fail"];
+                                                                var nValues = [${requestScope.totalOrderSuccess},${requestScope.totalOrderFail}];
+
+
+                                                                var barColors = [
+                                                                    "#b91d47",
+                                                                    "#2b5797"
+                                                                ];
+
+                                                                new Chart("chartSuccess", {
+                                                                    type: "pie",
+                                                                    data: {
+                                                                        labels: mValues,
+                                                                        datasets: [{
+                                                                                backgroundColor: barColors,
+                                                                                data: nValues
+                                                                            }]
+                                                                    },
+                                                                    options: {
+                                                                        title: {
+                                                                            display: true,
+                                                                            text: "Number Orders Successes/Fails"
+                                                                        }
+                                                                    }
+                                                                });
+
             </script>
     </body>
 </html>

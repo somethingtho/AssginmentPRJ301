@@ -14,7 +14,14 @@ import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,6 +33,114 @@ import util.SendEmail;
  */
 public class DAOCustomers extends DBContext {
 
+    public static void main(String[] args) {
+        DAOCustomers dao = new DAOCustomers();
+//        Vector<Customers> vector = dao.getCustomerFriendlyBySupplier(1);
+//        for (Customers customers : vector) {
+//            System.out.println(customers);
+//        }
+        System.out.println(dao.rateOrders(1));
+        System.out.println(dao.rateOrders(2));
+    }
+
+    public Map<Customers, Double> getTop5Customers() {
+        DAOOrders daoOrders = new DAOOrders();
+        DAOAccounts daoAccounts = new DAOAccounts();
+        Map<Customers, Double> map = new HashMap<>();
+        String sql = "SELECT * FROM dbo.Customers";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                int customerID = rs.getInt("CustomerID");
+                String customerName = rs.getString("CustomerName");
+                boolean gender = rs.getBoolean("Gender");
+                String phone = rs.getString("Phone");
+                String email = rs.getString("Email");
+                String address = rs.getString("Address");
+                int id = rs.getInt("ID");
+                String password = rs.getString("Password");
+                Blob blob = rs.getBlob("Image");
+
+                InputStream inputStream = blob.getBinaryStream();
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[4096];
+                int bytesRead = -1;
+                try {
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                    byte[] imageBytes = outputStream.toByteArray();
+                    String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+                    inputStream.close();
+                    outputStream.close();
+                    double totalMoney = daoOrders.getTotalMoneyByCustomerID(customerID);
+
+                    map.put(new Customers(customerID, gender, customerName, phone, email, address, daoAccounts.getID(id), id, password, base64Image, totalMoney), totalMoney);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        List<Map.Entry<Customers, Double>> list = new Vector<>(map.entrySet());
+
+        Collections.sort(list, new Comparator<Map.Entry<Customers, Double>>() {
+            public int compare(Map.Entry<Customers, Double> o1, Map.Entry<Customers, Double> o2) {
+                return -(int) (o1.getValue() - o2.getValue());
+            }
+        });
+
+        Map<Customers, Double> sortedMap = new LinkedHashMap<>();
+
+        for (Map.Entry<Customers, Double> entry : list) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+
+        return sortedMap;
+    }
+
+    public double rateOrders(int id) {
+        double rate = 0;
+        DAOOrders daoOrders = new DAOOrders();
+
+        String sql = "SELECT Status, COUNT(*) AS Number FROM dbo.Orders INNER JOIN dbo.Customers ON Customers.CustomerID = Orders.CustomerID\n"
+                + "WHERE Customers.CustomerID = ?\n"
+                + "GROUP BY Status";
+
+        HashMap<Boolean, Integer> numbers = new HashMap<>();
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, id);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                Boolean status = rs.getBoolean("Status");
+                Integer number = rs.getInt("Number");
+                numbers.put(status, number);
+            }
+            int total = daoOrders.TotalOrdersByCustomers(id);
+            System.out.println(total);
+            if (total != 0) {
+                for (Map.Entry<Boolean, Integer> entry : numbers.entrySet()) {
+                    Boolean key = entry.getKey();
+                    Integer val = entry.getValue();
+                    System.out.println(key);
+                    if (key == true) {
+                        rate = (double) val / total;
+                    }
+                }
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return rate;
+    }
+
     public Vector<Customers> getListByPage(Vector<Customers> vector,
             int start, int end) {
         Vector<Customers> arr = new Vector<>();
@@ -34,7 +149,7 @@ public class DAOCustomers extends DBContext {
         }
         return arr;
     }
-    
+
     public Customers LoginAdmin(String pass, String user) {
         Customers cus = null;
         String sql = "SELECT Customers.*, Accounts.UserName, Accounts.Role, Accounts.RegistrationDate, Accounts.Status FROM dbo.Customers INNER JOIN dbo.Accounts ON Accounts.ID = Customers.ID \n"
@@ -45,7 +160,7 @@ public class DAOCustomers extends DBContext {
             pre.setString(1, user);
             pre.setString(2, pass);
             ResultSet rs = pre.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 int customerID = rs.getInt("CustomerID");
                 String customerName = rs.getString("CustomerName");
                 boolean gender = rs.getBoolean("Gender");
@@ -76,8 +191,7 @@ public class DAOCustomers extends DBContext {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        
-        
+
         return cus;
 
     }
@@ -92,8 +206,12 @@ public class DAOCustomers extends DBContext {
             pre.setBoolean(1, c.getAcc().isStatus());
             pre.setInt(2, c.getAcc().getId());
             number = pre.executeUpdate();
-            if(number > 0 && !c.getAcc().isStatus()) send.sendLockAccount(c.getEmail());
-            if(number > 0 && c.getAcc().isStatus()) send.sendUnLockAccount(c.getEmail());
+            if (number > 0 && !c.getAcc().isStatus()) {
+                send.sendLockAccount(c.getEmail());
+            }
+            if (number > 0 && c.getAcc().isStatus()) {
+                send.sendUnLockAccount(c.getEmail());
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -522,7 +640,9 @@ public class DAOCustomers extends DBContext {
             pre2.setString(3, cus.getAcc().getUserName());
             pre2.setString(4, cus.getPassword());
             number += pre2.executeUpdate();
-            if(number >= 2) send.sendRegister(cus.getEmail());
+            if (number >= 2) {
+                send.sendRegister(cus.getEmail());
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -605,13 +725,4 @@ public class DAOCustomers extends DBContext {
         return number;
     }
 
-    public static void main(String[] args) {
-        DAOCustomers dao = new DAOCustomers();
-//        Vector<Customers> vector = dao.getCustomerFriendlyBySupplier(1);
-//        for (Customers customers : vector) {
-//            System.out.println(customers);
-//        }
-        System.out.println(dao.getCustomerByID(7));
-        System.out.println(dao.getCustomerByEmail("monsterduckvjpro@gmail.com"));
-    }
 }

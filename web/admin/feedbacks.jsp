@@ -159,7 +159,7 @@
                             <li class="sidebar-item">
                                 <a
                                     class="sidebar-link waves-effect waves-dark sidebar-link"
-                                    href="charts.jsp"
+                                    href="${pageContext.request.contextPath}/admin/charts"
                                     aria-expanded="false"><i class="mdi mdi-chart-bar"></i><span
                                         class="hide-menu">Thống kê</span></a>
                             </li>
@@ -290,7 +290,7 @@
                 <div class="page-breadcrumb">
                     <div class="row">
                         <div class="col-12 d-flex no-block align-items-center">
-                            <h4 class="page-title">Dashboard</h4>
+                            <h4 class="page-title">Feedbacks</h4>
                             <div class="ms-auto text-end">
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">

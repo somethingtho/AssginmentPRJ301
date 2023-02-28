@@ -18,29 +18,6 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/font/themify-icons/themify-icons.css">
         <link href="${pageContext.request.contextPath}/css/index.css" rel="stylesheet" type="text/css"/>
     </head>
-    <style>
-        #myBtn {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            right: 30px;
-            z-index: 99;
-            font-size: 18px;
-            border: none;
-            outline: none;
-            background-color: gray;
-            color: white;
-            cursor: pointer;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-        }
-
-        #myBtn:hover {
-            background-color: black;
-        }
-
-    </style>
 
     <body class="content">
 

@@ -17,67 +17,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>${requestScope.titlePage}</title>
-        <style>
-            .slider {
-                width: 500px;
-                height: 300px;
-                background-color: yellow;
-                margin-left: auto;
-                margin-right: auto;
-                margin-top: 0px;
-                text-align: center;
-                overflow: hidden;
-            }
 
-            .image-container {
-                width: 1500px;
-                background-color: pink;
-                height: 300px;
-                clear: both;
-                position: relative;
-                -webkit-transition: left 2s;
-                -moz-transition: left 2s;
-                -o-transition: left 2s;
-                transition: left 2s;
-            }
-
-            .slide {
-                float: left;
-                margin: 0px;
-                padding: 0px;
-                position: relative;
-            }
-
-            #slide-1:target~.image-container {
-                left: 0px;
-            }
-
-            #slide-2:target~.image-container {
-                left: -500px;
-            }
-
-            #slide-3:target~.image-container {
-                left: -1000px;
-            }
-
-            .buttons {
-                position: relative;
-                top: -20px;
-            }
-
-            .buttons a {
-                display: inline-block;
-                height: 15px;
-                width: 15px;
-                border-radius: 50px;
-            }
-            .carousel-control.right{
-                background-image: linear-gradient(to right,rgba(0,0,0,.0001) 0,rgba(0,0,0,.5) 1000%);
-            }
-            .carousel-control.left{
-                background-image: linear-gradient(to right,rgba(0,0,0,.5) 0,rgba(0,0,0,.0001) 0%)
-            }
-        </style>
     </head>
 
     <%

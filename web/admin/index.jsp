@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html>
@@ -20,8 +21,10 @@
         <link href="assets/libs/flot/css/float-chart.css" rel="stylesheet" />
         <link href="dist/css/style.min.css" rel="stylesheet" />
 
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.25.0/dist/apexcharts.min.js"></script>
     </head>
-    <body>
+    <body onload="drawChart()">
 
         <fmt:setLocale value = "vi_VN"/>
         <%
@@ -132,7 +135,7 @@
                             <li class="sidebar-item">
                                 <a
                                     class="sidebar-link waves-effect waves-dark sidebar-link"
-                                    href="charts.jsp"
+                                    href="${pageContext.request.contextPath}/admin/charts"
                                     aria-expanded="false"
                                     ><i class="mdi mdi-chart-bar"></i
                                     ><span class="hide-menu">Thống kê</span></a
@@ -285,6 +288,7 @@
                     </div>
                 </div>
 
+
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12">
@@ -293,22 +297,28 @@
                                     <div class="d-md-flex align-items-center">
                                         <div>
                                             <h4 class="card-title">Site Analysis</h4>
-                                            <h5 class="card-subtitle">Overview of Latest Month</h5>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <!-- column -->
-                                        <div class="col-lg-9">
-                                            <div class="flot-chart">
-                                                <div class="flot-chart-content" id="flot-line-chart"></div>
+                                            <form action="${pageContext.request.contextPath}/admin/index" method="get">
+                                                <select name="year" onchange="this.form.submit()">
+                                                    <optgroup label="Year">
+                                                        <option value="2023" <c:if test="${requestScope.year == 2023}">selected</c:if>>2023</option>
+                                                        <option value="2022" <c:if test="${requestScope.year == 2022}">selected</c:if>>2022</option>
+                                                    </select>
+                                                </form>
                                             </div>
                                         </div>
-                                        <div class="col-lg-3">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <div class="bg-dark p-10 text-white text-center">
-                                                        <i class="mdi mdi-account fs-3 mb-1 font-16"></i>
-                                                        <h5 class="mb-0 mt-1">${requestScope.totalCustomers}</h5>
+                                        <div class="row">
+                                            <!-- column -->
+                                            <div class="col-lg-9">
+                                                <div class="flot-chart">
+                                                    <div id="chart"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="bg-dark p-10 text-white text-center">
+                                                            <i class="mdi mdi-account fs-3 mb-1 font-16"></i>
+                                                            <h5 class="mb-0 mt-1">${requestScope.totalCustomers}</h5>
                                                         <small class="font-light">Total Users</small>
                                                     </div>
                                                 </div>
@@ -397,15 +407,15 @@
                                                         <span class="text-muted float-end">${r.dateRate}</span>
                                                     <form action="" method="POST" id="review" name="review">
                                                         <button type="button" onclick="changeReview('public', '${r.id}')" class="  btn btn-success btn-sm text-white <c:if test="${r.status}">disabled</c:if>">
-                                                            Publish
-                                                        </button>
-                                                        <button type="button" onclick="changeReview('hidden', '${r.id}')" class="btn btn-danger btn-sm text-white <c:if test="${!r.status}">disabled</c:if>">
-                                                            Hidden
-                                                        </button>
-                                                    </form>
+                                                                Publish
+                                                            </button>
+                                                            <button type="button" onclick="changeReview('hidden', '${r.id}')" class="btn btn-danger btn-sm text-white <c:if test="${!r.status}">disabled</c:if>">
+                                                                Hidden
+                                                            </button>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
                                     </c:forEach>
 
                                 </div>
@@ -444,6 +454,50 @@
                                     </table>
                                 </div>
                             </div>
+
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-0">Khách hàng thân thiết</h5>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th scope="col">Họ và tên</th>
+                                                <th scope="col">Email</th>
+                                                <th scope="col">Số điện thoại</th>
+                                                <th scope="col">Giới tính</th>
+                                                <th scope="col">Địa chỉ</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Chi tiêu</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="customtable">
+                                            <c:forEach items="${requestScope.customerVjp}" var="vjp">
+                                                <tr>
+                                                    <td>${vjp.key.customerID}</td>
+                                                    <td><a href="${pageContext.request.contextPath}/admin/profile?type=customer&id=${vjp.key.customerID}">${vjp.key.customerName}</a></td>
+                                                    <td>${vjp.key.email}</td>
+                                                    <td>${vjp.key.phone}</td>
+                                                    <td><c:choose>
+                                                            <c:when test="${!vjp.key.gender}">Nữ</c:when>
+                                                            <c:otherwise>Nam</c:otherwise>
+                                                        </c:choose></td>
+                                                    <td>${vjp.key.address}</td>
+                                                    <td><c:choose>
+                                                            <c:when test="${vjp.key.acc.status}">Hoạt động</c:when>
+                                                            <c:otherwise>Khoá</c:otherwise>
+                                                        </c:choose></td>
+                                                    <td><fmt:formatNumber value = "${vjp.value}" type = "currency"/></td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                     <footer class="footer text-center">
@@ -471,17 +525,103 @@
             <script src="assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
             <script src="dist/js/pages/chart/chart-page-init.js"></script>
             <script>
-                                                            function changeReview(type, id) {
-                                                                let text;
-                                                                if (type === 'hidden')
-                                                                    text = "ẩn";
-                                                                else
-                                                                    text = "hiển thị";
-                                                                if (confirm("Bạn có chắc muốn " + text + " bình luận này?") === true) {
-                                                                    document.getElementById("review").action = "${pageContext.request.contextPath}/admin/updatereview?rid=" + id + "&type=" + type;
-                                                                    document.getElementById("review").submit();
+                                                                function changeReview(type, id) {
+                                                                    let text;
+                                                                    if (type === 'hidden')
+                                                                        text = "ẩn";
+                                                                    else
+                                                                        text = "hiển thị";
+                                                                    if (confirm("Bạn có chắc muốn " + text + " bình luận này?") === true) {
+                                                                        document.getElementById("review").action = "${pageContext.request.contextPath}/admin/updatereview?rid=" + id + "&type=" + type;
+                                                                        document.getElementById("review").submit();
+                                                                    }
                                                                 }
-                                                            }
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                if (${requestScope.year eq requestScope.yearNow}) {
+                                                                    var now = new Date();
+                                                                    var year = now.getFullYear();
+                                                                    var month = now.getMonth();
+
+                                                                    var monthNames = Array.from({length: month + 1}, (_, i) => {
+                                                                        var date = new Date(year, i, 1);
+                                                                        return date.toLocaleString('default', {month: 'long'});
+                                                                    });
+                                                                } else {
+                                                                    var year = new Date().getFullYear();
+
+                                                                    var monthNames = [];
+
+                                                                    for (let month = 0; month < 12; month++) {
+                                                                        var date = new Date(year, month, 1);
+                                                                         monthName = date.toLocaleString('default', {month: 'long'});
+                                                                        monthNames.push(monthName);
+                                                                    }
+
+                                                                }
+
+
+                                                                var data1 = [];
+                                                                var data2 = [];
+
+                <c:forEach var="item" items="${requestScope.accessByMonth}">
+                                                                data1.push(${item});
+                </c:forEach>
+
+                <c:forEach var="item" items="${requestScope.ordersByMonth}">
+                                                                data2.push(${item});
+                </c:forEach>
+                                                                function drawChart() {
+                                                                    var chartData = {
+                                                                        series: [
+                                                                            {
+                                                                                name: "Number Orders",
+                                                                                type: "column",
+                                                                                data: data2,
+                                                                            },
+                                                                            {
+                                                                                name: "Active Users",
+                                                                                type: "line",
+                                                                                data: data1,
+                                                                            },
+                                                                        ],
+                                                                        xaxis: {
+                                                                            categories: monthNames,
+                                                                        },
+                                                                    };
+
+                                                                    // Define options for chart
+                                                                    var chartOptions = {
+                                                                        chart: {
+                                                                            height: 350,
+                                                                            type: "line",
+                                                                            stacked: false,
+                                                                        },
+                                                                        dataLabels: {
+                                                                            enabled: false,
+                                                                        },
+                                                                        colors: ["#008FFB", "#00E396"],
+                                                                        series: chartData.series,
+                                                                        xaxis: chartData.xaxis,
+                                                                    };
+
+                                                                    // Initialize ApexCharts object with chart data and options
+                                                                    var chart = new ApexCharts(document.querySelector("#chart"), chartOptions);
+
+                                                                    // Render the chart
+                                                                    chart.render();
+                                                                }
+
             </script>
     </body>
 </html>

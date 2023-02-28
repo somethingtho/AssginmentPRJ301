@@ -30,6 +30,7 @@
             href="assets/libs/magnific-popup/dist/magnific-popup.css"
             rel="stylesheet"
             />
+        <link href="dist/css/accounts.css" rel="stylesheet" type="text/css"/>
         <link href="dist/css/style.min.css" rel="stylesheet" />
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -39,28 +40,6 @@
         <![endif]-->
     </head>
 
-    <style>
-        #myBtn {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            right: 30px;
-            z-index: 99;
-            font-size: 18px;
-            border: none;
-            outline: none;
-            background-color: gray;
-            color: white;
-            cursor: pointer;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-        }
-
-        #myBtn:hover {
-            background-color: black;
-        }
-    </style>
 
     <body>
         <button onclick="topFunction()" id="myBtn" title="Go to top"><i style="text-align: center" class="ti-arrow-up"></i></button>

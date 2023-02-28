@@ -158,7 +158,7 @@
                             <li class="sidebar-item">
                                 <a
                                     class="sidebar-link waves-effect waves-dark sidebar-link"
-                                    href="charts.jsp"
+                                    href="${pageContext.request.contextPath}/admin/charts"
                                     aria-expanded="false"><i class="mdi mdi-chart-bar"></i><span
                                         class="hide-menu">Thống kê</span></a>
                             </li>

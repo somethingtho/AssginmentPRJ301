@@ -13,7 +13,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSessionEvent;
+import java.sql.SQLException;
 import model.DAOCustomers;
+import model.DAOViews;
 
 /**
  *
@@ -70,11 +73,14 @@ public class LoginServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    public static int activeSessions = 0;
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOCustomers daoCustomers = new DAOCustomers();
 
+        DAOCustomers daoCustomers = new DAOCustomers();
+        DAOViews daoView = new DAOViews();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String remember = request.getParameter("remember");
@@ -92,14 +98,22 @@ public class LoginServlet extends HttpServlet {
                 Cookie cuser = new Cookie("user", username);
                 Cookie cpass = new Cookie("pass", password);
                 Cookie cr = new Cookie("cr", remember);
+                int loginCount = daoView.getLoginCountForCurrentDay();
+                loginCount++;
+                daoView.saveLoginCountForCurrentDay(loginCount);
+                synchronized (this) {
+                    activeSessions++;
+                }
+
+                System.out.println(activeSessions);
                 if (remember == null) {
                     cuser.setMaxAge(0);
                     cpass.setMaxAge(0);
                     cr.setMaxAge(0);
                 } else {
-                    cuser.setMaxAge(60*60 * 60);
-                    cpass.setMaxAge(60*60 * 60);
-                    cr.setMaxAge(60*60 * 60);
+                    cuser.setMaxAge(60 * 60 * 60);
+                    cpass.setMaxAge(60 * 60 * 60);
+                    cr.setMaxAge(60 * 60 * 60);
                 }
                 response.addCookie(cr);
                 response.addCookie(cuser);
@@ -109,6 +123,12 @@ public class LoginServlet extends HttpServlet {
 
         }
 
+    }
+
+    public void sessionDestroyed(HttpSessionEvent event) {
+        synchronized (this) {
+            activeSessions--;
+        }
     }
 
     /**

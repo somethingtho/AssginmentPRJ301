@@ -5,7 +5,9 @@
 package model;
 
 import entity.Accounts;
+import entity.Categories;
 import entity.Customers;
+import entity.Products;
 import entity.Suppliers;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -15,6 +17,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Base64;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +31,56 @@ import java.util.logging.Logger;
  * @author daova
  */
 public class DAOSuppliers extends DBContext {
+
+    public static void main(String[] args) {
+        DAOSuppliers daoSup = new DAOSuppliers();
+        Vector<Suppliers> vector = daoSup.getNumberProductsBySupplier();
+        for (Suppliers suppliers : vector) {
+            System.out.println(suppliers);
+        }
+    }
     
+    public Vector<Suppliers> getNumberProductsBySupplier() {
+        String sql = "SELECT Products.SupplierID, COUNT(ProductID) AS Number FROM dbo.Suppliers INNER JOIN dbo.Products ON Products.SupplierID = Suppliers.SupplierID\n"
+                + "GROUP BY Products.SupplierID";
+        Vector<Suppliers> vector = new Vector<>();
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            while(rs.next()){
+                int sid = rs.getInt("SupplierID");
+                int number = rs.getInt("Number");
+                Suppliers s = getSuppliersBySupplierID(sid);
+                s.setNumber(number);
+                vector.add(s);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return vector;
+    }
+
+    public Vector<Categories> NumberOfProductsBySupplier(int id) {
+        DAOCategories daoCategories = new DAOCategories();
+        Vector<Categories> vector = new Vector<>();
+        String sql = "SELECT CategoryID,COUNT(*) AS Number FROM dbo.Products WHERE SupplierID = ? GROUP BY CategoryID";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, id);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                int cid = rs.getInt("CategoryID");
+                int number = rs.getInt("Number");
+                Categories category = daoCategories.getCategoryByCategoryID(cid);
+                category.setNumber(number);
+                vector.add(category);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return vector;
+    }
+
     public Vector<Suppliers> getListByPage(Vector<Suppliers> vector,
             int start, int end) {
         Vector<Suppliers> arr = new Vector<>();
@@ -33,7 +89,7 @@ public class DAOSuppliers extends DBContext {
         }
         return arr;
     }
-    
+
     public Vector<Suppliers> getNextSuppliersByAdmin(int amount) {
         Vector<Suppliers> vector = new Vector<>();
         String sql = "SELECT TOP 5 * FROM Suppliers ORDER BY SupplierID ASC OFFSET ? ROWS FETCH NEXT 5 ROWS ONLY";
@@ -56,8 +112,7 @@ public class DAOSuppliers extends DBContext {
 
         return vector;
     }
-    
-    
+
     public Vector<Suppliers> getAllSuppliersByAdmin() {
         Vector<Suppliers> vector = new Vector<>();
         String sql = "SELECT TOP 5 * FROM Suppliers ORDER BY SupplierID ASC";
@@ -78,11 +133,11 @@ public class DAOSuppliers extends DBContext {
 
         return vector;
     }
-    
-    public int UpdateSupplier(Suppliers s){
+
+    public int UpdateSupplier(Suppliers s) {
         int number = 0;
         String sql = "UPDATE Suppliers SET CompanyName = ?, Phone = ?, HomePage = ?, Email =?, Status = ? WHERE SupplierID = ?";
-        
+
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setString(1, s.getCompanyName());
@@ -95,13 +150,11 @@ public class DAOSuppliers extends DBContext {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        
-        
+
         return number;
     }
-    
-    
-    public int AddNewSupplier(Suppliers s){
+
+    public int AddNewSupplier(Suppliers s) {
         int number = 0;
         String sql = "INSERT INTO Suppliers(CompanyName, Phone, Email, homePage, Status) VALUES(?,?,?,?,?)";
         try {
@@ -115,14 +168,14 @@ public class DAOSuppliers extends DBContext {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        
+
         return number;
     }
-    
-    public int AccountSupplier(Suppliers s ){
+
+    public int AccountSupplier(Suppliers s) {
         int number = 0;
         String sql = "UPDATE Suppliers SET Status = ?, CompanyName = ?, Email = ?, Phone = ?, HomePage = ? WHERE SupplierID = ?";
-        
+
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setBoolean(1, s.isStatus());
@@ -135,10 +188,9 @@ public class DAOSuppliers extends DBContext {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        
+
         return number;
     }
-
 
     public Suppliers GetSupplierByCompanyName(String name) {
         Suppliers sup = null;
@@ -162,7 +214,6 @@ public class DAOSuppliers extends DBContext {
         }
         return sup;
     }
-
 
     public Vector<Suppliers> GetNumberProductsByShipper(int shipperID) {
         Vector<Suppliers> vector = new Vector<>();
@@ -296,7 +347,7 @@ public class DAOSuppliers extends DBContext {
         ResultSet rs = getData(sql);
         try {
             while (rs.next()) {
-               int supplierID = rs.getInt("SupplierID");
+                int supplierID = rs.getInt("SupplierID");
                 String companyName = rs.getString("CompanyName");
                 vector.add(new Suppliers(supplierID, companyName));
             }
@@ -322,7 +373,7 @@ public class DAOSuppliers extends DBContext {
                 String email = rs.getString("Email");
                 String homePage = rs.getString("HomePage");
                 boolean status = rs.getBoolean("Status");
-                sup = new Suppliers(supplierID, companyName, phone, email, homePage,status);
+                sup = new Suppliers(supplierID, companyName, phone, email, homePage, status);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -346,7 +397,7 @@ public class DAOSuppliers extends DBContext {
                 String email = rs.getString("Email");
                 String homePage = rs.getString("HomePage");
                 boolean status = rs.getBoolean("Status");
-                supplier = new Suppliers(supplierID, companyName, phone, email, homePage,status);
+                supplier = new Suppliers(supplierID, companyName, phone, email, homePage, status);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -354,15 +405,6 @@ public class DAOSuppliers extends DBContext {
         return supplier;
     }
 
-
-    public static void main(String[] args) {
-        DAOSuppliers daoSup = new DAOSuppliers();
-        System.out.println(daoSup.TotalSuppliersByShipper(1));
-        System.out.println(daoSup.TotalSuppliers());
-        Vector<Suppliers> vector = daoSup.GetNumberProductsByShipper(1);
-        for (Suppliers suppliers : vector) {
-            System.out.println(suppliers);
-        }
-    }
+    
 
 }

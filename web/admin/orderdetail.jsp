@@ -15,7 +15,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         <meta name="robots" content="noindex,nofollow" />
-        <title>Profile for ${requestScope.entity.companyName}</title>
+        <title>INVOICE #${requestScope.order.orderID}</title>
         <!-- Favicon icon -->
         <link
             rel="icon"
@@ -436,33 +436,31 @@
                                         <div class="pull-left">
                                             <address>
                                                 <h3>
-                                                    &nbsp;<b class="text-danger">Material Pro Admin</b>
+                                                    &nbsp;<b class="text-danger">${requestScope.supplier.companyName}</b>
                                                 </h3>
                                                 <p class="text-muted ms-1">
-                                                    E 104, Dharti-2, <br />
-                                                    Nr' Viswakarma Temple, <br />
-                                                    Talaja Road, <br />
-                                                    Bhavnagar - 364002
+                                                    Phone:  <i class="mdi mdi-phone"></i> ${requestScope.supplier.phone}<br>
+                                                    Email: <i class="mdi mdi-email"></i>  ${requestScope.supplier.email}<br>
+                                                    HomePage: <i class="mdi mdi-web"></i>  <a href="${requestScope.supplier.homePage}" target="_blank">${requestScope.supplier.companyName}</a><br>
                                                 </p>
                                             </address>
                                         </div>
                                         <div class="pull-right text-end">
                                             <address>
                                                 <h3>To,</h3>
-                                                <h4 class="font-bold">Gaala & Sons,</h4>
+                                                <h4 class="font-bold">${requestScope.order.cus.customerName}</h4>
                                                 <p class="text-muted ms-4">
-                                                    E 104, Dharti-2, <br />
-                                                    Nr' Viswakarma Temple, <br />
-                                                    Talaja Road, <br />
-                                                    Bhavnagar - 364002
+                                                    <i class="mdi mdi-account-card-details"></i>:   ${requestScope.order.address}<br />
+                                                    <i class="mdi mdi-phone"></i>:   ${requestScope.order.cus.phone}<br />
+                                                    <i class="mdi mdi-email"></i>:   ${requestScope.order.cus.email}<br />
                                                 </p>
                                                 <p class="mt-4">
                                                     <b>Invoice Date :</b>
-                                                    <i class="mdi mdi-calendar"></i> 23rd Jan 2018
+                                                    <i class="mdi mdi-calendar"></i> ${requestScope.order.orderDate}
                                                 </p>
                                                 <p>
                                                     <b>Due Date :</b>
-                                                    <i class="mdi mdi-calendar"></i> 25th Jan 2018
+                                                    <i class="mdi mdi-calendar"></i> ${requestScope.order.requireDate}
                                                 </p>
                                             </address>
                                         </div>
@@ -473,57 +471,57 @@
                                                 <thead>
                                                     <tr>
                                                         <th class="text-center">#</th>
-                                                        <th>Description</th>
-                                                        <th class="text-end">Quantity</th>
-                                                        <th class="text-end">Unit Cost</th>
-                                                        <th class="text-end">Total</th>
+                                                        <th>Tên sản phẩm</th>
+                                                        <th class="text-end">Thương hiệu</th>
+                                                        <th class="text-end">Danh mục</th>
+                                                        <th class="text-end">Số lượng</th>
+                                                        <th class="text-end">Giá tiền</th>
+                                                        <th class="text-end">Tổng</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td class="text-center">1</td>
-                                                        <td>Milk Powder</td>
-                                                        <td class="text-end">2</td>
-                                                        <td class="text-end">$24</td>
-                                                        <td class="text-end">$48</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="text-center">2</td>
-                                                        <td>Air Conditioner</td>
-                                                        <td class="text-end">3</td>
-                                                        <td class="text-end">$500</td>
-                                                        <td class="text-end">$1500</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="text-center">3</td>
-                                                        <td>RC Cars</td>
-                                                        <td class="text-end">20</td>
-                                                        <td class="text-end">%600</td>
-                                                        <td class="text-end">$12000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="text-center">4</td>
-                                                        <td>Down Coat</td>
-                                                        <td class="text-end">60</td>
-                                                        <td class="text-end">$5</td>
-                                                        <td class="text-end">$300</td>
-                                                    </tr>
+                                                    <c:set var="i" scope="page" target="" value="1"></c:set>
+                                                    <c:forEach items="${requestScope.order.orderDetails}" var="orderDetail">
+                                                        <tr>
+                                                            <td class="text-center">${i}</td>
+                                                            <td>${orderDetail.product.productName}</td>
+                                                            <td class="text-end">${orderDetail.product.supplier.companyName}</td>
+                                                            <td class="text-end">${orderDetail.product.category.categoryName}</td>
+                                                            <td class="text-end">${orderDetail.quantity}</td>
+                                                            <td class="text-end"><fmt:formatNumber type="currency" value="${orderDetail.unitPrice}"/></td>
+                                                            <td class="text-end"><fmt:formatNumber type="currency" value="${orderDetail.unitPrice * orderDetail.quantity}"/></td>
+                                                        </tr>
+                                                        <c:set var="i" value="${i+1}"></c:set>
+                                                    </c:forEach>
+
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="pull-right mt-4 text-end">
-                                            <p>Sub - Total amount: $13,848</p>
-                                            <p>vat (10%) : $138</p>
-                                            <hr />
-                                            <h3><b>Total :</b> $13,986</h3>
+                                            <p class="mt-4">
+                                                <b>Hình thức thanh toán: </b>
+                                                <i class="mdi mdi-credit-card"></i>
+                                                <c:choose>
+                                                    <c:when test="${requestScope.order.payments}"> QR code</c:when>
+                                                    <c:otherwise>Delivered</c:otherwise>
+                                                </c:choose>
+                                            </p>
+                                            <p class="mt-4">
+                                                <b>Tình trạng: </b>
+                                                <c:choose>
+                                                    <c:when test="${requestScope.order.status}"><i class="mdi mdi-check"></i>Success</c:when>
+                                                    <c:otherwise><i class="mdi mdi-close"></i>Fail</c:otherwise>
+                                                </c:choose>
+                                            </p>
+                                            <h3><b>Tổng tiền: </b> <fmt:formatNumber type="currency" value="${order.totalMoney}"/></h3>
                                         </div>
                                         <div class="clearfix"></div>
                                         <hr />
-                                        <div class="text-end">
-                                            <button class="btn btn-danger text-white" type="submit">
-                                                Proceed to payment
+                                        <div>
+                                            <button class="btn btn-orange text-white" onclick="history.back()">
+                                                Trở về
                                             </button>
                                         </div>
                                     </div>

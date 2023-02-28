@@ -4,6 +4,8 @@
  */
 package controller.admin;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import entity.Products;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,8 +13,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.util.*;
 import model.DAOProducts;
+import org.json.JSONObject;
 
 /**
  *
@@ -60,11 +64,25 @@ public class LoadMoreServlet extends HttpServlet {
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
 
-        DAOProducts daoProdcuts = new DAOProducts();
+        DAOProducts daoProducts = new DAOProducts();
         String amount = request.getParameter("total");
         int total = Integer.parseInt(amount);
-        
-        Vector<Products> vector = daoProdcuts.getNextProducts(total);
+        String discontinued_raw = request.getParameter("discontinued");
+        String category = request.getParameter("categoryID");
+        String orderby_raw = request.getParameter("orderby");
+//        int[] sid = null;
+//        if (sid_raw != null) {
+//            sid = new int[sid_raw.length];
+//            for (int i = 0; i < sid.length; i++) {
+//                sid[i] = Integer.parseInt(sid_raw[i]);
+//            }
+//        }
+        String supplierIDJson = request.getParameter("data");
+        ObjectMapper mapper = new ObjectMapper();
+        int[] sid = mapper.readValue(supplierIDJson, int[].class);
+        Vector<Products> vector = daoProducts.getNextProducts(sid, category, amount, discontinued_raw, total);
+
+
         for (Products products : vector) {
             out.print("<div class=\"col-lg-3 col-md-6\">\n"
                     + "                                <div class=\"card\">\n"
@@ -100,6 +118,7 @@ public class LoadMoreServlet extends HttpServlet {
                     + "                                </div>\n"
                     + "                            </div>");
         }
+
     }
 
     /**
@@ -114,6 +133,19 @@ public class LoadMoreServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+    }
+
+    private boolean isCheck(int d, int[] id) {
+        if (id == null) {
+            return false;
+        } else {
+            for (int i = 0; i < id.length; i++) {
+                if (id[i] == d) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
     /**

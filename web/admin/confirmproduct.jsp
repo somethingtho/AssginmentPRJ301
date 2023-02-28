@@ -30,6 +30,7 @@
             />
         <link href="assets/libs/jquery-steps/steps.css" rel="stylesheet" />
         <link href="dist/css/style.min.css" rel="stylesheet" />
+        <link href="dist/css/confirmproduct.css" rel="stylesheet" type="text/css"/>
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -37,53 +38,6 @@
           <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-
-
-
-    <style>
-
-        .image-area {
-            margin: 30px 10px;
-            position: relative;
-            width: 30%;
-            border-left: 1px solid black;
-        }
-        .image-area img {
-            max-width: 100%;
-            height: auto;
-        }
-        .remove-image {
-            display: none;
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            border-radius: 10em;
-            padding: 2px 6px 3px;
-            text-decoration: none;
-            font: 700 21px/20px sans-serif;
-            background: #555;
-            border: 3px solid #fff;
-            color: #fff;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5),
-                inset 0 2px 4px rgba(0, 0, 0, 0.3);
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-            -webkit-transition: background 0.5s;
-            transition: background 0.5s;
-        }
-        .remove-image:hover {
-            background: #e54e4e;
-            padding: 3px 7px 5px;
-            top: -11px;
-            right: -11px;
-        }
-        .remove-image:active {
-            background: #e54e4e;
-            top: -10px;
-            right: -11px;
-        }
-    </style>
-
-
 
     <body>
         <fmt:setLocale value = "vi_VN"/>
@@ -677,6 +631,16 @@
                                         class="form-control"
                                         value="${requestScope.product.proInfo.batteryCapacity}"
                                         />
+
+                                    <label for="DateCreated">DateCreated</label>
+                                    <input
+                                        id="DateCreated"
+                                        name="DateCreated"
+                                        type="text"
+                                        readonly
+                                        class="form-control"
+                                        value="${requestScope.product.proInfo.dateCreated}"
+                                        />
                                     <h3>Hình ảnh sản phẩm</h3>
                                     <p>Thêm các hình ảnh của sản phẩm</p>
 
@@ -771,9 +735,9 @@
         <script src="assets/libs/jquery-validation/dist/jquery.validate.min.js"></script>
         <script>
 
-                                            alert('Submit the form successfully!')
-                                            document.getElementById('example-form').action = '${pageContext.request.contextPath}/admin/updateproduct'; // change the form action to the new URL
-                                            document.getElementById('example-form').submit(); // submit the form
+                                        alert('Submit the form successfully!')
+                                        document.getElementById('example-form').action = '${pageContext.request.contextPath}/admin/updateproduct'; // change the form action to the new URL
+                                        document.getElementById('example-form').submit(); // submit the form
                                         }
 
         </script>

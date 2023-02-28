@@ -27,7 +27,30 @@
             href="assets/libs/magnific-popup/dist/magnific-popup.css"
             rel="stylesheet"
             />
+
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="assets/libs/select2/dist/css/select2.min.css"
+            />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="assets/libs/jquery-minicolors/jquery.minicolors.css"
+            />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="assets/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css"
+            />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="assets/libs/quill/dist/quill.snow.css"
+            />
+
         <link href="dist/css/style.min.css" rel="stylesheet" />
+        <link href="dist/css/products.css" rel="stylesheet" type="text/css"/>
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -35,151 +58,9 @@
           <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <style>
-        .btn_sample:link,
-        .btn_sample:visited {
-            text-transform: uppercase;
-            text-decoration: none;
-            color: rgb(27, 27, 27);
-            padding: 10px 30px;
-            border: 1px solid;
-            border-radius: 1000px;
-            display: inline-block;
-            transition: all .2s;
-            position: relative;
-        }
-
-        .btn_sample:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(27, 27, 27, .5);
-        }
-
-        .btn_sample:active {
-            transform: translateY(-3px);
-        }
-
-        .btn_sample::after {
-            content: "";
-            display: inline-block;
-            height: 100%;
-            width: 100%;
-            border-radius: 100px;
-            top: 0;
-            left: 0;
-            position: absolute;
-            z-index: -1;
-            transition: all .3s;
-        }
-
-        .btn_sample:hover::after {
-            background-color: rgb(0, 238, 255);
-            transform: scaleX(1.4) scaleY(1.5);
-            opacity: 0;
-        }
-
-        .btn_sample{
-            margin: 10px 0;
-            height: 50px;
-            border-radius: 1000px;
-        }
-
-
-        .card:hover{
-            border: 2px solid black;
-        }
-
-
-
-
-
-
-
-
-
-
-        .box {
-            width: 140px;
-            height: auto;
-            float: left;
-            transition: .2s linear;
-            position: relative;
-            display: block;
-            overflow: hidden;
-            padding: 15px;
-            text-align: center;
-            margin: 0 5px;
-            background: transparent;
-            text-transform: uppercase;
-            font-weight: 900;
-        }
-
-        .box:before {
-            position: absolute;
-            content: '';
-            left: 0;
-            bottom: 0;
-            height: 4px;
-            width: 100%;
-            border-bottom: 4px solid transparent;
-            border-left: 4px solid transparent;
-            box-sizing: border-box;
-            transform: translateX(100%);
-        }
-
-        .box:after {
-            position: absolute;
-            content: '';
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            border-top: 4px solid transparent;
-            border-right: 4px solid transparent;
-            box-sizing: border-box;
-            transform: translateX(-100%);
-        }
-
-        .box:hover {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-        }
-
-        .box:hover:before {
-            border-color: #262626;
-            height: 100%;
-            transform: translateX(0);
-            transition: .1s transform linear, .1s height linear .1s;
-        }
-
-        .box:hover:after {
-            border-color: #262626;
-            height: 100%;
-            transform: translateX(0);
-            transition: .1s transform linear, .1s height linear .2s;
-        }
-
-        .button {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-            outline: none;
-            border: none;
-            background: transparent;
-
-        }
-
-        .load_more{
-            display: grid;
-            place-items: center;
-        }
-
-
-
-
-
-
-
-    </style>
     <body>
+        
+        <button onclick="topFunction()" id="myBtn" title="Go to top"><i style="text-align: center" class="ti-arrow-up"></i></button>
         <fmt:setLocale value = "vi_VN"/>
         <%
             response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
@@ -520,7 +401,7 @@
 
 
                                 </ul>
-                            </li>
+                            </li> 
                         </ul>
                     </nav>
                     <!-- End Sidebar navigation -->
@@ -560,22 +441,140 @@
                 <!-- ============================================================== -->
                 <!-- Container fluid  -->
                 <!-- ============================================================== -->
+
+
                 <div class="container-fluid">
                     <!-- ============================================================== -->
                     <!-- Start Page Content -->
                     <!-- ============================================================== -->
 
+                    <div class="container-fluid"  style="border: 1px solid black; margin: 10px 0 ">
+                        <form style="margin-top: 10px;">
+                            <div class="form-group row">
+                                <label class="col-md-3 mt-3">Thương hiệu</label>
+                                <div class="col-md-9">
+                                    <c:set var="sup" value="${requestScope.listAllSuppliers}"></c:set>
+                                    <c:set var="ci" value="${requestScope.cid}"></c:set>
+                                        <select
+                                            name="supplierID"
+                                            id="supplierID"
+                                            class="select2 form-select shadow-none mt-3"
+                                            multiple="multiple"
+                                            style="height: 36px; width: 100%"
+                                            >
+                                            <optgroup label="Thương hiệu">
+                                            <c:forEach begin="0" end="${sup.size()-1}" var="i">
+                                                <option ${ci[i]?"selected":""} value="${sup.get(i).supplierID}">${sup.get(i).companyName}</option>
+                                            </c:forEach>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                            </div>
 
-                    <div id="content" class="row el-element-overlay">
+
+                            <div class="form-group row">
+                                <label class="col-md-3 mt-3">Danh mục</label>
+                                <div class="col-md-9">
+                                    <select
+                                        name="categoryID"
+                                        id="categoryID"
+                                        class="select2 form-select shadow-none"
+                                        style="width: 100%; height: 36px"
+                                        >
+                                        <option value="Select">Select</option>
+                                        <optgroup label="Danh mục">
+                                            <c:forEach items="${requestScope.listAllCategories}" var="cate">
+                                                <option <c:if test="${requestScope.category != 'Select' && cate.categoryID eq requestScope.category }">selected</c:if> value="${cate.categoryID}">${cate.categoryName}</option>
+                                            </c:forEach>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                            </div>
 
 
+                            <div class="form-group row">
+                                <label class="col-md-3 mt-3">Sắp xếp theo</label>
+                                <div class="col-md-9">
+                                    <select
+                                        name="orderby"
+                                        id="orderby"
+                                        class="select2 form-select shadow-none"
+                                        style="width: 100%; height: 36px"
+                                        >
+                                        <option value="Select">Select</option>
+                                        <optgroup label="Sắp xếp theo">
+                                            <option <c:if test="${requestScope.orderby_raw eq 'DateCreated1'}">selected</c:if> value="DateCreated1">Ngày tạo(Tăng dần)</option>
+                                            <option <c:if test="${requestScope.orderby_raw eq 'DateCreated2'}">selected</c:if> value="DateCreated2">Ngày tạo(Giảm dần)</option>
+                                            <option <c:if test="${requestScope.orderby_raw eq 'ProductName'}">selected</c:if> value="ProductName">Tên (A-Z)</option>
+                                            <option <c:if test="${requestScope.orderby_raw eq 'UnitPrice1'}">selected</c:if> value="UnitPrice1">Giá(Tăng dần)</option>
+                                            <option <c:if test="${requestScope.orderby_raw eq 'UnitPrice2'}">selected</c:if> value="UnitPrice2">Giá(Giảm dần)</option>
+                                            <option <c:if test="${requestScope.orderby_raw eq 'UnitsOnOrder1'}">selected</c:if> value="UnitsOnOrder1">Số lượng đã bán(Tăng dần)</option>
+                                            <option <c:if test="${requestScope.orderby_raw eq 'UnitsOnOrder2'}">selected</c:if> value="UnitsOnOrder2">Số lượng đã bán(Giảm dần)</option>
+                                            <option <c:if test="${requestScope.orderby_raw eq 'UnitsInStock1'}">selected</c:if> value="UnitsInStock1">Số lượng trong kho(Tăng dần)</option>
+                                            <option <c:if test="${requestScope.orderby_raw eq 'UnitsInStock2'}">selected</c:if> value="UnitsInStock2">Số lượng trong kho(Giảm dần)</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row">
+                                    <label class="col-md-3">Discontinued</label>
+                                    <div class="col-md-9 row">
+                                        <div class="form-check col-md-6">
+                                            <input
+                                                type="radio"
+                                                class="form-check-input"
+                                                id="customControlValidation1"
+                                                name="discontinued"
+                                                value="ON"
+                                            <c:if test="${requestScope.discontinued_raw eq 'ON'}">checked</c:if>
+                                                />
+                                            <label
+                                                class="form-check-label mb-0"
+                                                for="customControlValidation1"
+                                                >Discontinued</label
+                                            >
+                                        </div>
+                                        <div class="form-check col-md-6">
+                                            <input
+                                                type="radio"
+                                                class="form-check-input"
+                                                id="customControlValidation2"
+                                                value="OFF"
+                                            <c:if test="${requestScope.discontinued_raw eq 'OFF'}">checked</c:if>
+                                                name="discontinued"
+                                                />
+                                            <label
+                                                class="form-check-label mb-0"
+                                                for="customControlValidation2"
+                                                >Continued</label
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="btn_search">
+                                    <button type="submit" class="search_btn">
+                                        <span class="search_btn_text">Search</span>
+                                    </button>
+                                </div>
+
+                            </form>
+                        </div>
+
+
+
+
+                        <div id="content" class="row el-element-overlay">
 
                         <c:forEach items="${requestScope.listAllProducts}" var="product">
                             <div class="col-lg-3 col-md-6">
                                 <div class="card">
                                     <div class="el-card-item">
                                         <div class="el-card-avatar el-overlay-1">
-                                            <img src="data:image/jpg;base64,${product.base64Image}" alt="user" />
+                                            <img style="height: 294px;" src="data:image/jpg;base64,${product.base64Image}" alt="user" />
                                             <div class="el-overlay">
                                                 <ul class="list-style-none el-info">
                                                     <li class="el-item">
@@ -664,16 +663,43 @@
         <!-- this page js -->
         <script src="assets/libs/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
         <script src="assets/libs/magnific-popup/meg.init.js"></script>
+        <script src="assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
+        <script src="dist/js/pages/mask/mask.init.js"></script>
+        <script src="assets/libs/select2/dist/js/select2.full.min.js"></script>
+        <script src="assets/libs/select2/dist/js/select2.min.js"></script>
+        <script src="assets/libs/jquery-asColor/dist/jquery-asColor.min.js"></script>
+        <script src="assets/libs/jquery-asGradient/dist/jquery-asGradient.js"></script>
+        <script src="assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js"></script>
+        <script src="assets/libs/jquery-minicolors/jquery.minicolors.min.js"></script>
+        <script src="assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+        <script src="assets/libs/quill/dist/quill.min.js"></script>
+
         <script>
                             function loadMore() {
                                 var amount = document.getElementsByClassName('card').length;
-
+                                
+                                
+                                var supplierID = $('#supplierID').val();
+                                var categoryID = $('#categoryID').val();
+                                var orderby = $('#orderby').val();
+                                var discontinued = $('input[name="discontinued"]:checked').val();
+                                
                                 $.ajax({
                                     url: "${pageContext.request.contextPath}/admin/loadmore",
                                     type: "get",
                                     data: {
-                                        total: amount
+
+                                        data: JSON.stringify(supplierID),
+
+                                        dataType: "json",
+                                        total: amount,
+                                        categoryID: categoryID,
+                                        orderby: orderby,
+                                        discontinued: discontinued
                                     },
+                                    contentType: "application/json",
+                                    
+                                    
                                     success: function (data) {
                                         var row = document.getElementById('content');
                                         row.innerHTML += data;
@@ -683,6 +709,63 @@
                                     }
                                 });
                             }
+
+
+
+
+
+                            $(".select2").select2();
+
+                            $(".demo").each(function () {
+                                $(this).minicolors({
+                                    control: $(this).attr("data-control") || "hue",
+                                    position: $(this).attr("data-position") || "bottom left",
+
+                                    change: function (value, opacity) {
+                                        if (!value)
+                                            return;
+                                        if (opacity)
+                                            value += ", " + opacity;
+                                        if (typeof console === "object") {
+                                            console.log(value);
+                                        }
+                                    },
+                                    theme: "bootstrap",
+                                });
+                            });
+                            /*datwpicker*/
+                            jQuery(".mydatepicker").datepicker();
+                            jQuery("#datepicker-autoclose").datepicker({
+                                autoclose: true,
+                                todayHighlight: true,
+                            });
+                            var quill = new Quill("#editor", {
+                                theme: "snow",
+                            });
+
+
+
+
+                            window.onscroll = function () {
+                                scrollFunction();
+                            };
+
+                            let mybutton = document.getElementById("myBtn");
+
+                            function scrollFunction() {
+                                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                                    mybutton.style.display = "block";
+                                } else {
+                                    mybutton.style.display = "none";
+                                }
+                            }
+
+                            function topFunction() {
+                                document.body.scrollTop = 0;
+                                document.documentElement.scrollTop = 0;
+                            }
+
+
         </script>
     </body>
 </html>

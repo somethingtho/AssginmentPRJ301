@@ -24,13 +24,124 @@ import java.util.logging.Logger;
  * @author daova
  */
 public class DAOOrders extends DBContext {
+    
+    public int newOrdersInMonth(){
+        int number = 0;
+        
+        String sql = "SELECT COUNT(*) AS Number FROM Orders WHERE MONTH(OrderDate) = MONTH(GETDATE()) AND Status = 1";
+        
+        try {
+            ResultSet rs = getData(sql);
+            while(rs.next()){
+                number = rs.getInt("Number");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return number;
+    }
+    
+    public double rateNewOrders(){
+        double rate = 0;
+        int total = 0;
+        String sql = "SELECT COUNT(*) AS Number FROM Orders ";
+        try {
+            ResultSet rs = getData(sql);
+            while(rs.next()){
+                total = rs.getInt("Number");
+            }
+            if(total != 0){
+                rate = (double)newOrdersInMonth()/total;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return rate;
+    }
+    
+
+    public Vector<Integer> NumberOrdersByMonth(int year) {
+        Vector<Integer> vector = new Vector<>();
+
+        String sql = "SELECT MONTH(OrderDate),COUNT(OrderID) AS Number FROM dbo.Orders WHERE YEAR(OrderDate) = ? GROUP BY MONTH(OrderDate) ORDER BY MONTH(OrderDate) ASC";
+
+        PreparedStatement pre;
+        try {
+            pre = connection.prepareStatement(sql);
+            pre.setInt(1, year);
+            ResultSet rs = pre.executeQuery();
+            while(rs.next()){
+                vector.add(rs.getInt("Number"));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return vector;
+    }
+
+    public double getTotalMoneyByCustomerID(int cid) {
+        double money = 0;
+        DAOShippers daoShippers = new DAOShippers();
+        DAOCustomers daoCustomers = new DAOCustomers();
+        DAOOrderDetails daoOrderDetail = new DAOOrderDetails();
+        Vector<Orders> vector = new Vector<>();
+        String sql = "SELECT * FROM Orders WHERE CustomerID = ? AND Status = 1 ORDER BY OrderDate DESC";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, cid);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                int orderID = rs.getInt("OrderID");
+                int customerID = rs.getInt("CustomerID");
+                String orderDate = rs.getString("OrderDate");
+                String requiredDate = rs.getString("RequiredDate");
+                String shippedDate = rs.getString("ShippedDate");
+                int shipVia = rs.getInt("ShipVia");
+                String shipAddress = rs.getString("ShipAddress");
+                boolean payments = rs.getBoolean("Payments");
+                boolean status = rs.getBoolean("Status");
+                Vector<OrderDetails> listOrderDetail = daoOrderDetail.getAllOrderDetailsByOrderID(orderID);
+                Shippers shipper = daoShippers.getShipperByShipperID(shipVia);
+                Customers customer = daoCustomers.getCustomerByCustomerID(customerID);
+                double totalMoney = getTotalMoneyByOrderID(orderID);
+                vector.add(new Orders(orderID, orderDate, requiredDate, shippedDate, shipper, shipAddress, payments, status, listOrderDetail, totalMoney, customer));
+            }
+
+            for (Orders orders : vector) {
+                money += orders.getTotalMoney();
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return money;
+    }
+
+    public int TotalOrdersByCustomers(int id) {
+        int number = 0;
+        String sql = "SELECT COUNT(*) FROM dbo.Orders INNER JOIN dbo.Customers ON Customers.CustomerID = Orders.CustomerID\n"
+                + "WHERE Customers.CustomerID = ?";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, id);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                number = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return number;
+    }
 
     public Vector<Orders> getOrderBySupplier(int sid) {
         Vector<Orders> vector = new Vector<>();
         DAOShippers daoShipper = new DAOShippers();
         DAOCustomers daoCustomers = new DAOCustomers();
         DAOOrderDetails daoOrderDetails = new DAOOrderDetails();
-        DAOOrders daoOrders = new DAOOrders();
         String sql = "SELECT DISTINCT(Orders.OrderID),Orders.CustomerID, Orders.OrderDate, Orders.RequiredDate, Orders.ShippedDate, Orders.ShipVia, Orders.ShipAddress, Orders.Payments, Orders.Status  \n"
                 + "FROM dbo.OrderDetails INNER JOIN dbo.Products ON Products.ProductID = OrderDetails.ProductID\n"
                 + "INNER JOIN dbo.Orders ON Orders.OrderID = OrderDetails.OrderID\n"
@@ -53,7 +164,7 @@ public class DAOOrders extends DBContext {
                 Shippers shipper = daoShipper.getShipperByShipperID(shipVia);
                 Customers cus = daoCustomers.getCustomerByCustomerID(customerID);
                 Vector<OrderDetails> orderDetails = daoOrderDetails.getAllOrderDetailsByOrderID(oid);
-                double totalMoney = daoOrders.getTotalMoneyByOrderID(oid);
+                double totalMoney = getTotalMoneyByOrderID(oid);
                 vector.add(new Orders(oid, orderDate, requiredDate, shippedDate, shipper, shipAddress, payments, status, orderDetails, totalMoney, cus));
             }
         } catch (SQLException ex) {
@@ -84,24 +195,33 @@ public class DAOOrders extends DBContext {
         return number;
     }
 
-    public Vector<Orders> getNewOrder(int shipperID) {
-        DAOCustomers daoCust = new DAOCustomers();
+    public Vector<Orders> getOrderByShipperID(int shipperID) {
+        DAOShippers daoShipper = new DAOShippers();
+        DAOCustomers daoCustomers = new DAOCustomers();
+        DAOOrderDetails daoOrderDetails = new DAOOrderDetails();
         Vector<Orders> vector = new Vector<>();
-        String sql = "SELECT TOP 5 Orders.CustomerID, Orders.OrderID FROM dbo.Orders INNER JOIN dbo.Customers ON Customers.CustomerID = Orders.CustomerID WHERE ShipVia =? ORDER BY OrderDate DESC";
+        String sql = "SELECT * FROM Orders WHERE ShipVia =? ORDER BY OrderDate DESC";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, shipperID);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
+                int oid = rs.getInt("OrderID");
                 int customerID = rs.getInt("CustomerID");
-                int orderID = rs.getInt("OrderID");
-                double totalMoney = getTotalMoneyByOrderID(orderID);
-                Orders od = getOrdersByOrderID(orderID);
-                Customers cus = daoCust.getCustomerByCustomerID(customerID);
-
-                vector.add(new Orders(cus, od, totalMoney));
+                String orderDate = rs.getString("OrderDate");
+                String requiredDate = rs.getString("RequiredDate");
+                String shippedDate = rs.getString("ShippedDate");
+                int shipVia = rs.getInt("ShipVia");
+                String shipAddress = rs.getString("ShipAddress");
+                boolean payments = rs.getBoolean("Payments");
+                boolean status = rs.getBoolean("Status");
+                Shippers shipper = daoShipper.getShipperByShipperID(shipVia);
+                Customers cus = daoCustomers.getCustomerByCustomerID(customerID);
+                double totalMoney = getTotalMoneyByOrderID(oid);
+                vector.add(new Orders(oid, orderDate, requiredDate, shippedDate, shipper, shipAddress, payments, status, totalMoney, cus));
             }
         } catch (SQLException ex) {
+            ex.printStackTrace();
         }
         return vector;
     }
@@ -228,6 +348,8 @@ public class DAOOrders extends DBContext {
     //List ALl Orders
     public Vector getAllOrders() {
         DAOShippers daoShippers = new DAOShippers();
+        DAOCustomers daoCustomers = new DAOCustomers();
+        DAOOrderDetails daoOrderDetails = new DAOOrderDetails();
         Vector<Orders> vector = new Vector<>();
         String sql = "SELECT * FROM Orders";
         ResultSet rs = getData(sql);
@@ -239,11 +361,14 @@ public class DAOOrders extends DBContext {
                 String requiredDate = rs.getString("RequiredDate");
                 String shippedDate = rs.getString("ShippedDate");
                 int shipVia = rs.getInt("ShipVia");
-                String address = rs.getString("Address");
+                String address = rs.getString("ShipAddress");
                 boolean payments = rs.getBoolean("Payments");
                 boolean status = rs.getBoolean("Status");
                 Shippers shipper = daoShippers.getShipperByShipperID(shipVia);
-                vector.add(new Orders(id, customerID, orderDate, requiredDate, shippedDate, shipper, address, payments, status));
+                Customers customer = daoCustomers.getCustomerByCustomerID(customerID);
+                Vector<OrderDetails> orderDetails = daoOrderDetails.getAllOrderDetailsByOrderID(id);
+                double totalMoney = getTotalMoneyByOrderID(id);
+                vector.add(new Orders(id, orderDate, requiredDate, shippedDate, shipper, address, payments, status, orderDetails, totalMoney, customer));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -253,6 +378,7 @@ public class DAOOrders extends DBContext {
 
     public Vector<Orders> getOrdersByCustomerID(int cid) {
         DAOShippers daoShippers = new DAOShippers();
+        DAOCustomers daoCustomers = new DAOCustomers();
         DAOOrderDetails daoOrderDetail = new DAOOrderDetails();
         Vector<Orders> vector = new Vector<>();
         String sql = "SELECT * FROM Orders WHERE CustomerID = ? ORDER BY OrderDate DESC";
@@ -272,7 +398,9 @@ public class DAOOrders extends DBContext {
                 boolean status = rs.getBoolean("Status");
                 Vector<OrderDetails> listOrderDetail = daoOrderDetail.getAllOrderDetailsByOrderID(orderID);
                 Shippers shipper = daoShippers.getShipperByShipperID(shipVia);
-                vector.add(new Orders(orderID, customerID, orderDate, requiredDate, shippedDate, shipper, shipAddress, payments, status, listOrderDetail));
+                Customers customer = daoCustomers.getCustomerByCustomerID(customerID);
+                double totalMoney = getTotalMoneyByOrderID(orderID);
+                vector.add(new Orders(orderID, orderDate, requiredDate, shippedDate, shipper, shipAddress, payments, status, listOrderDetail, totalMoney, customer));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -388,6 +516,7 @@ public class DAOOrders extends DBContext {
 
     public Orders getOrdersByOrderID(int oID) {
         DAOShippers daoShippers = new DAOShippers();
+        DAOCustomers daoCustomers = new DAOCustomers();
         DAOOrderDetails daoOrderDetail = new DAOOrderDetails();
         Orders order = null;
         String sql = "SELECT * FROM Orders WHERE OrderID = ?";
@@ -407,7 +536,9 @@ public class DAOOrders extends DBContext {
                 boolean status = rs.getBoolean("Status");
                 Vector<OrderDetails> listOrderDetail = daoOrderDetail.getAllOrderDetailsByOrderID(orderID);
                 Shippers shipper = daoShippers.getShipperByShipperID(shipVia);
-                order = new Orders(orderID, customerID, orderDate, requiredDate, shippedDate, shipper, shipAddress, payments, status, listOrderDetail);
+                double totalMoney = getTotalMoneyByOrderID(orderID);
+                Customers customer = daoCustomers.getCustomerByCustomerID(customerID);
+                order = new Orders(orderID, orderDate, requiredDate, shippedDate, shipper, shipAddress, payments, status, listOrderDetail, totalMoney, customer);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -416,9 +547,9 @@ public class DAOOrders extends DBContext {
     }
 
     public double getTotalMoneyByOrderID(int oID) {
+        DAOOrderDetails daoOrderDetails = new DAOOrderDetails();
         double total = 0;
-        Orders order = getOrdersByOrderID(oID);
-        Vector<OrderDetails> orderDetail = order.getOrderDetails();
+        Vector<OrderDetails> orderDetail = daoOrderDetails.getAllOrderDetailsByOrderID(oID);
         for (OrderDetails orderDetails : orderDetail) {
             total += orderDetails.getUnitPrice();
         }
@@ -427,5 +558,12 @@ public class DAOOrders extends DBContext {
 
     public static void main(String[] args) throws IOException {
         DAOOrders dao = new DAOOrders();
+        DAOOrderDetails daoOrderDetails = new DAOOrderDetails();
+        Vector<OrderDetails> odd = daoOrderDetails.getAllOrderDetailsByOrderID(1);
+
+        Vector<Orders> list = dao.getOrderBySupplier(1);
+        for (OrderDetails orders : odd) {
+            System.out.println(orders);
+        }
     }
 }
