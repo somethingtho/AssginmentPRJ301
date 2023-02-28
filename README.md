@@ -4,3 +4,6 @@
 - Bootstrap
 - jQuery
 - SMTP
+- Ajax
+- Chart.js
+- Json
