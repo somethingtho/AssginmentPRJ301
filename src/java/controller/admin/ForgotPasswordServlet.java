@@ -3,26 +3,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller.user;
+package controller.admin;
 
-import entity.Products;
-import entity.Suppliers;
+import entity.Customers;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Set;
-import java.util.Vector;
-import model.DAOProducts;
-import model.DAOSuppliers;
-
+import java.util.*;
+import model.DAOCustomers;
+import util.SendEmail;
 /**
  *
- * @author daova
+ * @author ADMIN
  */
-public class TestServlet extends HttpServlet {
+public class ForgotPasswordServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -39,10 +36,10 @@ public class TestServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet TestServlet</title>");  
+            out.println("<title>Servlet ForgotPasswordServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet TestServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ForgotPasswordServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,13 +56,7 @@ public class TestServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-        String date = request.getParameter("requiredDate");
-        String time = request.getParameter("requiredTime");
-        
-        out.print(date + time);
-        
+        processRequest(request, response);
     } 
 
     /** 
@@ -78,7 +69,20 @@ public class TestServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        DAOCustomers daoCustomers = new DAOCustomers();
+        String email = request.getParameter("email");
+        Customers cus = daoCustomers.getCustomerByEmail(email);
+        if(cus != null){
+            SendEmail send = new SendEmail();
+            String otp = send.generateOTP();
+            send.sendOTP(cus.getEmail(), otp);
+            request.setAttribute("otpSend", otp);
+            request.setAttribute("email", cus.getEmail());
+            request.getRequestDispatcher("inputotp.jsp").forward(request, response);
+        }else{
+            request.setAttribute("error", "Email bạn vùa nhập không tồn tại!!!");
+            request.getRequestDispatcher("authentication-login.jsp").forward(request, response);
+        }
     }
 
     /** 

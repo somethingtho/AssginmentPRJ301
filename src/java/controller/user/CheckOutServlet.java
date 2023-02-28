@@ -96,14 +96,14 @@ public class CheckOutServlet extends HttpServlet {
             String shipperID_raw = request.getParameter("shippers");
             int shipperID = Integer.parseInt(shipperID_raw);
             String payment_raw = request.getParameter("payments");
-//            String required = request.getParameter("requiredDate") + request.getParameter("requiredTime");
+            String required = request.getParameter("requiredDate") +" "+ request.getParameter("requiredTime");
             boolean payment;
             if(payment_raw.equals("QR")){
                 payment =  true;
             } else payment = false;
             boolean status = true;
-//            int n  =daoOrders.addOrder(cus, cart, shipperID, payment, status, required);
-            int n  =daoOrders.addOrder(cus, cart, shipperID, payment, status);
+            int n  =daoOrders.addOrder(cus, cart, shipperID, payment, status, required);
+//            int n  =daoOrders.addOrder(cus, cart, shipperID, payment, status);
             Cookie c = new Cookie("cart", "");
             c.setMaxAge(0);
             response.addCookie(c);

@@ -17,16 +17,53 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/font/themify-icons/themify-icons.css">
         <link href="${pageContext.request.contextPath}/css/login.css" rel="stylesheet" type="text/css"/>
+        <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/admin/assets/images/logo.png"/>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
     </head>
     <body>
+
+        <div class="gearbox">
+            <div class="overlay"></div>
+            <div class="gear one">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear two">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear three">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear four large">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+        </div>
+
         <fmt:setLocale value = "vi_VN"/>
-            <%
-response.setHeader("Cache-Control","no-cache"); //HTTP 1.1
-response.setHeader("Pragma","no-cache"); //HTTP 1.0
-response.setDateHeader ("Expires", 0);
+        <%
+            response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
+            response.setHeader("Pragma", "no-cache"); //HTTP 1.0
+            response.setDateHeader("Expires", 0);
 //prevents caching at the proxy server
-    %>
+        %>
         <div class="container-fluid">
 
             <div class="row login_header">
@@ -41,7 +78,7 @@ response.setDateHeader ("Expires", 0);
                 <div class="col-md-1"></div>
                 <h1 class="col-md-7" style="color: red;">${requestScope.error}</h1>
             </div>
-            
+
             <div class="row login">
                 <form action="login" method="post">
                     <div class="col-md-5 login__form">
@@ -60,7 +97,7 @@ response.setDateHeader ("Expires", 0);
                                 <label style="margin-top: 30px; " for="remember" >Ghi nhớ</label>
                             </div>
 
-                                <div class="login__btn "><button onclick="this.form.submit()" style="color: white;">Đăng nhập</button></div>
+                            <div class="login__btn "><button onclick="this.form.submit()" style="color: white;">Đăng nhập</button></div>
                             <div class="login__btn "><button><a href="register.jsp">Đăng ký</a></button></div>
                             <div class="login__btn "><button><a href="forgotpassword.jsp">Quên mật khẩu?</a></button></div>
                             <div class="login__btn "><button><a href="${pageContext.request.contextPath}/admin/authentication-login.jsp">Đăng nhập kênh người bán hàng</a></button></div>
@@ -143,6 +180,9 @@ response.setDateHeader ("Expires", 0);
                     this.classList.toggle("bi-eye");
                 });
 
+                window.onload = function () {
+                    document.querySelector(".gearbox").style.display = "none";
+                };
 
             </script>
     </body>

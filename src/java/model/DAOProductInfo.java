@@ -24,6 +24,12 @@ public class DAOProductInfo extends DBContext {
         System.out.println(dao.InsertProductInfo(info));
     }
 
+    /**
+     * Insert a new product into the database
+     * 
+     * @param info ProductInfo
+     * @return The number of rows affected by the SQL statement.
+     */
     public int InsertProductInfo(ProductInfo info) {
         int number = 0;
         String sql = "INSERT INTO dbo.ProductInfo(ProductID, Size, Weight, Substance, CPU, RAM, Screen, Camera, GraphicsCard, HardDrive, OS, BatteryCapacity, DateCreated)"
@@ -50,8 +56,12 @@ public class DAOProductInfo extends DBContext {
         return number;
     }
 
-    //List all ProductInfor
-    public Vector getAllProductInfo() {
+    /**
+     * It gets all the data from the ProductInfo table and puts it into a vector
+     * 
+     * @return A vector of ProductInfo objects.
+     */
+    public Vector<ProductInfo> getAllProductInfo() {
         Vector<ProductInfo> vector = new Vector<>();
         String sql = "SELECT * FROM ProductInfo";
         try {
@@ -80,7 +90,12 @@ public class DAOProductInfo extends DBContext {
     }
 
 
-    //Delete  ProductInfo
+    /**
+     * This function deletes a product from the database
+     * 
+     * @param id the id of the product
+     * @return The number of rows affected by the query.
+     */
     public int DeleteProductInfo(int id) {
         int number = 0;
         String sql = "DELETE FROM ProductInfo WHERE ID = ?";
@@ -94,7 +109,12 @@ public class DAOProductInfo extends DBContext {
         return number;
     }
 
-    //Update ProductInfo
+    /**
+     * Update the product information in the database
+     * 
+     * @param info ProductInfo
+     * @return The number of rows affected by the update.
+     */
     public int UpdateProductInfo(ProductInfo info) {
         int number = 0;
         String sql = "UPDATE ProductInfo SET Size = ?, Weight = ?, Substance =? "
@@ -122,6 +142,12 @@ public class DAOProductInfo extends DBContext {
         return number;
     }
 
+    /**
+     * It gets the product info by product ID
+     * 
+     * @param pid productID
+     * @return A ProductInfo object.
+     */
     public ProductInfo getProductInfoByProductID(int pid) {
         ProductInfo pinfo = null;
         String sql = "SELECT * FROM ProductInfo WHERE ProductID = ?";

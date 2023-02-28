@@ -16,17 +16,54 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/font/themify-icons/themify-icons.css">
         <link href="${pageContext.request.contextPath}/css/products.css" rel="stylesheet" type="text/css"/>
+        <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/admin/assets/images/logo.png"/>
         <title>${requestScope.titlePage}</title>
 
     </head>
     <body>
+
+        <div class="gearbox">
+            <div class="overlay"></div>
+            <div class="gear one">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear two">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear three">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear four large">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+        </div>
+
         <button onclick="topFunction()" id="myBtn" title="Go to top"><i style="text-align: center" class="ti-arrow-up"></i></button>
             <fmt:setLocale value = "vi_VN"/>
             <%
                 response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
                 response.setHeader("Pragma", "no-cache"); //HTTP 1.0
                 response.setDateHeader("Expires", 0);
-    //prevents caching at the proxy server
+                //prevents caching at the proxy server
 %>
             <c:set var="o" value="${requestScope.cart}"/>
         <header>
@@ -371,7 +408,9 @@
         }
 
 
-
+        window.onload = function () {
+            document.querySelector(".gearbox").style.display = "none";
+        };
 
     </script>
 </body>

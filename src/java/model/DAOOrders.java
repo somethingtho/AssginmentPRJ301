@@ -25,6 +25,11 @@ import java.util.logging.Logger;
  */
 public class DAOOrders extends DBContext {
     
+    /**
+     * It returns the number of orders that have been placed in the current month
+     * 
+     * @return The number of orders in the current month.
+     */
     public int newOrdersInMonth(){
         int number = 0;
         
@@ -41,6 +46,11 @@ public class DAOOrders extends DBContext {
         return number;
     }
     
+    /**
+     * It returns the rate of new orders in a month
+     * 
+     * @return The rate of new orders in a month.
+     */
     public double rateNewOrders(){
         double rate = 0;
         int total = 0;
@@ -61,6 +71,12 @@ public class DAOOrders extends DBContext {
     }
     
 
+    /**
+     * It returns a vector of integers that represent the number of orders for each month of the year
+     * 
+     * @param year the year that you want to get the number of orders
+     * @return A vector of integers.
+     */
     public Vector<Integer> NumberOrdersByMonth(int year) {
         Vector<Integer> vector = new Vector<>();
 
@@ -81,6 +97,12 @@ public class DAOOrders extends DBContext {
         return vector;
     }
 
+    /**
+     * I want to get the total money of all orders of a customer
+     * 
+     * @param cid customer id
+     * @return The total money of all orders of a customer.
+     */
     public double getTotalMoneyByCustomerID(int cid) {
         double money = 0;
         DAOShippers daoShippers = new DAOShippers();
@@ -119,6 +141,12 @@ public class DAOOrders extends DBContext {
         return money;
     }
 
+    /**
+     * It returns the number of orders made by a customer with a given id
+     * 
+     * @param id the customer id
+     * @return The number of orders by a customer.
+     */
     public int TotalOrdersByCustomers(int id) {
         int number = 0;
         String sql = "SELECT COUNT(*) FROM dbo.Orders INNER JOIN dbo.Customers ON Customers.CustomerID = Orders.CustomerID\n"
@@ -137,6 +165,13 @@ public class DAOOrders extends DBContext {
         return number;
     }
 
+    /**
+     * I want to get all orders by supplierID, but I have to get the orderDetails, shipper, customer,
+     * totalMoney of each order
+     * 
+     * @param sid SupplierID
+     * @return A vector of Orders
+     */
     public Vector<Orders> getOrderBySupplier(int sid) {
         Vector<Orders> vector = new Vector<>();
         DAOShippers daoShipper = new DAOShippers();
@@ -174,6 +209,12 @@ public class DAOOrders extends DBContext {
 
     }
 
+    /**
+     * It returns the number of distinct customers who have placed orders with a particular shipper
+     * 
+     * @param shipperID the ID of the shipper
+     * @return The number of users that have used a specific shipper.
+     */
     public int TotalUsersByShipper(int shipperID) {
         int number = 0;
 
@@ -195,6 +236,12 @@ public class DAOOrders extends DBContext {
         return number;
     }
 
+    /**
+     * This function is used to get all orders by shipperID
+     * 
+     * @param shipperID the ID of the shipper
+     * @return A vector of Orders
+     */
     public Vector<Orders> getOrderByShipperID(int shipperID) {
         DAOShippers daoShipper = new DAOShippers();
         DAOCustomers daoCustomers = new DAOCustomers();
@@ -226,6 +273,13 @@ public class DAOOrders extends DBContext {
         return vector;
     }
 
+    /**
+     * It returns the number of orders that have not been shipped yet, and are assigned to a specific
+     * shipper
+     * 
+     * @param shipperID the ID of the shipper
+     * @return The number of orders that have failed.
+     */
     public int TotalOrderFailByShipper(int shipperID) {
         int number = 0;
 
@@ -247,6 +301,12 @@ public class DAOOrders extends DBContext {
         return number;
     }
 
+    /**
+     * It returns the number of orders that have been shipped by a specific shipper
+     * 
+     * @param shipperID the ID of the shipper
+     * @return The number of orders that have been successfully delivered by a particular shipper.
+     */
     public int TotalOrderSuccessByShipper(int shipperID) {
         int number = 0;
 
@@ -268,6 +328,12 @@ public class DAOOrders extends DBContext {
         return number;
     }
 
+    /**
+     * It returns the number of orders that have been shipped by a particular shipper
+     * 
+     * @param shipperID the ID of the shipper
+     * @return The number of orders that have been shipped by a particular shipper.
+     */
     public int TotalOrdersByShipper(int shipperID) {
         int number = 0;
         String sql = "SELECT COUNT(*) FROM dbo.Orders WHERE ShipVia =?";
@@ -288,6 +354,13 @@ public class DAOOrders extends DBContext {
         return number;
     }
 
+    /**
+     * It returns the total money of a supplier by getting the list of orderID of the supplier, then
+     * get the total money of each orderID and sum them up
+     * 
+     * @param supplierID the supplier ID
+     * @return The total money of all orders that contain products from a specific supplier.
+     */
     public double TotalMoneyBySupplier(int supplierID) {
         double money = 0;
         String sql = "SELECT DISTINCT(OrderDetails.OrderID) FROM dbo.OrderDetails WHERE OrderDetails.ProductID IN (SELECT Products.ProductID FROM dbo.Products WHERE SupplierID = ?)";
@@ -311,6 +384,12 @@ public class DAOOrders extends DBContext {
         return money;
     }
 
+    /**
+     * It returns the number of orders that contain at least one product from a given supplier
+     * 
+     * @param supplierID the ID of the supplier
+     * @return The number of orders that have been placed for a particular supplier.
+     */
     public int TotalOrderBySupplier(int supplierID) {
         int number = 0;
         String sql = "SELECT COUNT(DISTINCT(OrderDetails.OrderID)) FROM dbo.OrderDetails WHERE OrderDetails.ProductID IN (SELECT Products.ProductID FROM dbo.Products WHERE SupplierID = ?)";
@@ -331,6 +410,11 @@ public class DAOOrders extends DBContext {
         return number;
     }
 
+    /**
+     * It returns the number of orders in the database
+     * 
+     * @return The number of orders in the database.
+     */
     public int TotalOrders() {
         int number = 0;
         String sql = "SELECT COUNT(*) FROM Orders";
@@ -345,8 +429,12 @@ public class DAOOrders extends DBContext {
         return number;
     }
 
-    //List ALl Orders
-    public Vector getAllOrders() {
+    /**
+     * It gets all the orders from the database and returns them as a vector
+     * 
+     * @return A vector of Orders objects.
+     */
+    public Vector<Orders> getAllOrders() {
         DAOShippers daoShippers = new DAOShippers();
         DAOCustomers daoCustomers = new DAOCustomers();
         DAOOrderDetails daoOrderDetails = new DAOOrderDetails();
@@ -376,6 +464,12 @@ public class DAOOrders extends DBContext {
         return vector;
     }
 
+    /**
+     * This function is used to get all orders of a customer by customer ID
+     * 
+     * @param cid customer id
+     * @return A vector of Orders
+     */
     public Vector<Orders> getOrdersByCustomerID(int cid) {
         DAOShippers daoShippers = new DAOShippers();
         DAOCustomers daoCustomers = new DAOCustomers();
@@ -408,7 +502,12 @@ public class DAOOrders extends DBContext {
         return vector;
     }
 
-    //Delete Orders
+    /**
+     * This function deletes an order from the database
+     * 
+     * @param id the id of the order to be deleted
+     * @return The number of rows affected by the SQL statement.
+     */
     public int DeleteOrders(int id) {
         int number = 0;
         String sql = "DELETE FROM Orders WHERE OrderID = ?";
@@ -422,7 +521,17 @@ public class DAOOrders extends DBContext {
         return number;
     }
 
-    //Insert Orders
+    /**
+     * The function is used to add an order to the database
+     * 
+     * @param c Customer object
+     * @param cart the cart object
+     * @param shipperID the ID of the shipper
+     * @param payments true or false
+     * @param status true or false
+     * @param required the date the customer wants the order to be delivered
+     * @return The number of rows affected by the query.
+     */
     public int addOrder(Customers c, Cart cart, int shipperID, boolean payments, boolean status, String required) {
         int number = 0;
         try {
@@ -469,6 +578,16 @@ public class DAOOrders extends DBContext {
         return number;
     }
 
+    /**
+     * The function is used to add an order to the database
+     * 
+     * @param c Customer object
+     * @param cart the cart object
+     * @param shipperID the ID of the shipper
+     * @param payments true or false
+     * @param status true
+     * @return The number of rows affected by the query.
+     */
     public int addOrder(Customers c, Cart cart, int shipperID, boolean payments, boolean status) {
         int number = 0;
         try {
@@ -514,6 +633,12 @@ public class DAOOrders extends DBContext {
         return number;
     }
 
+    /**
+     * This function is used to get an order by orderID
+     * 
+     * @param oID OrderID
+     * @return A list of orders.
+     */
     public Orders getOrdersByOrderID(int oID) {
         DAOShippers daoShippers = new DAOShippers();
         DAOCustomers daoCustomers = new DAOCustomers();
@@ -546,6 +671,12 @@ public class DAOOrders extends DBContext {
         return order;
     }
 
+    /**
+     * It gets the total money of an order by its ID
+     * 
+     * @param oID Order ID
+     * @return The total amount of money spent on an order.
+     */
     public double getTotalMoneyByOrderID(int oID) {
         DAOOrderDetails daoOrderDetails = new DAOOrderDetails();
         double total = 0;

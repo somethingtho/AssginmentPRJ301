@@ -150,6 +150,15 @@
                             type="button"
                             style="background: orange; border: none; height: 3rem; width: 50rem;"
                             >
+                            <i class="mdi mdi-account-plus fs-4 me-1" style="color: white"></i> <a style="text-decoration: none; color: white" href="${pageContext.request.contextPath}/admin/authentication-register.jsp"> Đăng ký</a>
+                        </button>
+                    </div>
+
+                    <div style="margin-bottom: 2rem;">
+                        <button
+                            type="button"
+                            style="background: orange; border: none; height: 3rem; width: 50rem;"
+                            >
                             <i class="mdi mdi-account-convert fs-4 me-1" style="color: white"></i> <a style="text-decoration: none; color: white" href="${pageContext.request.contextPath}/user/login.jsp"> Đăng nhập(Người dùng)</a>
                         </button>
                     </div>
@@ -163,7 +172,7 @@
                         </div>
                         <div class="row mt-3">
                             <!-- Form -->
-                            <form class="col-12" action="index.html">
+                            <form class="col-12" action="${pageContext.request.contextPath}/admin/forgotpassword" method="POST" id="forgot_form">
                                 <!-- email -->
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
@@ -174,10 +183,12 @@
                                             ></span>
                                     </div>
                                     <input
-                                        type="text"
+                                        type="email"
                                         class="form-control form-control-lg"
                                         placeholder="Email"
                                         aria-label="Username"
+                                        id="email"
+                                        name="email"
                                         aria-describedby="basic-addon1"
                                         />
                                 </div>
@@ -195,6 +206,7 @@
                                             class="btn btn-info float-end"
                                             type="button"
                                             name="action"
+                                            onclick="forgotPassw()"
                                             >
                                             Khôi phục
                                         </button>
@@ -205,36 +217,12 @@
                     </div>
                 </div>
             </div>
-            <!-- ============================================================== -->
-            <!-- Login box.scss -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Page wrapper scss in scafholding.scss -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Page wrapper scss in scafholding.scss -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Right Sidebar -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Right Sidebar -->
-            <!-- ============================================================== -->
+            
         </div>
-        <!-- ============================================================== -->
-        <!-- All Required js -->
-        <!-- ============================================================== -->
         <script src="assets/libs/jquery/dist/jquery.min.js"></script>
-        <!-- Bootstrap tether Core JavaScript -->
         <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- ============================================================== -->
-        <!-- This page plugin js -->
-        <!-- ============================================================== -->
         <script>
             $(".preloader").fadeOut();
-            // ==============================================================
-            // Login and Recover Password
-            // ==============================================================
             $("#to-recover").on("click", function () {
                 $("#loginform").slideUp();
                 $("#recoverform").fadeIn();
@@ -249,13 +237,20 @@
             const password = document.querySelector("#password");
 
             togglePassword.addEventListener("click", function () {
-                // toggle the type attribute
                 const type = password.getAttribute("type") === "password" ? "text" : "password";
                 password.setAttribute("type", type);
 
-                // toggle the icon
                 this.classList.toggle("bi-eye");
             });
+            
+            function forgotPassw(){
+                if(document.getElementById('email') === ""){
+                    alert("Please input email!");
+                    return;
+                }
+                
+            }
+            
         </script>
     </body>
 </html>

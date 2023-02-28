@@ -25,10 +25,15 @@ import java.util.logging.Logger;
  */
 public class DAOProductImage extends DBContext {
     
-    public void testImg(){
-        
-    }
+    
 
+    /**
+     * It takes a list of files and a product ID, and inserts the files into the database
+     * 
+     * @param fileParts List of Part objects
+     * @param pid product id
+     * @return The number of images that were added to the database.
+     */
     public int AddImg(List<Part> fileParts, int pid) throws IOException {
         int number = 0;
         String sql = "INSERT INTO ProductImage(ProductID, Image) VALUES(?, ?)";
@@ -51,6 +56,12 @@ public class DAOProductImage extends DBContext {
         return number;
     }
 
+    /**
+     * It takes a Part object and returns the filename of the file that was uploaded
+     * 
+     * @param part The part of the request that contains the file.
+     * @return The file name of the uploaded file.
+     */
     public String getFileName(Part part) {
         String contentDisp = part.getHeader("content-disposition");
         if (contentDisp != null) {
@@ -64,6 +75,12 @@ public class DAOProductImage extends DBContext {
         return null;
     }
 
+    /**
+     * Delete a product image from the database
+     * 
+     * @param id the id of the image
+     * @return The number of rows affected by the SQL statement.
+     */
     public int DeleteProductImg(int id) {
         int number = 0;
         String sql = "DELETE ProductImage WHERE ID =?";
@@ -77,8 +94,12 @@ public class DAOProductImage extends DBContext {
         return number;
     }
 
-    //list all productimage
-    public Vector getAllProductImage() {
+    /**
+     * It gets all the images from the database and converts them to base64 strings
+     * 
+     * @return A vector of ProductImage objects.
+     */
+    public Vector<ProductImage> getAllProductImage() {
         Vector<ProductImage> vector = new Vector<>();
         String sql = "SELECT * FROM ProductImage";
         ResultSet rs = getData(sql);
@@ -112,6 +133,13 @@ public class DAOProductImage extends DBContext {
         return vector;
     }
 
+    /**
+     * It gets all the images of a product from the database and returns them as a vector of
+     * ProductImage objects
+     * 
+     * @param productID the ID of the product
+     * @return A vector of ProductImage objects.
+     */
     public Vector<ProductImage> getAllImageProductByProductID(int productID) {
         Vector<ProductImage> vector = new Vector<>();
         String sql = "SELECT * FROM ProductImage WHERE ProductID = ?";

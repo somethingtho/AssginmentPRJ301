@@ -13,7 +13,10 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>${requestScope.totalMoney}</h1>
-        
+        <form action="test">
+            <input type="date" id="requiredDate" name="requiredDate" required>
+            <input type="time" id="requiredTime" name="requiredTime" required>
+            <input type="submit">
+        </form>
     </body>
 </html>

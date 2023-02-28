@@ -14,9 +14,11 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/admin/assets/images/logo.png"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/font/themify-icons/themify-icons.css">
         <link href="${pageContext.request.contextPath}/css/cart.css" rel="stylesheet" type="text/css"/>
         <title>Giỏ Hàng của tôi</title>
+
     </head>
 
     <%
@@ -27,6 +29,43 @@
 
 
     <body >
+
+        <div class="gearbox">
+            <div class="overlay"></div>
+            <div class="gear one">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear two">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear three">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear four large">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+        </div>
+
+
         <fmt:setLocale value = "vi_VN"/>
         <c:set var="o" value="${requestScope.cart}"/>
         <header>
@@ -262,7 +301,7 @@
                             <div class="infor-address">
                                 <input type="text" readonly value="${sessionScope.account.address}">
                             </div>
-                            <div style="margin-top: 20px;"><a href="" >Đổi thông tin</a></div>
+                            <div style="margin-top: 20px;"><a href="${pageContext.request.contextPath}/user/infomation" >Đổi thông tin</a></div>
                             <form action="checkout" method="post">
                                 <h3><label for="shipper">Chọn đơn vị vận chuyển</label></h3>
                                 <select name="shippers" id="shipper">
@@ -273,11 +312,11 @@
 
                                 <hr style="margin-right: 20px; height: 1px; background-color: black; color: black;">
 
-<!--                                <h3><label for="requiredDate">Chọn thời gian giao hàng</label></h3>
+                                <h3><label for="requiredDate">Chọn thời gian giao hàng</label></h3>
                                 <input type="date" id="requiredDate" name="requiredDate" required>
                                 <input type="time" id="requiredTime" name="requiredTime" required>
 
-                                <hr style="margin-right: 20px; height: 1px; background-color: black; color: black;">-->
+                                <hr style="margin-right: 20px; height: 1px; background-color: black; color: black;">
 
                                 <div class="row">
                                     <div class="col-md-8">
@@ -383,6 +422,10 @@
             navbar.classList.remove("sticky");
         }
     }
+
+    window.onload = function () {
+        document.querySelector(".gearbox").style.display = "none";
+    };
 </script>
 </body>
 </html>

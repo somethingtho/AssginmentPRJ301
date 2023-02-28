@@ -43,6 +43,12 @@ public class DAOCustomers extends DBContext {
         System.out.println(dao.rateOrders(2));
     }
 
+    /**
+     * I get all customers from database, then I get total money of each customer, then I put them into
+     * a map, then I sort the map by value, then I return the map
+     * 
+     * @return A map of customers and their total money spent.
+     */
     public Map<Customers, Double> getTop5Customers() {
         DAOOrders daoOrders = new DAOOrders();
         DAOAccounts daoAccounts = new DAOAccounts();
@@ -103,6 +109,12 @@ public class DAOCustomers extends DBContext {
         return sortedMap;
     }
 
+    /**
+     * It returns the rate of orders that are completed by a customer
+     * 
+     * @param id CustomerID
+     * @return The rate of orders that are completed.
+     */
     public double rateOrders(int id) {
         double rate = 0;
         DAOOrders daoOrders = new DAOOrders();
@@ -141,6 +153,15 @@ public class DAOCustomers extends DBContext {
         return rate;
     }
 
+    /**
+     * It takes a vector of customers, a start index, and an end index, and returns a vector of
+     * customers
+     * 
+     * @param vector the vector of customers
+     * @param start the index of the first element in the vector to be returned
+     * @param end the end index of the vector
+     * @return A vector of customers
+     */
     public Vector<Customers> getListByPage(Vector<Customers> vector,
             int start, int end) {
         Vector<Customers> arr = new Vector<>();
@@ -150,6 +171,15 @@ public class DAOCustomers extends DBContext {
         return arr;
     }
 
+    /**
+     * It's a function that returns a customer object, which contains an account object, which contains
+     * a role, username, password, registration date, and status.
+     * </code>
+     * 
+     * @param pass the password of the account
+     * @param user admin
+     * @return A Customers object.
+     */
     public Customers LoginAdmin(String pass, String user) {
         Customers cus = null;
         String sql = "SELECT Customers.*, Accounts.UserName, Accounts.Role, Accounts.RegistrationDate, Accounts.Status FROM dbo.Customers INNER JOIN dbo.Accounts ON Accounts.ID = Customers.ID \n"
@@ -196,6 +226,12 @@ public class DAOCustomers extends DBContext {
 
     }
 
+    /**
+     * It's a function that locks or unlocks an account
+     * 
+     * @param c is the object of the class Customers
+     * @return The number of rows affected by the update.
+     */
     public int LockCustomers(Customers c) {
         SendEmail send = new SendEmail();
         int number = 0;
@@ -218,6 +254,12 @@ public class DAOCustomers extends DBContext {
         return number;
     }
 
+    /**
+     * It gets the customer's information from the database and returns it as a Customer object
+     * 
+     * @param id the id of the customer
+     * @return A Customers object.
+     */
     public Customers getCustomerByID(int id) {
         Customers cus = null;
         String sql = "SELECT * FROM Customers WHERE ID  = ?";
@@ -259,6 +301,13 @@ public class DAOCustomers extends DBContext {
         return cus;
     }
 
+    /**
+     * I get the image from the database, convert it to a byte array, then convert it to a base64
+     * string, then return the customer object
+     * 
+     * @param email String
+     * @return A Customers object.
+     */
     public Customers getCustomerByEmail(String email) {
         Customers cus = null;
         String sql = "SELECT * FROM Customers WHERE Email = ?";
@@ -300,6 +349,14 @@ public class DAOCustomers extends DBContext {
         return cus;
     }
 
+    /**
+     * I'm trying to get the image from the database and convert it to base64 string to display it on
+     * the web page.
+     * </code>
+     * 
+     * @param cid customerID
+     * @return A Customers object.
+     */
     public Customers getCustomerByCustomerID(int cid) {
         Customers cus = null;
         String sql = "SELECT * FROM Customers WHERE CustomerID = ?";
@@ -343,16 +400,16 @@ public class DAOCustomers extends DBContext {
         return cus;
     }
 
+    /**
+     * It gets a list of customers who have bought from a specific supplier
+     * 
+     * @param supplierID int
+     * @return A vector of Customers
+     */
     public Vector<Customers> getCustomerFriendlyBySupplier(int supplierID) {
         Vector<Customers> vector = new Vector<>();
 
-        String sql = "SELECT TOP 5 Customers.*, b.TotalMoney FROM dbo.Customers INNER JOIN \n"
-                + "(\n"
-                + "SELECT CustomerID, a.TotalMoney FROM dbo.Orders INNER JOIN \n"
-                + "(SELECT OrderID,SUM(UnitPrice*Quantity) AS TotalMoney FROM dbo.OrderDetails\n"
-                + "WHERE ProductID IN(SELECT Products.ProductID FROM dbo.Products WHERE SupplierID = ?)\n"
-                + "GROUP BY OrderID) AS A ON A.OrderID = Orders.OrderID\n"
-                + ") AS b ON b.CustomerID = Customers.CustomerID ORDER BY b.TotalMoney DESC";
+        String sql = "EXEC Customer_Friendly_Suppliers @supid = ?";
 
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -395,6 +452,12 @@ public class DAOCustomers extends DBContext {
         return vector;
     }
 
+    /**
+     * I get the data from the database, then I convert the image from blob to base64 and add it to the
+     * vector
+     * 
+     * @return A vector of Customers objects.
+     */
     public Vector<Customers> getNewCustomers() {
         Vector<Customers> vector = new Vector<>();
         String sql = "SELECT TOP 5 * FROM dbo.Customers INNER JOIN dbo.Accounts ON Accounts.ID = Customers.ID ORDER BY RegistrationDate DESC";
@@ -440,8 +503,12 @@ public class DAOCustomers extends DBContext {
         return vector;
     }
 
-    //list all customers
-    public Vector getAllCustomers() {
+    /**
+     * It gets all the customers from the database and returns them as a vector
+     * 
+     * @return A vector of Customers objects.
+     */
+    public Vector<Customers> getAllCustomers() {
         Vector<Customers> vector = new Vector<>();
         String sql = "SELECT * FROM Customers";
         ResultSet rs = getData(sql);
@@ -481,7 +548,13 @@ public class DAOCustomers extends DBContext {
         return vector;
     }
 
-    //Detele Customers
+    /**
+     * The function takes an integer as an argument and deletes the row in the Customers table where
+     * the CustomerID is equal to the argument
+     * 
+     * @param id the id of the customer to be deleted
+     * @return The number of rows affected by the SQL statement.
+     */
     public int DeleteCustomers(int id) {
         int number = 0;
         String sql = "DELETE FROM Customers WHERE CustomerID = ?";
@@ -495,7 +568,13 @@ public class DAOCustomers extends DBContext {
         return number;
     }
 
-    //Update customer
+    /**
+     * The function is used to update the customer's information in the database
+     * 
+     * @param customer is a Customer object
+     * @param file the image file
+     * @return The number of rows affected by the update.
+     */
     public int UpdateCustomers(Customers customer, InputStream file) {
         int number = 0;
         String sql = "UPDATE Customers SET CustomerName = ?, Phone = ?, Email = ?, Address = ?,Gender = ? WHERE CustomerID = ?";
@@ -525,6 +604,13 @@ public class DAOCustomers extends DBContext {
         return number;
     }
 
+    /**
+     * It gets the customer's information from the database and returns it as a Customers object
+     * 
+     * @param userName String
+     * @param password 123456
+     * @return A Customers object.
+     */
     public Customers getCustomerByUserName(String userName, String password) {
         Customers cus = null;
         String sql = "SELECT Customers.*, Accounts.UserName, Accounts.Role, Accounts.RegistrationDate, Accounts.Status  FROM dbo.Customers INNER JOIN dbo.Accounts ON Accounts.ID = Customers.ID\n"
@@ -571,6 +657,13 @@ public class DAOCustomers extends DBContext {
         return cus;
     }
 
+    /**
+     * It gets the customer's information from the database and returns it as a Customers object.
+     * </code>
+     * 
+     * @param userName String
+     * @return A Customers object.
+     */
     public Customers getCustomerByUserName(String userName) {
         Customers cus = null;
         String sql = "SELECT Customers.*, Accounts.UserName, Accounts.Role, Accounts.RegistrationDate, Accounts.Status  FROM dbo.Customers INNER JOIN dbo.Accounts ON Accounts.ID = Customers.ID\n"
@@ -617,6 +710,12 @@ public class DAOCustomers extends DBContext {
         return cus;
     }
 
+    /**
+     * Insert a new customer into the database
+     * 
+     * @param cus is a Customers object
+     * @return The number of rows affected by the SQL statement.
+     */
     public int InsertNewCustomers(Customers cus) {
         SendEmail send = new SendEmail();
         int number = 0;
@@ -650,6 +749,12 @@ public class DAOCustomers extends DBContext {
         return number;
     }
 
+    /**
+     * It updates the password of a customer in the database
+     * 
+     * @param cus is the object of the class Customers
+     * @return The number of rows affected by the update.
+     */
     public int ChangePassword(Customers cus) {
         String sql = "UPDATE Customers SET Password = ? Where CustomerID = ?";
         int number = 0;
@@ -665,8 +770,13 @@ public class DAOCustomers extends DBContext {
         return number;
     }
 
-    //Admin  
-    public Vector getAllCustomersByAdmin() {
+    /**
+     * I want to get all the data from the Customers table and the Accounts table, then put them into a
+     * vector
+     * 
+     * @return A vector of Customers objects.
+     */
+    public Vector<Customers> getAllCustomersByAdmin() {
         Vector<Customers> vector = new Vector<>();
         String sql = "SELECT * FROM dbo.Customers INNER JOIN dbo.Accounts ON Accounts.ID = Customers.ID";
         ResultSet rs = getData(sql);
@@ -711,6 +821,11 @@ public class DAOCustomers extends DBContext {
         return vector;
     }
 
+    /**
+     * It returns the number of customers in the database
+     * 
+     * @return The number of customers in the database.
+     */
     public int TotalCustomers() {
         int number = 0;
         String sql = "SELECT COUNT(*) FROM Customers";

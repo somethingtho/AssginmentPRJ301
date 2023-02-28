@@ -19,6 +19,13 @@ import java.util.logging.Logger;
  */
 public class DAOShippers extends DBContext {
 
+    /**
+     * UpdateShipper(Shippers s) is a function that updates the Shippers table in the database with the
+     * values of the Shippers object s
+     * 
+     * @param s is the object of the Shippers class
+     * @return The number of rows affected by the update.
+     */
     public int UpdateShipper(Shippers s) {
         int number = 0;
 
@@ -38,6 +45,12 @@ public class DAOShippers extends DBContext {
         return number;
     }
 
+    /**
+     * This function is used to add a new shipper to the database
+     * 
+     * @param s is the object of the Shippers class
+     * @return The number of rows affected by the SQL statement.
+     */
     public int AddNewShipper(Shippers s) {
         int number = 0;
         String sql = "INSERT INTO Shippers(CompanyName, Phone, Email, Status) VALUES(?,?,?,?)";
@@ -55,6 +68,12 @@ public class DAOShippers extends DBContext {
         return number;
     }
 
+    /**
+     * This function is used to update the information of the shipper
+     * 
+     * @param s Shippers
+     * @return The number of rows affected by the update.
+     */
     public int AccountShipper(Shippers s) {
         int number = 0;
 
@@ -74,6 +93,12 @@ public class DAOShippers extends DBContext {
         return number;
     }
 
+    /**
+     * It returns a Shippers object with the given company name
+     * 
+     * @param s String
+     * @return A Shippers object.
+     */
     public Shippers getShipperByCompanyName(String s) {
         Shippers x = null;
         String sql = "SELECT * FROM Shippers WHERE CompanyName = ?";
@@ -95,6 +120,12 @@ public class DAOShippers extends DBContext {
         return x;
     }
 
+    /**
+     * It returns the number of shippers that have shipped products from a given supplier
+     * 
+     * @param supplierID the supplier ID
+     * @return The number of shippers used by a supplier.
+     */
     public int TotalShipperBySupplier(int supplierID) {
         int number = 0;
         String sql = "SELECT COUNT(Orders.ShipVia) FROM dbo.Orders WHERE Orders.OrderID IN(\n"
@@ -115,6 +146,11 @@ public class DAOShippers extends DBContext {
         return number;
     }
 
+    /**
+     * It returns the number of rows in the Shippers table
+     * 
+     * @return The number of shippers in the database.
+     */
     public int TotalShippers() {
         int number = 0;
         String sql = "SELECT COUNT(*) FROM Shippers";
@@ -129,7 +165,12 @@ public class DAOShippers extends DBContext {
         return number;
     }
 
-    public Vector getAllShippersByAdmin() {
+    /**
+     * It returns a vector of Shippers objects, which are created from the data in the Shippers table
+     * 
+     * @return A vector of Shippers objects.
+     */
+    public Vector<Shippers> getAllShippersByAdmin() {
         String sql = "SELECT * FROM Shippers";
         Vector<Shippers> vector = new Vector<>();
         try {
@@ -148,8 +189,13 @@ public class DAOShippers extends DBContext {
         return vector;
     }
     
-    //List All Shippers
-    public Vector getAllShippers() {
+    /**
+     * It returns a vector of Shippers objects, which are created from the data in the Shippers table
+     * in the database
+     * 
+     * @return A vector of Shippers objects.
+     */
+    public Vector<Shippers> getAllShippers() {
         String sql = "SELECT * FROM Shippers WHERE Status = 1";
         Vector<Shippers> vector = new Vector<>();
         try {
@@ -168,6 +214,12 @@ public class DAOShippers extends DBContext {
         return vector;
     }
 
+    /**
+     * It returns a Shipper object based on the ShipperID passed in as a parameter
+     * 
+     * @param sID the shipperID
+     * @return A Shipper object.
+     */
     public Shippers getShipperByShipperID(int sID) {
         Shippers shipper = null;
         String sql = "SELECT * FROM Shippers WHERE ShipperID = ?";

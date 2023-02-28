@@ -24,6 +24,11 @@ public class DAOViews extends DBContext {
 
     }
 
+    /**
+     * It gets the total number of views from the database
+     * 
+     * @return The total number of views.
+     */
     public int getTotalView() {
         int number = 0;
 
@@ -40,6 +45,13 @@ public class DAOViews extends DBContext {
         return number;
     }
 
+    /**
+     * It returns a vector of integers that represent the total number of accesses for each month of a
+     * given year
+     * 
+     * @param year the year you want to get the data from
+     * @return A vector of integers.
+     */
     public Vector<Integer> getAccessByMonth(int year) {
         Vector<Integer> vector = new Vector<>();
 
@@ -57,6 +69,12 @@ public class DAOViews extends DBContext {
         return vector;
     }
 
+    /**
+     * It gets the current date, queries the database for an entry for that date, and if it exists, it
+     * gets the login count
+     * 
+     * @return The number of times the user has logged in on the current day.
+     */
     public int getLoginCountForCurrentDay() {
         int loginCount = 0;
         try {
@@ -81,6 +99,12 @@ public class DAOViews extends DBContext {
         return loginCount;
     }
 
+    /**
+     * If there is an entry for the current date in the database, update the login count. Otherwise,
+     * create a new entry for the current date
+     * 
+     * @param loginCount The number of logins for the current day
+     */
     public void saveLoginCountForCurrentDay(int loginCount) {
         try {
             // Get current date

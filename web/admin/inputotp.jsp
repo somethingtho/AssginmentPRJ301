@@ -1,4 +1,4 @@
-<%-- 
+z<%-- 
     Document   : login
     Created on : Jan 23, 2023, 2:20:38 AM
     Author     : daova
@@ -69,7 +69,7 @@
 %>
         <div class="row" style="margin-top: 10rem">
             <div class="col-md-5"></div>
-            <form class="form col-md-9" action="${pageContext.request.contextPath}/admin/authencationotpadmin" method="POST">
+            <form class="form col-md-9" action="${pageContext.request.contextPath}/user/authencationotp" method="POST">
                 <p class="heading">Verify</p>
                 <svg class="check" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="60px" height="60px" viewBox="0 0 60 60" 
                      xml:space="preserve">  <image id="image0" width="60" height="60" x="0" y="0" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAQAAACQ9RH5AAAABGdBTUEAALGPC/xhBQAAACBjSFJN

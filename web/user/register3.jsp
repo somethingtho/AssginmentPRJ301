@@ -16,10 +16,49 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/font/themify-icons/themify-icons.css">
+        <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/admin/assets/images/logo.png"/>
         <link href="${pageContext.request.contextPath}/css/login.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
     </head>
     <body>
+
+
+        <div class="gearbox">
+            <div class="overlay"></div>
+            <div class="gear one">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear two">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear three">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear four large">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+        </div>
+
+
         <fmt:setLocale value = "vi_VN"/>
         <%
             response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
@@ -153,6 +192,11 @@
                 // toggle the icon
                 this.classList.toggle("bi-eye");
             });
+
+
+            window.onload = function () {
+                document.querySelector(".gearbox").style.display = "none";
+            };
         </script>
     </body>
 </html>

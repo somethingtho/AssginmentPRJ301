@@ -19,6 +19,11 @@ import java.util.logging.Logger;
 public class DAOAccounts extends DBContext {
 
     
+    /**
+     * This function calculates the rate of active accounts
+     * 
+     * @return The rate of active accounts.
+     */
     public double rateAccountActive() {
         double rate = 0;
         int total = TotalAccounts();
@@ -29,6 +34,12 @@ public class DAOAccounts extends DBContext {
         return rate;
     }
 
+    /**
+     * It returns the number of active accounts in the database.
+     * </code>
+     * 
+     * @return The number of active accounts.
+     */
     public int AccountActive() {
         int number = 0;
         String sql = "SELECT COUNT(*) FROM dbo.Accounts WHERE Status =1 ";
@@ -43,6 +54,11 @@ public class DAOAccounts extends DBContext {
         return number;
     }
 
+    /**
+     * It returns the total number of accounts in the database
+     * 
+     * @return The total number of accounts in the database.
+     */
     public int TotalAccounts() {
         String sql = "SELECT COUNT(*) AS Number FROM dbo.Accounts";
         int total = 0;
@@ -59,6 +75,11 @@ public class DAOAccounts extends DBContext {
         return total;
     }
 
+    /**
+     * This function calculates the rate of new accounts created in the last month
+     * 
+     * @return The rate of new accounts created in the month.
+     */
     public double rateNewAccount() {
         double rate = 0;
 
@@ -69,6 +90,12 @@ public class DAOAccounts extends DBContext {
         return rate;
     }
 
+    /**
+     * It returns the number of new users in the current month.
+     * </code>
+     * 
+     * @return The number of new users in the current month.
+     */
     public int newUserInMonth() {
         int number = 0;
         String sql = "SELECT COUNT(*) FROM dbo.Accounts WHERE MONTH(RegistrationDate) = MONTH(GETDATE()) ";
@@ -83,8 +110,12 @@ public class DAOAccounts extends DBContext {
         return number;
     }
 
-    //List all Accounts
-    public Vector getAllAccounts() {
+    /**
+     * It gets all the accounts from the database and returns them as a vector
+     * 
+     * @return A vector of accounts.
+     */
+    public Vector<Accounts> getAllAccounts() {
         Vector<Accounts> vector = new Vector<>();
         String sql = "SELECT * FROM Accounts";
         try {
@@ -102,6 +133,12 @@ public class DAOAccounts extends DBContext {
         return vector;
     }
 
+    /**
+     * It gets the username from the database and returns it as an object
+     * 
+     * @param username the username of the account
+     * @return The method is returning an object of type Accounts.
+     */
     public Accounts getUsername(String username) {
         Accounts acc = null;
         String sql = "SELECT * FROM Accounts WHERE Username = ?";
@@ -122,6 +159,12 @@ public class DAOAccounts extends DBContext {
         return acc;
     }
 
+    /**
+     * It gets the account information from the database and returns it as an object
+     * 
+     * @param aid the ID of the account
+     * @return The method is returning an object of type Accounts.
+     */
     public Accounts getID(int aid) {
         Accounts acc = null;
         String sql = "SELECT * FROM Accounts WHERE ID = ?";

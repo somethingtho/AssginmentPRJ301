@@ -16,6 +16,7 @@
         <link href="${pageContext.request.contextPath}/css/item.css" rel="stylesheet" type="text/css"/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/admin/assets/images/logo.png"/>
         <title>${requestScope.titlePage}</title>
 
     </head>
@@ -31,6 +32,43 @@ response.setDateHeader ("Expires", 0);
 
 
     <body>
+
+
+        <div class="gearbox">
+            <div class="overlay"></div>
+            <div class="gear one">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear two">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear three">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear four large">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+        </div>
+
 
         <fmt:setLocale value = "vi_VN"/>
 
@@ -243,7 +281,7 @@ response.setDateHeader ("Expires", 0);
                 <form name="f" action="" method="post">
                     <div style="margin: 20px 0;">
                         <label for="num">Nhập số lượng:</label>
-                        <input id="num" style="text-align: center; padding: 4px; margin-left: 1rem" value="1" name="num" placeholder="Input"/>
+                        <input id="num" style="text-align: center; padding: 4px; margin-left: 1rem" value="1" name="num" type="number" placeholder="Input" min="1" max="${pro.unitsInStock}"/>
                     </div>
                     <div class="btn_add" onclick="buy('${pro.productID}')"><button>Thêm vào giỏ hàng</button></div>
                 </form>
@@ -324,7 +362,7 @@ response.setDateHeader ("Expires", 0);
         </div>
 
         <div>
-            <form action="review" method="post">
+            <form action="review" method="post" id="form_review">
                 <input type="hidden" value="${sessionScope.account.acc.userName}" name="userName">
                 <input type="hidden" value="${pro.productID}" name="productID">
                 <div class="review_content">
@@ -336,40 +374,40 @@ response.setDateHeader ("Expires", 0);
                     <div style="display: flex;justify-content: space-around;">
 
                         <div>
-                            <input type="radio" id="1star" name="star" value="1">
+                            <input type="radio" id="1star" name="star" value="1" required="">
                             <label for="1star" style="font-size: 20px;">1<span class="fa fa-star checked"></span>
                             </label>
                         </div>
                         <div>
-                            <input type="radio" id="2star" name="star" value="2">
+                            <input type="radio" id="2star" name="star" value="2" required="">
                             <label for="2star" style="font-size: 20px;">2 <span
                                     class="fa fa-star checked"></span></label>
                         </div>
                         <div>
-                            <input type="radio" id="3star" name="star" value="3">
+                            <input type="radio" id="3star" name="star" value="3" required="">
                             <label for="3star" style="font-size: 20px;">3 <span
                                     class="fa fa-star checked"></span></label>
                         </div>
                         <div>
-                            <input type="radio" id="4star" name="star" value="4">
+                            <input type="radio" id="4star" name="star" value="4" required="">
                             <label for="4star" style="font-size: 20px;">4 <span
                                     class="fa fa-star checked"></span></label>
                         </div>
 
                         <div>
-                            <input type="radio" id="5star" name="star" value="5">
+                            <input type="radio" id="5star" name="star" value="5" required="">
                             <label for="5star" style="font-size: 20px;">5 <span
                                     class="fa fa-star checked"></span></label>
                         </div>
                     </div>
                     <div style="display: flex; justify-content: center;">
                         <textarea class="container" name="contentSend" id="" style="padding:20px; height:120px; margin: 20px 0;"
-                                  placeholder="Hãy ghi cảm nhận của bạn....."></textarea>
+                                  placeholder="Hãy ghi cảm nhận của bạn....." required=""></textarea>
                     </div>
                 </div>
 
                 <div class="btn_review" style="padding: 0;">
-                    <button onclick="this.form.submit()" class="container" id="update">
+                    <button onclick="checkInput()" class="container" id="update">
                         Gửi
                         <i class="ti-check"></i>
                     </button>
@@ -483,27 +521,50 @@ response.setDateHeader ("Expires", 0);
 
 <script>
 
-    function buy(id) {
-        var m = document.f.num.value;
-        document.f.action = "buy?pid=" + id + "&num=" + m;
-        document.f.submit();
-    }
-    
-    
-    window.onscroll = function () {
-        myFunction()
-    };
+                        function buy(id) {
+                            var m = document.f.num.value;
+                            document.f.action = "buy?pid=" + id + "&num=" + m;
+                            if (m > ${pro.unitsInStock} || m <= 0) {
+                                return;
+                            }
+                            document.f.submit();
+                        }
 
-    var navbar = document.getElementById("navbar");
-    var sticky = navbar.offsetTop;
 
-    function myFunction() {
-        if (window.pageYOffset >= sticky) {
-            navbar.classList.add("sticky")
-        } else {
-            navbar.classList.remove("sticky");
-        }
-    }
+                        window.onscroll = function () {
+                            myFunction()
+                        };
+
+                        var navbar = document.getElementById("navbar");
+                        var sticky = navbar.offsetTop;
+
+                        function myFunction() {
+                            if (window.pageYOffset >= sticky) {
+                                navbar.classList.add("sticky")
+                            } else {
+                                navbar.classList.remove("sticky");
+                            }
+                        }
+
+                        function checkInput() {
+                            var input = document.getElementsByName("star");
+                            var contentSend = document.getElementsByName("contentSend");
+                            if (input.value === "") {
+                                alert("Please choose rate star!");
+                                return;
+                            }
+                            if (contentSend.value === "") {
+                                alert("Please input message!");
+                                return;
+                            }
+                            if (input.value !== "" && contentSend.value !== "")
+                                document.getElementById("form_review").submit();
+                        }
+
+                        window.onload = function () {
+                            document.querySelector(".gearbox").style.display = "none";
+                        };
+
 </script>
 </body>
 </html>

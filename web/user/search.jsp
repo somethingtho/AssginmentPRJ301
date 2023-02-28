@@ -16,18 +16,57 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/font/themify-icons/themify-icons.css">
         <link href="${pageContext.request.contextPath}/css/products.css" rel="stylesheet" type="text/css"/>
+        <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/admin/assets/images/logo.png"/>
         <title>Products</title>
     </head>
-    
+
     <body>
-            <%
-response.setHeader("Cache-Control","no-cache"); //HTTP 1.1
-response.setHeader("Pragma","no-cache"); //HTTP 1.0
-response.setDateHeader ("Expires", 0);
+
+
+        <div class="gearbox">
+            <div class="overlay"></div>
+            <div class="gear one">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear two">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear three">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear four large">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <%
+            response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
+            response.setHeader("Pragma", "no-cache"); //HTTP 1.0
+            response.setDateHeader("Expires", 0);
 //prevents caching at the proxy server
-    %>
+        %>
         <fmt:setLocale value = "vi_VN"/>
-         <c:set var="o" value="${requestScope.cart}"/>
+        <c:set var="o" value="${requestScope.cart}"/>
         <header>
             <div class="logo">
                 <a href="index"><img id="logo" src="${pageContext.request.contextPath}/images/logo.png" /></a>
@@ -181,7 +220,7 @@ response.setDateHeader ("Expires", 0);
                                 <option value="3" <c:if test="${requestScope.orderby == 3}">selected</c:if>>Giá tăng dần</option>
                                 </select>
                             </div>
-                                    
+
                             <hr style="height: 1px; background-color: black; color: black;">
                             <div style="padding: 10px;">
 
@@ -341,6 +380,11 @@ response.setDateHeader ("Expires", 0);
                 navbar.classList.remove("sticky");
             }
         }
+
+        window.onload = function () {
+            document.querySelector(".gearbox").style.display = "none";
+        };
+
     </script>
 </body>
 </html>

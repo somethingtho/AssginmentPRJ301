@@ -22,15 +22,20 @@ import java.util.logging.Logger;
  * @author daova
  */
 public class DAOCategories extends DBContext {
-    
-    public Vector<Categories> NumberProductsByCategories(){
+
+    /**
+     * It returns a vector of categories, each category has a number of products
+     * 
+     * @return A vector of Categories objects.
+     */
+    public Vector<Categories> NumberProductsByCategories() {
         Vector<Categories> vector = new Vector<>();
-        
+
         String sql = "SELECT CategoryID,COUNT(CategoryID) AS Number FROM dbo.Products GROUP BY CategoryID ";
         try {
-            PreparedStatement pre =connection.prepareStatement(sql);
+            PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 int cateID = rs.getInt("CategoryID");
                 int number = rs.getInt("Number");
                 Categories cate = getCategoryByCategoryID(cateID);
@@ -40,15 +45,21 @@ public class DAOCategories extends DBContext {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        
+
         return vector;
-        
+
     }
-    
-    public int AddNewCategory(Categories cate){
+
+    /**
+     * This function is used to add a new category to the database
+     * 
+     * @param cate is the object of the Categories class
+     * @return The number of rows affected by the SQL statement.
+     */
+    public int AddNewCategory(Categories cate) {
         int number = 0;
         String sql = "INSERT INTO Categories(CategoryName) VALUES(?)";
-        
+
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setString(1, cate.getCategoryName());
@@ -56,15 +67,20 @@ public class DAOCategories extends DBContext {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        
+
         return number;
     }
 
-    public Vector getAllCategoriesAndNumberProducts() {
+    /**
+     * It returns a vector of categories, each category has a categoryID, categoryName, and number of
+     * products in that category
+     * 
+     * @return A vector of categories.
+     */
+    public Vector<Categories> getAllCategoriesAndNumberProducts() {
         Vector<Categories> vector = new Vector<>();
-        String sql = "SELECT Categories.*, a.NumberOfCategory FROM dbo.Categories INNER JOIN \n"
-                + "( SELECT Categories.CategoryID, COUNT(ProductID) AS NumberOfCategory FROM dbo.Categories INNER JOIN dbo.Products ON Products.CategoryID = Categories.CategoryID\n"
-                + "GROUP BY Categories.CategoryID) AS a ON a.CategoryID = Categories.CategoryID";
+        String sql = "SELECT Categories.CategoryID, CategoryName, COUNT(*) AS NumberOfCategory FROM dbo.Products INNER JOIN dbo.Categories ON Categories.CategoryID = Products.CategoryID\n"
+                + "GROUP BY Categories.CategoryID, CategoryName";
         ResultSet rs = getData(sql);
         try {
             while (rs.next()) {
@@ -80,6 +96,12 @@ public class DAOCategories extends DBContext {
         return vector;
     }
 
+    /**
+     * UpdateCategory() is a function that updates the category name of a category in the database
+     * 
+     * @param category is the object of the Categories class
+     * @return The number of rows affected by the update.
+     */
     public int UpdateCategory(Categories category) {
         int number = 0;
         String sql = "UPDATE Categories SET CategoryName = ? WHERE CategoryID = ?";
@@ -97,6 +119,12 @@ public class DAOCategories extends DBContext {
 
     }
 
+    /**
+     * It takes a string as a parameter, and returns a Categories object
+     * 
+     * @param name String
+     * @return A category object.
+     */
     public Categories getCategoryByCategoryName(String name) {
         Categories c = null;
         String sql = "SELECT * FROM Categories WHERE CategoryName = ?";
@@ -116,6 +144,13 @@ public class DAOCategories extends DBContext {
         return c;
     }
 
+    /**
+     * It returns the number of distinct categories of products that have been shipped by a given
+     * shipper
+     * 
+     * @param shipperID the ID of the shipper
+     * @return The number of categories that have been shipped by a particular shipper.
+     */
     public int ToalCategoriesByShipper(int shipperID) {
         int number = 0;
         String sql = "SELECT COUNT(DISTINCT(CategoryID)) FROM dbo.Products WHERE ProductID IN(SELECT ProductID FROM dbo.OrderDetails WHERE OrderID IN (SELECT OrderID FROM dbo.Orders WHERE ShipVia =?))";
@@ -134,6 +169,12 @@ public class DAOCategories extends DBContext {
         return number;
     }
 
+    /**
+     * It returns the number of distinct categories that a supplier has
+     * 
+     * @param supplierID the supplier ID
+     * @return The number of categories that a supplier has.
+     */
     public int ToalCategoriesBySuppliers(int supplierID) {
         int number = 0;
         String sql = "SELECT COUNT(DISTINCT(Products.CategoryID)) FROM dbo.Products WHERE SupplierID = ?";
@@ -152,6 +193,11 @@ public class DAOCategories extends DBContext {
         return number;
     }
 
+    /**
+     * It returns the number of rows in the Categories table
+     * 
+     * @return The number of categories in the database.
+     */
     public int TotalCategories() {
         int number = 0;
         String sql = "SELECT COUNT(*) FROM Categories";
@@ -166,8 +212,12 @@ public class DAOCategories extends DBContext {
         return number;
     }
 
-    //list all categories
-    public Vector getAllCategories() {
+    /**
+     * It gets all the categories from the database and returns them in a vector
+     * 
+     * @return A vector of Categories objects.
+     */
+    public Vector<Categories> getAllCategories() {
         Vector<Categories> vector = new Vector<>();
         String sql = "SELECT * FROM Categories ORDER BY CategoryID";
         ResultSet rs = getData(sql);
@@ -184,7 +234,12 @@ public class DAOCategories extends DBContext {
         return vector;
     }
 
-    //Add Categories
+    /**
+     * It takes a string as a parameter and inserts it into the database
+     * 
+     * @param categoryName The name of the category to be inserted into the database.
+     * @return The number of rows affected by the SQL statement.
+     */
     public int InsertCategories(String categoryName) {
         int number = 0;
         String sql = "INSERT INTO Categories(CategoryName) VALUES(?)";
@@ -198,6 +253,12 @@ public class DAOCategories extends DBContext {
         return number;
     }
 
+    /**
+     * This function deletes a category from the database
+     * 
+     * @param id the id of the category to be deleted
+     * @return The number of rows affected by the SQL statement.
+     */
     public int DeleteCategories(int id) {
         int number = 0;
         String sql = "DELETE FROM Categories WHERE CategoryID = ?";
@@ -211,6 +272,12 @@ public class DAOCategories extends DBContext {
         return number;
     }
 
+    /**
+     * It returns a category object by a product ID
+     * 
+     * @param pid ProductID
+     * @return A Categories object.
+     */
     public Categories getCategoryNameByProductID(int pid) {
         Categories cate = null;
         String sql = "SELECT Categories.* FROM dbo.Categories INNER JOIN dbo.Products ON Products.CategoryID = Categories.CategoryID WHERE ProductID = ?";
@@ -229,6 +296,12 @@ public class DAOCategories extends DBContext {
         return cate;
     }
 
+    /**
+     * It takes an integer as a parameter and returns a category object
+     * 
+     * @param cID the category ID
+     * @return A category object.
+     */
     public Categories getCategoryByCategoryID(int cID) {
         Categories category = null;
         String sql = "SELECT * FROM Categories WHERE CategoryID = ?";

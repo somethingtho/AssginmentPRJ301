@@ -29,6 +29,12 @@ import util.SendEmail;
  */
 public class DAOReview extends DBContext {
 
+    /**
+     * It gets a review by its ID
+     * 
+     * @param rid the id of the review
+     * @return A Review object.
+     */
     public Review getReviewByID(int rid) {
         Review r = null;
         DAOAccounts daoAccounts = new DAOAccounts();
@@ -62,6 +68,14 @@ public class DAOReview extends DBContext {
         return r;
     }
 
+    /**
+     * I want to send an email to the customer when the admin changes the status of the review from
+     * public to hidden
+     * 
+     * @param r Review object
+     * @param type public or hidden
+     * @return The number of rows affected by the SQL statement.
+     */
     public int changeReview(Review r, String type) {
         SendEmail send = new SendEmail();
         int number = 0;
@@ -86,6 +100,12 @@ public class DAOReview extends DBContext {
 
     }
 
+    /**
+     * It returns the number of reviews for a supplier.
+     * 
+     * @param supplierID the ID of the supplier
+     * @return The number of reviews for a specific supplier.
+     */
     public int TotalReviewBySupplier(int supplierID) {
         int number = 0;
         String sql = "SELECT COUNT(Review.ProductID) FROM dbo.Review WHERE Review.ProductID IN(SELECT Products.ProductID FROM dbo.Products WHERE Products.SupplierID = ?)";
@@ -104,6 +124,11 @@ public class DAOReview extends DBContext {
         return number;
     }
 
+    /**
+     * It gets the top 5 reviews from the database and returns a vector of Review objects
+     * 
+     * @return A vector of Review objects.
+     */
     public Vector<Review> getTop5Review() {
         DAOAccounts daoAccounts = new DAOAccounts();
         DAOCustomers daoCustomers = new DAOCustomers();
@@ -133,6 +158,12 @@ public class DAOReview extends DBContext {
         return vector;
     }
 
+    /**
+     * It gets all the reviews of a product by its ID
+     * 
+     * @param pid product id
+     * @return A vector of Review objects.
+     */
     public Vector<Review> getAllReviewByProductID(int pid) {
         DAOAccounts daoAccounts = new DAOAccounts();
         DAOCustomers daoCustomers = new DAOCustomers();
@@ -162,6 +193,13 @@ public class DAOReview extends DBContext {
         return vector;
     }
 
+    /**
+     * It gets the average rate of a product by getting the rate of each review of that product and
+     * then dividing the sum of all the rates by the number of reviews
+     * 
+     * @param pid product id
+     * @return The average rate of a product.
+     */
     public double getAverageRate(int pid) {
         double avgRate = 0;
         Vector<Integer> rateList = new Vector<>();
@@ -187,6 +225,12 @@ public class DAOReview extends DBContext {
         return avgRate;
     }
 
+    /**
+     * Insert a review into the database
+     * 
+     * @param review the object that contains the data to be inserted into the database
+     * @return The number of rows affected by the SQL statement.
+     */
     public int InsertReview(Review review) {
         int number = 0;
         String sql = "INSERT INTO dbo.Review (IDAccount, ProductID, ContentSend, Rate, DateRate, Status) VALUES (?, ?, ?, ?, GETDATE(), 1)";
@@ -203,6 +247,11 @@ public class DAOReview extends DBContext {
         return number;
     }
 
+    /**
+     * This function returns the total number of reviews in the database
+     * 
+     * @return The number of reviews in the database.
+     */
     public int TotalReviews() {
         int number = 0;
         String sql = "SELECT COUNT(*) FROM Review";

@@ -13,6 +13,12 @@ import javax.mail.internet.MimeMessage;
 
 public class SendEmail {
 
+    /**
+     * It sends an email to the user with the reply to the feedback
+     * 
+     * @param to the email address of the recipient
+     * @param contendRep the content of the reply
+     */
     public void sendHiddenReview(String to, String contendRep) {
         final String username = "sendotp1234@gmail.com";
         final String password = "ifeahpwziexwuuqo";
@@ -48,6 +54,7 @@ public class SendEmail {
     }
     
     
+    // The above code is sending an email to the user's email address.
     public void sendRegister(String to) {
         final String username = "sendotp1234@gmail.com";
         final String password = "ifeahpwziexwuuqo";
@@ -80,6 +87,11 @@ public class SendEmail {
         }
     }
     
+    /**
+     * It sends an email to the user's email address
+     * 
+     * @param to the email address of the recipient
+     */
     public void sendUnLockAccount(String to) {
         final String username = "sendotp1234@gmail.com";
         final String password = "ifeahpwziexwuuqo";
@@ -115,6 +127,11 @@ public class SendEmail {
     }
     
     
+    /**
+     * It sends an email to the user's email address
+     * 
+     * @param to The email address of the recipient.
+     */
     public void sendLockAccount(String to) {
         final String username = "sendotp1234@gmail.com";
         final String password = "ifeahpwziexwuuqo";
@@ -150,6 +167,12 @@ public class SendEmail {
     }
     
 
+    /**
+     * It sends an email to the user who sent the feedback
+     * 
+     * @param to The email address of the recipient.
+     * @param contendRep the content of the reply
+     */
     public void sendFeedBack(String to, String contendRep) {
         final String username = "sendotp1234@gmail.com";
         final String password = "ifeahpwziexwuuqo";
@@ -184,6 +207,12 @@ public class SendEmail {
         }
     }
 
+    /**
+     * It sends a confirmation email to the user who sent the feedback
+     * 
+     * @param to the email address of the recipient
+     * @param text The text of the message you want to send.
+     */
     public void sendVerifiedFeedBack(String to, String text) {
         final String username = "sendotp1234@gmail.com";
         final String password = "ifeahpwziexwuuqo";
@@ -217,6 +246,12 @@ public class SendEmail {
         }
     }
 
+    /**
+     * It sends an email to the user with the OTP
+     * 
+     * @param to The email address of the recipient.
+     * @param otp The OTP you want to send.
+     */
     public void sendOTP(String to, String otp) {
         final String username = "sendotp1234@gmail.com";
         final String password = "ifeahpwziexwuuqo";
@@ -251,6 +286,11 @@ public class SendEmail {
         }
     }
 
+    /**
+     * It generates a random 6-digit number
+     * 
+     * @return A random 6-digit number.
+     */
     public String generateOTP() {
         // generate an OTP
         // for demonstration purposes, this example generates a random 6-digit number

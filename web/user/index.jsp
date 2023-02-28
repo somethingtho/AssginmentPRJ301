@@ -15,11 +15,48 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/admin/assets/images/logo.png"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/font/themify-icons/themify-icons.css">
         <link href="${pageContext.request.contextPath}/css/index.css" rel="stylesheet" type="text/css"/>
     </head>
 
     <body class="content">
+
+
+        <div class="gearbox">
+            <div class="overlay"></div>
+            <div class="gear one">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear two">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear three">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear four large">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+        </div>
 
         <fmt:setLocale value = "vi_VN"/>
         <%
@@ -34,11 +71,11 @@
                 <a href="index"><img id="logo" src="${pageContext.request.contextPath}/images/logo.png" /></a>
             </div>
             <div class="search row">
-                <form action="search" class=" btn_search">
+                <form action="search" class=" btn_search" id="form_search">
                     <div class="col-md-10">
-                        <input type="text" name="key" class="form-control" id="search" placeholder="Search...">
+                        <input type="text" name="key" class="form-control" id="search" placeholder="Search..." required="">
                     </div>
-                    <button class="col-md-2" onclick="this.form.submit()">
+                    <button class="col-md-2" onclick="searchBtn()">
                         <i class="ti-search"></i>
                     </button>
                 </form>
@@ -405,6 +442,19 @@
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
     }
+
+
+    function searchBtn() {
+        var input = document.getElementById("search");
+        if (input.value === "")
+            alert("Please input keyword!");
+        else
+            document.getElementById("form_search").submit();
+    }
+
+    window.onload = function () {
+        document.querySelector(".gearbox").style.display = "none";
+    };
 </script>
 
 

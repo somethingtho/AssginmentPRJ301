@@ -16,21 +16,14 @@
         
         <meta name="robots" content="noindex,nofollow" />
         <title>Đăng ký</title>
-        <!-- Favicon icon -->
         <link
             rel="icon"
             type="image/png"
             sizes="16x16"
             href="assets/images/logo.png"
             />
-        <!-- Custom CSS -->
         <link href="dist/css/style.min.css" rel="stylesheet" />
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
+        
     </head>
     <body>
         <fmt:setLocale value = "vi_VN"/>
@@ -40,21 +33,13 @@
             response.setDateHeader("Expires", 0);
         %>
         <div class="main-wrapper">
-            <!-- ============================================================== -->
-            <!-- Preloader - style you can find in spinners.css -->
-            <!-- ============================================================== -->
+            
             <div class="preloader">
                 <div class="lds-ripple">
                     <div class="lds-pos"></div>
                     <div class="lds-pos"></div>
                 </div>
             </div>
-            <!-- ============================================================== -->
-            <!-- Preloader - style you can find in spinners.css -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Login box.scss -->
-            <!-- ============================================================== -->
             <div
                 class="auth-wrapper d-flex no-block justify-content-center align-items-center bg-dark"
                 >
@@ -62,11 +47,11 @@
                     <div>
                         <div class="text-center pt-3 pb-3">
                             <span class="db"
-                                  ><img src="assets/images/logo.png" alt="logo"
+                                  ><img style="width: 100px" src="assets/images/logo.png" alt="logo"
                                   /></span>
                         </div>
                         <!-- Form -->
-                        <form class="form-horizontal mt-3" action="index.html">
+                        <form class="form-horizontal mt-3" action="">
                             <div class="row pb-4">
                                 <div class="col-12">
                                     <div class="input-group mb-3">
@@ -169,7 +154,7 @@
                                 </div>
                             </div>
                         </form>
-                        <div class="pt-3 d-grid" style="margin-bottom: 2rem"><button style="background-color:orange;" class="btn btn-block btn-lg btn-info"><a href="#" style="color: white;">Trở về trang người mua</a></button></div>
+                        <div class="pt-3 d-grid" style="margin-bottom: 2rem"><button style="background-color:orange;" class="btn btn-block btn-lg btn-info"><a href="${pageContext.request.contextPath}/user/index" style="color: white;">Trở về trang người mua</a></button></div>
                     </div>
                 </div>
             </div>

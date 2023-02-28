@@ -18,8 +18,45 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/font/themify-icons/themify-icons.css">
         <link href="${pageContext.request.contextPath}/css/login.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+        <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/admin/assets/images/logo.png"/>
     </head>
     <body>
+
+        <div class="gearbox">
+            <div class="overlay"></div>
+            <div class="gear one">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear two">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear three">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <div class="gear four large">
+                <div class="gear-inner">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+        </div>
+
         <fmt:setLocale value = "vi_VN"/>
         <%
             response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
@@ -35,7 +72,7 @@
                 </div>
                 <h1 class="text-center">Hỗ trợ mật khẩu!!!!</h1>
             </div>
-            
+
             <hr style="height: 1px; background-color: black; color: black; margin-bottom: 0;">
             <h4 style="font-family: serif">Nhập địa chỉ email được liên kết với tài khoản của bạn.</h4>
             <div class="row">
@@ -132,7 +169,9 @@
                     this.classList.toggle("bi-eye");
                 });
 
-
+                window.onload = function () {
+                    document.querySelector(".gearbox").style.display = "none";
+                };
             </script>
     </body>
 </html>

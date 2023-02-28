@@ -16,17 +16,18 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/font/themify-icons/themify-icons.css">
         <link href="${pageContext.request.contextPath}/css/orderdetail.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+        <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/admin/assets/images/logo.png"/>
         <title>Chi tiết đơn hàng</title>
     </head>
     <body>
         <fmt:setLocale value = "vi_VN"/>
-    <%
-response.setHeader("Cache-Control","no-cache"); //HTTP 1.1
-response.setHeader("Pragma","no-cache"); //HTTP 1.0
-response.setDateHeader ("Expires", 0);
-//prevents caching at the proxy server
-    %>
-         <c:set var="o" value="${requestScope.cart}"/>
+        <%
+    response.setHeader("Cache-Control","no-cache"); //HTTP 1.1
+    response.setHeader("Pragma","no-cache"); //HTTP 1.0
+    response.setDateHeader ("Expires", 0);
+    //prevents caching at the proxy server
+        %>
+        <c:set var="o" value="${requestScope.cart}"/>
         <header>
             <div class="logo">
                 <a href="index"><img id="logo" src="${pageContext.request.contextPath}/images/logo.png" /></a>
@@ -255,54 +256,58 @@ response.setDateHeader ("Expires", 0);
                                             <td class="ti-wallet"> Hình thức thanh toán</td>
                                             <td>
                                                 <c:choose>
-                                                <c:when test="${requestScope.order.payments}">Thanh toán khi nhận hàng</c:when>
-                                                <c:otherwise>Thanh toán qua QR code</c:otherwise>
-                                            </td>
+                                                    <c:when test="${requestScope.order.payments}">Thanh toán khi nhận hàng</c:when>
+                                                    <c:otherwise>Thanh toán qua QR code</c:otherwise>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="ti-truck"> Công ty vận chuyển</td>
+                                                    <td>${requestScope.order.shipper.companyName}</td>
                                             </tr>
                                             <tr>
-                                                <td class="ti-truck"> Công ty vận chuyển</td>
-                                                    <td>${requestScope.order.shipper.companyName}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="ti-support"> Chăm sóc khách hàng</td>
-                                            <td>${requestScope.order.shipper.phone}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                                <td class="ti-support"> Chăm sóc khách hàng</td>
+                                                <td>${requestScope.order.shipper.phone}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="container-fluid">
-                            <hr style="margin-right: 0.5rem; height: 1px; background-color: black; color: black;">
-                            <p>Địa chỉ và thông tin người nhận hàng:</p>
-                            <p>${sessionScope.account.customerName} - ${sessionScope.account.phone}</p>
-                            <p> ${requestScope.order.address}</p>
-                            <hr style="margin-right: 0.5rem; height: 1px; background-color: black; color: black;">
-                        </div>
-                        
 
-                        <div style="display: flex; justify-content: center; justify-items: center; margin: 30px 0;"><button
-                                style="height: 40px; background-color: orange; color: white; border: none; width: 300px;"><a href="order" style="color: white; text-decoration: none;">Quay
-                                    lại danh sách đơn hàng</a></button></div>
+                            <div class="container-fluid">
+                                <hr style="margin-right: 0.5rem; height: 1px; background-color: black; color: black;">
+                                <p>Địa chỉ và thông tin người nhận hàng:</p>
+                                <p>${sessionScope.account.customerName} - ${sessionScope.account.phone}</p>
+                                <p> ${requestScope.order.address}</p>
+                                <hr style="margin-right: 0.5rem; height: 1px; background-color: black; color: black;">
+                            </div>
 
+
+                            <div style="display: flex; justify-content: center; justify-items: center; margin: 30px 0;"><button
+                                    style="height: 40px; background-color: orange; color: white; border: none; width: 300px;"><a href="order" style="color: white; text-decoration: none;">Quay
+                                        lại danh sách đơn hàng</a></button></div>
+
+                        </div>
                     </div>
                 </div>
-            </div>
-            <script>
-                window.onscroll = function () {
-                    myFunction()
-                };
+                <script>
+                    window.onscroll = function () {
+                        myFunction()
+                    };
 
-                var navbar = document.getElementById("navbar");
-                var sticky = navbar.offsetTop;
+                    var navbar = document.getElementById("navbar");
+                    var sticky = navbar.offsetTop;
 
-                function myFunction() {
-                    if (window.pageYOffset >= sticky) {
-                        navbar.classList.add("sticky")
-                    } else {
-                        navbar.classList.remove("sticky");
+                    function myFunction() {
+                        if (window.pageYOffset >= sticky) {
+                            navbar.classList.add("sticky")
+                        } else {
+                            navbar.classList.remove("sticky");
+                        }
                     }
-                }
-            </script>
-            </body>
-            </html>
+
+                    window.onload = function () {
+                        document.querySelector(".gearbox").style.display = "none";
+                    };
+                </script>
+                </body>
+                </html>

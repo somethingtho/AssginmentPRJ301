@@ -28,12 +28,26 @@ public class ValidateInput {
     private static final String EMAIL_REGEX = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX, Pattern.CASE_INSENSITIVE);
 
+    /**
+     * The function takes a phone number as a string and returns true if the phone number is valid and
+     * false if it is not
+     * 
+     * @param phone The phone number to validate.
+     * @return A boolean value.
+     */
     public boolean validate(String phone) {
         Pattern pattern = Pattern.compile(PHONE_REGEX);
         Matcher matcher = pattern.matcher(phone);
         return matcher.matches();
     }
 
+    /**
+     * It checks if the username and password are valid
+     * 
+     * @param username the username to be checked
+     * @param password 
+     * @return A boolean value.
+     */
     public boolean checkUsernamePassword(String username, String password) {
         Pattern usernamePattern = Pattern.compile(USERNAME_PATTERN);
         Matcher usernameMatcher = usernamePattern.matcher(username);
@@ -42,11 +56,23 @@ public class ValidateInput {
         return usernameMatcher.matches() && passwordMatcher.matches();
     }
 
+    /**
+     * It checks if the email address is in the correct format
+     * 
+     * @param email The email address to validate.
+     * @return A boolean value.
+     */
     public boolean validateEmail(String email) {
         Matcher matcher = EMAIL_PATTERN.matcher(email);
         return matcher.matches();
     }
 
+    /**
+     * It returns true if the customerName parameter contains only letters, spaces, and/or tabs
+     * 
+     * @param customerName The name of the customer.
+     * @return A boolean value.
+     */
     public boolean validateCustomerName(String customerName) {
         Pattern pattern = Pattern.compile("^[\\p{L} \\s]+$");
         return pattern.matcher(customerName).matches();
@@ -58,6 +84,11 @@ public class ValidateInput {
         i.validatRequiredDate("2023-12-21");
     }
 
+    /**
+     * If the input date is after the current date, then the input date is valid.
+     * 
+     * @param dateString The date string to be validated.
+     */
     public void validatRequiredDate(String dateString) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         Calendar now = Calendar.getInstance();

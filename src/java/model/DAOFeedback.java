@@ -20,6 +20,12 @@ import util.SendEmail;
  */
 public class DAOFeedback extends DBContext {
 
+    /**
+     * It gets all feedbacks from the database by email
+     * 
+     * @param f Feedback
+     * @return A vector of feedback objects.
+     */
     public Vector<Feedback> getAllFeedbackByEmail(Feedback f) {
         Vector<Feedback> vector = new Vector<>();
         DAOCustomers daoCustomer = new DAOCustomers();
@@ -52,6 +58,12 @@ public class DAOFeedback extends DBContext {
         return vector;
     }
 
+    /**
+     * It's a function that gets a feedback by its ID
+     * 
+     * @param idSearch the id of the feedback that I want to get
+     * @return A Feedback object.
+     */
     public Feedback getFeedbackByID(int idSearch) {
         Feedback f = null;
         DAOCustomers daoCustomer = new DAOCustomers();
@@ -84,6 +96,13 @@ public class DAOFeedback extends DBContext {
         return f;
     }
 
+    /**
+     * Update the feedback table in the database and send an email to the user
+     * 
+     * @param feedback is an object of Feedback class
+     * @param contentRep the content of the reply
+     * @return The number of rows affected by the update.
+     */
     public int UpdateFeedback(Feedback feedback, String contentRep) {
         SendEmail send = new SendEmail();
         int number = 0;
@@ -105,6 +124,11 @@ public class DAOFeedback extends DBContext {
         return number;
     }
 
+    /**
+     * It returns the number of rows in the Feedback table
+     * 
+     * @return The number of feedbacks in the database.
+     */
     public int TotalFeedbacks() {
         int number = 0;
         String sql = "SELECT COUNT(*) FROM Feedback";
@@ -119,8 +143,12 @@ public class DAOFeedback extends DBContext {
         return number;
     }
 
-    //list all feedback
-    public Vector getAllFeedBack() {
+    /**
+     * This function is used to get all feedbacks from database and return a vector of feedbacks
+     * 
+     * @return A vector of Feedback objects.
+     */
+    public Vector<Feedback> getAllFeedBack() {
         DAOCustomers daoCustomer = new DAOCustomers();
 
         Vector<Feedback> vector = new Vector<>();
@@ -150,7 +178,15 @@ public class DAOFeedback extends DBContext {
         return vector;
     }
 
-    //Add Feedback
+    /**
+     * It inserts a new row into the database table "Feedback" with the values of the parameters
+     * 
+     * @param idAccount the id of the account
+     * @param email String
+     * @param contendSend the content of the feedback
+     * @param role 1 = admin, 2 = user
+     * @return The number of rows affected by the query.
+     */
     public int AddFeedback(int idAccount, String email, String contendSend, int role) {
         int number = 0;
         String sql = "INSERT INTO dbo.Feedback(IDAccount, Email,ContentSend, Role,Status, DateSend, DateRep) VALUES(?, ?, ?, ?, 0, GETDATE(), NULL)";
@@ -167,6 +203,14 @@ public class DAOFeedback extends DBContext {
         return number;
     }
 
+    /**
+     * It inserts a new row into the database table "Feedback" with the values of the parameters
+     * 
+     * @param email String
+     * @param contendSend the content of the feedback
+     * @param role 1 = admin, 2 = user
+     * @return The number of rows affected by the SQL statement.
+     */
     public int AddFeedback(String email, String contendSend, int role) {
         int number = 0;
         String sql = "INSERT INTO dbo.Feedback(Email,ContentSend, Role,Status, DateSend, DateRep) VALUES(?, ?, ?, 0, GETDATE(), NULL)";
@@ -182,7 +226,12 @@ public class DAOFeedback extends DBContext {
         return number;
     }
 
-    //Delete  Feedback
+    /**
+     * It deletes a row from the database table Feedback where the ID is equal to the id parameter
+     * 
+     * @param id the id of the feedback
+     * @return The number of rows affected by the query.
+     */
     public int DeleteFeedback(int id) {
         int number = 0;
         String sql = "DELETE FROM Feedback WHERE ID = ?";
@@ -196,7 +245,12 @@ public class DAOFeedback extends DBContext {
         return number;
     }
 
-    //Update feedback
+    /**
+     * UpdateShippers(Feedback feedback)
+     * 
+     * @param feedback Feedback
+     * @return The number of rows affected by the update.
+     */
     public int UpdateShippers(Feedback feedback) {
         int number = 0;
         String sql = "UPDATE Feedback SET IDAccount = ?, ContentSend = ?, ContentRep = ?, Status WHERE ID = ?";
