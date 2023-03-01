@@ -300,7 +300,8 @@ public class DAOCustomers extends DBContext {
 
         return cus;
     }
-
+    
+    
     /**
      * I get the image from the database, convert it to a byte array, then convert it to a base64
      * string, then return the customer object
@@ -308,10 +309,10 @@ public class DAOCustomers extends DBContext {
      * @param email String
      * @return A Customers object.
      */
-    public Customers getCustomerByEmail(String email) {
+    public Customers getCustomerByPhone(String email) {
         Customers cus = null;
-        String sql = "SELECT * FROM Customers WHERE Email = ?";
-
+        String sql = "SELECT * FROM Customers WHERE Phone = ?";
+        DAOAccounts daoAccounts = new DAOAccounts();
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setString(1, email);
@@ -338,7 +339,57 @@ public class DAOCustomers extends DBContext {
                     String base64Image = Base64.getEncoder().encodeToString(imageBytes);
                     inputStream.close();
                     outputStream.close();
-                    cus = new Customers(customerID, gender, customerName, phone, email, address, id, password, base64Image);
+                    Accounts acc = daoAccounts.getID(id);
+                    cus = new Customers(customerID, gender, customerName, phone, email, address, acc, base64Image);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        } catch (SQLException ex) {
+        }
+
+        return cus;
+    }
+
+    /**
+     * I get the image from the database, convert it to a byte array, then convert it to a base64
+     * string, then return the customer object
+     * 
+     * @param email String
+     * @return A Customers object.
+     */
+    public Customers getCustomerByEmail(String email) {
+        Customers cus = null;
+        String sql = "SELECT * FROM Customers WHERE Email = ?";
+        DAOAccounts daoAccounts = new DAOAccounts();
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, email);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                int customerID = rs.getInt("CustomerID");
+                String customerName = rs.getString("CustomerName");
+                boolean gender = rs.getBoolean("Gender");
+                String phone = rs.getString("Phone");
+                String address = rs.getString("Address");
+                int id = rs.getInt("ID");
+                String password = rs.getString("Password");
+                Blob blob = rs.getBlob("Image");
+
+                InputStream inputStream = blob.getBinaryStream();
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[4096];
+                int bytesRead = -1;
+                try {
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                    byte[] imageBytes = outputStream.toByteArray();
+                    String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+                    inputStream.close();
+                    outputStream.close();
+                    Accounts acc = daoAccounts.getID(id);
+                    cus = new Customers(customerID, gender, customerName, phone, email, address, acc, base64Image);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }

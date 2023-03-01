@@ -84,8 +84,10 @@ public class AddShipperServlet extends HttpServlet {
         boolean status;
         try {
             status = status_raw.equals("ON");
-            Shippers s = dao.getShipperByCompanyName(companyname);
-            if (s != null) {
+            Shippers s1 = dao.getShipperByCompanyName(companyname);
+            Shippers s2 = dao.getShipperByEmail(companyname);
+            Shippers s3 = dao.getShipperByPhone(companyname);
+            if (s1 != null || s2 != null || s3 != null) {
                 request.setAttribute("message", "Thông tin đã đã tồn tại!");
             } else {
                 Shippers ship = new Shippers(companyname, phone, email, status);

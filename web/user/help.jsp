@@ -20,41 +20,6 @@
     </head>
     <body>
 
-        <div class="gearbox">
-            <div class="overlay"></div>
-            <div class="gear one">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear two">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear three">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear four large">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-        </div>
-
         <fmt:setLocale value = "vi_VN"/>
         <div class="container">
             <div class="header">
@@ -65,7 +30,7 @@
             <div class="row">
                 <div class="col-md-2"></div>
                 <div class="form_help col-md-8">
-                    <form action="feedback" method="POST">
+                    <form action="${pageContext.request.contextPath}/user/feedback" method="POST">
                         <div class="row ">
                             <h3 style="color: red;">${requestScope.msg}</h3>
 

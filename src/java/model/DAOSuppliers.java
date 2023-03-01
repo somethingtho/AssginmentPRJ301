@@ -271,6 +271,93 @@ public class DAOSuppliers extends DBContext {
         }
         return sup;
     }
+    
+    /**
+     * It takes a string as a parameter and returns a Suppliers object
+     * 
+     * @param name String
+     * @return A Supplier object.
+     */
+    public Suppliers GetSupplierByHomePage(String name) {
+        Suppliers sup = null;
+        String sql = "SELECT * FROM dbo.Suppliers WHERE Homepage = ?";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, name);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                int supplierID = rs.getInt("SupplierID");
+                String companyName = rs.getString("CompanyName");
+                String phone = rs.getString("Phone");
+                String email = rs.getString("Email");
+                String homePage = rs.getString("HomePage");
+                boolean status = rs.getBoolean("Status");
+                sup = new Suppliers(supplierID, companyName, phone, email, homePage, status);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return sup;
+    }
+    
+    /**
+     * It takes a string as a parameter and returns a Suppliers object
+     * 
+     * @param name String
+     * @return A Supplier object.
+     */
+    public Suppliers GetSupplierByEmail(String name) {
+        Suppliers sup = null;
+        String sql = "SELECT * FROM dbo.Suppliers WHERE Email = ?";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, name);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                int supplierID = rs.getInt("SupplierID");
+                String companyName = rs.getString("CompanyName");
+                String phone = rs.getString("Phone");
+                String email = rs.getString("Email");
+                String homePage = rs.getString("HomePage");
+                boolean status = rs.getBoolean("Status");
+                sup = new Suppliers(supplierID, companyName, phone, email, homePage, status);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return sup;
+    }
+    
+    /**
+     * It takes a string as a parameter and returns a Suppliers object
+     * 
+     * @param name String
+     * @return A Supplier object.
+     */
+    public Suppliers GetSupplierByPhone(String name) {
+        Suppliers sup = null;
+        String sql = "SELECT * FROM dbo.Suppliers WHERE Phone = ?";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, name);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                int supplierID = rs.getInt("SupplierID");
+                String companyName = rs.getString("CompanyName");
+                String phone = rs.getString("Phone");
+                String email = rs.getString("Email");
+                String homePage = rs.getString("HomePage");
+                boolean status = rs.getBoolean("Status");
+                sup = new Suppliers(supplierID, companyName, phone, email, homePage, status);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return sup;
+    }
 
     /**
      * Get the number of products of each supplier that are shipped by a specific shipper

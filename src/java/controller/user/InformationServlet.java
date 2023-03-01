@@ -73,25 +73,25 @@ public class InformationServlet extends HttpServlet {
             throws ServletException, IOException {
         DAOProducts daoProducts = new DAOProducts();
         DAOSuppliers daoSuppliers = new DAOSuppliers();
-        
+
         Vector<Products> listAllProducts = daoProducts.getAllProducts();
-        Cookie[] arr=request.getCookies();
-        String txt="";
-        if(arr!=null){
-            for(Cookie o:arr){
-                if(o.getName().equals("cart")){
-                    txt+=o.getValue();
+        Cookie[] arr = request.getCookies();
+        String txt = "";
+        if (arr != null) {
+            for (Cookie o : arr) {
+                if (o.getName().equals("cart")) {
+                    txt += o.getValue();
                 }
             }
         }
-        Cart cart=new Cart(txt, listAllProducts);
+        Cart cart = new Cart(txt, listAllProducts);
         request.setAttribute("cart", cart);
         request.setAttribute("size", cart.getItems().size());
-        
+
         Vector<Suppliers> listAllSuppliersSmartPhone = daoSuppliers.getAllSuppliersSmartPhone();
         Vector<Suppliers> listAllSuppliersLaptop = daoSuppliers.getAllSuppliersLaptop();
         Vector<Suppliers> listAllSuppliersTablet = daoSuppliers.getAllSuppliersTablet();
-        
+
         request.setAttribute("listAllSuppliersSmartPhone", listAllSuppliersSmartPhone);
         request.setAttribute("listAllSuppliersLaptop", listAllSuppliersLaptop);
         request.setAttribute("listAllSuppliersTablet", listAllSuppliersTablet);
@@ -109,7 +109,26 @@ public class InformationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
+        DAOProducts daoProducts = new DAOProducts();
+        DAOSuppliers daoSuppliers = new DAOSuppliers();
+
+        Vector<Products> listAllProducts = daoProducts.getAllProducts();
+        Cookie[] arr = request.getCookies();
+        String txt = "";
+        if (arr != null) {
+            for (Cookie o : arr) {
+                if (o.getName().equals("cart")) {
+                    txt += o.getValue();
+                }
+            }
+        }
+        Cart cart = new Cart(txt, listAllProducts);
+        request.setAttribute("cart", cart);
+        request.setAttribute("size", cart.getItems().size());
+
+        Vector<Suppliers> listAllSuppliersSmartPhone = daoSuppliers.getAllSuppliersSmartPhone();
+        Vector<Suppliers> listAllSuppliersLaptop = daoSuppliers.getAllSuppliersLaptop();
+        Vector<Suppliers> listAllSuppliersTablet = daoSuppliers.getAllSuppliersTablet();
         DAOCustomers daoCustomers = new DAOCustomers();
         InputStream inputStream = null;
         HttpSession session = request.getSession();
@@ -129,7 +148,25 @@ public class InformationServlet extends HttpServlet {
         String gender_raw = request.getParameter("gender");
         String email = request.getParameter("email");
         boolean gender;
-        
+        request.setAttribute("listAllSuppliersSmartPhone", listAllSuppliersSmartPhone);
+        request.setAttribute("listAllSuppliersLaptop", listAllSuppliersLaptop);
+        request.setAttribute("listAllSuppliersTablet", listAllSuppliersTablet);
+        Customers check = daoCustomers.getCustomerByEmail(email);
+        Customers check2 = daoCustomers.getCustomerByPhone(phone);
+        if (check != null) {
+            if (!check.getAcc().getUserName().equalsIgnoreCase(cus.getAcc().getUserName())) {
+                request.setAttribute("error", "Email đã được sử dụng vui lòng chọn Email khác!");
+                request.getRequestDispatcher("information.jsp").forward(request, response);
+            }
+
+        }
+
+        if (check2 != null) {
+            if (!check2.getAcc().getUserName().equalsIgnoreCase(cus.getAcc().getUserName())) {
+                request.setAttribute("error", "Số điện thoại đã được sử dụng vui lòng chọn Số điện thoại khác!");
+                request.getRequestDispatcher("information.jsp").forward(request, response);
+            }
+        }
         try {
             gender = gender_raw.equals("male");
             cus.setPhone(phone);
@@ -141,13 +178,13 @@ public class InformationServlet extends HttpServlet {
             Customers update = daoCustomers.getCustomerByUserName(cus.getAcc().getUserName());
             cus.setBase64Image(update.getBase64Image());
             session.setAttribute("account", cus);
-//            out.print(getFileName(filePart));
-            response.sendRedirect("information");
+            request.setAttribute("error", "Cập nhật thành công!");
+            request.getRequestDispatcher("information.jsp").forward(request, response);
         } catch (Exception e) {
         }
 
     }
-    
+
     private String getFileName(Part part) {
         String contentDisp = part.getHeader("content-disposition");
         if (contentDisp != null) {

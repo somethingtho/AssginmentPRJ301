@@ -23,41 +23,6 @@
     <body>
 
 
-        <div class="gearbox">
-            <div class="overlay"></div>
-            <div class="gear one">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear two">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear three">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear four large">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-        </div>
-
 
         <%
             response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
@@ -72,7 +37,7 @@
                 <a href="index"><img id="logo" src="${pageContext.request.contextPath}/images/logo.png" /></a>
             </div>
             <div class="search row">
-                <form action="search" class=" btn_search">
+                <form action="${pageContext.request.contextPath}/user/search" class=" btn_search">
                     <div class="col-md-10">
                         <input type="text" name="key" class="form-control" id="search" placeholder="Search...">
                     </div>
@@ -83,7 +48,7 @@
             </div>
             <div class="info" style="display: flex;justify-content: space-between; width: 300px;">
                 <div class="dropdown_cart">
-                    <a href="show" class="nut_dropdown">
+                    <a href="${pageContext.request.contextPath}/user/show" class="nut_dropdown">
                         <div class="choose">
                             <i class="ti-shopping-cart">(${requestScope.size})</i><br />
                             <p>Giỏ hàng</p>
@@ -95,7 +60,7 @@
                                 <h5 style="margin-left: 10px; margin-top: 10px;">Sản phẩm trong giỏ</h5>
                                 <hr style="height: 1px;border-width:0;color:gray;background-color:gray">
                                 <c:forEach items="${o.items}" var="i">
-                                    <a class="item" href="item?pid=${i.product.productID}">
+                                    <a class="item" href="${pageContext.request.contextPath}/user/item?pid=${i.product.productID}">
                                         <div class="row item-1">
                                             <div class="col-md-2"><img src="data:image/jpg;base64,${i.product.base64Image}" alt="" style="width: 50px;">
                                             </div>
@@ -120,7 +85,7 @@
                                 <div class="row">
                                     <div class="col-md-8"></div>
                                     <button style="width: 150px; height: 40px; margin: 10px 0; background-color: orangered; border: none; "
-                                            class="col-md-3"><a style="color: white; line-height: 2" href="show">Xem giỏ hàng</a></button></div>
+                                            class="col-md-3"><a style="color: white; line-height: 2" href="${pageContext.request.contextPath}/user/show">Xem giỏ hàng</a></button></div>
                                 </c:when>
                                 <c:otherwise><div><img style="width:500px" src="${pageContext.request.contextPath}/images/no_cart.png" alt="alt"/></div></c:otherwise>
                             </c:choose>    
@@ -128,13 +93,13 @@
                 </div>
                 <c:choose>
                     <c:when test="${not empty sessionScope.account}">
-                        <a href="information">
+                        <a href="${pageContext.request.contextPath}/user/information">
                             <div class="choose" >
                                 <i class="ti-user"></i><br />
                                 <p>Tài khoản của tôi</p>
                             </div>
                         </a>
-                        <a href="logout">
+                        <a href="${pageContext.request.contextPath}/user/logout">
                             <div class="choose" >
                                 <i class="ti-user"></i><br />
                                 <p>Đăng xuất</p>
@@ -142,13 +107,13 @@
                         </a>
                     </c:when>
                     <c:otherwise>
-                        <a href="login.jsp">
+                        <a href="${pageContext.request.contextPath}/user/login.jsp">
                             <div class="choose" >
                                 <i class="ti-user"></i><br />
                                 <p>Đăng nhập</p>
                             </div>
                         </a>
-                        <a href="register.jsp">
+                        <a href="${pageContext.request.contextPath}/user/register.jsp">
                             <div class="choose">
                                 <i class="ti-user"></i><br />
                                 <p>Đăng ký</p>
@@ -162,7 +127,7 @@
 
     <nav id="navbar">
         <div class="dropdown_nav">
-            <a class="categories" href="mobile">
+            <a class="categories" href="${pageContext.request.contextPath}/user/mobile">
                 <i class="ti-mobile"></i>
                 <p>MOBILE</p>
             </a>
@@ -170,13 +135,13 @@
                 <div class="list-group col-md-12">
                     <h4 style="margin: 20px; color: black;">Hãng sản xuất</h4>
                     <c:forEach items="${requestScope.listAllSuppliersSmartPhone}" var="s">
-                        <a href="mobile?sid=${s.supplierID}" class="col-md-1" style="width: 125px; height: 30px; text-align: center; line-height: 0.5;">${s.companyName}</a>
+                        <a href="${pageContext.request.contextPath}/user/mobile?sid=${s.supplierID}" class="col-md-1" style="width: 125px; height: 30px; text-align: center; line-height: 0.5;">${s.companyName}</a>
                     </c:forEach>
                 </div>
             </div>
         </div>
         <div class="dropdown_nav">
-            <a class="categories" href="laptop">
+            <a class="categories" href="${pageContext.request.contextPath}/user/laptop">
                 <i class="ti-desktop"></i>
                 <p>LAPTOP</p>
             </a>
@@ -184,13 +149,13 @@
                 <div class="list-group col-md-12">
                     <h4 style="margin: 20px; color: black;">Hãng sản xuất</h4>
                     <c:forEach items="${requestScope.listAllSuppliersLaptop}" var="l">
-                        <a href="laptop?sid=${l.supplierID}" class="col-md-1" style="width: 125px; height: 30px; text-align: center; line-height: 0.5;">${l.companyName}</a>
+                        <a href="${pageContext.request.contextPath}/user/laptop?sid=${l.supplierID}" class="col-md-1" style="width: 125px; height: 30px; text-align: center; line-height: 0.5;">${l.companyName}</a>
                     </c:forEach>
                 </div>
             </div>
         </div>
         <div class="dropdown_nav">
-            <a class="categories" href="tablet">
+            <a class="categories" href="${pageContext.request.contextPath}/user/tablet">
                 <i class="ti-tablet"></i>
                 <p>TABLET</p>
             </a>
@@ -198,7 +163,7 @@
                 <div class="list-group col-md-12">
                     <h4 style="margin: 20px; color: black;">Hãng sản xuất</h4>
                     <c:forEach items="${requestScope.listAllSuppliersTablet}" var="t">
-                        <a href="tablet?sid=${t.supplierID}" class="col-md-1" style="width: 100px; height: 30px; text-align: center; line-height: 0.5;">${t.companyName}</a>
+                        <a href="${pageContext.request.contextPath}/user/tablet?sid=${t.supplierID}" class="col-md-1" style="width: 100px; height: 30px; text-align: center; line-height: 0.5;">${t.companyName}</a>
                     </c:forEach>
                 </div>
             </div>
@@ -209,7 +174,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-2 phanloai">
-                    <form action="search" id="form1">
+                    <form action="${pageContext.request.contextPath}/user/search" id="form1">
                         <input type="hidden" name="key" value="${requestScope.key}" class="form-control" id="search" placeholder="Search...">
                         <div class="form-group">
                             <label for="orderby">Sắp xếp:</label>
@@ -238,7 +203,7 @@
                                 </div>
 
                                 <div class="range-slider">
-                                    <form action="search" >
+                                    <form action="${pageContext.request.contextPath}/user/search" >
                                         <input type="range" id="from" name="from" class="price_range" value="${requestScope.from}" min="${requestScope.minPrice}" max="${requestScope.maxPrice}" step="10000">
                                         <input type="range" id="to" name="to" class="price_range" value="${requestScope.to}" min="${requestScope.minPrice}" max="${requestScope.maxPrice}" step="10000">
                                         <button style="margin: 30px 0 0 0; background-color: orange; border: none; color: white; height: 30px; width: 280px;" 
@@ -253,7 +218,7 @@
                     <h4 style="margin-top: 3rem;">Tìm thấy <span style="font-weight: bold">${requestScope.totalSearch}</span> kết quả với từ khoá "<span style="font-weight: bold">${requestScope.key}</span>"</h4>
                     <hr style="margin-right: 20px; margin-top: 0; height: 1px; background-color: black; color: black;">
                     <c:forEach items="${requestScope.listAllType}" var="p">
-                        <a href="item?pid=${p.productID}" class="col-md-3">
+                        <a href="${pageContext.request.contextPath}/user/item?pid=${p.productID}" class="col-md-3">
                             <div class="pro-img">
                                 <img src="data:image/jpg;base64,${p.base64Image}"/>
                             </div>
@@ -269,13 +234,13 @@
         </div>
     </div>
     <c:set var="page" value="${requestScope.page}"/>
-    <form action="${requestScope.type}">
+    <form action="${pageContext.request.contextPath}/user/${requestScope.type}">
         <ul class="pagination pager" style="display: flex; justify-content: center;">
-            <li class="previous <c:if test="${requestScope.page == 1}">disabled</c:if>"><a href="search?key=${requestScope.key}&page=${page-1}"">Trang trước</a></li>
+            <li class="previous <c:if test="${requestScope.page == 1}">disabled</c:if>"><a href="${pageContext.request.contextPath}/user/search?key=${requestScope.key}&page=${page-1}"">Trang trước</a></li>
                 <c:forEach begin="${1}" end="${requestScope.num}" var="i">
-                <li style="margin: 0 5px;" class="${i==page?"active":""}"><a href="search?key=${requestScope.key}&page=${i}">${i}</a> </li>
+                <li style="margin: 0 5px;" class="${i==page?"active":""}"><a href="${pageContext.request.contextPath}/user/search?key=${requestScope.key}&page=${i}">${i}</a> </li>
                 </c:forEach>
-            <li class="next <c:if test="${requestScope.page == num}">disabled</c:if>"><a href="search?key=${requestScope.key}&page=${page+1}">Trang sau</a></li>
+            <li class="next <c:if test="${requestScope.page == num}">disabled</c:if>"><a href="${pageContext.request.contextPath}/user/search?key=${requestScope.key}&page=${page+1}">Trang sau</a></li>
             </ul> 
         </form>   
 
@@ -304,7 +269,7 @@
                 <p><a href="#">Điều khoản sử dụng</a></p>
                 <p><a href="#">Chính sách bảo mật</a></p>
                 <p><a href="#">Bảo vệ quyền sở hữu trí tuệ</a></p>
-                <p><a target="_blank" rel="noopener noreferrer" href="help.jsp">Trợ giúp <i class="ti-help"></i></a></p>
+                <p><a target="_blank" rel="noopener noreferrer" href="${pageContext.request.contextPath}/user/help.jsp">Trợ giúp <i class="ti-help"></i></a></p>
             </div>
 
             <div class="col-md-4 row">

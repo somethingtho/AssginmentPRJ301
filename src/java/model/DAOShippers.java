@@ -18,6 +18,61 @@ import java.util.logging.Logger;
  * @author daova
  */
 public class DAOShippers extends DBContext {
+    
+    /**
+     * It returns a Shippers object with the given Phone 
+     * 
+     * @param s String
+     * @return A Shippers object.
+     */
+    public Shippers getShipperByPhone(String s) {
+        Shippers x = null;
+        String sql = "SELECT * FROM Shippers WHERE Phone = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, s);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("ShipperID");
+                String companyName = rs.getString("CompanyName");
+                String phone = rs.getString("Phone");
+                boolean status = rs.getBoolean("Status");
+                String email = rs.getString("Email");
+                x = new Shippers(id, companyName, phone, email, status);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return x;
+    }
+    
+    /**
+     * It returns a Shippers object with the given Email
+     * 
+     * @param s String
+     * @return A Shippers object.
+     */
+    public Shippers getShipperByEmail(String s) {
+        Shippers x = null;
+        String sql = "SELECT * FROM Shippers WHERE Email = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, s);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("ShipperID");
+                String companyName = rs.getString("CompanyName");
+                String phone = rs.getString("Phone");
+                boolean status = rs.getBoolean("Status");
+                String email = rs.getString("Email");
+                x = new Shippers(id, companyName, phone, email, status);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return x;
+    }
+    
 
     /**
      * UpdateShipper(Shippers s) is a function that updates the Shippers table in the database with the

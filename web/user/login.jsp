@@ -20,42 +20,6 @@
 
     <body>
 
-
-        <div class="gearbox">
-            <div class="overlay"></div>
-            <div class="gear one">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear two">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear three">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear four large">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-        </div>
-
         <fmt:setLocale value = "vi_VN"/>
         <%
             response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
@@ -64,7 +28,7 @@
         %>
         <div class="login-box">
             <p>Login</p>
-            <form action="login" method="POST">
+            <form action="${pageContext.request.contextPath}/user/login" method="POST">
                 <p class="col-md-7" style="color: red;">${requestScope.error}</p>
                 <div class="user-box">
                     <input required="" name="username" value="${cookie.user.value}" type="text">
@@ -77,7 +41,7 @@
 
                 <div class="content">
                     <label class="checkBox">
-                        <input id="ch1" type="checkbox" value="ON" ${(cookie.cr.value eq 'ON')?"checked":""}>
+                        <input id="ch1" type="checkbox" name="remember" value="ON" ${(cookie.cr.value eq 'ON')?"checked":""}>
                         <div class="transition"></div>
                     </label>
                     <label class="text_remember">Remember</label>
@@ -107,6 +71,7 @@
             window.onload = function () {
                 document.querySelector(".gearbox").style.display = "none";
             };
+            
         </script>
     </body>
 </html>

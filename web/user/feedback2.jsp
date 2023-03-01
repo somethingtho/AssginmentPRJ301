@@ -17,41 +17,6 @@
     </head>
     <body>
 
-        <div class="gearbox">
-            <div class="overlay"></div>
-            <div class="gear one">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear two">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear three">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear four large">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-        </div>
-
         <div class="container">
             <form class="form-container" action="feedback" method="POST">
                 <div class="headline"><span>Contact me</span></div>

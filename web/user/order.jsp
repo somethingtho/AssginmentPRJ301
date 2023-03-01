@@ -20,42 +20,6 @@
         <title>Đơn hàng của bạn</title>
     </head>
     <body>
-
-        <div class="gearbox">
-            <div class="overlay"></div>
-            <div class="gear one">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear two">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear three">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear four large">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-        </div>
-
         <fmt:setLocale value = "vi_VN"/>
         <%
             response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
@@ -66,10 +30,10 @@
         <c:set var="o" value="${requestScope.cart}"/>
         <header>
             <div class="logo">
-                <a href="index"><img id="logo" src="${pageContext.request.contextPath}/images/logo.png" /></a>
+                <a href="${pageContext.request.contextPath}/user/index"><img id="logo" src="${pageContext.request.contextPath}/images/logo.png" /></a>
             </div>
             <div class="search row">
-                <form action="search" class=" btn_search">
+                <form action="${pageContext.request.contextPath}/user/search" class=" btn_search">
                     <div class="col-md-10">
                         <input type="text" name="key" class="form-control" id="search" placeholder="Search...">
                     </div>
@@ -80,7 +44,7 @@
             </div>
             <div class="info" style="display: flex;justify-content: space-between; width: 300px;">
                 <div class="dropdown_cart">
-                    <a href="show" class="nut_dropdown">
+                    <a href="${pageContext.request.contextPath}/user/show" class="nut_dropdown">
                         <div class="choose">
                             <i class="ti-shopping-cart">(${requestScope.size})</i><br />
                             <p>Giỏ hàng</p>
@@ -92,7 +56,7 @@
                                 <h5 style="margin-left: 10px; margin-top: 10px;">Sản phẩm trong giỏ</h5>
                                 <hr style="height: 1px;border-width:0;color:gray;background-color:gray">
                                 <c:forEach items="${o.items}" var="i">
-                                    <a class="item" href="item?pid=${i.product.productID}">
+                                    <a class="item" href="${pageContext.request.contextPath}/user/item?pid=${i.product.productID}">
                                         <div class="row item-1">
                                             <div class="col-md-2"><img src="data:image/jpg;base64,${i.product.base64Image}" alt="" style="width: 50px;">
                                             </div>
@@ -117,7 +81,7 @@
                                 <div class="row">
                                     <div class="col-md-8"></div>
                                     <button style="width: 150px; height: 40px; margin: 10px 0; background-color: orangered; border: none; "
-                                            class="col-md-3"><a style="color: white; line-height: 2" href="show">Xem giỏ hàng</a></button></div>
+                                            class="col-md-3"><a style="color: white; line-height: 2" href="${pageContext.request.contextPath}/user/show">Xem giỏ hàng</a></button></div>
                                 </c:when>
                                 <c:otherwise><div><img style="width:500px" src="${pageContext.request.contextPath}/images/no_cart.png" alt="alt"/></div></c:otherwise>
                             </c:choose>    
@@ -125,13 +89,13 @@
                 </div>
                 <c:choose>
                     <c:when test="${not empty sessionScope.account}">
-                        <a href="information">
+                        <a href="${pageContext.request.contextPath}/user/information">
                             <div class="choose" >
                                 <i class="ti-user"></i><br />
                                 <p>Tài khoản của tôi</p>
                             </div>
                         </a>
-                        <a href="logout">
+                        <a href="${pageContext.request.contextPath}/user/logout">
                             <div class="choose" >
                                 <i class="ti-user"></i><br />
                                 <p>Đăng xuất</p>
@@ -139,13 +103,13 @@
                         </a>
                     </c:when>
                     <c:otherwise>
-                        <a href="login.jsp">
+                        <a href="${pageContext.request.contextPath}/user/login.jsp">
                             <div class="choose" >
                                 <i class="ti-user"></i><br />
                                 <p>Đăng nhập</p>
                             </div>
                         </a>
-                        <a href="register.jsp">
+                        <a href="${pageContext.request.contextPath}/user/register.jsp">
                             <div class="choose">
                                 <i class="ti-user"></i><br />
                                 <p>Đăng ký</p>
@@ -159,7 +123,7 @@
 
     <nav id="navbar">
         <div class="dropdown_nav">
-            <a class="categories" href="mobile">
+            <a class="categories" href="${pageContext.request.contextPath}/user/mobile">
                 <i class="ti-mobile"></i>
                 <p>MOBILE</p>
             </a>
@@ -167,13 +131,13 @@
                 <div class="list-group col-md-12">
                     <h4 style="margin: 20px; color: black;">Hãng sản xuất</h4>
                     <c:forEach items="${requestScope.listAllSuppliersSmartPhone}" var="s">
-                        <a href="mobile?sid=${s.supplierID}" class="col-md-1" style="width: 125px; height: 30px; text-align: center; line-height: 0.5;">${s.companyName}</a>
+                        <a href="${pageContext.request.contextPath}/user/mobile?sid=${s.supplierID}" class="col-md-1" style="width: 125px; height: 30px; text-align: center; line-height: 0.5;">${s.companyName}</a>
                     </c:forEach>
                 </div>
             </div>
         </div>
         <div class="dropdown_nav">
-            <a class="categories" href="laptop">
+            <a class="categories" href="${pageContext.request.contextPath}/user/laptop">
                 <i class="ti-desktop"></i>
                 <p>LAPTOP</p>
             </a>
@@ -181,13 +145,13 @@
                 <div class="list-group col-md-12">
                     <h4 style="margin: 20px; color: black;">Hãng sản xuất</h4>
                     <c:forEach items="${requestScope.listAllSuppliersLaptop}" var="l">
-                        <a href="laptop?sid=${l.supplierID}" class="col-md-1" style="width: 125px; height: 30px; text-align: center; line-height: 0.5;">${l.companyName}</a>
+                        <a href="${pageContext.request.contextPath}/user/laptop?sid=${l.supplierID}" class="col-md-1" style="width: 125px; height: 30px; text-align: center; line-height: 0.5;">${l.companyName}</a>
                     </c:forEach>
                 </div>
             </div>
         </div>
         <div class="dropdown_nav">
-            <a class="categories" href="tablet">
+            <a class="categories" href="${pageContext.request.contextPath}/user/tablet">
                 <i class="ti-tablet"></i>
                 <p>TABLET</p>
             </a>
@@ -195,7 +159,7 @@
                 <div class="list-group col-md-12">
                     <h4 style="margin: 20px; color: black;">Hãng sản xuất</h4>
                     <c:forEach items="${requestScope.listAllSuppliersTablet}" var="t">
-                        <a href="tablet?sid=${t.supplierID}" class="col-md-1" style="width: 100px; height: 30px; text-align: center; line-height: 0.5;">${t.companyName}</a>
+                        <a href="${pageContext.request.contextPath}/user/tablet?sid=${t.supplierID}" class="col-md-1" style="width: 100px; height: 30px; text-align: center; line-height: 0.5;">${t.companyName}</a>
                     </c:forEach>
                 </div>
             </div>
@@ -208,9 +172,9 @@
                 <h4>Tài khoản của bạn</h4>
                 <hr style="margin-right: 20px; height: 1px; background-color: black; color: black;">
                 <ul>
-                    <li style="margin-top: 20px;"><a class="ti-id-badge" href="information">  Hồ Sơ</a></li>
-                    <li style="margin-top: 20px;"><a class="ti-reload" href="changepassword">  Đổi Mật Khẩu</a></li>
-                    <li style="margin-top: 20px;"><a class="ti-receipt" href="order">  Đơn hàng đã mua</a></li>
+                    <li style="margin-top: 20px;"><a class="ti-id-badge" href="${pageContext.request.contextPath}/user/information">  Hồ Sơ</a></li>
+                    <li style="margin-top: 20px;"><a class="ti-reload" href="${pageContext.request.contextPath}/user/changepassword">  Đổi Mật Khẩu</a></li>
+                    <li style="margin-top: 20px;"><a class="ti-receipt" href="${pageContext.request.contextPath}/user/order">  Đơn hàng đã mua</a></li>
                 </ul>
             </div>
 
@@ -231,11 +195,11 @@
                             <c:set var="count" value="0" scope="page" />
                             <c:forEach var="orderDetail" items="${order.orderDetails}">
                                 <tr>
-                                    <td style="border-top: none; text-align: center;padding-right: 80px;"><a href="orderdetail?oid=${order.orderID}"><c:if test="${count ==0}">${order.orderID}</c:if></a></td>
+                                    <td style="border-top: none; text-align: center;padding-right: 80px;"><a href="${pageContext.request.contextPath}/user/orderdetail?oid=${order.orderID}"><c:if test="${count ==0}">${order.orderID}</c:if></a></td>
                                         <c:set var="count" value="${count+1}"  scope="page"></c:set>
-                                    <td style="display: flex;"><a href="item?pid=${orderDetail.product.productID}"><img style="width: 50px;" src="data:image/jpg;base64,${orderDetail.product.base64Image}"/>
+                                    <td style="display: flex;"><a href="${pageContext.request.contextPath}/user/item?pid=${orderDetail.product.productID}"><img style="width: 50px;" src="data:image/jpg;base64,${orderDetail.product.base64Image}"/>
                                             <div>
-                                                <a href="item?pid=${orderDetail.product.productID}">${orderDetail.product.productName}</a>
+                                                <a href="${pageContext.request.contextPath}/user/item?pid=${orderDetail.product.productID}">${orderDetail.product.productName}</a>
                                                 <p style="margin-top: 5px; font-size: 13px;">
                                                     <c:choose>
                                                         <c:when test="${order.payments}">Thanh toán qua QR code</c:when>

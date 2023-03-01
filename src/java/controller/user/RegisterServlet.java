@@ -76,21 +76,30 @@ public class RegisterServlet extends HttpServlet {
         DAOAccounts daoAccounts = new DAOAccounts();
         DAOCustomers daoCustomers = new DAOCustomers();
         
-        String user = request.getParameter("username");
-        String pass = request.getParameter("password");
-        String cfpass = request.getParameter("cfpassword");
-        String email = request.getParameter("email");
+        String user = request.getParameter("username").trim();
+        String pass = request.getParameter("password").trim();
+        String cfpass = request.getParameter("cfpassword").trim();
+        String email = request.getParameter("email").trim();
 
+        if (user == null) {
+            request.setAttribute("error", "Tên đăng nhập không được bỏ trống vui lòng nhập lại!!!");
+            request.getRequestDispatcher("register.jsp").forward(request, response);
+        }
+        
         Accounts acc = daoAccounts.getUsername(user);
+        Customers cusTest = daoCustomers.getCustomerByEmail(email);
         if (acc != null) {
             request.setAttribute("error", "Tên đăng nhập đã tồn tại vui lòng chọn tên khác!!!");
             request.getRequestDispatcher("register.jsp").forward(request, response);
-        } else {
+        }
+        if(cusTest!= null){
+            request.setAttribute("error", "Email đã tồn tại vui lòng nhập Email khác!!!");
+            request.getRequestDispatcher("register.jsp").forward(request, response);
+        }else {
             if (!pass.equals(cfpass)) {
                 request.setAttribute("error", "Mật khẩu không khớp. Vui lòng nhập lại!!!");
                 request.getRequestDispatcher("register.jsp").forward(request, response);
             }else{
-                
                 Accounts newAcc = new Accounts(user);
                 Customers cus = new Customers(user, email, newAcc, pass);
                 int n = daoCustomers.InsertNewCustomers(cus);

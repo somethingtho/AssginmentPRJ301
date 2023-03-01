@@ -83,8 +83,11 @@ public class AddSupplierServlet extends HttpServlet {
         String email = request.getParameter("email");
         boolean status = status_raw.equals("ON");
         
-        Suppliers supOld = dao.GetSupplierByCompanyName(companyName);
-        if(supOld != null){
+        Suppliers sup1 = dao.GetSupplierByCompanyName(companyName);
+        Suppliers sup2 = dao.GetSupplierByPhone(phone);
+        Suppliers sup3 = dao.GetSupplierByEmail(email);
+        Suppliers sup4 = dao.GetSupplierByHomePage(hompage);
+        if(sup1 != null || sup2 != null || sup3 != null || sup4 != null){
             request.setAttribute("message", "Thông tin đã tồn tại");
         }else{
             Suppliers s = new Suppliers(companyName, phone, email, hompage, status);

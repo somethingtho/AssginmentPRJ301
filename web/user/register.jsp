@@ -20,44 +20,9 @@
 
     <body>
 
-        <div class="gearbox">
-            <div class="overlay"></div>
-            <div class="gear one">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear two">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear three">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear four large">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-        </div>
-
         <div class="login-box">
 
-            <form action="register" method="POST" id="register_form">
+            <form action="${pageContext.request.contextPath}/user/register" method="POST" id="register_form">
                 <p style="color: red; font-size: 20px; text-align: center">${requestScope.error}</p>
                 <h1>Register</h1>
                 <div class="user-box">
@@ -65,15 +30,15 @@
                     <label>Username</label>
                 </div>
                 <div class="user-box">
-                    <input required="" name="email" type="email">
+                    <input required="" id="email" name="email" type="email">
                     <label>Email</label>
                 </div>
                 <div class="user-box">
-                    <input required="" name="password" type="password">
+                    <input required="" id="password" name="password" type="password">
                     <label>Password</label>
                 </div>
                 <div class="user-box">
-                    <input required="" name="cfpassword" type="password">
+                    <input required="" id="cfpassword" name="cfpassword" type="password">
                     <label>Password</label>
                 </div>
 
@@ -88,20 +53,26 @@
         <script>
 
             function checkform() {
-
-                if (document.getElementById('username') === "") {
-                    alert("Please input UserName!!");
+                const patternEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const patternUserName = /^[a-zA-Z0-9_]{3,16}$/;
+                const patternPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+                let username = document.getElementById('username').value;
+                let email = document.getElementById('username').value;
+                let password = document.getElementById('username').value;
+                let cfpassword = document.getElementById('username').value;
+                if (username === "") {
+                    alert("Vui lòng nhập UserName!!");
                     return;
                 }
-
-
-                if (document.getElementsByName('password') !== document.getElementsByName('cfpassword')) {
-                    alert("Please input correct password same confirm password !");
+                if (username.len < 3 || username.len > 16) {
+                    alert("Vui lòng nhập UserName có độ dài từ 3 đến 16 ký tự!");
                     return;
                 }
-
+                if (password !== cfpassword) {
+                    alert("Vui lòng nhập 2 mật khẩu giống nhau!");
+                    return;
+                }
                 document.getElementById("register_form").submit();
-
             }
 
             window.onload = function () {

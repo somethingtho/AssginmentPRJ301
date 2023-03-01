@@ -33,52 +33,15 @@ response.setDateHeader ("Expires", 0);
 
     <body>
 
-
-        <div class="gearbox">
-            <div class="overlay"></div>
-            <div class="gear one">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear two">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear three">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear four large">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-        </div>
-
-
         <fmt:setLocale value = "vi_VN"/>
 
         <c:set var="o" value="${requestScope.cart}"/>
         <header>
             <div class="logo">
-                <a href="index"><img id="logo" src="${pageContext.request.contextPath}/images/logo.png" /></a>
+                <a href="${pageContext.request.contextPath}/user/index"><img id="logo" src="${pageContext.request.contextPath}/images/logo.png" /></a>
             </div>
             <div class="search row">
-                <form action="search" class=" btn_search">
+                <form action="${pageContext.request.contextPath}/user/search" class=" btn_search">
                     <div class="col-md-10">
                         <input type="text" name="key" class="form-control" id="search" placeholder="Search...">
                     </div>
@@ -89,7 +52,7 @@ response.setDateHeader ("Expires", 0);
             </div>
             <div class="info" style="display: flex;justify-content: space-between; width: 300px;">
                 <div class="dropdown_cart">
-                    <a href="show" class="nut_dropdown">
+                    <a href="${pageContext.request.contextPath}/user/show" class="nut_dropdown">
                         <div class="choose">
                             <i class="ti-shopping-cart">(${requestScope.size})</i><br />
                             <p>Giỏ hàng</p>
@@ -101,7 +64,7 @@ response.setDateHeader ("Expires", 0);
                                 <h5 style="margin-left: 10px; margin-top: 10px;">Sản phẩm trong giỏ</h5>
                                 <hr style="height: 1px;border-width:0;color:gray;background-color:gray">
                                 <c:forEach items="${o.items}" var="i">
-                                    <a class="item" href="item?pid=${i.product.productID}">
+                                    <a class="item" href="${pageContext.request.contextPath}/user/item?pid=${i.product.productID}">
                                         <div class="row item-1">
                                             <div class="col-md-2"><img src="data:image/jpg;base64,${i.product.base64Image}" alt="" style="width: 50px;">
                                             </div>
@@ -125,7 +88,7 @@ response.setDateHeader ("Expires", 0);
                                 <div class="row">
                                     <div class="col-md-8"></div>
                                     <button style="width: 150px; height: 40px; margin: 10px 0; background-color: orangered; border: none; "
-                                            class="col-md-3"><a style="color: white; line-height: 2" href="show">Xem giỏ hàng</a></button></div>
+                                            class="col-md-3"><a style="color: white; line-height: 2" href="${pageContext.request.contextPath}/user/show">Xem giỏ hàng</a></button></div>
                                 </c:when>
                                 <c:otherwise><div><img style="width:500px" src="${pageContext.request.contextPath}/images/no_cart.png" alt="alt"/></div></c:otherwise>
                             </c:choose>    
@@ -133,13 +96,13 @@ response.setDateHeader ("Expires", 0);
                 </div>
                 <c:choose>
                     <c:when test="${not empty sessionScope.account}">
-                        <a href="information">
+                        <a href="${pageContext.request.contextPath}/user/information">
                             <div class="choose" >
                                 <i class="ti-user"></i><br />
                                 <p>Tài khoản của tôi</p>
                             </div>
                         </a>
-                        <a href="logout">
+                        <a href="${pageContext.request.contextPath}/user/logout">
                             <div class="choose" >
                                 <i class="ti-user"></i><br />
                                 <p>Đăng xuất</p>
@@ -147,13 +110,13 @@ response.setDateHeader ("Expires", 0);
                         </a>
                     </c:when>
                     <c:otherwise>
-                        <a href="login.jsp">
+                        <a href="${pageContext.request.contextPath}/user/login.jsp">
                             <div class="choose" >
                                 <i class="ti-user"></i><br />
                                 <p>Đăng nhập</p>
                             </div>
                         </a>
-                        <a href="register.jsp">
+                        <a href="${pageContext.request.contextPath}/user/register.jsp">
                             <div class="choose">
                                 <i class="ti-user"></i><br />
                                 <p>Đăng ký</p>
@@ -167,7 +130,7 @@ response.setDateHeader ("Expires", 0);
 
     <nav id="navbar">
         <div class="dropdown_nav">
-            <a class="categories" href="mobile">
+            <a class="categories" href="${pageContext.request.contextPath}/user/mobile">
                 <i class="ti-mobile"></i>
                 <p>MOBILE</p>
             </a>
@@ -175,13 +138,13 @@ response.setDateHeader ("Expires", 0);
                 <div class="list-group col-md-12">
                     <h4 style="margin: 20px; color: black;">Hãng sản xuất</h4>
                     <c:forEach items="${requestScope.listAllSuppliersSmartPhone}" var="s">
-                        <a href="mobile?sid=${s.supplierID}" class="col-md-1" style="width: 125px; height: 30px; text-align: center; line-height: 0.5;">${s.companyName}</a>
+                        <a href="${pageContext.request.contextPath}/user/mobile?sid=${s.supplierID}" class="col-md-1" style="width: 125px; height: 30px; text-align: center; line-height: 0.5;">${s.companyName}</a>
                     </c:forEach>
                 </div>
             </div>
         </div>
         <div class="dropdown_nav">
-            <a class="categories" href="laptop">
+            <a class="categories" href="${pageContext.request.contextPath}/user/laptop">
                 <i class="ti-desktop"></i>
                 <p>LAPTOP</p>
             </a>
@@ -189,13 +152,13 @@ response.setDateHeader ("Expires", 0);
                 <div class="list-group col-md-12">
                     <h4 style="margin: 20px; color: black;">Hãng sản xuất</h4>
                     <c:forEach items="${requestScope.listAllSuppliersLaptop}" var="l">
-                        <a href="laptop?sid=${l.supplierID}" class="col-md-1" style="width: 125px; height: 30px; text-align: center; line-height: 0.5;">${l.companyName}</a>
+                        <a href="${pageContext.request.contextPath}/user/laptop?sid=${l.supplierID}" class="col-md-1" style="width: 125px; height: 30px; text-align: center; line-height: 0.5;">${l.companyName}</a>
                     </c:forEach>
                 </div>
             </div>
         </div>
         <div class="dropdown_nav">
-            <a class="categories" href="tablet">
+            <a class="categories" href="${pageContext.request.contextPath}/user/tablet">
                 <i class="ti-tablet"></i>
                 <p>TABLET</p>
             </a>
@@ -203,7 +166,7 @@ response.setDateHeader ("Expires", 0);
                 <div class="list-group col-md-12">
                     <h4 style="margin: 20px; color: black;">Hãng sản xuất</h4>
                     <c:forEach items="${requestScope.listAllSuppliersTablet}" var="t">
-                        <a href="tablet?sid=${t.supplierID}" class="col-md-1" style="width: 100px; height: 30px; text-align: center; line-height: 0.5;">${t.companyName}</a>
+                        <a href="${pageContext.request.contextPath}/user/tablet?sid=${t.supplierID}" class="col-md-1" style="width: 100px; height: 30px; text-align: center; line-height: 0.5;">${t.companyName}</a>
                     </c:forEach>
                 </div>
             </div>
@@ -215,9 +178,9 @@ response.setDateHeader ("Expires", 0);
 
     <div class="container">
         <ul class="breadcrumb" style="margin: 20px 0 0 0; background-color: #fff">
-            <li><a href="index">Trang chủ</a></li>
-            <li><a href="${requestScope.type}">${requestScope.cate.categoryName}</a></li>
-            <li><a href="${requestScope.type}?sid=${requestScope.sup.supplierID}">${requestScope.sup.companyName}</a></li>
+            <li><a href="${pageContext.request.contextPath}/user/index">Trang chủ</a></li>
+            <li><a href="${pageContext.request.contextPath}/user/${requestScope.type}">${requestScope.cate.categoryName}</a></li>
+            <li><a href="${pageContext.request.contextPath}/user/${requestScope.type}?sid=${requestScope.sup.supplierID}">${requestScope.sup.companyName}</a></li>
             <li class="active">${requestScope.pro.productName}</li>
         </ul>
         <hr style="margin: 0; height: 1px; background-color: black; color: black;">
@@ -362,7 +325,7 @@ response.setDateHeader ("Expires", 0);
         </div>
 
         <div>
-            <form action="review" method="post" id="form_review">
+            <form action="${pageContext.request.contextPath}/user/review" method="post" id="form_review">
                 <input type="hidden" value="${sessionScope.account.acc.userName}" name="userName">
                 <input type="hidden" value="${pro.productID}" name="productID">
                 <div class="review_content">
@@ -442,7 +405,7 @@ response.setDateHeader ("Expires", 0);
         <h3>Sản phẩm tương tự</h3>
         <div class="row">
             <c:forEach items="${requestScope.getAllProductsSame}" var="same">
-                <a href="item?pid=${same.productID}" class="col-md-3">
+                <a href="${pageContext.request.contextPath}/user/item?pid=${same.productID}" class="col-md-3">
                     <div class="pro-img">
                         <img src="data:image/jpg;base64,${same.base64Image}"/>
                     </div>
@@ -480,7 +443,7 @@ response.setDateHeader ("Expires", 0);
             <p><a href="#">Điều khoản sử dụng</a></p>
             <p><a href="#">Chính sách bảo mật</a></p>
             <p><a href="#">Bảo vệ quyền sở hữu trí tuệ</a></p>
-            <p><a target="_blank" rel="noopener noreferrer" href="help.jsp">Trợ giúp <i class="ti-help"></i></a></p>
+            <p><a target="_blank" rel="noopener noreferrer" href="${pageContext.request.contextPath}/user/help.jsp">Trợ giúp <i class="ti-help"></i></a></p>
         </div>
 
         <div class="col-md-4 row">

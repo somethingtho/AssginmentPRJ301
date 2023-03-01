@@ -24,48 +24,11 @@
 
 
     <body>
-
-        <div class="gearbox">
-            <div class="overlay"></div>
-            <div class="gear one">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear two">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear three">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-            <div class="gear four large">
-                <div class="gear-inner">
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                    <div class="bar"></div>
-                </div>
-            </div>
-        </div>
-
         <fmt:setLocale value = "vi_VN"/>
         <%
             response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
             response.setHeader("Pragma", "no-cache"); //HTTP 1.0
             response.setDateHeader("Expires", 0);
-//prevents caching at the proxy server
         %>
         <div class="container row">
             <form action="${pageContext.request.contextPath}/user/forgotpassword" method="POST" id="form_forgot" >
@@ -90,16 +53,21 @@
             </form>
         </div>
         <script>
-            function checkForm() {
-                if (document.getElementsByName('email') === "") {
-                    alert("Please input email");
-                    return;
-                }
-            }
 
             window.onload = function () {
                 document.querySelector(".gearbox").style.display = "none";
             };
+
+            function checkForm() {
+                const patternEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                let email = document.getElementsByName('email').value;
+                if (email === "") {
+                    alert("Vui lòng nhập Email!");
+                    return;
+                }
+            }
+
+
         </script>
     </body>
 </html>
