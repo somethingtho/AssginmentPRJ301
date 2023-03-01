@@ -8,13 +8,98 @@
         <filter-name>LoginAndRegisterUserFilter</filter-name>
         <filter-class>filter.LoginAndRegisterUserFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>AuthenticationAdminFilter</filter-name>
+        <filter-class>filter.AuthenticationAdminFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>NewFilter</filter-name>
+        <filter-class>filter.NewFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>NewFilter1</filter-name>
+        <filter-class>filter.NewFilter1</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>NewFilter1</filter-name>
+        <url-pattern></url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>NewFilter</filter-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthenticationAdminFilter</filter-name>
+        <url-pattern>/admin/index</url-pattern>
+        <url-pattern>/admin/addcategory</url-pattern>
+        <url-pattern>/admin/addshipper</url-pattern>
+        <url-pattern>/admin/addsupplier</url-pattern>
+        <url-pattern>/admin/addproduct</url-pattern>
+        <url-pattern>/admin/updatecategory</url-pattern>
+        <url-pattern>/admin/updateproduct</url-pattern>
+        <url-pattern>/admin/updateshipper</url-pattern>
+        <url-pattern>/admin/updatesupplier</url-pattern>
+        <url-pattern>/admin/listallproducts</url-pattern>
+        <url-pattern>/admin/listallshippers</url-pattern>
+        <url-pattern>/admin/listallsuppliers</url-pattern>
+        <url-pattern>/admin/loginadmin</url-pattern>
+        <url-pattern>/admin/logoutadmin</url-pattern>
+        <url-pattern>/admin/tables</url-pattern>
+        <url-pattern>/admin/listallcategories</url-pattern>
+        <url-pattern>/admin/listallaccounts</url-pattern>
+        <url-pattern>/admin/profileadmin</url-pattern>
+        <url-pattern>/admin/profile</url-pattern>
+        <url-pattern>/admin/feedbacks</url-pattern>
+        <url-pattern>/admin/reply</url-pattern>
+        <url-pattern>/admin/updatereview</url-pattern>
+        <url-pattern>/admin/loadmore</url-pattern>
+        <url-pattern>/admin/orderdetail</url-pattern>
+        <url-pattern>/admin/charts</url-pattern>
+        <url-pattern>/admin/changepassword</url-pattern>
+        <url-pattern>/admin/accounts.jsp</url-pattern>
+        <url-pattern>/admin/categories.jsp</url-pattern>
+        <url-pattern>/admin/changepass.jsp</url-pattern>
+        <url-pattern>/admin/charts.jsp</url-pattern>
+        <url-pattern>/admin/confirmproduct.jsp</url-pattern>
+        <url-pattern>/admin/feedbacks.jsp</url-pattern>
+        <url-pattern>/admin/formaddcate.jsp</url-pattern>
+        <url-pattern>/admin/formaddproduct.jsp</url-pattern>
+        <url-pattern>/admin/formaddshipper.jsp</url-pattern>
+        <url-pattern>/admin/formaddsup.jsp</url-pattern>
+        <url-pattern>/admin/formupcate.jsp</url-pattern>
+        <url-pattern>/admin/formupshipper.jsp</url-pattern>
+        <url-pattern>/admin/formupsup.jsp</url-pattern>
+        <url-pattern>/admin/index.jsp</url-pattern>
+        <url-pattern>/admin/orderdetail.jsp</url-pattern>
+        <url-pattern>/admin/products.jsp</url-pattern>
+        <url-pattern>/admin/profileadmin.jsp</url-pattern>
+        <url-pattern>/admin/profilecustomer.jsp</url-pattern>
+        <url-pattern>/admin/profileview.jsp</url-pattern>
+        <url-pattern>/admin/reply.jsp</url-pattern>
+        <url-pattern>/admin/searchproduct.jsp</url-pattern>
+        <url-pattern>/admin/shippers.jsp</url-pattern>
+        <url-pattern>/admin/suppliers.jsp</url-pattern>
+        <url-pattern>/admin/tables.jsp</url-pattern>
+    </filter-mapping>
     <filter-mapping>
         <filter-name>LoginAndRegisterUserFilter</filter-name>
         <url-pattern>/user/login.jsp</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>UserAuthenticationFilter</filter-name>
+        <url-pattern>/user/login</url-pattern>
         <url-pattern>/user/checkout</url-pattern>
+        <url-pattern>/user/order</url-pattern>
+        <url-pattern>/user/orderdetails</url-pattern>
+        <url-pattern>/user/review</url-pattern>
+        <url-pattern>/user/information</url-pattern>
+        <url-pattern>/user/order.jsp</url-pattern>
+        <url-pattern>/user/orderdetails.jsp</url-pattern>
+        <url-pattern>/user/review</url-pattern>
+        <url-pattern>/user/information.jsp</url-pattern>
+        <url-pattern>/user/changepassword.jsp</url-pattern>
+        <url-pattern>/user/changepassword</url-pattern>
+        <url-pattern>/user/login.jsp</url-pattern>
+        <url-pattern>/user/register.jsp</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>IndexServlet</servlet-name>
@@ -216,6 +301,14 @@
         <servlet-name>AuthenticationOTPAdminServlet</servlet-name>
         <servlet-class>controller.admin.AuthenticationOTPAdminServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChangePasswordAdminServlet</servlet-name>
+        <servlet-class>controller.admin.ChangePasswordAdminServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChangePassword2AdminServlet</servlet-name>
+        <servlet-class>controller.admin.ChangePassword2Servlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>IndexServlet</servlet-name>
         <url-pattern>/user/index</url-pattern>
@@ -415,6 +508,14 @@
     <servlet-mapping>
         <servlet-name>AuthenticationOTPAdminServlet</servlet-name>
         <url-pattern>/admin/authenticationotpadmin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangePasswordAdminServlet</servlet-name>
+        <url-pattern>/admin/changepassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangePassword2AdminServlet</servlet-name>
+        <url-pattern>/admin/changepassword2</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

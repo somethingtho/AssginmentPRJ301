@@ -415,8 +415,8 @@
                         <div class="card-body wizard-content">
                             <h4 class="card-title">Đổi mật khẩu</h4>
                             <p>Để bảo mật vui lòng không chia sẻ mật khẩu cho người khác!</p>
-                            <h6 class="card-subtitle"></h6>
-                            <form id="example-form" action="#" class="mt-5">
+                            <h3 class="error" style="color: red">${requestScope.error}</h3>
+                            <form id="example-form" action="${pageContext.request.contextPath}/admin/changepassword" method="POST" class="mt-5">
                                 <div>
                                     <h3>Tài khoản</h3>
                                     <section>
@@ -429,17 +429,24 @@
                                             value="${sessionScope.admin.acc.userName}"
                                             readonly
                                             />
-                                        <label for="password">Mật khẩu *</label>
+                                        <label for="oldPassword">Mật khẩu *</label>
                                         <input
-                                            id="password"
-                                            name="password"
+                                            id="oldPassword"
+                                            name="oldPassword"
                                             type="text"
                                             class="required form-control"
                                             />
-                                        <label for="confirm">Xác nhận mật khẩu *</label>
+                                        <label for="newPassword">Mật khẩu mới *</label>
                                         <input
-                                            id="confirm"
-                                            name="confirm"
+                                            id="newPassword"
+                                            name="newPassword"
+                                            type="text"
+                                            class="required form-control"
+                                            />
+                                        <label for="cfNewPassword">Xác nhận mật khẩu *</label>
+                                        <input
+                                            id="cfNewPassword"
+                                            name="cfNewPassword"
                                             type="text"
                                             class="required form-control"
                                             />
@@ -512,6 +519,7 @@
         <script>
             // Basic Example with form
             var form = $("#example-form");
+
             form.validate({
                 errorPlacement: function errorPlacement(error, element) {
                     element.before(error);
@@ -535,9 +543,20 @@
                     return form.valid();
                 },
                 onFinished: function (event, currentIndex) {
-                    alert("Submitted!");
+                    
+                    var oldPassword = document.getElementById('oldPassword');
+                    var newPassword = document.getElementById('newPassword');
+                    if (oldPassword !== newPassword) {
+                        alert("Mật khẩu mới và Mật khẩu xác nhận phải giống nhau!");
+                        return;
+                    }else {
+                        alert("Submited");
+                        document.getElementById('example-form').submit();
+                    }
                 },
             });
+
+
         </script>
 
 

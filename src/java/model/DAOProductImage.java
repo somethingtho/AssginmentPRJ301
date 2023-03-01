@@ -34,14 +34,14 @@ public class DAOProductImage extends DBContext {
      * @param pid product id
      * @return The number of images that were added to the database.
      */
-    public int AddImg(List<Part> fileParts, int pid) throws IOException {
+    public int AddImg(List<Part> fileParts, int pid){
         int number = 0;
         String sql = "INSERT INTO ProductImage(ProductID, Image) VALUES(?, ?)";
         if (!fileParts.isEmpty()) {
             for (Part file : fileParts) {
                 long fileSize = file.getSize();
                 System.out.println(fileSize);
-                if (file != null && fileSize > 20000) {
+                if (file != null && fileSize > 7000) {
                     try {
                         PreparedStatement pre = connection.prepareStatement(sql);
                         pre.setInt(1, pid);

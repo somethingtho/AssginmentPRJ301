@@ -44,14 +44,14 @@
             response.setHeader("Pragma", "no-cache"); //HTTP 1.0
             response.setDateHeader("Expires", 0);
         %>
-        
+
         <div class="preloader">
             <div class="lds-ripple">
                 <div class="lds-pos"></div>
                 <div class="lds-pos"></div>
             </div>
         </div>
-        
+
         <div
             id="main-wrapper"
             data-layout="vertical"
@@ -61,11 +61,11 @@
             data-header-position="absolute"
             data-boxed-layout="full"
             >
-            
+
             <header class="topbar" data-navbarbg="skin5">
                 <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                     <div class="navbar-header" data-logobg="skin5">
-                        
+
                         <a class="navbar-brand" href="${pageContext.request.contextPath}/admin/index">
                             <!-- Logo icon -->
                             <b class="logo-icon" style="margin: 0">
@@ -76,7 +76,7 @@
                                     width="50"
                                     />
                             </b>
-                            
+
                             <span class="logo-text" style="margin-right: 15px">
                                 <img
                                     src="${pageContext.request.contextPath}/images/logo_text.png"
@@ -85,16 +85,16 @@
                                     class="light-logo"
                                     />
                             </span>
-                            
+
                         </a>
-                        
+
                         <a
                             class="nav-toggler waves-effect waves-light d-block d-md-none"
                             href="javascript:void(0)"
                             ><i class="ti-menu ti-close"></i
                             ></a>
                     </div>
-                    
+
                     <div
                         class="navbar-collapse collapse"
                         id="navbarSupportedContent"
@@ -151,7 +151,7 @@
                             </li>
                         </ul>
                         <ul class="navbar-nav float-end">
-                            
+
                             <li class="nav-item dropdown">
                                 <a
                                     class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic"
@@ -180,7 +180,7 @@
                                     <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/changepass.jsp"
                                        ><i class="mdi mdi-settings me-1 ms-1"></i> Đổi mật khẩu</a
                                     >
-                                    
+
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/logoutadmin"
                                        ><i class="fa fa-power-off me-1 ms-1"></i> Đăng xuất</a
@@ -199,7 +199,7 @@
                     </div>
                 </nav>
             </header>
-            
+
             <aside class="left-sidebar" data-sidebarbg="skin5">
                 <div class="scroll-sidebar">
                     <nav class="sidebar-nav">
@@ -223,7 +223,7 @@
                                 >
                             </li>
 
-                            
+
                             <li class="sidebar-item">
                                 <a
                                     class="sidebar-link waves-effect waves-dark sidebar-link"
@@ -332,9 +332,9 @@
                                     ><span class="hide-menu">Xác thực</span></a
                                 >
                                 <ul aria-expanded="false" class="collapse first-level">
-                                    
-                                    
-                                    
+
+
+
 
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/changepass.jsp" class="sidebar-link"
@@ -349,18 +349,18 @@
                                             ><span class="hide-menu"> Hồ sơ </span></a
                                         >
                                     </li>
-                                    
-                                    
-                                    
+
+
+
                                 </ul>
                             </li>
                         </ul>
                     </nav>
                 </div>
-               
+
             </aside>
             <div class="page-wrapper">
-                
+
                 <div class="page-breadcrumb">
                     <div class="row">
                         <div class="col-12 d-flex no-block align-items-center">
@@ -378,42 +378,46 @@
                         </div>
                     </div>
                 </div>
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div style="text-align: center">
-                                        <div style="margin-bottom: 20px;">
-                                            <img style="width: 150px;" src="data:image/jpg;base64,${sessionScope.admin.base64Image}" alt="" />
-                                        </div>
-                                        <div style="margin-bottom: 20px;">
-                                            <input style="margin-left: 30px;"
-                                                   type="file"
-                                                   class="custom-file-input"
-                                                   id="validatedCustomFile"
-                                                   required
-                                                   />
-                                            <label
-                                                class="custom-file-label"
-                                                for="validatedCustomFile"
-                                                ></label
-                                            >
-                                        </div>
-                                        <div>
-                                            <h4>${sessionScope.admin.acc.userName}</h4>
-                                            <h4>Email: ${sessionScope.admin.email}</h4>
-                                            <h4>Số điện thoại: ${sessionScope.admin.phone}</h4>
+                <form action="${pageContext.request.contextPath}/admin/profileadmin" method="POST" id="form1" enctype="multipart/form-data">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <h3 style="color: red">${requestScope.message}</h3>
+                            <div class="col-md-6" >
+                                <div class="card">
+                                    <div class="card-body" style="height: 383px">
+
+                                        <div style="text-align: center">
+                                            <div style="margin-bottom: 20px;">
+                                                <img style="width: 150px;" src="data:image/jpg;base64,${sessionScope.admin.base64Image}" alt="" />
+                                            </div>
+
+                                            <div style="margin-bottom: 20px;">
+                                                <input style="margin-left: 30px;"
+                                                       type="file"
+                                                       class="custom-file-input"
+                                                       id="validatedCustomFile"
+                                                       name="photo"
+                                                       />
+                                                <label
+                                                    class="custom-file-label"
+                                                    for="validatedCustomFile"
+                                                    ></label
+                                                >
+                                                </form>
+                                            </div>
+                                            <div>
+                                                <h4>${sessionScope.admin.acc.userName}</h4>
+                                                <h4>Email: ${sessionScope.admin.email}</h4>
+                                                <h4>Số điện thoại: ${sessionScope.admin.phone}</h4>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-md-6">
-                            <div class="card">
-                                <form class="form-horizontal">
-                                    <div class="card-body" style="height: 382px;">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body" style="height: 383px;">
                                         <h4 class="card-title">Thông tin của bạn</h4>
                                         <div class="form-group row">
                                             <label
@@ -443,8 +447,7 @@
                                                     type="text"
                                                     class="form-control"
                                                     id="phone"
-                                                    name
-                                                    mame="phone"
+                                                    name="phone"
                                                     placeholder="Phone Here"
                                                     value="${sessionScope.admin.phone}"
                                                     />
@@ -469,49 +472,84 @@
                                             </div>
                                         </div>
 
+                                        <div class="form-group row">
+                                            <label
+                                                for="email"
+                                                class="col-sm-3 text-end control-label col-form-label"
+                                                >Địa chỉ:</label
+                                            >
+                                            <div class="col-sm-9">
+                                                <input
+                                                    name="address"
+                                                    type="text"
+                                                    class="form-control"
+                                                    id="email"
+                                                    placeholder="Address Here"
+                                                    value="${sessionScope.admin.address}"
+                                                    />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label
+                                                for="email"
+                                                class="col-sm-3 text-end control-label col-form-label"
+                                                >Giới tính:</label
+                                            >
+                                            <div class="col-sm-9" style="margin-top: 10px;">
+                                                <input  type="radio" id="gender1" name="gender" value="male" <c:if test="${sessionScope.admin.gender}">checked</c:if>><label for="gender1">Nam</label>&nbsp;&nbsp;&nbsp;
+                                                <input  type="radio" name="gender" id="gender2" value="female" <c:if test="${!sessionScope.admin.gender}">checked</c:if>><label for="gender2">Nữ</label>
+                                            </div>
+                                        </div>
+
+
+
                                         <div class="border-top">
                                             <div class="card-body">
-                                                <button type="button" class="btn btn-primary">
+                                                <button onclick="this.form.submit()" class="btn btn-primary">
                                                     Submit
                                                 </button>
                                             </div>
                                         </div>
-                                </form>
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
+
+                        <footer class="footer text-center">
+
+
+                        </footer>
+
                     </div>
-                    
-                </div>
-                
-                <footer class="footer text-center">
-                    
-                </footer>
-                
+                </form>
             </div>
-            
-        </div>
-        
-        <script src="assets/libs/jquery/dist/jquery.min.js"></script>
-        <!-- Bootstrap tether Core JavaScript -->
-        <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- slimscrollbar scrollbar JavaScript -->
-        <script src="assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
-        <script src="assets/extra-libs/sparkline/sparkline.js"></script>
-        <!--Wave Effects -->
-        <script src="dist/js/waves.js"></script>
-        <!--Menu sidebar -->
-        <script src="dist/js/sidebarmenu.js"></script>
-        <!--Custom JavaScript -->
-        <script src="dist/js/custom.min.js"></script>
-        <!-- this page js -->
-        <script src="assets/extra-libs/multicheck/datatable-checkbox-init.js"></script>
-        <script src="assets/extra-libs/multicheck/jquery.multicheck.js"></script>
-        <script src="assets/extra-libs/DataTables/datatables.min.js"></script>
-        <script>
-            /****************************************
-             *       Basic Table                   *
-             ****************************************/
-            $("#zero_config").DataTable();
-        </script>
+
+            <script src="assets/libs/jquery/dist/jquery.min.js"></script>
+            <!-- Bootstrap tether Core JavaScript -->
+            <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+            <!-- slimscrollbar scrollbar JavaScript -->
+            <script src="assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+            <script src="assets/extra-libs/sparkline/sparkline.js"></script>
+            <!--Wave Effects -->
+            <script src="dist/js/waves.js"></script>
+            <!--Menu sidebar -->
+            <script src="dist/js/sidebarmenu.js"></script>
+            <!--Custom JavaScript -->
+            <script src="dist/js/custom.min.js"></script>
+            <!-- this page js -->
+            <script src="assets/extra-libs/multicheck/datatable-checkbox-init.js"></script>
+            <script src="assets/extra-libs/multicheck/jquery.multicheck.js"></script>
+            <script src="assets/extra-libs/DataTables/datatables.min.js"></script>
+            <script>
+                                                    /****************************************
+                                                     *       Basic Table                   *
+                                                     ****************************************/
+                                                    $("#zero_config").DataTable();
+
+
+
+            </script>
     </body>
 </html>

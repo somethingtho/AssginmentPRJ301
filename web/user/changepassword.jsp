@@ -23,42 +23,6 @@
 
 
 
-        <div style="width: 100%; height: 800px; display: grid; place-items: center;">
-            <div class="gearbox">
-                <div class="overlay"></div>
-                <div class="gear one">
-                    <div class="gear-inner">
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                    </div>
-                </div>
-                <div class="gear two">
-                    <div class="gear-inner">
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                    </div>
-                </div>
-                <div class="gear three">
-                    <div class="gear-inner">
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                    </div>
-                </div>
-                <div class="gear four large">
-                    <div class="gear-inner">
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                        <div class="bar"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
     <fmt:setLocale value = "vi_VN"/>
 
@@ -224,7 +188,7 @@
             <p>Để bảo mật tài khoản, vui lòng không chia sẻ mật khẩu cho người khác</p>
             <hr style="margin-right: 20px; height: 1px; background-color: black; color: black;">
             <h1 style="color: red;">${requestScope.error}</h1>
-            <form action="${pageContext.request.contextPath}/user/changepassword" method="post">
+            <form action="${pageContext.request.contextPath}/user/changepassword" method="post" id="form_change">
                 <input type="hidden" value="${sessionScope.account.acc.userName}" name="userName">
                 <div class="row col-md-10 right_form">
                     <div class="row form_info">
@@ -254,17 +218,24 @@
 
                         <div class="row">
                             <div class="col-md-3"></div>
-                            <div class="col-md-6"><button class="btn_save" style="color: white;" >Xác Nhận</button></div>
+                            <div class="col-md-6"><button class="btn_save" type="button" onclick="checkForm()" style="color: white;" >Xác Nhận</button></div>
                         </div>
                     </div>
+                </div>
             </form>
         </div>
     </div>
-</div>
-<script>
-    window.onload = function () {
-        document.querySelector(".gearbox").style.display = "none";
-    };
-</script>
+    <script>
+        function checkForm() {
+            var password = document.getElementById('newPassword').value;
+            var cfpassword = document.getElementById('cfNewPassword').value;
+            if (password !== cfpassword) {
+                alert('Nhập mật khẩu mới và mật khẩu xác nhận giống nhau!');
+                return;
+            } else {
+                document.getElementById('form_change').submit();
+            }
+        }
+    </script>
 </body>
 </html>

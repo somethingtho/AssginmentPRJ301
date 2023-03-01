@@ -624,7 +624,7 @@
                                                     <td>${pro.unitsInStock}</td>
                                                     <td>${pro.unitsOnOrder}</td>
                                                     <td><input value="${pro.discontinued}" type="checkbox" <c:if test="${pro.discontinued}">checked</c:if> ></td>
-                                                    <td><a href="${pageContext.request.contextPath}/admin/confirm?pid=${pro.productID}">Thông tin</a></td>
+                                                    <td><a href="${pageContext.request.contextPath}/admin/updateproduct?pid=${pro.productID}">Thông tin</a></td>
                                                 </tr>
                                             </c:forEach>
 

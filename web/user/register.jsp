@@ -44,7 +44,7 @@
 
             </form>
             <center>
-                <button class="btn" onclick="checkform()">
+                <button class="btn" type="button" onclick="checkform()">
                     SEND
                     <span></span>
                 </button></center>
@@ -75,9 +75,6 @@
                 document.getElementById("register_form").submit();
             }
 
-            window.onload = function () {
-                document.querySelector(".gearbox").style.display = "none";
-            };
         </script>
 
     </body>

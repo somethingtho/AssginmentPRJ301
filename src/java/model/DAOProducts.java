@@ -266,9 +266,9 @@ public class DAOProducts extends DBContext {
             DAOProductImage daoProImg = new DAOProductImage();
             DAOProductInfo daoProInfo = new DAOProductInfo();
             daoProInfo.UpdateProductInfo(product.getProInfo());
-            number += daoProImg.AddImg(input, 80);
+            number += daoProImg.AddImg(input, product.getProductID());
         } catch (SQLException ex) {
-            Logger.getLogger(DAOProducts.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
 
         return number;

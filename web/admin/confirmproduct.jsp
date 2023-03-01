@@ -530,7 +530,6 @@
                                         <div class="col-md-12">
                                             <div class="image-area" style="margin-left: 400px; border: none">
                                                 <img  src="data:image/jpg;base64,${requestScope.product.base64Image}" alt="Preview" />
-                                            <a  onclick="return confirm('Are you sure you want delete image?')" class="remove-image" href="updateproduct?pid=${requestScope.product.productID}" style="display: inline">&#215;</a>
                                         </div>
                                         <div class="custom-file" style="margin-left: 400px">
                                             <input

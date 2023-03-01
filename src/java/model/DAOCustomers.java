@@ -35,12 +35,7 @@ public class DAOCustomers extends DBContext {
 
     public static void main(String[] args) {
         DAOCustomers dao = new DAOCustomers();
-//        Vector<Customers> vector = dao.getCustomerFriendlyBySupplier(1);
-//        for (Customers customers : vector) {
-//            System.out.println(customers);
-//        }
-        System.out.println(dao.rateOrders(1));
-        System.out.println(dao.rateOrders(2));
+        System.out.println(dao.LoginAdmin("1234", "admin"));
     }
 
     /**
@@ -180,7 +175,7 @@ public class DAOCustomers extends DBContext {
      * @param user admin
      * @return A Customers object.
      */
-    public Customers LoginAdmin(String pass, String user) {
+    public Customers LoginAdmin(String user, String pass) {
         Customers cus = null;
         String sql = "SELECT Customers.*, Accounts.UserName, Accounts.Role, Accounts.RegistrationDate, Accounts.Status FROM dbo.Customers INNER JOIN dbo.Accounts ON Accounts.ID = Customers.ID \n"
                 + "WHERE UserName = ? AND Password = ?";

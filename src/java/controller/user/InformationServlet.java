@@ -129,6 +129,8 @@ public class InformationServlet extends HttpServlet {
         Vector<Suppliers> listAllSuppliersSmartPhone = daoSuppliers.getAllSuppliersSmartPhone();
         Vector<Suppliers> listAllSuppliersLaptop = daoSuppliers.getAllSuppliersLaptop();
         Vector<Suppliers> listAllSuppliersTablet = daoSuppliers.getAllSuppliersTablet();
+        
+        
         DAOCustomers daoCustomers = new DAOCustomers();
         InputStream inputStream = null;
         HttpSession session = request.getSession();

@@ -244,10 +244,11 @@
             });
             
             function forgotPassw(){
-                if(document.getElementById('email') === ""){
+                if(document.getElementById('email').value === ""){
                     alert("Please input email!");
                     return;
                 }
+                document.getElementById('forgot_form').submit();
                 
             }
             

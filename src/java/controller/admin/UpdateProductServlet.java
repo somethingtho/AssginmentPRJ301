@@ -194,7 +194,7 @@ public class UpdateProductServlet extends HttpServlet {
             out.print(daoProducts.UpdateProduct(product, fileParts, filePart));
 
             int n  = daoProducts.UpdateProduct(product, fileParts, filePart);
-            if(n  >0){
+            if(n  >1){
                 request.setAttribute("msg", "Cập nhật thành công!!");
             }
             Vector<Categories> listAllCate = daoCategories.getAllCategories();
