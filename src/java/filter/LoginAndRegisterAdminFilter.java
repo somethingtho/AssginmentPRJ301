@@ -1,9 +1,10 @@
+package filter;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Filter.java to edit this template
  */
 
-package filter;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -23,7 +24,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author ADMIN
  */
-public class NewFilter implements Filter {
+public class LoginAndRegisterAdminFilter implements Filter {
 
     private static final boolean debug = true;
 
@@ -32,12 +33,12 @@ public class NewFilter implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
 
-    public NewFilter() {
+    public LoginAndRegisterAdminFilter() {
     } 
 
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
 	throws IOException, ServletException {
-	if (debug) log("NewFilter:DoBeforeProcessing");
+	if (debug) log("LoginAndRegisterAdminFilter:DoBeforeProcessing");
 
 	// Write code here to process the request and/or response before
 	// the rest of the filter chain is invoked.
@@ -64,7 +65,7 @@ public class NewFilter implements Filter {
 
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
 	throws IOException, ServletException {
-	if (debug) log("NewFilter:DoAfterProcessing");
+	if (debug) log("LoginAndRegisterAdminFilter:DoAfterProcessing");
 
 	// Write code here to process the request and/or response after
 	// the rest of the filter chain is invoked.
@@ -100,13 +101,15 @@ public class NewFilter implements Filter {
                          FilterChain chain)
 	throws IOException, ServletException {
 
-	if (debug) log("NewFilter:doFilter()");
+	if (debug) log("LoginAndRegisterAdminFilter:doFilter()");
 
 	doBeforeProcessing(request, response);
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession();
-         	
+        if(session.getAttribute("admin") != null){
+            res.sendRedirect("index");
+        }
 
 
 	Throwable problem = null;
@@ -161,7 +164,7 @@ public class NewFilter implements Filter {
 	this.filterConfig = filterConfig;
 	if (filterConfig != null) {
 	    if (debug) { 
-		log("NewFilter:Initializing filter");
+		log("LoginAndRegisterAdminFilter:Initializing filter");
 	    }
 	}
     }
@@ -171,8 +174,8 @@ public class NewFilter implements Filter {
      */
     @Override
     public String toString() {
-	if (filterConfig == null) return ("NewFilter()");
-	StringBuffer sb = new StringBuffer("NewFilter(");
+	if (filterConfig == null) return ("LoginAndRegisterAdminFilter()");
+	StringBuffer sb = new StringBuffer("LoginAndRegisterAdminFilter(");
 	sb.append(filterConfig);
 	sb.append(")");
 	return (sb.toString());

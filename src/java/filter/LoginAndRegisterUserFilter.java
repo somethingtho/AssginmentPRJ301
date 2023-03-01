@@ -5,7 +5,6 @@
 
 package filter;
 
-import entity.Customers;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -107,7 +106,6 @@ public class LoginAndRegisterUserFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession();
-        
         if(session.getAttribute("account") != null){
             res.sendRedirect("index");
         }

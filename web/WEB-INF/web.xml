@@ -5,30 +5,62 @@
         <filter-class>filter.UserAuthenticationFilter</filter-class>
     </filter>
     <filter>
+        <filter-name>AdminAuthenticationFilter</filter-name>
+        <filter-class>filter.AdminAuthenticationFilter</filter-class>
+    </filter>
+    <filter>
         <filter-name>LoginAndRegisterUserFilter</filter-name>
         <filter-class>filter.LoginAndRegisterUserFilter</filter-class>
     </filter>
     <filter>
-        <filter-name>AuthenticationAdminFilter</filter-name>
-        <filter-class>filter.AuthenticationAdminFilter</filter-class>
+        <filter-name>LoginAndRegisterAdminFilter</filter-name>
+        <filter-class>filter.LoginAndRegisterAdminFilter</filter-class>
     </filter>
     <filter>
-        <filter-name>NewFilter</filter-name>
-        <filter-class>filter.NewFilter</filter-class>
+        <filter-name>AuthenticationOTPUserFilter</filter-name>
+        <filter-class>filter.AuthenticationOTPUserFilter</filter-class>
     </filter>
     <filter>
-        <filter-name>NewFilter1</filter-name>
-        <filter-class>filter.NewFilter1</filter-class>
+        <filter-name>AuthenticationOTPAdminFilter</filter-name>
+        <filter-class>filter.AuthenticationOTPAdminFilter</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>NewFilter1</filter-name>
-        <url-pattern></url-pattern>
+        <filter-name>AuthenticationOTPAdminFilter</filter-name>
+        <url-pattern>/admin/inputotp.jsp</url-pattern>
+        <url-pattern>/admin/changepassword2.jsp</url-pattern>
+        <url-pattern>/admin/authenticationotpadmin</url-pattern>
+        <url-pattern>/admin/changepassword2</url-pattern>
     </filter-mapping>
     <filter-mapping>
-        <filter-name>NewFilter</filter-name>
+        <filter-name>AuthenticationOTPUserFilter</filter-name>
+        <url-pattern>/user/inputotp.jsp</url-pattern>
+        <url-pattern>/user/changepassword2.jsp</url-pattern>
+        <url-pattern>/user/authencationotp</url-pattern>
+        <url-pattern>/user/changepassword2</url-pattern>
     </filter-mapping>
     <filter-mapping>
-        <filter-name>AuthenticationAdminFilter</filter-name>
+        <filter-name>LoginAndRegisterAdminFilter</filter-name>
+        <url-pattern>/admin/authentication-login.jsp</url-pattern>
+        <url-pattern>/admin/authentication-register.jsp</url-pattern>
+        <url-pattern>/admin/loginadmin</url-pattern>
+        <url-pattern>/admin/inputotp.jsp</url-pattern>
+        <url-pattern>/admin/authenticationotpadmin</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginAndRegisterAdminFilter</filter-name>
+        <url-pattern>/admin/authentication-login.jsp</url-pattern>
+        <url-pattern>/admin/loginadmin</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginAndRegisterUserFilter</filter-name>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/user/login.jsp</url-pattern>
+        <url-pattern>/user/register.jsp</url-pattern>
+        <url-pattern>/user/login</url-pattern>
+        <url-pattern>/user/register</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminAuthenticationFilter</filter-name>
         <url-pattern>/admin/index</url-pattern>
         <url-pattern>/admin/addcategory</url-pattern>
         <url-pattern>/admin/addshipper</url-pattern>
@@ -81,12 +113,7 @@
         <url-pattern>/admin/tables.jsp</url-pattern>
     </filter-mapping>
     <filter-mapping>
-        <filter-name>LoginAndRegisterUserFilter</filter-name>
-        <url-pattern>/user/login.jsp</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
         <filter-name>UserAuthenticationFilter</filter-name>
-        <url-pattern>/user/login</url-pattern>
         <url-pattern>/user/checkout</url-pattern>
         <url-pattern>/user/order</url-pattern>
         <url-pattern>/user/orderdetails</url-pattern>
@@ -98,8 +125,6 @@
         <url-pattern>/user/information.jsp</url-pattern>
         <url-pattern>/user/changepassword.jsp</url-pattern>
         <url-pattern>/user/changepassword</url-pattern>
-        <url-pattern>/user/login.jsp</url-pattern>
-        <url-pattern>/user/register.jsp</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>IndexServlet</servlet-name>

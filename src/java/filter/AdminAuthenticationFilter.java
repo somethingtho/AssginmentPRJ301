@@ -23,7 +23,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author ADMIN
  */
-public class NewFilter1 implements Filter {
+public class AdminAuthenticationFilter implements Filter {
 
     private static final boolean debug = true;
 
@@ -32,12 +32,12 @@ public class NewFilter1 implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
 
-    public NewFilter1() {
+    public AdminAuthenticationFilter() {
     } 
 
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
 	throws IOException, ServletException {
-	if (debug) log("NewFilter1:DoBeforeProcessing");
+	if (debug) log("AdminAuthenticationFilter:DoBeforeProcessing");
 
 	// Write code here to process the request and/or response before
 	// the rest of the filter chain is invoked.
@@ -64,7 +64,7 @@ public class NewFilter1 implements Filter {
 
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
 	throws IOException, ServletException {
-	if (debug) log("NewFilter1:DoAfterProcessing");
+	if (debug) log("AdminAuthenticationFilter:DoAfterProcessing");
 
 	// Write code here to process the request and/or response after
 	// the rest of the filter chain is invoked.
@@ -100,14 +100,16 @@ public class NewFilter1 implements Filter {
                          FilterChain chain)
 	throws IOException, ServletException {
 
-	if (debug) log("NewFilter1:doFilter()");
+	if (debug) log("AdminAuthenticationFilter:doFilter()");
 
 	doBeforeProcessing(request, response);
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession();
          	
-
+        if(session.getAttribute("admin") == null){
+            res.sendRedirect("authentication-login.jsp");
+        }
 
 	Throwable problem = null;
 	try {
@@ -161,7 +163,7 @@ public class NewFilter1 implements Filter {
 	this.filterConfig = filterConfig;
 	if (filterConfig != null) {
 	    if (debug) { 
-		log("NewFilter1:Initializing filter");
+		log("AdminAuthenticationFilter:Initializing filter");
 	    }
 	}
     }
@@ -171,8 +173,8 @@ public class NewFilter1 implements Filter {
      */
     @Override
     public String toString() {
-	if (filterConfig == null) return ("NewFilter1()");
-	StringBuffer sb = new StringBuffer("NewFilter1(");
+	if (filterConfig == null) return ("AdminAuthenticationFilter()");
+	StringBuffer sb = new StringBuffer("AdminAuthenticationFilter(");
 	sb.append(filterConfig);
 	sb.append(")");
 	return (sb.toString());

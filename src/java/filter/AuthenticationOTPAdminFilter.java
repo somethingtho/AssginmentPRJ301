@@ -23,7 +23,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author ADMIN
  */
-public class UserAuthenticationFilter implements Filter {
+public class AuthenticationOTPAdminFilter implements Filter {
 
     private static final boolean debug = true;
 
@@ -32,12 +32,12 @@ public class UserAuthenticationFilter implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
 
-    public UserAuthenticationFilter() {
+    public AuthenticationOTPAdminFilter() {
     } 
 
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
 	throws IOException, ServletException {
-	if (debug) log("UserAuthenticationFilter:DoBeforeProcessing");
+	if (debug) log("AuthenticationOTPAdminFilter:DoBeforeProcessing");
 
 	// Write code here to process the request and/or response before
 	// the rest of the filter chain is invoked.
@@ -64,7 +64,7 @@ public class UserAuthenticationFilter implements Filter {
 
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
 	throws IOException, ServletException {
-	if (debug) log("UserAuthenticationFilter:DoAfterProcessing");
+	if (debug) log("AuthenticationOTPAdminFilter:DoAfterProcessing");
 
 	// Write code here to process the request and/or response after
 	// the rest of the filter chain is invoked.
@@ -100,16 +100,15 @@ public class UserAuthenticationFilter implements Filter {
                          FilterChain chain)
 	throws IOException, ServletException {
 
-	if (debug) log("UserAuthenticationFilter:doFilter()");
+	if (debug) log("AuthenticationOTPAdminFilter:doFilter()");
 
 	doBeforeProcessing(request, response);
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession();
-        
-        if(session.getAttribute("account") == null){
-            res.sendRedirect("login.jsp");
-        }
+        if(req.getAttribute("otpSend") == null && req.getAttribute("email") == null){
+            res.sendRedirect("authentication-login.jsp");
+        }	
 
 
 	Throwable problem = null;
@@ -164,7 +163,7 @@ public class UserAuthenticationFilter implements Filter {
 	this.filterConfig = filterConfig;
 	if (filterConfig != null) {
 	    if (debug) { 
-		log("UserAuthenticationFilter:Initializing filter");
+		log("AuthenticationOTPAdminFilter:Initializing filter");
 	    }
 	}
     }
@@ -174,8 +173,8 @@ public class UserAuthenticationFilter implements Filter {
      */
     @Override
     public String toString() {
-	if (filterConfig == null) return ("UserAuthenticationFilter()");
-	StringBuffer sb = new StringBuffer("UserAuthenticationFilter(");
+	if (filterConfig == null) return ("AuthenticationOTPAdminFilter()");
+	StringBuffer sb = new StringBuffer("AuthenticationOTPAdminFilter(");
 	sb.append(filterConfig);
 	sb.append(")");
 	return (sb.toString());

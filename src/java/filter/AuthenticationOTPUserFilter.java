@@ -23,7 +23,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author ADMIN
  */
-public class AuthenticationAdminFilter implements Filter {
+public class AuthenticationOTPUserFilter implements Filter {
 
     private static final boolean debug = true;
 
@@ -32,12 +32,12 @@ public class AuthenticationAdminFilter implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
 
-    public AuthenticationAdminFilter() {
+    public AuthenticationOTPUserFilter() {
     } 
 
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
 	throws IOException, ServletException {
-	if (debug) log("AuthenticationAdminFilter:DoBeforeProcessing");
+	if (debug) log("AuthenticationOTPUserFilter:DoBeforeProcessing");
 
 	// Write code here to process the request and/or response before
 	// the rest of the filter chain is invoked.
@@ -64,7 +64,7 @@ public class AuthenticationAdminFilter implements Filter {
 
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
 	throws IOException, ServletException {
-	if (debug) log("AuthenticationAdminFilter:DoAfterProcessing");
+	if (debug) log("AuthenticationOTPUserFilter:DoAfterProcessing");
 
 	// Write code here to process the request and/or response after
 	// the rest of the filter chain is invoked.
@@ -100,17 +100,15 @@ public class AuthenticationAdminFilter implements Filter {
                          FilterChain chain)
 	throws IOException, ServletException {
 
-	if (debug) log("AuthenticationAdminFilter:doFilter()");
+	if (debug) log("AuthenticationOTPUserFilter:doFilter()");
 
 	doBeforeProcessing(request, response);
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession();
-        
-        if(session.getAttribute("admin")==null){
-            req.setAttribute("error", "Bạn cần đăng nhập trước!!");
-            req.getRequestDispatcher("authentication-login.jsp").forward(request, response);
-        }
+        if(req.getAttribute("otpSend") == null && req.getAttribute("email") == null){
+            res.sendRedirect("forgotpassword.jsp");
+        }	
 
 
 	Throwable problem = null;
@@ -165,7 +163,7 @@ public class AuthenticationAdminFilter implements Filter {
 	this.filterConfig = filterConfig;
 	if (filterConfig != null) {
 	    if (debug) { 
-		log("AuthenticationAdminFilter:Initializing filter");
+		log("AuthenticationOTPUserFilter:Initializing filter");
 	    }
 	}
     }
@@ -175,8 +173,8 @@ public class AuthenticationAdminFilter implements Filter {
      */
     @Override
     public String toString() {
-	if (filterConfig == null) return ("AuthenticationAdminFilter()");
-	StringBuffer sb = new StringBuffer("AuthenticationAdminFilter(");
+	if (filterConfig == null) return ("AuthenticationOTPUserFilter()");
+	StringBuffer sb = new StringBuffer("AuthenticationOTPUserFilter(");
 	sb.append(filterConfig);
 	sb.append(")");
 	return (sb.toString());
