@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <welcome-file-list>
+        <welcome-file>user/index</welcome-file>
+    </welcome-file-list>
     <filter>
         <filter-name>UserAuthenticationFilter</filter-name>
         <filter-class>filter.UserAuthenticationFilter</filter-class>
@@ -334,6 +337,38 @@
         <servlet-name>ChangePassword2AdminServlet</servlet-name>
         <servlet-class>controller.admin.ChangePassword2Servlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateOrdersServlet</servlet-name>
+        <servlet-class>controller.admin.UpdateOrdersServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrdersServlet</servlet-name>
+        <servlet-class>controller.admin.OrdersServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CommentsServlet</servlet-name>
+        <servlet-class>controller.admin.CommentsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadMoreNewOrders</servlet-name>
+        <servlet-class>controller.admin.LoadMoreNewOrders</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadMoreOrdersServlet</servlet-name>
+        <servlet-class>controller.admin.LoadMoreOrdersServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadMoreReviewsServlet</servlet-name>
+        <servlet-class>controller.admin.LoadMoreReviewsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchOrdersServlet</servlet-name>
+        <servlet-class>controller.admin.SearchOrdersServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchCommentsServlet</servlet-name>
+        <servlet-class>controller.admin.SearchCommentsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>IndexServlet</servlet-name>
         <url-pattern>/user/index</url-pattern>
@@ -542,6 +577,38 @@
         <servlet-name>ChangePassword2AdminServlet</servlet-name>
         <url-pattern>/admin/changepassword2</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateOrdersServlet</servlet-name>
+        <url-pattern>/admin/updateorder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrdersServlet</servlet-name>
+        <url-pattern>/admin/orders</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CommentsServlet</servlet-name>
+        <url-pattern>/admin/comments</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadMoreNewOrders</servlet-name>
+        <url-pattern>/admin/loadmoreneworders</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadMoreOrdersServlet</servlet-name>
+        <url-pattern>/admin/loadmoreorders</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadMoreReviewsServlet</servlet-name>
+        <url-pattern>/admin/loadmorereviews</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchOrdersServlet</servlet-name>
+        <url-pattern>/admin/searchorder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchCommentsServlet</servlet-name>
+        <url-pattern>/admin/searchcomments</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
@@ -551,32 +618,26 @@
         <param-name>weblogic.jsp.pageCheckSeconds</param-name>
         <param-value>0</param-value>
     </context-param>
-    <!--    <error-page>  
-        <error-code>403</error-code>    
-        <location>/admin/error-403.html</location>  
-    </error-page>  
-    
-    <error-page>  
-        <error-code>404</error-code>    
-        <location>/admin/error-404.html</location>  
-    </error-page> 
-    
-    <error-page>  
-        <error-code>405</error-code>    
-        <location>/admin/error-405.html</location>  
-    </error-page> 
-    
-    <error-page>  
-        <error-code>500</error-code>    
-        <location>/admin/error-500.html</location>  
-    </error-page> -->
+    <error-page>
+        <error-code>403</error-code>
+        <location>/admin/html/error-403.html</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/admin/html/error-404.html</location>
+    </error-page>
+    <error-page>
+        <error-code>405</error-code>
+        <location>/admin/html/error-405.html</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/admin/html/error-500.html</location>
+    </error-page>
     <multipart-config>
         <location>/tmp</location>
         <max-file-size>20848820</max-file-size>
         <max-request-size>418018841</max-request-size>
         <file-size-threshold>1048576</file-size-threshold>
     </multipart-config>
-    <!--    <welcome-file-list>
-        <welcome-file>/user/index</welcome-file>
-    </welcome-file-list>-->
 </web-app>

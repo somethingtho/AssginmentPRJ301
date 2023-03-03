@@ -433,18 +433,20 @@
                                 <hr />
                                 <div class="row">
                                     <div class="col-md-12">
+                                        <c:forEach items="${requestScope.sup}" var="supplier">
                                         <div class="pull-left">
                                             <address>
                                                 <h3>
-                                                    &nbsp;<b class="text-danger">${requestScope.supplier.companyName}</b>
+                                                    &nbsp;<b class="text-danger">${supplier.companyName}</b>
                                                 </h3>
                                                 <p class="text-muted ms-1">
-                                                    Phone:  <i class="mdi mdi-phone"></i> ${requestScope.supplier.phone}<br>
-                                                    Email: <i class="mdi mdi-email"></i>  ${requestScope.supplier.email}<br>
-                                                    HomePage: <i class="mdi mdi-web"></i>  <a href="${requestScope.supplier.homePage}" target="_blank">${requestScope.supplier.companyName}</a><br>
+                                                    Phone:  <i class="mdi mdi-phone"></i> ${supplier.phone}<br>
+                                                    Email: <i class="mdi mdi-email"></i>  ${supplier.email}<br>
+                                                    HomePage: <i class="mdi mdi-web"></i>  <a href="${supplier.homePage}" target="_blank">${supplier.companyName}</a><br>
                                                 </p>
                                             </address>
                                         </div>
+                                        </c:forEach>
                                         <div class="pull-right text-end">
                                             <address>
                                                 <h3>To,</h3>
@@ -489,7 +491,7 @@
                                                             <td class="text-end">${orderDetail.product.category.categoryName}</td>
                                                             <td class="text-end">${orderDetail.quantity}</td>
                                                             <td class="text-end"><fmt:formatNumber type="currency" value="${orderDetail.unitPrice}"/></td>
-                                                            <td class="text-end"><fmt:formatNumber type="currency" value="${orderDetail.unitPrice * orderDetail.quantity}"/></td>
+                                                            <td class="text-end"><fmt:formatNumber type="currency" value="${orderDetail.unitPrice* orderDetail.quantity}"/></td>
                                                         </tr>
                                                         <c:set var="i" value="${i+1}"></c:set>
                                                     </c:forEach>
@@ -511,18 +513,33 @@
                                             <p class="mt-4">
                                                 <b>Tình trạng: </b>
                                                 <c:choose>
-                                                    <c:when test="${requestScope.order.status}"><i class="mdi mdi-check"></i>Success</c:when>
-                                                    <c:otherwise><i class="mdi mdi-close"></i>Fail</c:otherwise>
+                                                    <c:when test="${requestScope.order.status == 1}"><i class="mdi mdi-check"></i>Success</c:when>
+                                                    <c:when test="${requestScope.order.status == 0}"><i class="mdi mdi-close"></i>Fail</c:when>
+                                                    <c:otherwise><i class="mdi"></i>Process</c:otherwise>
                                                 </c:choose>
                                             </p>
                                             <h3><b>Tổng tiền: </b> <fmt:formatNumber type="currency" value="${order.totalMoney}"/></h3>
                                         </div>
                                         <div class="clearfix"></div>
                                         <hr />
-                                        <div>
-                                            <button class="btn btn-orange text-white" onclick="history.back()">
-                                                Trở về
+                                        <div class="row" style="display: flex; justify-content: space-between">
+                                            <button class="btn btn-orange text-white col-md-3" >
+                                                <a href="${pageContext.request.contextPath}/admin/index" class="text-white">Go Home</a>
                                             </button>
+
+                                            <c:if test="${requestScope.order.status == 3}">
+                                                
+                                                <button class="btn btn-outline-danger text-black-50 col-md-3">
+                                                    Reject
+                                                </button>
+                                                
+                                                <button class="btn btn-success text-white col-md-3">
+                                                    Accept
+                                                </button>
+                                                
+                                                
+                                            </c:if>
+
                                         </div>
                                     </div>
                                 </div>
@@ -569,19 +586,19 @@
             <script src="assets/extra-libs/multicheck/jquery.multicheck.js"></script>
             <script src="assets/extra-libs/DataTables/datatables.min.js"></script>
             <script>
-                /****************************************
-                 *       Basic Table                   *
-                 ****************************************/
-                $("#zero_config").DataTable();
+                                                    /****************************************
+                                                     *       Basic Table                   *
+                                                     ****************************************/
+                                                    $("#zero_config").DataTable();
 
-                function handleClick(lock) {
-                    let txt;
-                    if (lock.value === 'ON')
-                        txt = " khoá ";
-                    else
-                        txt = " mở khoá ";
-                    alert("Bạn đang" + txt + "tài khoản này!");
-                }
+                                                    function handleClick(lock) {
+                                                        let txt;
+                                                        if (lock.value === 'ON')
+                                                            txt = " khoá ";
+                                                        else
+                                                            txt = " mở khoá ";
+                                                        alert("Bạn đang" + txt + "tài khoản này!");
+                                                    }
             </script>
     </body>
 </html>

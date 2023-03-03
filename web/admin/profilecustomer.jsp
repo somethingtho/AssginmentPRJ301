@@ -613,22 +613,24 @@
                                     <tbody>
                                         <c:forEach items="${requestScope.listAllOrders}" var="o">
                                             <tr>
-                                                <th><a href="${pageContext.request.contextPath}/admin/orderdetail?id=${requestScope.entity.customerID}&oid=${o.orderID}">${o.orderID}</a></th>
+                                                <th><a href="${pageContext.request.contextPath}/admin/orderdetail?oid=${o.orderID}">${o.orderID}</a></th>
                                                 <td>${o.orderDate}</td>
                                                 <td>${o.requireDate}</td>
                                                 <td>${o.shippedDate}</td>
                                                 <td><a href="${pageContext.request.contextPath}/admin/profile?type=ship&id=${o.shipper.shipperID}">${o.shipper.companyName}</a></td>
                                                 <td>${o.address}</td>
                                                 <td>
-                                                    <c:if test="${o.payments}">Delivered</c:if>
-                                                    <c:if test="${!o.payments}">QR Code</c:if>
+                                                    <c:if test="${!o.payments}">Delivered</c:if>
+                                                    <c:if test="${o.payments}">QR Code</c:if>
                                                     </td>
                                                     <td>
-                                                    <c:if test="${o.status}">Success</c:if>
-                                                    <c:if test="${!o.status}">Fail</c:if>
-                                                    </td>
-                                                    <td>
-
+                                                    <c:choose>
+                                                        <c:when test="${o.status == 1}">Success</c:when>
+                                                        <c:when test="${o.status == 0}">Fail</c:when>
+                                                        <c:otherwise>Process</c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                <td>
                                                     <fmt:formatNumber type="currency" value="${o.totalMoney}"/>
                                                 </td>
                                             </tr>
@@ -711,7 +713,7 @@
                                                                 var nValues = [${requestScope.rate*100}, ${100 - requestScope.rate*100}];
 
 
-console.log(${requestScope.rate});
+                                                                console.log(${requestScope.rate});
                                                                 var barColors = [
                                                                     "#b91d47",
                                                                     "#2b5797"

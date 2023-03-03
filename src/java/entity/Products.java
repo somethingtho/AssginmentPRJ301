@@ -4,6 +4,8 @@
  */
 package entity;
 
+import java.util.Vector;
+
 /**
  *
  * @author daova
@@ -18,10 +20,36 @@ public class Products {
     private boolean discontinued;
     private String base64Image;
     private ProductInfo proInfo;
+    private Vector<Review> reviews;
+
+    public Products(int productID, String productName, Suppliers supplier, Categories category, double unitPrice, int unitsInStock, int unitsOnOrder, boolean discontinued, String base64Image, ProductInfo proInfo, Vector<Review> reviews) {
+        this.productID = productID;
+        this.productName = productName;
+        this.supplier = supplier;
+        this.category = category;
+        this.unitPrice = unitPrice;
+        this.unitsInStock = unitsInStock;
+        this.unitsOnOrder = unitsOnOrder;
+        this.discontinued = discontinued;
+        this.base64Image = base64Image;
+        this.proInfo = proInfo;
+        this.reviews = reviews;
+    }
+    
     
     public Products() {
     }
 
+    public Vector<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Vector<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    
+    
     public Products(int productID, String productName, Suppliers supplier, Categories category, double unitPrice, int unitsInStock, int unitsOnOrder, boolean discontinued, String base64Image) {
         this.productID = productID;
         this.productName = productName;

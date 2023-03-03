@@ -106,14 +106,18 @@ public class MobileServlet extends HttpServlet {
         request.setAttribute("to", to);
         request.setAttribute("from", from);
         Vector<Products> vector = daoProducts.getProductsBySuppliers(sid, "SmartPhone", orderby_raw, from, to);
+        String link = "";
         boolean[] cid = new boolean[listAllSuppliersType.size()];
         for (int i = 0; i < cid.length; i++) {
             if (isCheck(listAllSuppliersType.get(i).getSupplierID(), sid)) {
                 cid[i] = true;
+                link = link + "&sid=" + listAllSuppliersType.get(i).getSupplierID();
             } else {
                 cid[i] = false;
             }
         }
+        
+        if(!link.isEmpty()) link = link + "&";
         request.setAttribute("cid", cid);
         request.setAttribute("type", type);
         request.setAttribute("listAllSuppliersType", listAllSuppliersType);
@@ -151,6 +155,7 @@ public class MobileServlet extends HttpServlet {
         request.setAttribute("cart", cart);
         request.setAttribute("size", cart.getItems().size());
         
+        request.setAttribute("link", link);
         request.setAttribute("cate", "SmartPhone");
         Vector<Products> vector1 = daoProducts.getListByPage(vector, start, end);
         request.setAttribute("listAllType", vector1);

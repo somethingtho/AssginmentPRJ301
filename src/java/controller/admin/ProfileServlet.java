@@ -201,7 +201,7 @@ public class ProfileServlet extends HttpServlet {
                 }
                 request.setAttribute("entity", entity);
                 request.setAttribute("type", type);
-                request.getRequestDispatcher("profileview.jsp").forward(request, response);
+                response.sendRedirect("profile?type="+type+"&id="+entity.getSupplierID());
             }
             if (type.equals("ship")) {
                 Shippers entity = daoShippers.getShipperByCompanyName(companyName);
@@ -217,7 +217,7 @@ public class ProfileServlet extends HttpServlet {
                 }
                 request.setAttribute("entity", entity);
                 request.setAttribute("type", type);
-                request.getRequestDispatcher("profileview.jsp").forward(request, response);
+                response.sendRedirect("profile?type="+type+"&id="+entity.getShipperID());
             }
             if (type.equals("customer")) {
                 String id_raw = request.getParameter("customerID");
@@ -232,7 +232,7 @@ public class ProfileServlet extends HttpServlet {
                 }
                 request.setAttribute("entity", entity);
                 request.setAttribute("type", type);
-                request.getRequestDispatcher("profilecustomer.jsp").forward(request, response);
+                response.sendRedirect("profile?type="+type+"&id="+entity.getCustomerID());
             }
         } catch (Exception e) {
         }

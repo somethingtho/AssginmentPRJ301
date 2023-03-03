@@ -2,28 +2,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.user;
+package controller.admin;
 
-import entity.Cart;
-import entity.Customers;
-import entity.Products;
+import entity.Orders;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.Vector;
+import java.util.*;
 import model.DAOOrders;
-import model.DAOProducts;
 
 /**
  *
- * @author daova
+ * @author ADMIN
  */
-public class CheckOutServlet extends HttpServlet {
+public class SearchOrdersServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,10 +37,10 @@ public class CheckOutServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CheckOutServlet</title>");
+            out.println("<title>Servlet SearchOrdersServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CheckOutServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet SearchOrdersServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -63,6 +58,20 @@ public class CheckOutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        DAOOrders daoOrders = new DAOOrders();
+        PrintWriter out = response.getWriter();
+        String orderID_raw = request.getParameter("orderID");
+        try {
+            if (!orderID_raw.matches("\\d+")) {
+                request.setAttribute("error", "Please Input Number!");
+            } else {
+                int orderID = Integer.parseInt(orderID_raw);
+                Orders order = daoOrders.getOrdersByOrderID(orderID);
+                request.setAttribute("order", order);
+            }
+            request.getRequestDispatcher("searchorder.jsp").forward(request, response);
+        } catch (Exception e) {
+        }
     }
 
     /**
@@ -76,38 +85,7 @@ public class CheckOutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-        try {
-            DAOProducts daoProducts = new DAOProducts();
-            DAOOrders daoOrders = new DAOOrders();
-            Vector<Products> list = daoProducts.getAllProductsWithInfo();
-            HttpSession session = request.getSession();
-            Cookie[] arr = request.getCookies();
-            String txt = "";
-            if (arr != null) {
-                for (Cookie o : arr) {
-                    if (o.getName().equals("cart")) {
-                        txt += o.getValue();
-                    }
-                }
-            }
-            Cart cart = new Cart(txt, list);
-            Customers cus = (Customers) session.getAttribute("account");
-            String shipperID_raw = request.getParameter("shippers");
-            int shipperID = Integer.parseInt(shipperID_raw);
-            String payment_raw = request.getParameter("payments");
-            String required = request.getParameter("requiredDate") +" "+ request.getParameter("requiredTime");
-            boolean payment = payment_raw.equals("QR");
-            int status = 3;
-            int n  =daoOrders.addOrder(cus, cart, shipperID, payment, status, required);
-//            int n  =daoOrders.addOrder(cus, cart, shipperID, payment, status);
-            Cookie c = new Cookie("cart", "");
-            c.setMaxAge(0);
-            response.addCookie(c);
-            response.sendRedirect("show");
-        } catch (IOException | NumberFormatException e) {
-        }
-
+        processRequest(request, response);
     }
 
     /**

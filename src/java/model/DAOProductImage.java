@@ -41,7 +41,7 @@ public class DAOProductImage extends DBContext {
             for (Part file : fileParts) {
                 long fileSize = file.getSize();
                 System.out.println(fileSize);
-                if (file != null && fileSize > 7000) {
+                if (file != null && fileSize > 1000) {
                     try {
                         PreparedStatement pre = connection.prepareStatement(sql);
                         pre.setInt(1, pid);

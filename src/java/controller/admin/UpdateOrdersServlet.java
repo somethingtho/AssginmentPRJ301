@@ -5,9 +5,6 @@
 
 package controller.admin;
 
-import entity.OrderDetails;
-import entity.Orders;
-import entity.Suppliers;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,14 +12,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.*;
-import model.DAOOrderDetails;
 import model.DAOOrders;
-import model.DAOSuppliers;
 /**
  *
  * @author ADMIN
  */
-public class OrderDetailsServlet extends HttpServlet {
+public class UpdateOrdersServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -39,10 +34,10 @@ public class OrderDetailsServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet OrderDetailsServlet</title>");  
+            out.println("<title>Servlet UpdateOrdersServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet OrderDetailsServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet UpdateOrdersServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,16 +54,15 @@ public class OrderDetailsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
         String oid_raw = request.getParameter("oid");
+        String type = request.getParameter("type");
         DAOOrders daoOrders = new DAOOrders();
-        DAOOrderDetails daoOrderDetails = new DAOOrderDetails();
         try {
+            boolean status = type.equals("accept");
             int oid = Integer.parseInt(oid_raw);
-            Orders order = daoOrders.getOrdersByOrderID(oid);
-            List<Suppliers> sup = daoOrderDetails.filterSuppliers(order.getOrderDetails());
-            request.setAttribute("sup", sup);
-            request.setAttribute("order", order);
-            request.getRequestDispatcher("orderdetail.jsp").forward(request, response);
+            int number = daoOrders.UpdateOrders(oid, status);
+            response.sendRedirect("orderdetail?oid="+oid);
         } catch (Exception e) {
         }
     } 

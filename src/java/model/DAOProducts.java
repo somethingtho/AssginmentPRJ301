@@ -7,6 +7,7 @@ package model;
 import entity.Categories;
 import entity.ProductInfo;
 import entity.Products;
+import entity.Review;
 import entity.Suppliers;
 import jakarta.servlet.http.Part;
 import java.io.ByteArrayOutputStream;
@@ -35,20 +36,31 @@ public class DAOProducts extends DBContext {
 
     public static void main(String[] args) {
         DAOProducts dao = new DAOProducts();
-        int[] id = {1, 2, 3, 4};
-        String cateID = "1";
-        String idorder = "DateCreated1";
-        String idDiscontinued = "OFF";
-        Vector<Products> list = dao.getNextProducts(id, cateID, idorder, idDiscontinued, 8);
-        for (Products products : list) {
-            System.out.println(products);
+//        int[] id = {1};
+//        String cateID = "1";
+//        String idorder = "ProductID1";
+//        String idDiscontinued = null;
+//        Vector<Products> list = dao.getNextProducts(id, cateID, idorder, idDiscontinued, 0);
+//        for (Products products : list) {
+//            System.out.println(products);
+//        }
+
+        Vector<Products> list;
+        try {
+            list = dao.getReviewsProductsByAdmin();
+            for (Products products : list) {
+                System.out.println(products.getReviews());
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(DAOProducts.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
     /**
-     * It gets the top 5 products with the highest UnitsOnOrder from the database and returns them as a
-     * vector
-     * 
+     * It gets the top 5 products with the highest UnitsOnOrder from the
+     * database and returns them as a vector
+     *
      * @param id the id of the supplier
      * @return A vector of Products
      */
@@ -107,7 +119,7 @@ public class DAOProducts extends DBContext {
 
     /**
      * It returns the number of products that a supplier has
-     * 
+     *
      * @param sid Supplier ID
      * @return The number of products by a supplier.
      */
@@ -128,9 +140,9 @@ public class DAOProducts extends DBContext {
     }
 
     /**
-     * I want to insert a new product into the database, and then insert the product's information and
-     * images into the database
-     * 
+     * I want to insert a new product into the database, and then insert the
+     * product's information and images into the database
+     *
      * @param product a product object
      * @param input List of Part
      * @param filePart Part
@@ -173,8 +185,9 @@ public class DAOProducts extends DBContext {
     }
 
     /**
-     * It gets the last product added to the database and returns it as a Products object
-     * 
+     * It gets the last product added to the database and returns it as a
+     * Products object
+     *
      * @return A product object.
      */
     public Products getProductNew() {
@@ -233,8 +246,9 @@ public class DAOProducts extends DBContext {
     }
 
     /**
-     * I want to update the product table and the productinfo table at the same time
-     * 
+     * I want to update the product table and the productinfo table at the same
+     * time
+     *
      * @param product a Product object
      * @param input List of Part
      * @param filePart the image file
@@ -276,7 +290,7 @@ public class DAOProducts extends DBContext {
 
     /**
      * It returns the filename of the file that was uploaded
-     * 
+     *
      * @param part The part of the request that contains the file
      * @return The file name of the uploaded file.
      */
@@ -295,7 +309,7 @@ public class DAOProducts extends DBContext {
 
     /**
      * It gets all the products from the database and returns them as a vector
-     * 
+     *
      * @return A vector of Products
      */
     public Vector<Products> getAllProductsByAdmin() throws IOException {
@@ -344,9 +358,57 @@ public class DAOProducts extends DBContext {
         return vector;
     }
 
+    public Vector<Products> getReviewsProductsByAdmin() throws IOException {
+        DAOSuppliers daoSuppliers = new DAOSuppliers();
+        DAOCategories daoCategories = new DAOCategories();
+        DAOProductInfo daoProductInfo = new DAOProductInfo();
+        DAOReview daoReview = new DAOReview();
+        Vector<Products> vector = new Vector<>();
+        String sql = "SELECT TOP 2 * FROM Products ORDER BY ProductID ASC";
+        ResultSet rs = getData(sql);
+        try {
+            while (rs.next()) {
+                int productID = rs.getInt("ProductID");
+                String productName = rs.getString("ProductName");
+                int supplierID = rs.getInt("SupplierID");
+                int categoryID = rs.getInt("CategoryID");
+                double unitprice = rs.getDouble("UnitPrice");
+                int unitsInStock = rs.getInt("UnitsInStock");
+                int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                boolean discontinued = rs.getBoolean("Discontinued");
+                Blob blob = rs.getBlob("Image");
+                InputStream inputStream = blob.getBinaryStream();
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[4096];
+                int bytesRead = -1;
+
+                try {
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                    byte[] imageBytes = outputStream.toByteArray();
+                    String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
+                    inputStream.close();
+                    outputStream.close();
+                    Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
+                    Categories category = daoCategories.getCategoryByCategoryID(categoryID);
+                    ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
+                    Vector<Review> reviews = daoReview.getAllReviewByProductIDAndAdmin(productID);
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo, reviews));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return vector;
+    }
+
     /**
      * It returns the number of products in the database
-     * 
+     *
      * @return The number of products in the database.
      */
     public int TotalProducts() {
@@ -365,7 +427,7 @@ public class DAOProducts extends DBContext {
 
     /**
      * It gets all the products from the database and returns them as a vector
-     * 
+     *
      * @return A vector of Products objects.
      */
     public Vector<Products> getAllProducts() throws IOException {
@@ -415,8 +477,9 @@ public class DAOProducts extends DBContext {
     }
 
     /**
-     * It gets all the products from the database and returns a vector of products
-     * 
+     * It gets all the products from the database and returns a vector of
+     * products
+     *
      * @return A vector of Products
      */
     public Vector<Products> getAllProductsWithInfo() throws IOException {
@@ -466,9 +529,9 @@ public class DAOProducts extends DBContext {
     }
 
     /**
-     * It gets the top 4 products from the database that are laptops and orders them by the amount of
-     * units on order
-     * 
+     * It gets the top 4 products from the database that are laptops and orders
+     * them by the amount of units on order
+     *
      * @return A vector of Products objects.
      */
     public Vector<Products> getLaptopHotSale() {
@@ -519,9 +582,10 @@ public class DAOProducts extends DBContext {
     }
 
     /**
-     * It gets the top 4 products from the database that are not discontinued and are in the category
-     * of Smartphone, and then it orders them by the number of units on order
-     * 
+     * It gets the top 4 products from the database that are not discontinued
+     * and are in the category of Smartphone, and then it orders them by the
+     * number of units on order
+     *
      * @return A vector of Products objects.
      */
     public Vector<Products> getSmartPhoneHotSale() {
@@ -572,9 +636,10 @@ public class DAOProducts extends DBContext {
     }
 
     /**
-     * It gets the top 4 products that are not discontinued and are in the category of Tablet, and then
-     * it orders them by the number of units on order
-     * 
+     * It gets the top 4 products that are not discontinued and are in the
+     * category of Tablet, and then it orders them by the number of units on
+     * order
+     *
      * @return A vector of Products
      */
     public Vector<Products> getTabletHotSale() {
@@ -625,8 +690,9 @@ public class DAOProducts extends DBContext {
     }
 
     /**
-     * It gets all the products from the database and returns a vector of products
-     * 
+     * It gets all the products from the database and returns a vector of
+     * products
+     *
      * @return A vector of Products objects.
      */
     public Vector<Products> getAllLaptop() {
@@ -676,9 +742,9 @@ public class DAOProducts extends DBContext {
     }
 
     /**
-     * It gets all the products from the database that are not discontinued and are in the category of
-     * Tablet
-     * 
+     * It gets all the products from the database that are not discontinued and
+     * are in the category of Tablet
+     *
      * @return A vector of Products objects.
      */
     public Vector<Products> getAllTablet() {
@@ -729,7 +795,7 @@ public class DAOProducts extends DBContext {
 
     /**
      * It gets all the products from the database and returns them as a vector
-     * 
+     *
      * @return A vector of Products objects.
      */
     public Vector<Products> getAllMobile() {
@@ -779,8 +845,9 @@ public class DAOProducts extends DBContext {
     }
 
     /**
-     * It takes a vector of products, a start index, and an end index, and returns a vector of products
-     * 
+     * It takes a vector of products, a start index, and an end index, and
+     * returns a vector of products
+     *
      * @param vector the vector of products
      * @param start the index of the first element in the vector to be returned
      * @param end the end index of the vector
@@ -797,7 +864,7 @@ public class DAOProducts extends DBContext {
 
     /**
      * It gets products by suppliers, category name, and order
-     * 
+     *
      * @param id an array of supplier IDs
      * @param categoryName the name of the category
      * @param idorder 1 = ProductName, 2 = UnitPrice DESC, 3 = UnitPrice ASC
@@ -875,7 +942,7 @@ public class DAOProducts extends DBContext {
 
     /**
      * It gets the product name from the database and converts it to base64
-     * 
+     *
      * @param name the name of the product
      * @return A vector of Products
      */
@@ -988,13 +1055,10 @@ public class DAOProducts extends DBContext {
         return number;
     }
      */
-
-
-
     /**
-     * It gets the maximum price of a product from the database, multiplies it by 1.2, and returns the
-     * result
-     * 
+     * It gets the maximum price of a product from the database, multiplies it
+     * by 1.2, and returns the result
+     *
      * @return The max price of the products in the database.
      */
     public double getMaxPrice() {
@@ -1013,7 +1077,7 @@ public class DAOProducts extends DBContext {
 
     /**
      * This function returns the minimum price of all products in the database
-     * 
+     *
      * @return The minimum price of the products in the database.
      */
     public double getMinPrice() {
@@ -1032,7 +1096,7 @@ public class DAOProducts extends DBContext {
 
     /**
      * It gets products by suppliers, category name, idorder, from and to
-     * 
+     *
      * @param id an array of supplier IDs
      * @param categoryName String
      * @param idorder 1 = ProductName, 2 = UnitPrice DESC, 3 = UnitPrice ASC
@@ -1115,7 +1179,7 @@ public class DAOProducts extends DBContext {
 
     /**
      * It searches for products by name, price range, and order by
-     * 
+     *
      * @param name the name of the product
      * @param idorder 1 = ProductName, 2 = UnitPrice DESC, 3 = UnitPrice ASC
      * @param from the minimum price
@@ -1187,7 +1251,7 @@ public class DAOProducts extends DBContext {
 
     /**
      * It gets a product by its ID, and returns it as a Products object
-     * 
+     *
      * @param pID the product ID
      * @return A Products object.
      */
@@ -1240,9 +1304,9 @@ public class DAOProducts extends DBContext {
     }
 
     /**
-     * I want to get all products that have the same supplierID and categoryID and productID is not
-     * equal to the productID that I passed in
-     * 
+     * I want to get all products that have the same supplierID and categoryID
+     * and productID is not equal to the productID that I passed in
+     *
      * @param supid SupplierID
      * @param cateid category id
      * @param pid product id
@@ -1299,8 +1363,9 @@ public class DAOProducts extends DBContext {
     }
 
     /**
-     * I want to get all products from database, but I want to get only products that have supplierID
-     * in the array of supplierID.
+     * I want to get all products from database, but I want to get only products
+     * that have supplierID in the array of supplierID.
+     *
      * @param id an array of supplier IDs
      * @param cateID CategoryID
      * @param idorder the order by column
@@ -1336,6 +1401,14 @@ public class DAOProducts extends DBContext {
         if (idDiscontinued != null && idDiscontinued.equalsIgnoreCase("OFF")) {
             sql = sql + " AND Discontinued = 0 ";
         }
+
+        if (idorder != null && idorder.equals("ProductID1")) {
+            orderby = " Products.ProductID ASC ";
+        }
+        if (idorder != null && idorder.equals("ProductID2")) {
+            orderby = " Products.ProductID DESC ";
+        }
+
         if (idorder != null && idorder.equals("UnitPrice1")) {
             orderby = " UnitPrice ASC ";
         }
@@ -1410,19 +1483,20 @@ public class DAOProducts extends DBContext {
         return vector;
     }
 
-   /**
-    * It gets the next 4 products from the database based on the parameters passed in
-    * 
-    * @param id an array of supplier IDs
-    * @param cateID Category ID
-    * @param idorder the order by which the products are sorted
-    * @param idDiscontinued ON/OFF
-    * @param amount the amount of products that have been loaded
-    * @return A Vector of Products
-    */
+    /**
+     * It gets the next 4 products from the database based on the parameters
+     * passed in
+     *
+     * @param id an array of supplier IDs
+     * @param cateID Category ID
+     * @param idorder the order by which the products are sorted
+     * @param idDiscontinued ON/OFF
+     * @param amount the amount of products that have been loaded
+     * @return A Vector of Products
+     */
     public Vector<Products> getNextProducts(int[] id, String cateID, String idorder, String idDiscontinued, int amount) {
         Vector<Products> vector = new Vector<>();
-        String sql = "SELECT * FROM Products INNER JOIN ProductInfo ON Products.ProductID = ProductInfo.ProductID WHERE 1 = 1 ";
+        String sql = "SELECT Products.* FROM Products INNER JOIN ProductInfo ON Products.ProductID = ProductInfo.ProductID WHERE 1 = 1 ";
         DAOSuppliers daoSuppliers = new DAOSuppliers();
         DAOCategories daoCategories = new DAOCategories();
         DAOProductInfo daoProductInfo = new DAOProductInfo();
@@ -1450,6 +1524,14 @@ public class DAOProducts extends DBContext {
         if (idDiscontinued != null && idDiscontinued.equalsIgnoreCase("OFF")) {
             sql = sql + "AND Discontinued = 0 ";
         }
+
+        if (idorder != null && idorder.equals("ProductID1")) {
+            orderby = " Products.ProductID ASC ";
+        }
+        if (idorder != null && idorder.equals("ProductID2")) {
+            orderby = " Products.ProductID DESC ";
+        }
+
         if (idorder != null && idorder.equals("UnitPrice1")) {
             orderby = "UnitPrice ASC";
         }
@@ -1514,6 +1596,59 @@ public class DAOProducts extends DBContext {
                     Categories category = daoCategories.getCategoryByCategoryID(categoryID);
                     ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
                     vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return vector;
+
+    }
+    
+    
+    public Vector<Products> getNextReviewsProducts(int amount) {
+        Vector<Products> vector = new Vector<>();
+        String sql = "SELECT Products.* FROM Products ORDER BY ProductID ASC OFFSET ? ROWS FETCH NEXT 4 ROWS ONLY";
+        DAOSuppliers daoSuppliers = new DAOSuppliers();
+        DAOCategories daoCategories = new DAOCategories();
+        DAOProductInfo daoProductInfo = new DAOProductInfo();
+        DAOReview daoReview = new DAOReview();
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, amount);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                int productID = rs.getInt("ProductID");
+                String productName = rs.getString("ProductName");
+                int supplierID = rs.getInt("SupplierID");
+                int categoryID = rs.getInt("CategoryID");
+                double unitprice = rs.getDouble("UnitPrice");
+                int unitsInStock = rs.getInt("UnitsInStock");
+                int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                boolean discontinued = rs.getBoolean("Discontinued");
+                Blob blob = rs.getBlob("Image");
+                InputStream inputStream = blob.getBinaryStream();
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[4096];
+                int bytesRead = -1;
+
+                try {
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                    byte[] imageBytes = outputStream.toByteArray();
+                    String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
+                    inputStream.close();
+                    outputStream.close();
+                    Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
+                    Categories category = daoCategories.getCategoryByCategoryID(categoryID);
+                    ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
+                    Vector<Review> reviews = daoReview.getAllReviewByProductIDAndAdmin(productID);
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo, reviews));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }

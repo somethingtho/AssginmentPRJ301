@@ -20,7 +20,8 @@ public class DAOViews extends DBContext {
 
     public static void main(String[] args) {
         DAOViews dao = new DAOViews();
-        System.out.println(dao.getLoginCountForCurrentDay());
+        Date currentDate = new Date(System.currentTimeMillis());
+        System.out.println(currentDate);
 
     }
 
@@ -55,7 +56,8 @@ public class DAOViews extends DBContext {
     public Vector<Integer> getAccessByMonth(int year) {
         Vector<Integer> vector = new Vector<>();
 
-        String sql = "SELECT MONTH(DateView),SUM(Access) AS Total FROM Views WHERE YEAR(DateView) = ? GROUP BY MONTH(DateView) ORDER BY MONTH(DateView)";
+//        String sql = "SELECT MONTH(DateView),SUM(Access) AS Total FROM Views WHERE YEAR(DateView) = ? GROUP BY MONTH(DateView) ORDER BY MONTH(DateView)";
+        String sql = "EXEC dbo.getAccessByMonth @year = ?";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1,year);

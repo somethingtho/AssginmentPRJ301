@@ -28,7 +28,7 @@
                 response.setHeader("Pragma", "no-cache"); //HTTP 1.0
                 response.setDateHeader("Expires", 0);
                 //prevents caching at the proxy server
-%>
+            %>
             <c:set var="o" value="${requestScope.cart}"/>
         <header>
             <div class="logo">
@@ -229,6 +229,7 @@
 
                     </div>
                 </div>
+                
                 <div class="col-sm-9 flashsale">
                     <ul class="breadcrumb" style="margin: 20px 0 0 0; background-color: rgb(247, 241, 234)">
                         <li><a href="${pageContext.request.contextPath}/user/index">Trang chủ</a></li>
@@ -256,7 +257,7 @@
         <ul class="pagination pager" style="display: flex; justify-content: center;">
             <li class="previous <c:if test="${requestScope.page == 1}">disabled</c:if>"><a href="${pageContext.request.contextPath}/user/${requestScope.type}?page=${page-1}"">Trang trước</a></li>
                 <c:forEach begin="${1}" end="${requestScope.num}" var="i">
-                <li style="margin: 0 5px;" class="${i==page?"active":""}"><a href="${pageContext.request.contextPath}/user/${requestScope.type}?orderby=${requestScope.orderby}&page=${i}&from=${requestScope.from}&to=${requestScope.to}">${i}</a> </li>
+                <li style="margin: 0 5px;" class="${i==page?"active":""}"><a href="${pageContext.request.contextPath}/user/${requestScope.type}?${requestScope.link}orderby=${requestScope.orderby}&page=${i}&from=${requestScope.from}&to=${requestScope.to}">${i}</a> </li>
                 </c:forEach>
             <li class="next <c:if test="${requestScope.page == num}">disabled</c:if>"><a href="${pageContext.request.contextPath}/user/${requestScope.type}?page=${page+1}">Trang sau</a></li>
             </ul> 

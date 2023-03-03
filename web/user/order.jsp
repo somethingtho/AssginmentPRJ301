@@ -209,7 +209,12 @@
                                             </div>
                                         </a></td>
                                     <td>${order.orderDate}</td>
-                                    <td><c:if test="${order.status}">Đã giao hàng</c:if><c:if test="${!order.status}">Đã huỷ</c:if></td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${order.status == 1}">Đã giao hàng</c:when>
+                                            <c:when test="${order.status == 2}">Đã huỷ</c:when>
+                                            <c:otherwise >Chờ xử lý</c:otherwise>
+                                        </c:choose>
                                     </tr>
                             </c:forEach>
                         </c:forEach>

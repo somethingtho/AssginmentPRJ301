@@ -28,7 +28,7 @@
             response.setHeader("Pragma", "no-cache"); //HTTP 1.0
             response.setDateHeader("Expires", 0);
             //prevents caching at the proxy server
-%>
+        %>
         <c:set var="o" value="${requestScope.cart}"/>
         <header>
             <div class="logo">
@@ -176,6 +176,7 @@
                     <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
                     <li data-target="#myCarousel" data-slide-to="1"></li>
                     <li data-target="#myCarousel" data-slide-to="2"></li>
+                    <li data-target="#myCarousel" data-slide-to="3"></li>
                 </ol>
 
                 <div class="carousel-inner">
@@ -188,7 +189,10 @@
                     </div>
 
                     <div class="item">
-                        <img src="${pageContext.request.contextPath}/images/banner_3.webp" alt="Banner3" style="width:100%;">
+                        <img src="${pageContext.request.contextPath}/images/banner_8.webp" alt="Banner8" style="width:100%;">
+                    </div>
+                    <div class="item">
+                        <img src="${pageContext.request.contextPath}/images/banner_7.webp" alt="Banner7" style="width:100%;">
                     </div>
                 </div>
                 <a class="left carousel-control" href="#myCarousel" data-slide="prev">
@@ -223,7 +227,7 @@
         </div>
 
         <div class="container banner">
-            <img src="${pageContext.request.contextPath}/images/banner_4.png" alt="">
+            <a href="${pageContext.request.contextPath}/user/laptop"><img src="${pageContext.request.contextPath}/images/banner_4.webp" alt=""></a>
         </div>
 
         <div class="container flashsale">
@@ -248,7 +252,7 @@
             </div>
         </div>
         <div class="container banner">
-            <img src="${pageContext.request.contextPath}/images/banner_5.png" alt="">
+            <a href="${pageContext.request.contextPath}/user/mobile?sid=4"><img style="height: 70%" src="${pageContext.request.contextPath}/images/banner_6.webp" alt=""></a>
         </div>
 
         <div class="container flashsale">
@@ -270,7 +274,7 @@
         </div>
 
         <div class="container banner">
-            <img src="${pageContext.request.contextPath}/images/banner6.png" alt="">
+            <a href="${pageContext.request.contextPath}/user/item?pid=35"><img src="${pageContext.request.contextPath}/images/banner_7.webp" alt=""></a>
         </div>
 
         <div class="container flashsale">
@@ -377,7 +381,6 @@
 <script>
     window.onscroll = function () {
         myFunction();
-        scrollFunction();
     };
 
     let mybutton = document.getElementById("myBtn");
@@ -393,19 +396,8 @@
         }
     }
 
-    function scrollFunction() {
-        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-            mybutton.style.display = "block";
-        } else {
-            mybutton.style.display = "none";
-        }
-    }
 
-// When the user clicks on the button, scroll to the top of the document
-    function topFunction() {
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
-    }
+
 
 
     function searchBtn() {
@@ -416,9 +408,6 @@
             document.getElementById("form_search").submit();
     }
 
-    window.onload = function () {
-        document.querySelector(".gearbox").style.display = "none";
-    };
 </script>
 
 

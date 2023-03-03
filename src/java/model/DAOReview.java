@@ -99,6 +99,23 @@ public class DAOReview extends DBContext {
         return number;
 
     }
+    
+    
+    public int TotalReview() {
+        int number = 0;
+        String sql = "SELECT COUNT(*) FROM Review";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            ResultSet rs= pre.executeQuery();
+            if(rs.next()){
+                number = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return number;
+
+    }
 
     /**
      * It returns the number of reviews for a supplier.
@@ -170,6 +187,36 @@ public class DAOReview extends DBContext {
         DAOProducts daoProducts = new DAOProducts();
         Vector<Review> vector = new Vector<>();
         String sql = "SELECT * FROM dbo.Review WHERE ProductID = ? AND Review.Status = 1 ORDER BY Review.ID DESC";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, pid);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("ID");
+                int idAccount = rs.getInt("IDAccount");
+                int productID = pid;
+                String content = rs.getString("ContentSend");
+                int rate = rs.getInt("Rate");
+                String postDate = rs.getString("DateRate");
+                boolean status = rs.getBoolean("Status");
+                Accounts acc = daoAccounts.getID(idAccount);
+                Customers cus = daoCustomers.getCustomerByUserName(acc.getUserName());
+                Products product = daoProducts.getProductByID(productID);
+                vector.add(new Review(id, acc, cus, product, content, rate, postDate, status));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return vector;
+    }
+    
+    
+    public Vector<Review> getAllReviewByProductIDAndAdmin(int pid) {
+        DAOAccounts daoAccounts = new DAOAccounts();
+        DAOCustomers daoCustomers = new DAOCustomers();
+        DAOProducts daoProducts = new DAOProducts();
+        Vector<Review> vector = new Vector<>();
+        String sql = "SELECT * FROM dbo.Review WHERE ProductID = ? ORDER BY Review.ID DESC";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, pid);

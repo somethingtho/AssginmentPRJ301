@@ -503,6 +503,8 @@
                                         >
                                         <option value="Select">Select</option>
                                         <optgroup label="Sắp xếp theo">
+                                            <option <c:if test="${requestScope.orderby_raw eq 'ProductID1'}">selected</c:if> value="ProductID1">Mã sản phẩm(Tăng dần)</option>
+                                            <option <c:if test="${requestScope.orderby_raw eq 'ProductID2'}">selected</c:if> value="ProductID2">Mã sản phẩm(Giảm dần)</option>
                                             <option <c:if test="${requestScope.orderby_raw eq 'DateCreated1'}">selected</c:if> value="DateCreated1">Ngày tạo(Tăng dần)</option>
                                             <option <c:if test="${requestScope.orderby_raw eq 'DateCreated2'}">selected</c:if> value="DateCreated2">Ngày tạo(Giảm dần)</option>
                                             <option <c:if test="${requestScope.orderby_raw eq 'ProductName'}">selected</c:if> value="ProductName">Tên (A-Z)</option>

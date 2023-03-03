@@ -80,7 +80,7 @@ public class LoadMoreServlet extends HttpServlet {
         String supplierIDJson = request.getParameter("data");
         ObjectMapper mapper = new ObjectMapper();
         int[] sid = mapper.readValue(supplierIDJson, int[].class);
-        Vector<Products> vector = daoProducts.getNextProducts(sid, category, amount, discontinued_raw, total);
+        Vector<Products> vector = daoProducts.getNextProducts(sid, category, orderby_raw, discontinued_raw, total);
 
 
         for (Products products : vector) {

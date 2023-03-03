@@ -736,12 +736,15 @@
                                                     <td><a href="${pageContext.request.contextPath}/admin/profile?type=ship&id=${o.shipper.shipperID}">${o.shipper.companyName}</a></td>
                                                     <td>${o.address}</td>
                                                     <td>
-                                                        <c:if test="${o.payments}">Delivered</c:if>
-                                                        <c:if test="${!o.payments}">QR Code</c:if>
+                                                        <c:if test="${!o.payments}">Delivered</c:if>
+                                                        <c:if test="${o.payments}">QR Code</c:if>
                                                         </td>
                                                         <td>
-                                                        <c:if test="${o.status}">Success</c:if>
-                                                        <c:if test="${!o.status}">Fail</c:if>
+                                                        <c:choose>
+                                                            <c:when test="${o.status == 1}">Success</c:when>
+                                                            <c:when test="${o.status == 0}">Fail</c:when>
+                                                            <c:when test="${o.status == 3}">Process</c:when>
+                                                        </c:choose>
                                                         </td>
                                                         <td>
 
@@ -815,8 +818,9 @@
                                                     </td>
                                                     <td>
                                                         <c:choose>
-                                                            <c:when test="${sample.status}">Success</c:when>
-                                                            <c:otherwise>Fail</c:otherwise>
+                                                            <c:when test="${sample.status == 1}">Success</c:when>
+                                                            <c:when test="${sample.status == 0}">Success</c:when>
+                                                            <c:otherwise>Process</c:otherwise>
                                                         </c:choose>
                                                     </td>
                                                 </tr>

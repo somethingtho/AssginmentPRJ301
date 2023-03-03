@@ -15,13 +15,14 @@ public class Orders {
     private String orderDate, requireDate, shippedDate;
     private Shippers shipper;
     private String address;
-    private boolean payments, status;
+    private boolean payments;
+    private int status;
     private Vector<OrderDetails> orderDetails;
     private double totalMoney;
     private Customers cus;
     private Orders od;
 
-    public Orders(int orderID, String orderDate, String requireDate, String shippedDate, Shippers shipper, String address, boolean payments, boolean status, double totalMoney, Customers cus) {
+    public Orders(int orderID, String orderDate, String requireDate, String shippedDate, Shippers shipper, String address, boolean payments, int status, double totalMoney, Customers cus) {
         this.orderID = orderID;
         this.orderDate = orderDate;
         this.requireDate = requireDate;
@@ -50,7 +51,7 @@ public class Orders {
         this.totalMoney=totalMoney;
     }
     
-    public Orders(int orderID, int customerID, String orderDate, String requireDate, String shippedDate, Shippers shipper,  String address, boolean payments, boolean status, Vector<OrderDetails> orderDetails) {
+    public Orders(int orderID, int customerID, String orderDate, String requireDate, String shippedDate, Shippers shipper,  String address, boolean payments, int status, Vector<OrderDetails> orderDetails) {
         this.orderID = orderID;
         this.customerID = customerID;
         this.orderDate = orderDate;
@@ -71,7 +72,7 @@ public class Orders {
         this.cus = cus;
     }
     
-    public Orders(int orderID, String orderDate, String shippedDate, String address, boolean payments, boolean status, double totalMoney, Customers cus) {
+    public Orders(int orderID, String orderDate, String shippedDate, String address, boolean payments, int status, double totalMoney, Customers cus) {
         this.orderID = orderID;
         this.orderDate = orderDate;
         this.shippedDate = shippedDate;
@@ -90,7 +91,7 @@ public class Orders {
         this.orderDetails = orderDetails;
     }
 
-    public Orders(int orderID, String orderDate, String requireDate, String shippedDate, Shippers shipper, String address, boolean payments, boolean status, Vector<OrderDetails> orderDetails, double totalMoney, Customers cus) {
+    public Orders(int orderID, String orderDate, String requireDate, String shippedDate, Shippers shipper, String address, boolean payments, int status, Vector<OrderDetails> orderDetails, double totalMoney, Customers cus) {
         this.orderID = orderID;
         this.orderDate = orderDate;
         this.requireDate = requireDate;
@@ -107,7 +108,7 @@ public class Orders {
     public Orders() {
     }
     
-    public Orders(int orderID, int customerID, String orderDate, String requireDate, String shippedDate, Shippers shipper, String address, boolean payments, boolean status) {
+    public Orders(int orderID, int customerID, String orderDate, String requireDate, String shippedDate, Shippers shipper, String address, boolean payments, int status) {
         this.orderID = orderID;
         this.customerID = customerID;
         this.orderDate = orderDate;
@@ -127,13 +128,15 @@ public class Orders {
         this.payments = payments;
     }
 
-    public boolean isStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(int status) {
         this.status = status;
     }
+
+    
     
     public int getOrderID() {
         return orderID;

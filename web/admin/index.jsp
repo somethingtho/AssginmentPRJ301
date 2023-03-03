@@ -385,9 +385,73 @@
                     <div class="row">
                         <!-- column -->
                         <div class="col-lg-12">
+
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">Bình luận mới </h4>
+                                    <h4 class="card-title mb-0"><a href="${pageContext.request.contextPath}/admin/orders">Đơn hàng chưa xử lý(${requestScope.getNewOrders.size()})</a></h4>
+                                </div>
+                                <div class="comment-widgets scrollable">
+                                    <!-- Comment Row -->
+                                    <c:forEach items="${requestScope.getNewOrders}" var="orderNew" begin="0" end="4">
+                                        <div class="d-flex flex-row comment-row mt-0">
+                                            <div class="p-2">
+                                                <img
+                                                    src="data:image/jpg;base64,${orderNew.cus.base64Image}"
+                                                    alt="user"
+                                                    width="50"
+                                                    class="rounded-circle"
+                                                    />
+                                            </div>
+                                            <div class="comment-text w-100">
+                                                <a href="${pageContext.request.contextPath}/admin/profile?type=customer&id=${orderNew.cus.customerID}">${orderNew.cus.customerName}</a>
+                                                <span class="mb-3 d-block">
+                                                    <a href="${pageContext.request.contextPath}/admin/orderdetail?id=${orderNew.cus.customerID}&oid=${orderNew.orderID}">OrderID: ${orderNew.orderID}</a><br>
+                                                    OrderDate: ${orderNew.orderDate}<br>
+                                                    RequiredDate: ${orderNew.requireDate}<br>
+                                                    Total Products: ${orderNew.orderDetails.size()}<br>
+                                                    TotalMoney: <fmt:formatNumber value = "${orderNew.totalMoney}" type = "currency"/><br>
+                                                </span>
+                                                <div class="comment-footer">
+                                                    <span class="text-muted float-end">${orderNew.orderDate}</span>
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-cyan btn-sm text-white"
+                                                        >
+                                                        <a class="text-white" href="${pageContext.request.contextPath}/admin/orderdetail?id=${orderNew.cus.customerID}&oid=${orderNew.orderID}">
+                                                            Information 
+                                                        </a>
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onclick="updateOrder(${orderNew.orderID}, 'accept')"
+                                                        class="btn btn-success btn-sm text-white"
+                                                        >
+                                                        Accept
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onclick="updateOrder(${orderNew.orderID}, 'reject')"
+                                                        class="btn btn-danger btn-sm text-white"
+                                                        >
+                                                        Reject
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </c:forEach>
+
+
+
+
+
+                                </div>
+                            </div>
+
+
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title"><a href="${pageContext.request.contextPath}/admin/comments">Bình luận mới</a> </h4>
                                 </div>
                                 <div class="comment-widgets scrollable">
                                     <!-- Comment Row -->
@@ -397,7 +461,7 @@
                                                 <img src="data:image/jpg;base64,${r.cus.base64Image}" alt="user" width="50" class="rounded-circle" />
                                             </div>
                                             <div class="comment-text w-100">
-                                                <h6 class="font-medium">${r.cus.customerName}</h6>
+                                                <h6 class="font-medium"><a href="${pageContext.request.contextPath}/admin/profile?type=customer&id=${r.cus.customerID}">${r.cus.customerName}</a></h6>
                                                 <span class="mb-3 d-block">(${r.rate} <i class="fas fa-star" style="color: gold;"></i>)${r.contentSend}
                                                     (<a href="${pageContext.request.contextPath}/user/item?pid=${r.pro.productID}">&nbsp; ${r.pro.productName}&nbsp;</a>)
                                                     <c:if test="${r.status}"><i class="mdi mdi-check-circle"></i></c:if>
@@ -420,6 +484,7 @@
 
                                 </div>
                             </div>
+
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title mb-0">Tài khoản mới</h5>
@@ -477,20 +542,20 @@
                                         <tbody class="customtable">
                                             <c:forEach items="${requestScope.customerVjp}" var="vjp">
                                                 <tr>
-                                                    <td>${vjp.key.customerID}</td>
-                                                    <td><a href="${pageContext.request.contextPath}/admin/profile?type=customer&id=${vjp.key.customerID}">${vjp.key.customerName}</a></td>
-                                                    <td>${vjp.key.email}</td>
-                                                    <td>${vjp.key.phone}</td>
+                                                    <td>${vjp.customerID}</td>
+                                                    <td><a href="${pageContext.request.contextPath}/admin/profile?type=customer&id=${vjp.customerID}">${vjp.customerName}</a></td>
+                                                    <td>${vjp.email}</td>
+                                                    <td>${vjp.phone}</td>
                                                     <td><c:choose>
-                                                            <c:when test="${!vjp.key.gender}">Nữ</c:when>
+                                                            <c:when test="${!vjp.gender}">Nữ</c:when>
                                                             <c:otherwise>Nam</c:otherwise>
                                                         </c:choose></td>
-                                                    <td>${vjp.key.address}</td>
+                                                    <td>${vjp.address}</td>
                                                     <td><c:choose>
-                                                            <c:when test="${vjp.key.acc.status}">Hoạt động</c:when>
+                                                            <c:when test="${vjp.acc.status}">Hoạt động</c:when>
                                                             <c:otherwise>Khoá</c:otherwise>
                                                         </c:choose></td>
-                                                    <td><fmt:formatNumber value = "${vjp.value}" type = "currency"/></td>
+                                                    <td><fmt:formatNumber value = "${vjp.totalMoney}" type = "currency"/></td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
@@ -564,7 +629,7 @@
 
                                                                     for (let month = 0; month < 12; month++) {
                                                                         var date = new Date(year, month, 1);
-                                                                         monthName = date.toLocaleString('default', {month: 'long'});
+                                                                        monthName = date.toLocaleString('default', {month: 'long'});
                                                                         monthNames.push(monthName);
                                                                     }
 
@@ -621,6 +686,17 @@
                                                                     // Render the chart
                                                                     chart.render();
                                                                 }
+
+
+
+                                                                
+                                                                
+                                                                function updateOrder(id, type, cid){
+                                                                    if (confirm("Are you sure you want " + type + " order " +"have OrderID = " + id +"?")){
+                                                                        window.location.href = "${pageContext.request.contextPath}/admin/updateorder?oid="+id+"&type="+type;
+                                                                    }
+                                                                }
+                                                                
 
             </script>
     </body>

@@ -106,13 +106,16 @@ public class LaptopServlet extends HttpServlet {
         request.setAttribute("from", from);
         Vector<Products> vector = daoProducts.getProductsBySuppliers(sid, "laptop", orderby_raw, from, to);
         boolean[] cid = new boolean[listAllSuppliersType.size()];
+        String link ="";
         for (int i = 0; i < cid.length; i++) {
             if (isCheck(listAllSuppliersType.get(i).getSupplierID(), sid)) {
                 cid[i] = true;
+                link = link + "&sid=" + listAllSuppliersType.get(i).getSupplierID();
             } else {
                 cid[i] = false;
             }
         }
+        if(!link.isEmpty()) link = link + "&";
         request.setAttribute("cid", cid);
         request.setAttribute("type", type);
         request.setAttribute("listAllSuppliersType", listAllSuppliersType);
@@ -153,6 +156,7 @@ public class LaptopServlet extends HttpServlet {
         Vector<Products> vector1 = daoProducts.getListByPage(vector, start, end);
         request.setAttribute("listAllType", vector1);
         request.setAttribute("page", page);
+        request.setAttribute("link", link);
         request.setAttribute("num", numpage);
         request.setAttribute("orderby", orderby_raw);
         request.getRequestDispatcher("products.jsp").forward(request, response);

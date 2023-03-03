@@ -6,6 +6,7 @@
 package controller.admin;
 
 import entity.Customers;
+import entity.Orders;
 import entity.Review;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -97,14 +98,16 @@ public class IndexServlet extends HttpServlet {
         
         Vector<Review> top5Review = daoReview.getTop5Review();
         Vector<Customers> newCustomers = daoCustomer.getNewCustomers();
-        Map<Customers, Double> customerVjp = daoCustomer.getTop5Customers();
+        Vector<Customers> customerVjp = daoCustomer.getTop5Customers();
         Vector<Integer> accessByMonth = daoView.getAccessByMonth(year);
         Vector<Integer> ordersByMonth = daoOrders.NumberOrdersByMonth(year);
+        Vector<Orders> getNewOrders = daoOrders.getNewOrders();
         int yearNow = Year.now().getValue();
         
         
         request.setAttribute("yearNow", yearNow);
         request.setAttribute("year", year);
+        request.setAttribute("getNewOrders", getNewOrders);
         request.setAttribute("accessByMonth", accessByMonth);
         request.setAttribute("ordersByMonth", ordersByMonth);
         request.setAttribute("customerVjp", customerVjp);

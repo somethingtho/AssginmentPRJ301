@@ -83,6 +83,12 @@ public class Cart {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public String toString() {
+        return "Cart{" + "items=" + items + '}';
+    }
+    
     
     public static void main(String[] args) throws IOException {
         String txt = "1:1/32:1";
@@ -90,7 +96,7 @@ public class Cart {
         DAOProductInfo daoProductInfo = new DAOProductInfo();
         Vector<Products> list = daoProducts.getAllProducts();
         Cart cart = new Cart(txt,list);
-        
+        System.out.println(cart.getTotalMoney());
         
     }
 }

@@ -27,7 +27,7 @@
             response.setHeader("Pragma", "no-cache"); //HTTP 1.0
             response.setDateHeader("Expires", 0);
             //prevents caching at the proxy server
-        %>
+%>
         <c:set var="o" value="${requestScope.cart}"/>
         <header>
             <div class="logo">
@@ -184,9 +184,15 @@
                     <div class="header_orderdetail">
                         <h4 style="margin-left: 10px;">Giao trước: ${requestScope.order.requireDate}</h4>
                         <h4>Ngày giao: ${requestScope.order.shippedDate}</h4>
-                        <h4 style="margin-right: 10px;">Trạng thái: <c:if test="${requestScope.order.status}">Đã nhận hàng</c:if><c:if test="${!requestScope.order.status}">Đã huỷ</c:if></h4>
-                        </div>
-                        <div class="row body_orderdetail container-fluid">
+                        <h4 style="margin-right: 10px;">Trạng thái: 
+                            <c:choose>
+                                <c:when test="${requestScope.order.status == 1}">Đã giao hàng</c:when>
+                                <c:when test="${requestScope.order.status == 0}">Đã huỷ</c:when>
+                                <c:otherwise >Chờ xử lý</c:otherwise>
+                            </c:choose>
+                        </h4>
+                    </div>
+                    <div class="row body_orderdetail container-fluid">
                         <c:forEach items="${requestScope.order.orderDetails}" var="od">
                             <div class="row container">
                                 <div class="col-md-3">
@@ -195,7 +201,7 @@
                                             <p style= "margin-top: 20px;">${od.product.productName}</p>
                                         </div>
                                     </a></div>
-                                <div class="col-md-6">
+                                <div class="col-md-5">
                                     <table class="table table-striped" style="width: 450px;">
                                         <tbody>
                                             <tr>
@@ -229,7 +235,10 @@
                                     <p><fmt:formatNumber type="currency" value="${od.product.unitPrice*1.1}"/></p>
                                     <p><del><fmt:formatNumber type="currency" value="${od.product.unitPrice*1.2}"/></del></p>
                                     <p>Số lượng: ${od.quantity}</p>
+                                    <hr>
+                                    <p>Tổng tiền: <fmt:formatNumber type="currency" value="${od.quantity * od.product.unitPrice*1.1}"/></p>
                                 </div>
+
                             </div>
 
                             <hr style="margin-right: 0.5rem; height: 1px; background-color: black; color: black;">
@@ -248,7 +257,8 @@
                                             <td class="ti-check-box"> Số tiền đã thanh toán</td>
                                             <td>
                                                 <c:choose>
-                                                    <c:when test="${requestScope.order.status}"><fmt:formatNumber type="currency" value="${requestScope.totalMoney}"/></c:when>
+                                                    <c:when test="${requestScope.order.status == 1}"><fmt:formatNumber type="currency" value="${requestScope.totalMoney}"/></c:when>
+                                                    <c:when test="${requestScope.order.status == 3 && requestScope.order.payments}"><fmt:formatNumber type="currency" value="${requestScope.totalMoney}"/></c:when>
                                                     <c:otherwise>0đ</c:otherwise>
                                                 </c:choose>
                                             </td>
@@ -257,7 +267,7 @@
                                             <td class="ti-wallet"> Hình thức thanh toán</td>
                                             <td>
                                                 <c:choose>
-                                                    <c:when test="${requestScope.order.payments}">Thanh toán khi nhận hàng</c:when>
+                                                    <c:when test="${!requestScope.order.payments}">Thanh toán khi nhận hàng</c:when>
                                                     <c:otherwise>Thanh toán qua QR code</c:otherwise>
                                                 </c:choose>
                                             </td>

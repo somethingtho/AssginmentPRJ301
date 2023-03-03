@@ -266,7 +266,7 @@
                                 <input type="text" readonly value="${sessionScope.account.address}">
                             </div>
                             <div style="margin-top: 20px;"><a href="${pageContext.request.contextPath}/user/infomation" >Đổi thông tin</a></div>
-                            <form action="${pageContext.request.contextPath}/user/checkout" method="post">
+                            <form action="${pageContext.request.contextPath}/user/checkout" method="post" id="checkout">
                                 <h3><label for="shipper">Chọn đơn vị vận chuyển</label></h3>
                                 <select name="shippers" id="shipper">
                                     <c:forEach items="${requestScope.listShippers}" var="ship">
@@ -298,7 +298,7 @@
                                     <label for="payment1">Thanh toán khi nhận hàng</label><br>
                                     <input type="radio" name="payments" id="payment0" value="QR" required>
                                     <label for="payment0">Thanh toán qua QR code</label><br>
-                                    <button>Đặt hàng</button>
+                                    <button type="button" onclick="checkDateTime()" >Đặt hàng</button>
 
                                 </div>
                             </form>
@@ -372,6 +372,40 @@
 </body>
 
 <script>
+
+
+    const now = new Date();
+    const dateInput = document.getElementById("requiredDate");
+    const timeInput = document.getElementById("requiredTime");
+
+// Set default value for date input
+    let month = now.getMonth() + 1;
+    let day = now.getDate() +3;
+    const year = now.getFullYear();
+    if (month < 10) {
+        month = "0" + month;
+    }
+    if (day < 10) {
+        day = "0" + day;
+    }
+    const today = year + "-" + month + "-" + day;
+    dateInput.value = today;
+
+// Set default value for time input
+    let hour = now.getHours();
+    let minute = now.getMinutes();
+    if (hour < 10) {
+        hour = "0" + hour;
+    }
+    if (minute < 10) {
+        minute = "0" + minute;
+    }
+    const currentTime = hour + ":" + minute;
+    timeInput.value = currentTime;
+
+
+
+
     window.onscroll = function () {
         myFunction()
     };
@@ -387,9 +421,27 @@
         }
     }
 
-    window.onload = function () {
-        document.querySelector(".gearbox").style.display = "none";
-    };
+    function checkDateTime() {
+        const dateInput = document.getElementById("requiredDate");
+        const timeInput = document.getElementById("requiredTime");
+
+        const now = new Date();
+
+        const dateParts = dateInput.value.split('-');
+        const timeParts = timeInput.value.split(':');
+
+        const datetime = new Date(dateParts[0], dateParts[1] - 1, dateParts[2], timeParts[0], timeParts[1]);
+
+        if (datetime < now) {
+            alert("Chọn lại ngày giao hàng!");
+            return;
+        } else {
+            alert("Submitted ");
+            document.getElementById('checkout').submit()
+        }
+    }
+
+
 </script>
 </body>
 </html>

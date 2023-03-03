@@ -5,9 +5,8 @@
 
 package controller.admin;
 
-import entity.OrderDetails;
-import entity.Orders;
-import entity.Suppliers;
+import entity.Products;
+import entity.Review;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,14 +14,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.*;
-import model.DAOOrderDetails;
-import model.DAOOrders;
-import model.DAOSuppliers;
+import model.DAOProducts;
+import model.DAOReview;
+import model.DAOViews;
 /**
  *
  * @author ADMIN
  */
-public class OrderDetailsServlet extends HttpServlet {
+public class CommentsServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -39,10 +38,10 @@ public class OrderDetailsServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet OrderDetailsServlet</title>");  
+            out.println("<title>Servlet CommentsServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet OrderDetailsServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet CommentsServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,18 +58,13 @@ public class OrderDetailsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String oid_raw = request.getParameter("oid");
-        DAOOrders daoOrders = new DAOOrders();
-        DAOOrderDetails daoOrderDetails = new DAOOrderDetails();
-        try {
-            int oid = Integer.parseInt(oid_raw);
-            Orders order = daoOrders.getOrdersByOrderID(oid);
-            List<Suppliers> sup = daoOrderDetails.filterSuppliers(order.getOrderDetails());
-            request.setAttribute("sup", sup);
-            request.setAttribute("order", order);
-            request.getRequestDispatcher("orderdetail.jsp").forward(request, response);
-        } catch (Exception e) {
-        }
+        DAOProducts daoProducts = new DAOProducts();
+        DAOReview daoReview = new DAOReview();
+        Vector<Products> top5Review = daoProducts.getReviewsProductsByAdmin();
+        int totalReview = daoReview.TotalReview();
+        request.setAttribute("totalReview", totalReview);
+        request.setAttribute("top5Review", top5Review);
+        request.getRequestDispatcher("reviews.jsp").forward(request, response);
     } 
 
     /** 

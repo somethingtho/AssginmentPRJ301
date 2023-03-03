@@ -44,11 +44,11 @@ public class DAOCustomers extends DBContext {
      * 
      * @return A map of customers and their total money spent.
      */
-    public Map<Customers, Double> getTop5Customers() {
+    public Vector<Customers> getTop5Customers() {
         DAOOrders daoOrders = new DAOOrders();
         DAOAccounts daoAccounts = new DAOAccounts();
-        Map<Customers, Double> map = new HashMap<>();
-        String sql = "SELECT * FROM dbo.Customers";
+        Vector<Customers> vector = new Vector<>();
+        String sql = "SELECT TOP 5 Customers.*, Orders.TotalMoney FROM dbo.Customers INNER JOIN dbo.Orders ON Orders.CustomerID = Customers.CustomerID ORDER BY TotalMoney";
 
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -76,32 +76,19 @@ public class DAOCustomers extends DBContext {
                     String base64Image = Base64.getEncoder().encodeToString(imageBytes);
                     inputStream.close();
                     outputStream.close();
-                    double totalMoney = daoOrders.getTotalMoneyByCustomerID(customerID);
-
-                    map.put(new Customers(customerID, gender, customerName, phone, email, address, daoAccounts.getID(id), id, password, base64Image, totalMoney), totalMoney);
+                    double totalMoney = rs.getDouble("TotalMoney");
+                    vector.add(new Customers(customerID, gender, customerName, phone, email, address, daoAccounts.getID(id), id, password, base64Image, totalMoney));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }
-
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        List<Map.Entry<Customers, Double>> list = new Vector<>(map.entrySet());
+        
+        
+        return vector;
 
-        Collections.sort(list, new Comparator<Map.Entry<Customers, Double>>() {
-            public int compare(Map.Entry<Customers, Double> o1, Map.Entry<Customers, Double> o2) {
-                return -(int) (o1.getValue() - o2.getValue());
-            }
-        });
-
-        Map<Customers, Double> sortedMap = new LinkedHashMap<>();
-
-        for (Map.Entry<Customers, Double> entry : list) {
-            sortedMap.put(entry.getKey(), entry.getValue());
-        }
-
-        return sortedMap;
     }
 
     /**
