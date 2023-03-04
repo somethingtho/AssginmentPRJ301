@@ -25,7 +25,7 @@
         <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.25.0/dist/apexcharts.min.js"></script>
         <link href="dist/css/orders.css" rel="stylesheet" type="text/css"/>
     </head>
-    
+
     <body>
 
         <fmt:setLocale value = "vi_VN"/>
@@ -84,8 +84,8 @@
                             <li class="nav-item search-box">
                                 <a class="nav-link waves-effect waves-dark" href="javascript:void(0)"><i
                                         class="mdi mdi-magnify fs-4"></i></a>
-                                        <form class="app-search position-absolute" action="${pageContext.request.contextPath}/admin/searchorder" method="get">
-                                            <input type="text" name="orderID" class="form-control" placeholder="Search by OrderID &amp; enter" />
+                                <form class="app-search position-absolute" action="${pageContext.request.contextPath}/admin/searchorder" method="get">
+                                    <input type="text" name="orderID" class="form-control" placeholder="Search by OrderID &amp; enter" />
                                     <a class="srh-btn"><i class="mdi mdi-window-close"></i></a>
                                 </form>
                             </li>
@@ -154,6 +154,26 @@
                                 >
                             </li>
 
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/orders"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-tag"></i
+                                    ><span class="hide-menu">Orders</span></a
+                                >
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/comments"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-comment-processing"></i
+                                    ><span class="hide-menu">Reviews</span></a
+                                >
+                            </li>
 
 
                             <li class="sidebar-item">

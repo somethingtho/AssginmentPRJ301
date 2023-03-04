@@ -262,6 +262,26 @@
 
                             <li class="sidebar-item">
                                 <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/orders"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-tag"></i
+                                    ><span class="hide-menu">Orders</span></a
+                                >
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/comments"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-comment-processing"></i
+                                    ><span class="hide-menu">Reviews</span></a
+                                >
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a
                                     class="sidebar-link has-arrow waves-effect waves-dark"
                                     href="javascript:void(0)"
                                     aria-expanded="false"
@@ -543,13 +563,13 @@
                     return form.valid();
                 },
                 onFinished: function (event, currentIndex) {
-                    
+
                     var oldPassword = document.getElementById('oldPassword');
                     var newPassword = document.getElementById('newPassword');
                     if (oldPassword !== newPassword) {
                         alert("Mật khẩu mới và Mật khẩu xác nhận phải giống nhau!");
                         return;
-                    }else {
+                    } else {
                         alert("Submited");
                         document.getElementById('example-form').submit();
                     }

@@ -14,7 +14,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <!-- Tell the browser to be responsive to screen width -->
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        
+
         <meta name="robots" content="noindex,nofollow" />
         <title>Add new Categories</title>
         <!-- Favicon icon -->
@@ -243,7 +243,7 @@
                                     ><span class="hide-menu">Thống kê</span></a
                                 >
                             </li>
-                            
+
                             <li class="sidebar-item">
                                 <a
                                     class="sidebar-link waves-effect waves-dark sidebar-link"
@@ -251,6 +251,26 @@
                                     aria-expanded="false"
                                     ><i class="mdi mdi-help-circle"></i
                                     ><span class="hide-menu">Feedbacks</span></a
+                                >
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/orders"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-tag"></i
+                                    ><span class="hide-menu">Orders</span></a
+                                >
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/comments"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-comment-processing"></i
+                                    ><span class="hide-menu">Reviews</span></a
                                 >
                             </li>
 
@@ -349,7 +369,7 @@
                                     ><span class="hide-menu">Xác thực</span></a
                                 >
                                 <ul aria-expanded="false" class="collapse first-level">
-                                    
+
 
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/changepass.jsp" class="sidebar-link"
@@ -364,8 +384,8 @@
                                             ><span class="hide-menu"> Hồ sơ </span></a
                                         >
                                     </li>
-                                    
-                                    
+
+
                                 </ul>
                             </li>
                         </ul>
@@ -401,163 +421,163 @@
                         </div>
                     </div>
                 </div>
-                    <!-- ============================================================== -->
-                    <!-- Start Page Content -->
-                    <!-- ============================================================== -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <form action="addcategory" method="post">
-                                    <div class="card-body">
-                                        <h2>${requestScope.message}</h2>
-                                        <div class="form-group row">
-                                            <table class="table">
-                                                <thead>
+                <!-- ============================================================== -->
+                <!-- Start Page Content -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <form action="addcategory" method="post">
+                                <div class="card-body">
+                                    <h2>${requestScope.message}</h2>
+                                    <div class="form-group row">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Tên loại sản phẩm</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach items="${requestScope.listAllCate}" var="c">
                                                     <tr>
-                                                        <th scope="col">#</th>
-                                                        <th scope="col">Tên loại sản phẩm</th>
+                                                        <th scope="row">${c.categoryID}</th>
+                                                        <td>${c.categoryName}</td>
                                                     </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <c:forEach items="${requestScope.listAllCate}" var="c">
-                                                        <tr>
-                                                            <th scope="row">${c.categoryID}</th>
-                                                            <td>${c.categoryName}</td>
-                                                        </tr>
-                                                    </c:forEach>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
 
 
-                                        <div class="form-group row">
-                                            <p style="color: red;">Vui lòng không nhập những tên sản phẩm đã có ở bảng trên!</p>
-                                            <label
-                                                for="catename"
-                                                class="col-md-3 ">Tên loại</label>
-                                            <div class="col-md-9">
-                                                <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    id="catename"
-                                                    placeholder="Input"
-                                                    name="catename"
-                                                    />
-                                            </div>
+                                    <div class="form-group row">
+                                        <p style="color: red;">Vui lòng không nhập những tên sản phẩm đã có ở bảng trên!</p>
+                                        <label
+                                            for="catename"
+                                            class="col-md-3 ">Tên loại</label>
+                                        <div class="col-md-9">
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                id="catename"
+                                                placeholder="Input"
+                                                name="catename"
+                                                />
                                         </div>
                                     </div>
-                                    <div class="border-top">
-                                        <div class="card-body">
-                                            <button type="submit" class="btn btn-primary">
-                                                Submit
-                                            </button>
-                                        </div>
+                                </div>
+                                <div class="border-top">
+                                    <div class="card-body">
+                                        <button type="submit" class="btn btn-primary">
+                                            Submit
+                                        </button>
                                     </div>
-                                </form>
-                            </div>
-
+                                </div>
+                            </form>
                         </div>
+
                     </div>
                 </div>
-                <!-- ============================================================== -->
-                <!-- End PAge Content -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- Right sidebar -->
-                <!-- ============================================================== -->
-                <!-- .right-sidebar -->
-                <!-- ============================================================== -->
-                <!-- End Right sidebar -->
-                <!-- ============================================================== -->
             </div>
             <!-- ============================================================== -->
-            <!-- End Container fluid  -->
+            <!-- End PAge Content -->
             <!-- ============================================================== -->
             <!-- ============================================================== -->
-            <!-- footer -->
+            <!-- Right sidebar -->
             <!-- ============================================================== -->
-            <footer class="footer text-center">
-               
-            </footer>
+            <!-- .right-sidebar -->
             <!-- ============================================================== -->
-            <!-- End footer -->
+            <!-- End Right sidebar -->
             <!-- ============================================================== -->
         </div>
         <!-- ============================================================== -->
-        <!-- End Page wrapper  -->
+        <!-- End Container fluid  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <footer class="footer text-center">
+
+        </footer>
+        <!-- ============================================================== -->
+        <!-- End footer -->
         <!-- ============================================================== -->
     </div>
     <!-- ============================================================== -->
-    <!-- End Wrapper -->
+    <!-- End Page wrapper  -->
     <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- All Jquery -->
-    <!-- ============================================================== -->
-    <script src="assets/libs/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap tether Core JavaScript -->
-    <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- slimscrollbar scrollbar JavaScript -->
-    <script src="assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
-    <script src="assets/extra-libs/sparkline/sparkline.js"></script>
-    <!--Wave Effects -->
-    <script src="dist/js/waves.js"></script>
-    <!--Menu sidebar -->
-    <script src="dist/js/sidebarmenu.js"></script>
-    <!--Custom JavaScript -->
-    <script src="dist/js/custom.min.js"></script>
-    <!-- This Page JS -->
-    <script src="assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
-    <script src="dist/js/pages/mask/mask.init.js"></script>
-    <script src="assets/libs/select2/dist/js/select2.full.min.js"></script>
-    <script src="assets/libs/select2/dist/js/select2.min.js"></script>
-    <script src="assets/libs/jquery-asColor/dist/jquery-asColor.min.js"></script>
-    <script src="assets/libs/jquery-asGradient/dist/jquery-asGradient.js"></script>
-    <script src="assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js"></script>
-    <script src="assets/libs/jquery-minicolors/jquery.minicolors.min.js"></script>
-    <script src="assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-    <script src="assets/libs/quill/dist/quill.min.js"></script>
-    <script>
-        //***********************************//
-        // For select 2
-        //***********************************//
-        $(".select2").select2();
+</div>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- All Jquery -->
+<!-- ============================================================== -->
+<script src="assets/libs/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap tether Core JavaScript -->
+<script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<!-- slimscrollbar scrollbar JavaScript -->
+<script src="assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+<script src="assets/extra-libs/sparkline/sparkline.js"></script>
+<!--Wave Effects -->
+<script src="dist/js/waves.js"></script>
+<!--Menu sidebar -->
+<script src="dist/js/sidebarmenu.js"></script>
+<!--Custom JavaScript -->
+<script src="dist/js/custom.min.js"></script>
+<!-- This Page JS -->
+<script src="assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
+<script src="dist/js/pages/mask/mask.init.js"></script>
+<script src="assets/libs/select2/dist/js/select2.full.min.js"></script>
+<script src="assets/libs/select2/dist/js/select2.min.js"></script>
+<script src="assets/libs/jquery-asColor/dist/jquery-asColor.min.js"></script>
+<script src="assets/libs/jquery-asGradient/dist/jquery-asGradient.js"></script>
+<script src="assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js"></script>
+<script src="assets/libs/jquery-minicolors/jquery.minicolors.min.js"></script>
+<script src="assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script src="assets/libs/quill/dist/quill.min.js"></script>
+<script>
+    //***********************************//
+    // For select 2
+    //***********************************//
+    $(".select2").select2();
 
-        /*colorpicker*/
-        $(".demo").each(function () {
-            //
-            // Dear reader, it's actually very easy to initialize MiniColors. For example:
-            //
-            //  $(selector).minicolors();
-            //
-            // The way I've done it below is just for the demo, so don't get confused
-            // by it. Also, data- attributes aren't supported at this time...they're
-            // only used for this demo.
-            //
-            $(this).minicolors({
-                control: $(this).attr("data-control") || "hue",
-                position: $(this).attr("data-position") || "bottom left",
+    /*colorpicker*/
+    $(".demo").each(function () {
+        //
+        // Dear reader, it's actually very easy to initialize MiniColors. For example:
+        //
+        //  $(selector).minicolors();
+        //
+        // The way I've done it below is just for the demo, so don't get confused
+        // by it. Also, data- attributes aren't supported at this time...they're
+        // only used for this demo.
+        //
+        $(this).minicolors({
+            control: $(this).attr("data-control") || "hue",
+            position: $(this).attr("data-position") || "bottom left",
 
-                change: function (value, opacity) {
-                    if (!value)
-                        return;
-                    if (opacity)
-                        value += ", " + opacity;
-                    if (typeof console === "object") {
-                        console.log(value);
-                    }
-                },
-                theme: "bootstrap",
-            });
+            change: function (value, opacity) {
+                if (!value)
+                    return;
+                if (opacity)
+                    value += ", " + opacity;
+                if (typeof console === "object") {
+                    console.log(value);
+                }
+            },
+            theme: "bootstrap",
         });
-        /*datwpicker*/
-        jQuery(".mydatepicker").datepicker();
-        jQuery("#datepicker-autoclose").datepicker({
-            autoclose: true,
-            todayHighlight: true,
-        });
-        var quill = new Quill("#editor", {
-            theme: "snow",
-        });
-    </script>
+    });
+    /*datwpicker*/
+    jQuery(".mydatepicker").datepicker();
+    jQuery("#datepicker-autoclose").datepicker({
+        autoclose: true,
+        todayHighlight: true,
+    });
+    var quill = new Quill("#editor", {
+        theme: "snow",
+    });
+</script>
 </body>
 </html>

@@ -155,6 +155,26 @@
                             </li>
 
 
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/orders"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-tag"></i
+                                    ><span class="hide-menu">Orders</span></a
+                                >
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/comments"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-comment-processing"></i
+                                    ><span class="hide-menu">Reviews</span></a
+                                >
+                            </li>
+
 
                             <li class="sidebar-item">
                                 <a
@@ -386,51 +406,51 @@
             <script src="assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
             <script src="dist/js/pages/chart/chart-page-init.js"></script>
             <script>
-                                                                function updateOrder(id, type, cid) {
-                                                                    if (confirm("Are you sure you want " + type + " order " + "have OrderID = " + id + "?")) {
-                                                                        window.location.href = "${pageContext.request.contextPath}/admin/updateorder?oid=" + id + "&type=" + type;
+                                                                    function updateOrder(id, type, cid) {
+                                                                        if (confirm("Are you sure you want " + type + " order " + "have OrderID = " + id + "?")) {
+                                                                            window.location.href = "${pageContext.request.contextPath}/admin/updateorder?oid=" + id + "&type=" + type;
+                                                                        }
                                                                     }
-                                                                }
 
-                                                                function loadMoreNewOrders() {
-                                                                    var amount = document.getElementsByClassName('orders').length;
+                                                                    function loadMoreNewOrders() {
+                                                                        var amount = document.getElementsByClassName('orders').length;
 
-                                                                    $.ajax({
-                                                                        url: "${pageContext.request.contextPath}/admin/loadmoreneworders",
-                                                                        type: "get",
-                                                                        data: {
-                                                                            total: amount
-                                                                        },
+                                                                        $.ajax({
+                                                                            url: "${pageContext.request.contextPath}/admin/loadmoreneworders",
+                                                                            type: "get",
+                                                                            data: {
+                                                                                total: amount
+                                                                            },
 
-                                                                        success: function (data) {
-                                                                            var row = document.getElementById('content');
-                                                                            row.innerHTML += data;
-                                                                        },
-                                                                        error: function (xhr) {
-                                                                            //Do Something to handle error
-                                                                        }
-                                                                    });
-                                                                }
+                                                                            success: function (data) {
+                                                                                var row = document.getElementById('content');
+                                                                                row.innerHTML += data;
+                                                                            },
+                                                                            error: function (xhr) {
+                                                                                //Do Something to handle error
+                                                                            }
+                                                                        });
+                                                                    }
 
-                                                                function loadMoreOrders() {
-                                                                    var amount = document.getElementsByClassName('ordersProcess').length;
+                                                                    function loadMoreOrders() {
+                                                                        var amount = document.getElementsByClassName('ordersProcess').length;
 
-                                                                    $.ajax({
-                                                                        url: "${pageContext.request.contextPath}/admin/loadmoreorders",
-                                                                        type: "get",
-                                                                        data: {
-                                                                            total: amount
-                                                                        },
+                                                                        $.ajax({
+                                                                            url: "${pageContext.request.contextPath}/admin/loadmoreorders",
+                                                                            type: "get",
+                                                                            data: {
+                                                                                total: amount
+                                                                            },
 
-                                                                        success: function (data) {
-                                                                            var row = document.getElementById('contentOrders');
-                                                                            row.innerHTML += data;
-                                                                        },
-                                                                        error: function (xhr) {
-                                                                            //Do Something to handle error
-                                                                        }
-                                                                    });
-                                                                }
+                                                                            success: function (data) {
+                                                                                var row = document.getElementById('contentOrders');
+                                                                                row.innerHTML += data;
+                                                                            },
+                                                                            error: function (xhr) {
+                                                                                //Do Something to handle error
+                                                                            }
+                                                                        });
+                                                                    }
             </script>
     </body>
 </html>

@@ -244,8 +244,8 @@
                                     ><span class="hide-menu">Thống kê</span></a
                                 >
                             </li>
-                            
-                            
+
+
                             <li class="sidebar-item">
                                 <a
                                     class="sidebar-link waves-effect waves-dark sidebar-link"
@@ -253,6 +253,26 @@
                                     aria-expanded="false"
                                     ><i class="mdi mdi-help-circle"></i
                                     ><span class="hide-menu">Feedbacks</span></a
+                                >
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/orders"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-tag"></i
+                                    ><span class="hide-menu">Orders</span></a
+                                >
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/comments"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-comment-processing"></i
+                                    ><span class="hide-menu">Reviews</span></a
                                 >
                             </li>
 
@@ -440,9 +460,9 @@
                                                 >
                                                 <option>Select</option>
                                                 <optgroup label="Danh mục">
-                                                <c:forEach items="${requestScope.listAllCate}" var="c">
-                                                    <option value="${c.categoryID}">${c.categoryName}</option>
-                                                </c:forEach>
+                                                    <c:forEach items="${requestScope.listAllCate}" var="c">
+                                                        <option value="${c.categoryID}">${c.categoryName}</option>
+                                                    </c:forEach>
                                                 </optgroup>
                                             </select>
                                         </div>

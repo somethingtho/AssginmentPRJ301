@@ -242,8 +242,8 @@
                                     ><span class="hide-menu">Thống kê</span></a
                                 >
                             </li>
-                            
-                            
+
+
                             <li class="sidebar-item">
                                 <a
                                     class="sidebar-link waves-effect waves-dark sidebar-link"
@@ -251,6 +251,26 @@
                                     aria-expanded="false"
                                     ><i class="mdi mdi-help-circle"></i
                                     ><span class="hide-menu">Feedbacks</span></a
+                                >
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/orders"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-tag"></i
+                                    ><span class="hide-menu">Orders</span></a
+                                >
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/comments"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-comment-processing"></i
+                                    ><span class="hide-menu">Reviews</span></a
                                 >
                             </li>
 
@@ -434,7 +454,7 @@
                                                             <td>${sup.phone}</td>
                                                             <td><a href="${sup.homePage}">${sup.companyName}</a></td>
                                                             <td><c:if test="${sup.status}">Hoạt động</c:if><c:if test="${!sup.status}">Ngưng hoạt động</c:if></td>
-                                                        </tr>
+                                                            </tr>
                                                     </c:forEach>
 
                                                 </tbody>
@@ -520,21 +540,21 @@
                                                         value="ON"
                                                         required
                                                         <c:if test="${requestScope.supplier.status}">checked</c:if>
-                                                        />
-                                                    <label
-                                                        class="form-check-label mb-0"
-                                                        for="customControlValidation1"
-                                                        >Hoạt động</label
-                                                    >
-                                                </div>
-                                                <div class="form-check">
-                                                    <input
-                                                        type="radio"
-                                                        class="form-check-input"
-                                                        id="customControlValidation2"
-                                                        name="status"
-                                                        value="OFF"
-                                                        required
+                                                            />
+                                                        <label
+                                                            class="form-check-label mb-0"
+                                                            for="customControlValidation1"
+                                                            >Hoạt động</label
+                                                        >
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input
+                                                            type="radio"
+                                                            class="form-check-input"
+                                                            id="customControlValidation2"
+                                                            name="status"
+                                                            value="OFF"
+                                                            required
                                                         <c:if test="${!requestScope.supplier.status}">checked</c:if>
                                                         />
                                                     <label

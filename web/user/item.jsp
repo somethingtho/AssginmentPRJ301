@@ -26,8 +26,7 @@
         response.setHeader("Pragma", "no-cache"); //HTTP 1.0
         response.setDateHeader("Expires", 0);
 //prevents caching at the proxy server
-%>
-
+    %>
 
 
 
@@ -249,7 +248,7 @@
                 <p>Loại sản phẩm: ${cate.categoryName}</p>
                 <p>${pro.productName}</p>
                 <hr>
-                <form name="f" action="" method="post">
+                <form name="f" action="" method="post" class="form_buy">
                     <div style="margin: 20px 0;">
                         <label for="num">Nhập số lượng:</label>
                         <input id="num" style="text-align: center; padding: 4px; margin-left: 1rem" value="1" name="num" type="number" placeholder="Input" min="1" max="${pro.unitsInStock}"/>
@@ -413,7 +412,7 @@
         <h3>Sản phẩm tương tự</h3>
         <div class="row">
             <c:forEach items="${requestScope.getAllProductsSame}" var="same">
-                <a href="${pageContext.request.contextPath}/user/item?pid=${same.productID}" class="col-md-3">
+                <a href="${pageContext.request.contextPath}/user/item?pid=${same.productID}" class="col-sm-3">
                     <div class="pro-img">
                         <img src="data:image/jpg;base64,${same.base64Image}"/>
                     </div>
@@ -432,7 +431,7 @@
 
 <footer class="container-fluid">
     <div class="row">
-        <div class="col-md-4 row">
+        <div class="col-sm-4 row">
             <h3 class="text-center">Liên hệ với chúng tôi</h3>
             <div class="col-sm-3 img_mxh"><a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer"><img class="img-responsive" src="${pageContext.request.contextPath}/images/facebook.jpg"
                                                                                                                             alt=""></a></div>
@@ -468,7 +467,7 @@
     </div>
     <hr style="margin-right: 20px; height: 1px; background-color: black; color: black;">
     <div class="row payment">
-        <div class="col-md-6">
+        <div class="col-sm-6">
             <h3 class="text-center">CÁCH THỨC THANH TOÁN</h3>
             <img class="img-responsive col-sm-2" src="${pageContext.request.contextPath}/images/visa.png">
             <img class="img-responsive col-sm-2" src="${pageContext.request.contextPath}/images/mastercard.png">
@@ -477,7 +476,7 @@
             <img class="img-responsive col-sm-2" src="${pageContext.request.contextPath}/images/napas.png">
         </div>
 
-        <div class="col-md-6">
+        <div class="col-sm-6">
             <h3 class="text-center">DỊCH VỤ GIAO HÀNG</h3>
             <img src="${pageContext.request.contextPath}/images/ahamove.png">
             <img src="${pageContext.request.contextPath}/images/bestex.png">

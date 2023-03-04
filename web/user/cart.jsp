@@ -312,19 +312,19 @@
     <hr style="height: 1px; background-color: black; color: black; margin-bottom: 0;">
     <footer class="container-fluid">
         <div class="row">
-            <div class="col-md-4 row">
+            <div class="col-sm-4 row">
                 <h3 class="text-center">Liên hệ với chúng tôi</h3>
-                <div class="col-md-3 img_mxh"><a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer"><img class="img-responsive" src="${pageContext.request.contextPath}/images/facebook.jpg"
+                <div class="col-sm-3 img_mxh"><a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer"><img class="img-responsive" src="${pageContext.request.contextPath}/images/facebook.jpg"
                                                                                                                                 alt=""></a></div>
-                <div class="col-md-3 img_mxh"><a href="https://www.skype.com/en/" target="_blank" rel="noopener noreferrer"><img class="img-responsive" src="${pageContext.request.contextPath}/images/skype.png"
+                <div class="col-sm-3 img_mxh"><a href="https://www.skype.com/en/" target="_blank" rel="noopener noreferrer"><img class="img-responsive" src="${pageContext.request.contextPath}/images/skype.png"
                                                                                                                                  alt=""></a></div>
-                <div class="col-md-3 img_mxh"><a href="https://twitter.com/?lang=vi" target="_blank" rel="noopener noreferrer"><img class="img-responsive" src="${pageContext.request.contextPath}/images/twitter.png"
+                <div class="col-sm-3 img_mxh"><a href="https://twitter.com/?lang=vi" target="_blank" rel="noopener noreferrer"><img class="img-responsive" src="${pageContext.request.contextPath}/images/twitter.png"
                                                                                                                                     alt=""></a></div>
-                <div class="col-md-3 img_mxh"><a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"><img class="img-responsive" src="${pageContext.request.contextPath}/images/insta.jpg"
+                <div class="col-sm-3 img_mxh"><a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"><img class="img-responsive" src="${pageContext.request.contextPath}/images/insta.jpg"
                                                                                                                                   alt=""></a></div>
 
             </div>
-            <div class="col-md-4 website_help center-block">
+            <div class="col-sm-4 website_help center-block">
                 <h3>Website</h3>
                 <p><a href="">Bán hàng cùng chúng tôi</a></p>
                 <p><a href="">Tuyển dụng</a></p>
@@ -334,7 +334,7 @@
                 <p><a target="_blank" rel="noopener noreferrer" href="help.jsp">Trợ giúp <i class="ti-help"></i></a></p>
             </div>
 
-            <div class="col-md-4 row">
+            <div class="col-sm-4 row">
                 <h3 style="color: rgb(233, 152, 3);">Go where your heart beats</h3>
                 <h4>Tải ứng dụng <i class="ti-arrow-down"></i></h4>
                 <div class="row app_icon">
@@ -348,16 +348,16 @@
         </div>
         <hr style=" height: 1px; background-color: black; color: black;">
         <div class="row payment">
-            <div class="col-md-6">
+            <div class="col-sm-6">
                 <h3 class="text-center">CÁCH THỨC THANH TOÁN</h3>
-                <img class="img-responsive col-md-2" src="${pageContext.request.contextPath}/images/visa.png">
-                <img class="img-responsive col-md-2" src="${pageContext.request.contextPath}/images/mastercard.png">
-                <img class="img-responsive col-md-2" src="${pageContext.request.contextPath}/images/jbc.jpg">
-                <img class="img-responsive col-md-2" src="${pageContext.request.contextPath}/images/cashonde.png">
-                <img class="img-responsive col-md-2" src="${pageContext.request.contextPath}/images/napas.png">
+                <img class="img-responsive col-sm-2" src="${pageContext.request.contextPath}/images/visa.png">
+                <img class="img-responsive col-sm-2" src="${pageContext.request.contextPath}/images/mastercard.png">
+                <img class="img-responsive col-sm-2" src="${pageContext.request.contextPath}/images/jbc.jpg">
+                <img class="img-responsive col-sm-2" src="${pageContext.request.contextPath}/images/cashonde.png">
+                <img class="img-responsive col-sm-2" src="${pageContext.request.contextPath}/images/napas.png">
             </div>
 
-            <div class="col-md-6">
+            <div class="col-sm-6">
                 <h3 class="text-center">DỊCH VỤ GIAO HÀNG</h3>
                 <img src="${pageContext.request.contextPath}/images/ahamove.png">
                 <img src="${pageContext.request.contextPath}/images/bestex.png">

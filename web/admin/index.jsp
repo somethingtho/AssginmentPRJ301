@@ -153,6 +153,26 @@
                             </li>
 
 
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/orders"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-tag"></i
+                                    ><span class="hide-menu">Orders</span></a
+                                >
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/comments"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-comment-processing"></i
+                                    ><span class="hide-menu">Reviews</span></a
+                                >
+                            </li>
+
 
                             <li class="sidebar-item">
                                 <a
@@ -689,14 +709,14 @@
 
 
 
-                                                                
-                                                                
-                                                                function updateOrder(id, type, cid){
-                                                                    if (confirm("Are you sure you want " + type + " order " +"have OrderID = " + id +"?")){
-                                                                        window.location.href = "${pageContext.request.contextPath}/admin/updateorder?oid="+id+"&type="+type;
+
+
+                                                                function updateOrder(id, type, cid) {
+                                                                    if (confirm("Are you sure you want " + type + " order " + "have OrderID = " + id + "?")) {
+                                                                        window.location.href = "${pageContext.request.contextPath}/admin/updateorder?oid=" + id + "&type=" + type;
                                                                     }
                                                                 }
-                                                                
+
 
             </script>
     </body>

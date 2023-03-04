@@ -27,9 +27,9 @@
         <!-- Custom CSS -->
         <link href="assets/libs/flot/css/float-chart.css" rel="stylesheet" />
         <link href="dist/css/style.min.css" rel="stylesheet" />
-        
+
         <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />-->
-        
+
         <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.28.2/dist/apexcharts.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.25.0/dist/apexcharts.min.js"></script>
@@ -259,6 +259,27 @@
                                     aria-expanded="false"
                                     ><i class="mdi mdi-help-circle"></i
                                     ><span class="hide-menu">Feedbacks</span></a
+                                >
+                            </li>
+
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/orders"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-tag"></i
+                                    ><span class="hide-menu">Orders</span></a
+                                >
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/comments"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-comment-processing"></i
+                                    ><span class="hide-menu">Reviews</span></a
                                 >
                             </li>
 
@@ -605,7 +626,7 @@
             <script src="assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
             <script src="assets/libs/chart/turning-series.js"></script>
             <script src="dist/js/pages/chart/chart-page-init.js"></script>
-            
+
             <script>
                                             var now = new Date();
                                             var offset = +7 * 60; // offset in minutes
@@ -827,8 +848,8 @@
                                             dataa.push("${fn:escapeXml(item.companyName)}");
                                             datab.push(${item.number});
             </c:forEach>
-                console.log(dataa);
-                console.log(datab);
+                                            console.log(dataa);
+                                            console.log(datab);
 
                                             var options = {
                                                 chart: {

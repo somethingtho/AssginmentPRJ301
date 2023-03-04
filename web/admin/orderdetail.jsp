@@ -266,6 +266,26 @@
                                 >
                             </li>
 
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/orders"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-tag"></i
+                                    ><span class="hide-menu">Orders</span></a
+                                >
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/comments"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-comment-processing"></i
+                                    ><span class="hide-menu">Reviews</span></a
+                                >
+                            </li>
+
 
                             <li class="sidebar-item">
                                 <a
@@ -434,18 +454,18 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <c:forEach items="${requestScope.sup}" var="supplier">
-                                        <div class="pull-left">
-                                            <address>
-                                                <h3>
-                                                    &nbsp;<b class="text-danger">${supplier.companyName}</b>
-                                                </h3>
-                                                <p class="text-muted ms-1">
-                                                    Phone:  <i class="mdi mdi-phone"></i> ${supplier.phone}<br>
-                                                    Email: <i class="mdi mdi-email"></i>  ${supplier.email}<br>
-                                                    HomePage: <i class="mdi mdi-web"></i>  <a href="${supplier.homePage}" target="_blank">${supplier.companyName}</a><br>
-                                                </p>
-                                            </address>
-                                        </div>
+                                            <div class="pull-left">
+                                                <address>
+                                                    <h3>
+                                                        &nbsp;<b class="text-danger">${supplier.companyName}</b>
+                                                    </h3>
+                                                    <p class="text-muted ms-1">
+                                                        Phone:  <i class="mdi mdi-phone"></i> ${supplier.phone}<br>
+                                                        Email: <i class="mdi mdi-email"></i>  ${supplier.email}<br>
+                                                        HomePage: <i class="mdi mdi-web"></i>  <a href="${supplier.homePage}" target="_blank">${supplier.companyName}</a><br>
+                                                    </p>
+                                                </address>
+                                            </div>
                                         </c:forEach>
                                         <div class="pull-right text-end">
                                             <address>
@@ -528,16 +548,16 @@
                                             </button>
 
                                             <c:if test="${requestScope.order.status == 3}">
-                                                
+
                                                 <button class="btn btn-outline-danger text-black-50 col-md-3">
                                                     Reject
                                                 </button>
-                                                
+
                                                 <button class="btn btn-success text-white col-md-3">
                                                     Accept
                                                 </button>
-                                                
-                                                
+
+
                                             </c:if>
 
                                         </div>
@@ -586,19 +606,19 @@
             <script src="assets/extra-libs/multicheck/jquery.multicheck.js"></script>
             <script src="assets/extra-libs/DataTables/datatables.min.js"></script>
             <script>
-                                                    /****************************************
-                                                     *       Basic Table                   *
-                                                     ****************************************/
-                                                    $("#zero_config").DataTable();
+                /****************************************
+                 *       Basic Table                   *
+                 ****************************************/
+                $("#zero_config").DataTable();
 
-                                                    function handleClick(lock) {
-                                                        let txt;
-                                                        if (lock.value === 'ON')
-                                                            txt = " khoá ";
-                                                        else
-                                                            txt = " mở khoá ";
-                                                        alert("Bạn đang" + txt + "tài khoản này!");
-                                                    }
+                function handleClick(lock) {
+                    let txt;
+                    if (lock.value === 'ON')
+                        txt = " khoá ";
+                    else
+                        txt = " mở khoá ";
+                    alert("Bạn đang" + txt + "tài khoản này!");
+                }
             </script>
     </body>
 </html>

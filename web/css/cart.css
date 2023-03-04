@@ -561,3 +561,47 @@ footer{
 .gear-inner .bar:nth-child(6) {
   transform: rotate(150deg);
 }
+
+
+
+
+
+
+
+@media(max-width: 1023px){
+    .btn_search{
+        display: flex;
+    }
+    .btn_search button{
+        max-width: 80%;
+    }
+    .flashsale,
+    .phanloai,
+    .card,
+    .range-slider,
+    input[type=range] {
+        width: 100%;
+    }
+    .btn_filter{
+        margin: 30px 0 0 0;
+        background-color: orange;
+        border: none;
+        color: white;
+        height: 30px;
+        width: 100%;
+    }
+    #orderby{
+        width: 90%;
+    }
+    #categories{
+        width: 100%;
+    }
+    .ti-layout-grid3,
+    .panel-title a{
+        font-size: 28px;
+    }
+
+    #categories i:last-child{
+        float: right;
+    }
+}

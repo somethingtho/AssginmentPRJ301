@@ -19,6 +19,7 @@
         <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/admin/assets/images/logo.png"/>
         <title>Thông tin của tôi</title>
     </head>
+
     <body>
 
         <fmt:setLocale value = "vi_VN"/>
@@ -183,62 +184,63 @@
                 <h1>Hello ${sessionScope.account.customerName}! Hồ sơ của tôi</h1>
                 <hr style="margin-right: 20px; height: 1px; background-color: black; color: black;">
                 <h3>${requestScope.message}</h3>
+                <div class="coi-md-5 img_user">
+                    <img style="width: 150px;" src="data:image/jpg;base64,${sessionScope.account.base64Image}"/>
+                    <div style="display: flex; width: 184px; flex-direction: column;">
+                        <div class="form_update-img" style="margin: 10px 20px 0 0;">
+                            <input type="file" name="photo"/>
+                        </div>
+                    </div>
+                </div>
                 <form method="post" action="${pageContext.request.contextPath}/user/information" enctype="multipart/form-data">
                     <div class="row col-md-9 right_form">
                         <h3 style="color: red">${requestScope.error}</h3>
                         <div class="row form_info">
                             <div class="col-md-3">
-                                <label style="font-size: 16px;" for="username">Tên đăng nhập</label>
+                                <label  for="username">Tên đăng nhập</label>
                             </div>
                             <div class="col-md-6"><input class="input_form" type="text" readonly id="username" value="${sessionScope.account.acc.userName}"></div>
                         </div>
 
                         <div class="row form_info">
                             <div class="col-md-3">
-                                <label sty  le="font-size: 16px;" for="email">Email</label>
+                                <label  for="email">Email</label>
                             </div>
                             <div class="col-md-6"><input class="input_form" type="text"  name="email" value="${sessionScope.account.email}" id="email"></div>
                         </div>
 
                         <div class="row form_info">
                             <div class="col-md-3">
-                                <label style="font-size: 16px;" for="customerName">Họ và tên</label>
+                                <label for="customerName">Họ và tên</label>
                             </div>
                             <div class="col-md-6"><input class="input_form" type="text" value="${sessionScope.account.customerName}" name="customerName" id="customerName"></div>
                         </div>
 
                         <div class="row form_info">
                             <div class="col-md-3">
-                                <label style="font-size: 16px;" for="phone">Số điện thoại</label>
+                                <label  for="phone">Số điện thoại</label>
                             </div>
                             <div class="col-md-6"><input class="input_form" value="${sessionScope.account.phone}" type="text" name="phone" id="phone"></div>
                         </div>
 
                         <div class="row form_info">
                             <div class="col-md-3">
-                                <label style="font-size: 16px;" for="address">Địa chỉ</label>
+                                <label  for="address">Địa chỉ</label>
                             </div>
                             <div class="col-md-6"><input class="input_form" type="text" name="address" value="${sessionScope.account.address}" id="address"></div>
                         </div>
 
                         <div class="row form_info">
-                            <span for="gender" class="col-md-3" style="font-size: 16px; font-weight: bold;">Giới tính</span> &nbsp;&nbsp;
+                            <label for="gender" class="col-md-3" >Giới tính</label> &nbsp;&nbsp;
 
                             <input  type="radio" id="gender1" name="gender" value="male" <c:if test="${sessionScope.account.gender}">checked</c:if>><label for="gender1">Nam</label>&nbsp;&nbsp;&nbsp;
                             <input  type="radio" name="gender" id="gender2" value="female" <c:if test="${!sessionScope.account.gender}">checked</c:if>><label for="gender2">Nữ</label>
-                            </div>
-                            <div style="display: flex; justify-content: center; justify-items: center;">
-                                <button class="btn_save"  style="color: white;">Lưu</button>
-                            </div>
                         </div>
-                        <div class="coi-md-3">
-                            <img style="width: 150px;" src="data:image/jpg;base64,${sessionScope.account.base64Image}"/>
-                        <div style="display: flex; width: 154px; flex-direction: column;">
-                            <div class="form_update-img" style="margin: 10px 0;">
-                                <input type="file" name="photo"/>
-                            </div>
+                        <div style="display: flex; justify-content: center; justify-items: center;">
+                            <button class="btn_save"  style="color: white;">Lưu</button>
                         </div>
                     </div>
+
                 </form>  
             </div>
         </div>

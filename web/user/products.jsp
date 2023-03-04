@@ -28,7 +28,7 @@
                 response.setHeader("Pragma", "no-cache"); //HTTP 1.0
                 response.setDateHeader("Expires", 0);
                 //prevents caching at the proxy server
-            %>
+%>
             <c:set var="o" value="${requestScope.cart}"/>
         <header>
             <div class="logo">
@@ -36,10 +36,10 @@
             </div>
             <div class="search row">
                 <form action="${pageContext.request.contextPath}/user/search" class=" btn_search">
-                    <div class="col-md-10">
+                    <div class="col-md-10 search_input">
                         <input type="text" name="key" class="form-control" id="search" placeholder="Search...">
                     </div>
-                    <button class="col-md-2" onclick="this.form.submit()">
+                    <button class="col-md-2 btn_search_res" onclick="this.form.submit()">
                         <i class="ti-search"></i>
                     </button>
                 </form>
@@ -191,7 +191,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="orderby">Sắp xếp:</label>
-                                    <select name="orderby" class="form-control" id="orderby" style="width: 180px;" onchange="this.form.submit()">
+                                    <select name="orderby" class="form-control" id="orderby"  onchange="this.form.submit()">
                                         <option selected="selected">Selected</option>
                                         <option value="1" <c:if test="${requestScope.orderby == 1}">selected</c:if> >Theo tên a-z</option>
                                         <option value="2" <c:if test="${requestScope.orderby == 2}">selected</c:if>>Giá giảm dần</option>
@@ -217,7 +217,7 @@
                                             <form action="${pageContext.request.contextPath}/user/${requestScope.type}" >
                                                 <input type="range" id="from" name="from" class="price_range" value="${requestScope.from}" min="${requestScope.minPrice}" max="${requestScope.maxPrice}" step="10000">
                                                 <input type="range" id="to" name="to" class="price_range" value="${requestScope.to}" min="${requestScope.minPrice}" max="${requestScope.maxPrice}" step="10000">
-                                                <button style="margin: 30px 0 0 0; background-color: orange; border: none; color: white; height: 30px; width: 280px;" 
+                                                <button class="btn_filter"
                                                         onchange="this.form.submit()">Submit</button>
                                             </form>
                                         </div>
@@ -229,7 +229,7 @@
 
                     </div>
                 </div>
-                
+
                 <div class="col-sm-9 flashsale">
                     <ul class="breadcrumb" style="margin: 20px 0 0 0; background-color: rgb(247, 241, 234)">
                         <li><a href="${pageContext.request.contextPath}/user/index">Trang chủ</a></li>
@@ -295,8 +295,8 @@
                 <h3 style="color: rgb(233, 152, 3);">Go where your heart beats</h3>
                 <h4>Tải ứng dụng <i class="ti-arrow-down"></i></h4>
                 <div class="row app_icon">
-                    <p class="col-sm-6"><a href="https://www.apple.com/store"><img src="${pageContext.request.contextPath}/images/app_store.png" alt=""></a></p>
-                    <p class="col-sm-6"><a href="https://play.google.com/"><img src="${pageContext.request.contextPath}/images/google_play.png" alt=""></a></p>
+                    <p class="col-md-6"><a href="https://www.apple.com/store"><img src="${pageContext.request.contextPath}/images/app_store.png" alt=""></a></p>
+                    <p class="col-md-6"><a href="https://play.google.com/"><img src="${pageContext.request.contextPath}/images/google_play.png" alt=""></a></p>
                 </div>
 
                 <p>FPT University CNC – Km29 Dai Lo Thang Long, H. Thach That, TP. Ha Noi</p>
@@ -372,10 +372,6 @@
             document.documentElement.scrollTop = 0;
         }
 
-
-        window.onload = function () {
-            document.querySelector(".gearbox").style.display = "none";
-        };
 
     </script>
 </body>

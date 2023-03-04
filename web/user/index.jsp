@@ -345,8 +345,8 @@
                     <h3 style="color: rgb(233, 152, 3);">Go where your heart beats</h3>
                     <h4>Tải ứng dụng <i class="ti-arrow-down"></i></h4>
                     <div class="row app_icon">
-                        <p class="col-sm-6"><a href="https://www.apple.com/store"><img src="${pageContext.request.contextPath}/images/app_store.png" alt=""></a></p>
-                        <p class="col-sm-6"><a href="https://play.google.com/"><img src="${pageContext.request.contextPath}/images/google_play.png" alt=""></a></p>
+                        <p class="col-md-6"><a href="https://www.apple.com/store"><img src="${pageContext.request.contextPath}/images/app_store.png" alt=""></a></p>
+                        <p class="col-md-6"><a href="https://play.google.com/"><img src="${pageContext.request.contextPath}/images/google_play.png" alt=""></a></p>
                     </div>
 
                     <p>FPT University CNC – Km29 Dai Lo Thang Long, H. Thach That, TP. Ha Noi</p>

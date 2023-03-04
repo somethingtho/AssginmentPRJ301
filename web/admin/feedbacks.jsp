@@ -164,7 +164,7 @@
                                         class="hide-menu">Thống kê</span></a>
                             </li>
 
-                            
+
                             <li class="sidebar-item">
                                 <a
                                     class="sidebar-link waves-effect waves-dark sidebar-link"
@@ -172,6 +172,27 @@
                                     aria-expanded="false"
                                     ><i class="mdi mdi-help-circle"></i
                                     ><span class="hide-menu">Feedbacks</span></a
+                                >
+                            </li>
+
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/orders"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-tag"></i
+                                    ><span class="hide-menu">Orders</span></a
+                                >
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/comments"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-comment-processing"></i
+                                    ><span class="hide-menu">Reviews</span></a
                                 >
                             </li>
 
@@ -337,63 +358,63 @@
                                                     <c:when test="${not empty f.cus}"><h6 class="font-medium"><a href="${pageContext.request.contextPath}/admin/profile?type=customer&id=${f.cus.customerID}">${f.cus.customerName}</a> (<span>${f.dateSend}</span>)</c:when>
                                                         <c:when test="${not empty f.supplier}"><h6 class="font-medium"><a href="${pageContext.request.contextPath}/admin/profile?type=sup&id=${f.supplier.supplierID}">${f.supplier.companyName}</a> (<span>${f.dateSend}</span>)</c:when>
                                                             <c:when test="${not empty f.shipper}"><h6 class="font-medium"><a href="${pageContext.request.contextPath}/admin/profile?type=ship&id=${f.shipper.shipperID}">${f.shipper.companyName}</a> (<span>${f.dateSend}</span>)</c:when>
-                                                        </c:choose>
-                                                        <c:choose>
-                                                            <c:when test="${f.status}">/(<span>${f.dateRep}</span>)<i class="fas fa-check-circle"></i></c:when>
-                                                            <c:otherwise><i class="fas fa-times-circle"></i></c:otherwise>
-                                                        </c:choose>
-                                                    </h6>
+                                                            </c:choose>
+                                                            <c:choose>
+                                                                <c:when test="${f.status}">/(<span>${f.dateRep}</span>)<i class="fas fa-check-circle"></i></c:when>
+                                                                <c:otherwise><i class="fas fa-times-circle"></i></c:otherwise>
+                                                            </c:choose>
+                                                        </h6>
 
-                                                    <span class="mb-3 d-block">
-                                                        <span>${f.contentSend}</span>
-                                                        <hr>
-                                                        <span>${f.contentRep}</span>
-                                                    </span>
-                                                    <div class="comment-footer">
+                                                        <span class="mb-3 d-block">
+                                                            <span>${f.contentSend}</span>
+                                                            <hr>
+                                                            <span>${f.contentRep}</span>
+                                                        </span>
+                                                        <div class="comment-footer">
 
-                                                        <c:if test="${!f.status}">
-                                                            <button type="button" class="btn btn-success btn-sm
+                                                            <c:if test="${!f.status}">
+                                                                <button type="button" class="btn btn-success btn-sm
+                                                                        text-white">
+                                                                    <a href="${pageContext.request.contextPath}/admin/reply?id=${f.id}" style="color: white">Trả lời</a>
+                                                                </button>
+                                                            </c:if>
+
+                                                            <button type="button" class="btn btn-info btn-sm
                                                                     text-white">
-                                                                <a href="${pageContext.request.contextPath}/admin/reply?id=${f.id}" style="color: white">Trả lời</a>
+                                                                <a href="${pageContext.request.contextPath}/admin/reply?id=${f.id}" style="color: white">Chi tiết</a>
                                                             </button>
-                                                        </c:if>
+                                                        </div>
+                                                        </div>
+                                                        </div>
+                                                    </c:forEach>
 
-                                                        <button type="button" class="btn btn-info btn-sm
-                                                                text-white">
-                                                            <a href="${pageContext.request.contextPath}/admin/reply?id=${f.id}" style="color: white">Chi tiết</a>
-                                                        </button>
                                                     </div>
-                                            </div>
-                                        </div>
-                                    </c:forEach>
+                                                    </div>
+                                                    </div>
+                                                    <footer class="footer text-center">
 
-                                </div>
-                            </div>
-                        </div>
-                        <footer class="footer text-center">
-
-                        </footer>
-                    </div>
-                </div>
-                <script src="assets/libs/jquery/dist/jquery.min.js"></script>
-                <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-                <script
-                src="assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
-                <script src="assets/extra-libs/sparkline/sparkline.js"></script>
-                <script src="dist/js/waves.js"></script>
-                <script src="dist/js/sidebarmenu.js"></script>
-                <!--Custom JavaScript -->
-                <script src="dist/js/custom.min.js"></script>
-                <!--This page JavaScript -->
-                <!-- <script src="dist/js/pages/dashboards/dashboard1.js"></script> -->
-                <!-- Charts js Files -->
-                <script src="assets/libs/flot/excanvas.js"></script>
-                <script src="assets/libs/flot/jquery.flot.js"></script>
-                <script src="assets/libs/flot/jquery.flot.pie.js"></script>
-                <script src="assets/libs/flot/jquery.flot.time.js"></script>
-                <script src="assets/libs/flot/jquery.flot.stack.js"></script>
-                <script src="assets/libs/flot/jquery.flot.crosshair.js"></script>
-                <script src="assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
-                <script src="dist/js/pages/chart/chart-page-init.js"></script>
-                </body>
-                </html>
+                                                    </footer>
+                                                    </div>
+                                                    </div>
+                                                    <script src="assets/libs/jquery/dist/jquery.min.js"></script>
+                                                    <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+                                                    <script
+                                                    src="assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+                                                    <script src="assets/extra-libs/sparkline/sparkline.js"></script>
+                                                    <script src="dist/js/waves.js"></script>
+                                                    <script src="dist/js/sidebarmenu.js"></script>
+                                                    <!--Custom JavaScript -->
+                                                    <script src="dist/js/custom.min.js"></script>
+                                                    <!--This page JavaScript -->
+                                                    <!-- <script src="dist/js/pages/dashboards/dashboard1.js"></script> -->
+                                                    <!-- Charts js Files -->
+                                                    <script src="assets/libs/flot/excanvas.js"></script>
+                                                    <script src="assets/libs/flot/jquery.flot.js"></script>
+                                                    <script src="assets/libs/flot/jquery.flot.pie.js"></script>
+                                                    <script src="assets/libs/flot/jquery.flot.time.js"></script>
+                                                    <script src="assets/libs/flot/jquery.flot.stack.js"></script>
+                                                    <script src="assets/libs/flot/jquery.flot.crosshair.js"></script>
+                                                    <script src="assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+                                                    <script src="dist/js/pages/chart/chart-page-init.js"></script>
+                                                    </body>
+                                                    </html>

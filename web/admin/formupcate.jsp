@@ -13,7 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        
+
         <meta name="robots" content="noindex,nofollow" />
         <title>Cập nhật (${requestScope.category.categoryName})</title>
         <!-- Favicon icon -->
@@ -242,8 +242,8 @@
                                     ><span class="hide-menu">Thống kê</span></a
                                 >
                             </li>
-                            
-                            
+
+
                             <li class="sidebar-item">
                                 <a
                                     class="sidebar-link waves-effect waves-dark sidebar-link"
@@ -251,6 +251,27 @@
                                     aria-expanded="false"
                                     ><i class="mdi mdi-help-circle"></i
                                     ><span class="hide-menu">Feedbacks</span></a
+                                >
+                            </li>
+
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/orders"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-tag"></i
+                                    ><span class="hide-menu">Orders</span></a
+                                >
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/comments"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-comment-processing"></i
+                                    ><span class="hide-menu">Reviews</span></a
                                 >
                             </li>
 
@@ -477,7 +498,7 @@
             <!-- footer -->
             <!-- ============================================================== -->
             <footer class="footer text-center">
-                
+
             </footer>
             <!-- ============================================================== -->
             <!-- End footer -->
@@ -517,47 +538,47 @@
     <script src="assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script src="assets/libs/quill/dist/quill.min.js"></script>
     <script>
-        //***********************************//
-        // For select 2
-        //***********************************//
-        $(".select2").select2();
+                                                //***********************************//
+                                                // For select 2
+                                                //***********************************//
+                                                $(".select2").select2();
 
-        /*colorpicker*/
-        $(".demo").each(function () {
-            //
-            // Dear reader, it's actually very easy to initialize MiniColors. For example:
-            //
-            //  $(selector).minicolors();
-            //
-            // The way I've done it below is just for the demo, so don't get confused
-            // by it. Also, data- attributes aren't supported at this time...they're
-            // only used for this demo.
-            //
-            $(this).minicolors({
-                control: $(this).attr("data-control") || "hue",
-                position: $(this).attr("data-position") || "bottom left",
+                                                /*colorpicker*/
+                                                $(".demo").each(function () {
+                                                    //
+                                                    // Dear reader, it's actually very easy to initialize MiniColors. For example:
+                                                    //
+                                                    //  $(selector).minicolors();
+                                                    //
+                                                    // The way I've done it below is just for the demo, so don't get confused
+                                                    // by it. Also, data- attributes aren't supported at this time...they're
+                                                    // only used for this demo.
+                                                    //
+                                                    $(this).minicolors({
+                                                        control: $(this).attr("data-control") || "hue",
+                                                        position: $(this).attr("data-position") || "bottom left",
 
-                change: function (value, opacity) {
-                    if (!value)
-                        return;
-                    if (opacity)
-                        value += ", " + opacity;
-                    if (typeof console === "object") {
-                        console.log(value);
-                    }
-                },
-                theme: "bootstrap",
-            });
-        });
-        /*datwpicker*/
-        jQuery(".mydatepicker").datepicker();
-        jQuery("#datepicker-autoclose").datepicker({
-            autoclose: true,
-            todayHighlight: true,
-        });
-        var quill = new Quill("#editor", {
-            theme: "snow",
-        });
+                                                        change: function (value, opacity) {
+                                                            if (!value)
+                                                                return;
+                                                            if (opacity)
+                                                                value += ", " + opacity;
+                                                            if (typeof console === "object") {
+                                                                console.log(value);
+                                                            }
+                                                        },
+                                                        theme: "bootstrap",
+                                                    });
+                                                });
+                                                /*datwpicker*/
+                                                jQuery(".mydatepicker").datepicker();
+                                                jQuery("#datepicker-autoclose").datepicker({
+                                                    autoclose: true,
+                                                    todayHighlight: true,
+                                                });
+                                                var quill = new Quill("#editor", {
+                                                    theme: "snow",
+                                                });
     </script>
 
 </body>

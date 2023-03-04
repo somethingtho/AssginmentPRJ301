@@ -13,7 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        
+
         <meta name="robots" content="noindex,nofollow" />
         <title>Add new Suppliers</title>
         <!-- Favicon icon -->
@@ -242,8 +242,8 @@
                                     ><span class="hide-menu">Thống kê</span></a
                                 >
                             </li>
-                            
-                            
+
+
                             <li class="sidebar-item">
                                 <a
                                     class="sidebar-link waves-effect waves-dark sidebar-link"
@@ -251,6 +251,26 @@
                                     aria-expanded="false"
                                     ><i class="mdi mdi-help-circle"></i
                                     ><span class="hide-menu">Feedbacks</span></a
+                                >
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/orders"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-tag"></i
+                                    ><span class="hide-menu">Orders</span></a
+                                >
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/comments"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-comment-processing"></i
+                                    ><span class="hide-menu">Reviews</span></a
                                 >
                             </li>
 
@@ -339,9 +359,9 @@
                                 </ul>
                             </li>
 
-                            
-                            
-                            
+
+
+
                             <li class="sidebar-item">
                                 <a
                                     class="sidebar-link has-arrow waves-effect waves-dark"
@@ -351,7 +371,7 @@
                                     ><span class="hide-menu">Xác thực</span></a
                                 >
                                 <ul aria-expanded="false" class="collapse first-level">
-                                    
+
 
                                     <li class="sidebar-item">
                                         <a href="${pageContext.request.contextPath}/admin/changepass.jsp" class="sidebar-link"
@@ -366,9 +386,9 @@
                                             ><span class="hide-menu"> Hồ sơ </span></a
                                         >
                                     </li>
-                                    
-                                    
-                                    
+
+
+
                                 </ul>
                             </li>
                         </ul>
@@ -435,7 +455,7 @@
                                                             <td>${s.email}</td>
                                                             <td><a href="${s.homePage}">${s.companyName}</a></td>
                                                             <td><c:if test="${s.status}">Hoạt động</c:if><c:if test="${!s.status}">Ngừng hoạt động</c:if></td>
-                                                        </tr>
+                                                            </tr>
                                                     </c:forEach>
                                                 </tbody>
                                             </table>
@@ -472,7 +492,7 @@
                                                     />
                                             </div>
                                         </div>
-                                        
+
                                         <div class="form-group row">
                                             <label
                                                 for="email"
@@ -487,7 +507,7 @@
                                                     />
                                             </div>
                                         </div>
-                                        
+
 
 
                                         <div class="form-group row">
@@ -504,7 +524,7 @@
                                                     />
                                             </div>
                                         </div>
-                                        
+
                                         <div class="form-group row">
                                             <label class="col-md-3">Trạng thái</label>
                                             <div class="col-md-3" style="display: flex;justify-content: space-between;">
@@ -572,7 +592,7 @@
             <!-- footer -->
             <!-- ============================================================== -->
             <footer class="footer text-center">
-                
+
             </footer>
             <!-- ============================================================== -->
             <!-- End footer -->

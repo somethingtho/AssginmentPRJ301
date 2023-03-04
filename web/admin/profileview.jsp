@@ -273,6 +273,27 @@
 
                             <li class="sidebar-item">
                                 <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/orders"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-tag"></i
+                                    ><span class="hide-menu">Orders</span></a
+                                >
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/comments"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-comment-processing"></i
+                                    ><span class="hide-menu">Reviews</span></a
+                                >
+                            </li>
+
+
+                            <li class="sidebar-item">
+                                <a
                                     class="sidebar-link has-arrow waves-effect waves-dark"
                                     href="javascript:void(0)"
                                     aria-expanded="false"
@@ -745,8 +766,8 @@
                                                             <c:when test="${o.status == 0}">Fail</c:when>
                                                             <c:when test="${o.status == 3}">Process</c:when>
                                                         </c:choose>
-                                                        </td>
-                                                        <td>
+                                                    </td>
+                                                    <td>
 
                                                         <fmt:formatNumber type="currency" value="${o.totalMoney}"/>
                                                     </td>
@@ -867,13 +888,13 @@
                                         <canvas style="min-width: 450px; "  id="chartSuccess"></canvas>
                                     </div>
                                 </div>
-                                
+
                                 <div  class="col-md-7">
                                     <div class="card">
                                         <div id="chartShip" style="min-width: 700px; " class="col-md-6"></div>
                                     </div>
                                 </div>
-                                
+
                             </div>        
 
 

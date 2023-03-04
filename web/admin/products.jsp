@@ -59,14 +59,14 @@
         <![endif]-->
     </head>
     <body>
-        
+
         <button onclick="topFunction()" id="myBtn" title="Go to top"><i style="text-align: center" class="ti-arrow-up"></i></button>
-        <fmt:setLocale value = "vi_VN"/>
-        <%
-            response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
-            response.setHeader("Pragma", "no-cache"); //HTTP 1.0
-            response.setDateHeader("Expires", 0);
-        %>
+            <fmt:setLocale value = "vi_VN"/>
+            <%
+                response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
+                response.setHeader("Pragma", "no-cache"); //HTTP 1.0
+                response.setDateHeader("Expires", 0);
+            %>
         <!-- ============================================================== -->
         <!-- Preloader - style you can find in spinners.css -->
         <!-- ============================================================== -->
@@ -283,6 +283,26 @@
                                     aria-expanded="false"
                                     ><i class="mdi mdi-help-circle"></i
                                     ><span class="hide-menu">Feedbacks</span></a
+                                >
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/orders"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-tag"></i
+                                    ><span class="hide-menu">Orders</span></a
+                                >
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a
+                                    class="sidebar-link waves-effect waves-dark sidebar-link"
+                                    href="${pageContext.request.contextPath}/admin/comments"
+                                    aria-expanded="false"
+                                    ><i class="mdi mdi-comment-processing"></i
+                                    ><span class="hide-menu">Reviews</span></a
                                 >
                             </li>
 
@@ -679,13 +699,13 @@
         <script>
                             function loadMore() {
                                 var amount = document.getElementsByClassName('card').length;
-                                
-                                
+
+
                                 var supplierID = $('#supplierID').val();
                                 var categoryID = $('#categoryID').val();
                                 var orderby = $('#orderby').val();
                                 var discontinued = $('input[name="discontinued"]:checked').val();
-                                
+
                                 $.ajax({
                                     url: "${pageContext.request.contextPath}/admin/loadmore",
                                     type: "get",
@@ -700,8 +720,7 @@
                                         discontinued: discontinued
                                     },
                                     contentType: "application/json",
-                                    
-                                    
+
                                     success: function (data) {
                                         var row = document.getElementById('content');
                                         row.innerHTML += data;
