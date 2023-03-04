@@ -317,10 +317,6 @@
                                     <!-- Comment Row -->
                                     <c:forEach items="${requestScope.listAllFeedbacks}" var="f">
                                         <div class="d-flex flex-row comment-row mt-0">
-                                            <c:if test="">
-
-                                            </c:if>
-
                                             <c:choose>
                                                 <c:when test="${not empty f.cus}">
                                                     <div class="p-2">
@@ -339,7 +335,8 @@
                                             <div class="comment-text w-100">
                                                 <c:choose>
                                                     <c:when test="${not empty f.cus}"><h6 class="font-medium"><a href="${pageContext.request.contextPath}/admin/profile?type=customer&id=${f.cus.customerID}">${f.cus.customerName}</a> (<span>${f.dateSend}</span>)</c:when>
-                                                        <c:otherwise><h6 class="font-medium">${f.email} (<span>${f.dateSend}</span>)</c:otherwise>
+                                                        <c:when test="${not empty f.supplier}"><h6 class="font-medium"><a href="${pageContext.request.contextPath}/admin/profile?type=sup&id=${f.supplier.supplierID}">${f.supplier.companyName}</a> (<span>${f.dateSend}</span>)</c:when>
+                                                            <c:when test="${not empty f.shipper}"><h6 class="font-medium"><a href="${pageContext.request.contextPath}/admin/profile?type=ship&id=${f.shipper.shipperID}">${f.shipper.companyName}</a> (<span>${f.dateSend}</span>)</c:when>
                                                         </c:choose>
                                                         <c:choose>
                                                             <c:when test="${f.status}">/(<span>${f.dateRep}</span>)<i class="fas fa-check-circle"></i></c:when>

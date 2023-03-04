@@ -1256,6 +1256,7 @@ public class DAOProducts extends DBContext {
      * @return A Products object.
      */
     public Products getProductByID(int pID) {
+        DAOReview daoReview = new DAOReview();
         DAOSuppliers daoSuppliers = new DAOSuppliers();
         DAOCategories daoCategories = new DAOCategories();
         DAOProductInfo daoProductInfo = new DAOProductInfo();

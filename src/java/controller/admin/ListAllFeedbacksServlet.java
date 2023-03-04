@@ -56,7 +56,7 @@ public class ListAllFeedbacksServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         DAOFeedback daoFeedback = new DAOFeedback();
-        Vector<Feedback> listAllFeedbacks = daoFeedback.getAllFeedBack();
+        Vector<Feedback> listAllFeedbacks = daoFeedback.getLastFeedback();
         
         
         request.setAttribute("listAllFeedbacks", listAllFeedbacks);

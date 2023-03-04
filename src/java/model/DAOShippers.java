@@ -299,7 +299,6 @@ public class DAOShippers extends DBContext {
 
     public static void main(String[] args) {
         DAOShippers dao = new DAOShippers();
-        Vector<Shippers> vector = dao.getAllShippers();
-        System.out.println(dao.getShipperByShipperID(1));
+        System.out.println(dao.getShipperByEmail("JTExpress@gmail.com").toString());
     }
 }

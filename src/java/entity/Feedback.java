@@ -4,6 +4,8 @@
  */
 package entity;
 
+import java.util.Vector;
+
 /**
  *
  * @author daova
@@ -16,7 +18,51 @@ public class Feedback {
     private String email;
     private int role;
     private String dateSend, dateRep;
+    private Suppliers supplier;
+    private Shippers shipper;
 
+    public Feedback(int id, String contentSend, String contentRep, boolean status, int role, String dateSend, String dateRep, Suppliers supplier) {
+        this.id = id;
+        this.contentSend = contentSend;
+        this.contentRep = contentRep;
+        this.status = status;
+        this.role = role;
+        this.dateSend = dateSend;
+        this.dateRep = dateRep;
+        this.supplier = supplier;
+    }
+
+    public Feedback(int id, String contentSend, String contentRep, boolean status, int role, String dateSend, String dateRep, Shippers shipper) {
+        this.id = id;
+        this.contentSend = contentSend;
+        this.contentRep = contentRep;
+        this.status = status;
+        this.role = role;
+        this.dateSend = dateSend;
+        this.dateRep = dateRep;
+        this.shipper = shipper;
+    }
+
+    
+    
+    public Suppliers getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Suppliers supplier) {
+        this.supplier = supplier;
+    }
+
+    public Shippers getShipper() {
+        return shipper;
+    }
+
+    public void setShipper(Shippers shipper) {
+        this.shipper = shipper;
+    }
+    
+    
+    
     public String getDateSend() {
         return dateSend;
     }
@@ -32,13 +78,15 @@ public class Feedback {
     public void setDateRep(String dateRep) {
         this.dateRep = dateRep;
     }
-    
-    
 
     @Override
     public String toString() {
-        return "Feedback{" + "id=" + id + ", idAccount=" + idAccount + ", contentSend=" + contentSend + ", contentRep=" + contentRep + ", status=" + status + ", cus=" + cus + ", email=" + email + ", role=" + role + '}';
+        return "Feedback{" + "id=" + id + ", idAccount=" + idAccount + ", contentSend=" + contentSend + ", contentRep=" + contentRep + ", status=" + status + ", cus=" + cus + ", email=" + email + ", role=" + role + ", dateSend=" + dateSend + ", dateRep=" + dateRep + ", supplier=" + supplier + ", shipper=" + shipper + '}';
     }
+    
+    
+
+    
 
     
     

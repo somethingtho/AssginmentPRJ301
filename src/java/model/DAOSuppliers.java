@@ -34,10 +34,7 @@ public class DAOSuppliers extends DBContext {
 
     public static void main(String[] args) {
         DAOSuppliers daoSup = new DAOSuppliers();
-        Vector<Suppliers> vector = daoSup.getNumberProductsBySupplier();
-        for (Suppliers suppliers : vector) {
-            System.out.println(suppliers);
-        }
+        System.out.println(daoSup.GetSupplierByEmail("apple@gmail.com"));
     }
     
     /**

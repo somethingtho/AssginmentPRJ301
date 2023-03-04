@@ -22,11 +22,11 @@
     </head>
 
     <%
-response.setHeader("Cache-Control","no-cache"); //HTTP 1.1
-response.setHeader("Pragma","no-cache"); //HTTP 1.0
-response.setDateHeader ("Expires", 0);
+        response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
+        response.setHeader("Pragma", "no-cache"); //HTTP 1.0
+        response.setDateHeader("Expires", 0);
 //prevents caching at the proxy server
-    %>
+%>
 
 
 
@@ -195,13 +195,21 @@ response.setDateHeader ("Expires", 0);
 
                     <div class="container">
                         <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                            <div class="carousel-inner">
+                            <ol class="carousel-indicators">
+
+                            <c:forEach var="i" begin="0" end="${requestScope.getAllImageByProductID.size()-1}">
+                                <li style="border: 1px solid black;" data-target="#myCarousel" data-slide-to="${i}"
+                                    class="<c:if test="${i == 0}">active</c:if>"></li>
+                                </c:forEach>
+
+                        </ol>
+                        <div class="carousel-inner">
                             <c:set value="0" var="sample" scope="page"></c:set>
                             <c:forEach items="${requestScope.getAllImageByProductID}" var="img">
                                 <div class="item <c:if test="${sample == 0}">active</c:if>">
                                     <img src="data:image/jpg;base64,${img.base64Image}" alt="img" style="width:500px;">
                                 </div>
-                                <c:set value="${sample = sample +1}" var="sample" scope="page"></c:set>
+                                <c:set value="${sample +1}" var="sample" scope="page"></c:set>
                             </c:forEach>
                         </div>
 
@@ -370,7 +378,7 @@ response.setDateHeader ("Expires", 0);
                 </div>
 
                 <div class="btn_review" style="padding: 0;">
-                    <button onclick="checkInput()" class="container" id="update">
+                    <button type="button" onclick="checkInput()" class="container" id="update">
                         Gửi
                         <i class="ti-check"></i>
                     </button>
@@ -510,23 +518,31 @@ response.setDateHeader ("Expires", 0);
                         }
 
                         function checkInput() {
-                            var input = document.getElementsByName("star");
-                            var contentSend = document.getElementsByName("contentSend");
-                            if (input.value === "") {
-                                alert("Please choose rate star!");
-                                return;
+                            var isFormValid = true;
+                            var form = document.getElementById("form_review");
+
+                            // iterate over all the elements in the form
+                            for (var i = 0; i < form.elements.length; i++) {
+                                var element = form.elements[i];
+
+                                // if an element is required and its value is empty
+                                if (element.required && element.value === "") {
+                                    // set the flag to false
+                                    isFormValid = false;
+
+                                    // alert the user that the form is not valid
+                                    alert("Please fill in all the required fields");
+                                    break; // stop iterating further
+                                }
                             }
-                            if (contentSend.value === "") {
-                                alert("Please input message!");
-                                return;
+
+                            // if the form is valid, submit it
+                            if (isFormValid) {
+                                form.submit();
                             }
-                            if (input.value !== "" && contentSend.value !== "")
-                                document.getElementById("form_review").submit();
                         }
 
-                        window.onload = function () {
-                            document.querySelector(".gearbox").style.display = "none";
-                        };
+
 
 </script>
 </body>

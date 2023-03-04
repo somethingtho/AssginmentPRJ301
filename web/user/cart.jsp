@@ -380,7 +380,7 @@
 
 // Set default value for date input
     let month = now.getMonth() + 1;
-    let day = now.getDate() +3;
+    let day = now.getDate() + 3;
     const year = now.getFullYear();
     if (month < 10) {
         month = "0" + month;
@@ -424,7 +424,7 @@
     function checkDateTime() {
         const dateInput = document.getElementById("requiredDate");
         const timeInput = document.getElementById("requiredTime");
-
+        const payments = document.getElementsByName('payments');
         const now = new Date();
 
         const dateParts = dateInput.value.split('-');
@@ -436,8 +436,13 @@
             alert("Chọn lại ngày giao hàng!");
             return;
         } else {
-            alert("Submitted ");
-            document.getElementById('checkout').submit()
+            if (payments.value === "") {
+                alert("Chọn phương thức thanh toán!");
+                return;
+            } else {
+                alert("Submitted ");
+                document.getElementById('checkout').submit();
+            }
         }
     }
 
