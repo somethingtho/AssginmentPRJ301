@@ -26,6 +26,13 @@ import java.util.stream.Collectors;
  */
 public class DAOOrderDetails extends DBContext {
 
+    /**
+     * It takes a list of OrderDetails, gets the Supplier of each Product, groups them by SupplierID,
+     * and returns a list of Suppliers
+     * 
+     * @param orderDetailsList a list of OrderDetails objects
+     * @return A list of suppliers
+     */
     public List<Suppliers> filterSuppliers(Vector<OrderDetails> orderDetailsList) {
         List<Suppliers> s = new ArrayList<>();
         for (OrderDetails o : orderDetailsList) {

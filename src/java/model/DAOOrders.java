@@ -39,6 +39,11 @@ public class DAOOrders extends DBContext {
         return number;
     }
 
+    /**
+     * It gets the top 5 orders from the database and returns them as a vector
+     * 
+     * @return A vector of Orders
+     */
     public Vector<Orders> getProcessOrders() {
         Vector<Orders> vector = new Vector<>();
         DAOShippers daoShippers = new DAOShippers();
@@ -70,6 +75,11 @@ public class DAOOrders extends DBContext {
         return vector;
     }
 
+    /**
+     * It gets the top 5 orders with status 3 (new orders) and returns them as a vector
+     * 
+     * @return A vector of Orders
+     */
     public Vector<Orders> getNewOrders() {
         Vector<Orders> vector = new Vector<>();
         DAOShippers daoShippers = new DAOShippers();
@@ -103,6 +113,12 @@ public class DAOOrders extends DBContext {
         return vector;
     }
 
+    /**
+     * It gets the next 5 orders from the database, and returns them as a vector
+     * 
+     * @param amount the amount of rows that have been loaded
+     * @return A vector of Orders
+     */
     public Vector<Orders> getNextNewOrders(int amount) {
         Vector<Orders> vector = new Vector<>();
         DAOShippers daoShippers = new DAOShippers();
@@ -137,16 +153,18 @@ public class DAOOrders extends DBContext {
         return vector;
     }
     
+    /**
+     * It gets the next 5 orders from the database, and returns them as a vector
+     * 
+     * @param amount the amount of rows to skip
+     * @return A vector of Orders
+     */
     public Vector<Orders> getNextOrders(int amount) {
         Vector<Orders> vector = new Vector<>();
         DAOShippers daoShippers = new DAOShippers();
         DAOCustomers daoCustomers = new DAOCustomers();
         DAOOrderDetails daoOrderDetails = new DAOOrderDetails();
         String sql = "SELECT * FROM Orders WHERE Status = 1 OR Status = 0 ORDER BY OrderDate DESC OFFSET ? ROWS FETCH NEXT 5 ROWS ONLY";
-
-        
-            
-        
         
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -175,6 +193,11 @@ public class DAOOrders extends DBContext {
         return vector;
     }
     
+    /**
+     * It returns the number of rows in the Orders table where the Status column is equal to 3
+     * 
+     * @return The number of orders that have a status of 3.
+     */
     public int getSizeNewOrders() {
         String sql = "SELECT COUNT(*) FROM Orders WHERE Status = 3 ";
         int number = 0;
@@ -191,6 +214,11 @@ public class DAOOrders extends DBContext {
         return number;
     }
     
+    /**
+     * It returns the number of rows in the Orders table where the Status column is equal to 1 or 0
+     * 
+     * @return The number of rows in the table.
+     */
     public int getSizeOrders() {
         String sql = "SELECT COUNT(*) FROM Orders WHERE Status = 1 OR Status = 0 ";
         int number = 0;

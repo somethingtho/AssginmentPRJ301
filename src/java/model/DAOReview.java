@@ -29,6 +29,12 @@ import util.SendEmail;
  */
 public class DAOReview extends DBContext {
 
+    /**
+     * This function deletes a review from the database
+     * 
+     * @param id the id of the review to be deleted
+     * @return The number of rows affected by the delete statement.
+     */
     public int deleteReview(int id){
         int number  = 0;
         String sql ="DELETE Review WHERE id = ?";
@@ -44,6 +50,12 @@ public class DAOReview extends DBContext {
     }
     
     
+    /**
+     * This function is used to update the review of a product
+     * 
+     * @param r Review object
+     * @return The number of rows affected by the update.
+     */
     public int updateReview(Review r){
         int number = 0;
         
@@ -131,6 +143,11 @@ public class DAOReview extends DBContext {
 
     }
 
+    /**
+     * It returns the number of rows in the Review table
+     * 
+     * @return The number of reviews in the database.
+     */
     public int TotalReview() {
         int number = 0;
         String sql = "SELECT COUNT(*) FROM Review";
@@ -148,6 +165,12 @@ public class DAOReview extends DBContext {
     }
     
     
+    /**
+     * It returns the number of reviews for a product
+     * 
+     * @param pid product id
+     * @return The number of reviews for a product.
+     */
     public int TotalReviewByUser(int pid) {
         int number = 0;
         String sql = "SELECT COUNT(*) FROM Review WHERE Status = 1 AND ProductID = ?";
@@ -260,6 +283,13 @@ public class DAOReview extends DBContext {
     }
     
     
+    /**
+     * I want to get all reviews of a product by productID and accountID
+     * 
+     * @param pid product id
+     * @param accountID the ID of the account that is currently logged in
+     * @return A vector of reviews.
+     */
     public Vector<Review> getAllReviewByProductIDAndAccount(int pid, int accountID) {
         DAOAccounts daoAccounts = new DAOAccounts();
         DAOCustomers daoCustomers = new DAOCustomers();
@@ -290,6 +320,14 @@ public class DAOReview extends DBContext {
         return vector;
     }
     
+    /**
+     * It gets the next 5 reviews of a product by its ID, and the amount of reviews that have been
+     * loaded
+     * 
+     * @param pid product id
+     * @param amount the number of reviews that have been loaded
+     * @return A vector of Review objects.
+     */
     public Vector<Review> getNextReviewByProductID(int pid, int amount) {
         DAOAccounts daoAccounts = new DAOAccounts();
         DAOCustomers daoCustomers = new DAOCustomers();
@@ -320,6 +358,13 @@ public class DAOReview extends DBContext {
         return vector;
     }
 
+    /**
+     * It returns a vector of integers, which contains the number of reviews of a product with a
+     * certain rate
+     * 
+     * @param pid product id
+     * @return A vector of integers.
+     */
     public Vector<Integer> numberReviewtarProductID(int pid) {
         Vector<Integer> vector = new Vector<>();
         String sql = "SELECT COUNT(*) FROM dbo.Review WHERE ProductID = ? AND Review.Status = 1 AND Rate = ?";
@@ -339,6 +384,12 @@ public class DAOReview extends DBContext {
         return vector;
     }
 
+    /**
+     * This function is used to get all reviews of a product by product ID and admin
+     * 
+     * @param pid product id
+     * @return A vector of Review objects.
+     */
     public Vector<Review> getAllReviewByProductIDAndAdmin(int pid) {
         DAOAccounts daoAccounts = new DAOAccounts();
         DAOCustomers daoCustomers = new DAOCustomers();

@@ -25,6 +25,11 @@ import util.SendEmail;
  */
 public class DAOFeedback extends DBContext {
 
+    /**
+     * It returns a vector of all the emails in the Feedback table
+     * 
+     * @return A vector of strings.
+     */
     public Vector<String> getAllEmailFeedback() {
         Vector<String> vector = new Vector<>();
         String sql = "SELECT Email FROM Feedback GROUP BY Email";
@@ -38,6 +43,7 @@ public class DAOFeedback extends DBContext {
         return vector;
     }
 
+    // Getting the last feedback from the database.
     public Vector<Feedback> getLastFeedback() {
         Vector<Feedback> vector = new Vector<>();
         DAOCustomers daoCustomer = new DAOCustomers();
