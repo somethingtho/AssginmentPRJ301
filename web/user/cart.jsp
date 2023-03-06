@@ -21,6 +21,89 @@
 
     </head>
 
+    <style>
+        .btn {
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            border: none;
+            position: relative;
+            border-radius: 10px;
+            -webkit-box-shadow: 1px 1px 5px .2px #00000035;
+            box-shadow: 1px 1px 5px .2px #00000035;
+            -webkit-transition: .2s linear;
+            transition: .2s linear;
+            transition-delay: .2s;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: space-between;
+            background-color: white;
+        }
+
+        .btn:hover {
+            width: 150px;
+            transition-delay: .2s;
+        }
+
+        .btn:hover > .paragraph {
+            visibility: visible;
+            opacity: 1;
+            -webkit-transition-delay: .4s;
+            transition-delay: .4s;
+        }
+
+        .btn:hover > .icon-wrapper .icon {
+            transform: scale(1.1);
+        }
+
+        .bnt:hover > .icon-wrapper .icon path {
+            stroke: black;
+        }
+
+        .paragraph {
+            color: black;
+            visibility: hidden;
+            opacity: 0;
+            font-size: 18px;
+            margin-right: 20px;
+            padding-left: 20px;
+            -webkit-transition: .2s linear;
+            transition: .2s linear;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: none;
+            background-color: white;
+        }
+
+        .icon-wrapper {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon {
+            transform: scale(.9);
+            transition: .2s linear;
+        }
+
+        .icon path {
+            stroke: #000;
+            stroke-width: 2px;
+            -webkit-transition: .2s linear;
+            transition: .2s linear;
+        }
+    </style>
     <%
         response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
         response.setHeader("Pragma", "no-cache"); //HTTP 1.0
@@ -189,7 +272,16 @@
                                     <form action="${pageContext.request.contextPath}/user/process" method="post">
                                         <input type="hidden" name="id" value="${i.product.productID}"/>
                                         <div style="display: flex;justify-content: center; justify-items: center;">
-                                            <input style="margin-top: 20px; width: 70px; background-color: orange; border: none; color: white;" type="submit" value="Xoá"/></div>   
+
+                                            <button type="button" class="btn">
+                                                <input class="paragraph" type="submit" value="Delete" />
+                                                <span class="icon-wrapper">
+                                                    <svg class="icon" width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M6 7V18C6 19.1046 6.89543 20 8 20H16C17.1046 20 18 19.1046 18 18V7M6 7H5M6 7H8M18 7H19M18 7H16M10 11V16M14 11V16M8 7V5C8 3.89543 8.89543 3 10 3H14C15.1046 3 16 3.89543 16 5V7M8 7H16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                    </svg>
+                                                </span>
+                                            </button>
+                                        </div>
                                     </form>
                                 </div>
                                 <div class="row col-md-8">
@@ -220,9 +312,9 @@
                                         </tbody>
                                     </table>
                                     <div class="btn_Cart">
-                                        <button style="width: 40px; background-color: orange; border: none;"><a href="${pageContext.request.contextPath}/user/process?num=-1&id=${i.product.productID}">-</a></button>
+                                        <button style="width: 40px; background-color: orange; border: none;" onclick="deleteProduct('${i.product.productID}')">-</button>
                                         <input style="width: 60px; text-align: center;" type="number" readonly value="${i.quantity}">
-                                        <button style="width: 40px; background-color: orange; border: none;"><a href="${pageContext.request.contextPath}/user/process?num=1&id=${i.product.productID}">+</a></button>
+                                        <button style="width: 40px; background-color: orange; border: none;" onclick="addProduct('${i.product.productID}')">+</button>
                                     </div>
                                     <p style="display: flex; justify-content: space-between;"><span>Tổng tiền:</span><span style="margin-right: 30px;"><fmt:formatNumber value="${i.product.unitPrice*1.1*i.quantity}" type="currency"/></span></p>
                                 </div>
@@ -424,7 +516,7 @@
     function checkDateTime() {
         const dateInput = document.getElementById("requiredDate");
         const timeInput = document.getElementById("requiredTime");
-        const payments = document.getElementsByName('payments');
+        const radio = document.getElementsByName("payments");
         const now = new Date();
 
         const dateParts = dateInput.value.split('-');
@@ -432,18 +524,30 @@
 
         const datetime = new Date(dateParts[0], dateParts[1] - 1, dateParts[2], timeParts[0], timeParts[1]);
 
+
         if (datetime < now) {
             alert("Chọn lại ngày giao hàng!");
             return;
         } else {
-            if (payments.value === "") {
+            if (!radio[0].checked && !radio[1].checked) {
                 alert("Chọn phương thức thanh toán!");
                 return;
             } else {
-                alert("Submitted ");
+                if (${ not empty sessionScope.account }) {
+                    alert("Submitted ");
+
+                }
                 document.getElementById('checkout').submit();
             }
         }
+    }
+
+    function addProduct(id) {
+        window.location.href = "${pageContext.request.contextPath}/user/process?num=1&id=" + id;
+    }
+    
+    function deleteProduct(id) {
+        window.location.href = "${pageContext.request.contextPath}/user/process?num=-1&id=" + id;
     }
 
 

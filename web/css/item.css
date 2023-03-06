@@ -712,3 +712,254 @@ footer{
         width: 100%;
     }
 }
+
+
+
+
+
+
+
+.modal{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-container{
+    background-color: #fff;
+    width: 650px;
+    max-width: calc(100%-32px);
+    min-height: 200px;
+    max-height: 100%;
+    position: relative;
+    animation: modalFadeIn ease 0.3s;
+}
+
+.modal .modal-header{
+    background-color: white;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: rgb(0, 0, 0);
+}
+
+.modal-heading-icons{
+    margin-right: 16px;
+}
+
+.modal-close{
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: rgb(18, 17, 17);
+    padding: 12px;
+    cursor: pointer;
+    opacity: 0.9;
+    border: 1px dotted gray;
+}
+
+.modal-close:hover{
+    opacity: 0.8;
+    background-color: red;
+}
+
+
+.modal-body{
+    padding: 16px;
+}
+
+.modal-label{
+    display: block;
+    font-size: 15px;
+    margin-bottom: 12px;
+}
+
+.modal-input{
+    border: 1px solid #ccc;
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    margin-bottom: 24px;
+}
+
+#update{
+    font-family: inherit;
+    font-size: 20px;
+    background: royalblue;
+    color: white;
+    padding: 0.7em 1em;
+    padding-left: 0.9em;
+    display: flex;
+    align-items: center;
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.2s;
+    float: right;
+}
+
+#update span{
+    display: block;
+    margin-left: 0.3em;
+    transition: all 0.3s ease-in-out;
+}
+
+#update svg{
+    display: block;
+    transform-origin: center center;
+    transition: transform 0.3s ease-in-out;
+}
+
+#update:hover .svg-wrapper {
+    animation: fly-1 0.6s ease-in-out infinite alternate;
+}
+
+#update:hover svg {
+    transform: translateX(1.2em) rotate(45deg) scale(1.1);
+}
+
+#update:hover span {
+    transform: translateX(5em);
+}
+
+#update:active {
+    transform: scale(0.95);
+}
+
+@keyframes fly-1 {
+    from {
+        transform: translateY(0.1em);
+    }
+
+    to {
+        transform: translateY(-0.1em);
+    }
+}
+
+.modal-footer{
+    text-align: right;
+    padding: 16px;
+}
+
+.modal-footer a{
+    color: #2196F3;
+}
+
+.modal.open{
+    display: flex;
+}
+
+@keyframes modalFadeIn {
+    from{
+        opacity: 0;
+        transform: translateY(-100px);
+    }
+
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.btn_review-submit{
+    width: 100px;
+    background-color: red;
+    border: none;
+    color: white;
+    height: 40px;
+}
+
+.btn_review-submit:hover{
+    cursor: pointer;
+    color: #000;
+    background-color: #ccc;
+}
+
+
+#cancel{
+    width: 150px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    background: red;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.15);
+    background: #e62222;
+
+}
+
+#cancel, #cancel span{
+    transition: 200ms;
+}
+
+#cancel .text {
+    transform: translateX(35px);
+    color: white;
+    font-weight: bold;
+}
+
+#cancel .icon {
+    position: absolute;
+    border-left: 1px solid #c41b1b;
+    transform: translateX(110px);
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#cancel svg {
+    width: 15px;
+    fill: #eee;
+}
+
+#cancel:hover {
+    background: #ff3636;
+}
+
+#cancel:hover .text {
+    color: transparent;
+}
+
+#cancel:hover .icon {
+    width: 150px;
+    border-left: none;
+    transform: translateX(0);
+}
+
+#cancel:focus {
+    outline: none;
+}
+
+#cancel:active .icon svg {
+    transform: scale(0.8);
+}
+
+.rating {
+    display: inline-block;
+}
+
+.rating input[type="radio"] {
+    display: none;
+}
+
+.rating label {
+    font-size: 30px;
+    color: grey;
+    cursor: pointer;
+}
+
+.rating label.gold {
+    color: gold;
+}

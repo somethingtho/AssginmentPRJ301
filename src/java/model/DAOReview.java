@@ -29,9 +29,40 @@ import util.SendEmail;
  */
 public class DAOReview extends DBContext {
 
+    public int deleteReview(int id){
+        int number  = 0;
+        String sql ="DELETE Review WHERE id = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, id);
+            number = pre.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return number;
+    }
+    
+    
+    public int updateReview(Review r){
+        int number = 0;
+        
+        String sql ="UPDATE Review SET ContentSend = ?, Rate = ? WHERE ID = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, r.getContentSend());
+            pre.setInt(2, r.getRate());
+            pre.setInt(3, r.getId());
+            number = pre.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return number;
+    }
+    
     /**
      * It gets a review by its ID
-     * 
+     *
      * @param rid the id of the review
      * @return A Review object.
      */
@@ -69,9 +100,9 @@ public class DAOReview extends DBContext {
     }
 
     /**
-     * I want to send an email to the customer when the admin changes the status of the review from
-     * public to hidden
-     * 
+     * I want to send an email to the customer when the admin changes the status
+     * of the review from public to hidden
+     *
      * @param r Review object
      * @param type public or hidden
      * @return The number of rows affected by the SQL statement.
@@ -99,15 +130,32 @@ public class DAOReview extends DBContext {
         return number;
 
     }
-    
-    
+
     public int TotalReview() {
         int number = 0;
         String sql = "SELECT COUNT(*) FROM Review";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
-            ResultSet rs= pre.executeQuery();
-            if(rs.next()){
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                number = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return number;
+
+    }
+    
+    
+    public int TotalReviewByUser(int pid) {
+        int number = 0;
+        String sql = "SELECT COUNT(*) FROM Review WHERE Status = 1 AND ProductID = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, pid);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
                 number = rs.getInt(1);
             }
         } catch (SQLException ex) {
@@ -119,7 +167,7 @@ public class DAOReview extends DBContext {
 
     /**
      * It returns the number of reviews for a supplier.
-     * 
+     *
      * @param supplierID the ID of the supplier
      * @return The number of reviews for a specific supplier.
      */
@@ -142,8 +190,9 @@ public class DAOReview extends DBContext {
     }
 
     /**
-     * It gets the top 5 reviews from the database and returns a vector of Review objects
-     * 
+     * It gets the top 5 reviews from the database and returns a vector of
+     * Review objects
+     *
      * @return A vector of Review objects.
      */
     public Vector<Review> getTop5Review() {
@@ -177,7 +226,7 @@ public class DAOReview extends DBContext {
 
     /**
      * It gets all the reviews of a product by its ID
-     * 
+     *
      * @param pid product id
      * @return A vector of Review objects.
      */
@@ -186,7 +235,7 @@ public class DAOReview extends DBContext {
         DAOCustomers daoCustomers = new DAOCustomers();
         DAOProducts daoProducts = new DAOProducts();
         Vector<Review> vector = new Vector<>();
-        String sql = "SELECT * FROM dbo.Review WHERE ProductID = ? AND Review.Status = 1 ORDER BY Review.ID DESC";
+        String sql = "SELECT TOP 5 * FROM dbo.Review WHERE ProductID = ? AND Review.Status = 1 ORDER BY Review.ID DESC";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, pid);
@@ -211,6 +260,85 @@ public class DAOReview extends DBContext {
     }
     
     
+    public Vector<Review> getAllReviewByProductIDAndAccount(int pid, int accountID) {
+        DAOAccounts daoAccounts = new DAOAccounts();
+        DAOCustomers daoCustomers = new DAOCustomers();
+        DAOProducts daoProducts = new DAOProducts();
+        Vector<Review> vector = new Vector<>();
+        String sql = "SELECT * FROM dbo.Review WHERE ProductID = ? AND Review.Status = 1 AND IDAccount =? ORDER BY Review.ID DESC";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, pid);
+            pre.setInt(2, accountID);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("ID");
+                int idAccount = rs.getInt("IDAccount");
+                int productID = pid;
+                String content = rs.getString("ContentSend");
+                int rate = rs.getInt("Rate");
+                String postDate = rs.getString("DateRate");
+                boolean status = rs.getBoolean("Status");
+                Accounts acc = daoAccounts.getID(idAccount);
+                Customers cus = daoCustomers.getCustomerByUserName(acc.getUserName());
+                Products product = daoProducts.getProductByID(productID);
+                vector.add(new Review(id, acc, cus, product, content, rate, postDate, status));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return vector;
+    }
+    
+    public Vector<Review> getNextReviewByProductID(int pid, int amount) {
+        DAOAccounts daoAccounts = new DAOAccounts();
+        DAOCustomers daoCustomers = new DAOCustomers();
+        DAOProducts daoProducts = new DAOProducts();
+        Vector<Review> vector = new Vector<>();
+        String sql = "SELECT * FROM dbo.Review WHERE ProductID = ? AND Review.Status = 1 ORDER BY Review.ID DESC OFFSET ? ROWS FETCH NEXT 5 ROWS ONLY";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, pid);
+            pre.setInt(2, amount);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("ID");
+                int idAccount = rs.getInt("IDAccount");
+                int productID = pid;
+                String content = rs.getString("ContentSend");
+                int rate = rs.getInt("Rate");
+                String postDate = rs.getString("DateRate");
+                boolean status = rs.getBoolean("Status");
+                Accounts acc = daoAccounts.getID(idAccount);
+                Customers cus = daoCustomers.getCustomerByUserName(acc.getUserName());
+                Products product = daoProducts.getProductByID(productID);
+                vector.add(new Review(id, acc, cus, product, content, rate, postDate, status));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return vector;
+    }
+
+    public Vector<Integer> numberReviewtarProductID(int pid) {
+        Vector<Integer> vector = new Vector<>();
+        String sql = "SELECT COUNT(*) FROM dbo.Review WHERE ProductID = ? AND Review.Status = 1 AND Rate = ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, pid);
+            for (int i = 5; i >= 1; i--) {
+                pre.setInt(2, i);
+                ResultSet rs = pre.executeQuery();
+                if (rs.next()) {
+                    vector.add(rs.getInt(1));
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return vector;
+    }
+
     public Vector<Review> getAllReviewByProductIDAndAdmin(int pid) {
         DAOAccounts daoAccounts = new DAOAccounts();
         DAOCustomers daoCustomers = new DAOCustomers();
@@ -241,16 +369,17 @@ public class DAOReview extends DBContext {
     }
 
     /**
-     * It gets the average rate of a product by getting the rate of each review of that product and
-     * then dividing the sum of all the rates by the number of reviews
-     * 
+     * It gets the average rate of a product by getting the rate of each review
+     * of that product and then dividing the sum of all the rates by the number
+     * of reviews
+     *
      * @param pid product id
      * @return The average rate of a product.
      */
     public double getAverageRate(int pid) {
         double avgRate = 0;
         Vector<Integer> rateList = new Vector<>();
-        String sql = "SELECT Rate FROM Review WHERE ProductID = ?";
+        String sql = "SELECT Rate FROM Review WHERE ProductID = ? AND Status = 1";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, pid);
@@ -259,12 +388,16 @@ public class DAOReview extends DBContext {
                 int rate = rs.getInt(1);
                 rateList.add(rate);
             }
-
+            System.out.println(rateList.size());
             for (Integer integer : rateList) {
                 avgRate += integer;
             }
             if (rateList.size() != 0) {
                 avgRate /= (rateList.size());
+            }
+            System.out.println("List");
+            for (Integer integer : rateList) {
+                System.out.println(integer);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -274,8 +407,9 @@ public class DAOReview extends DBContext {
 
     /**
      * Insert a review into the database
-     * 
-     * @param review the object that contains the data to be inserted into the database
+     *
+     * @param review the object that contains the data to be inserted into the
+     * database
      * @return The number of rows affected by the SQL statement.
      */
     public int InsertReview(Review review) {
@@ -296,7 +430,7 @@ public class DAOReview extends DBContext {
 
     /**
      * This function returns the total number of reviews in the database
-     * 
+     *
      * @return The number of reviews in the database.
      */
     public int TotalReviews() {
@@ -315,6 +449,6 @@ public class DAOReview extends DBContext {
 
     public static void main(String[] args) {
         DAOReview dao = new DAOReview();
-        dao.changeReview(dao.getReviewByID(1), "hidden");
+        System.out.println(dao.deleteReview(61));
     }
 }

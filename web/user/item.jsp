@@ -21,6 +21,187 @@
 
     </head>
 
+    <style>
+        .button {
+            z-index: 2;
+            display: block;
+            width: fit-content;
+            height: auto;
+            outline: none;
+            border: none;
+            background-color: inherit;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 10px 20px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .button::before {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            transform: scaleX(0.2) scaleY(0.5) translate(250%, 100%);
+            border-top: solid 2px #333;
+            border-left: solid 4px #333;
+            transition: all .4s ease-in-out;
+        }
+
+        .button::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%) scaleX(0.2) scaleY(0.5);
+            border-bottom: solid 2px #333;
+            border-right: solid 4px #333;
+            transition: all .4s ease-in-out;
+        }
+
+        .button:hover::before {
+            transform: translate(0%, 0%) scaleX(1) scaleY(1);
+            border-top: solid 1px #333;
+            border-left: solid 1px #333;
+        }
+
+        .button:hover::after {
+            transform: scaleX(1) scaleY(1) translate(0%, 0%);
+            border-bottom: solid 1px #333;
+            border-right: solid 1px #333;
+        }
+
+
+        .edit_review {
+            float: right;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
+            border: solid 3px transparent;
+            background-clip: padding-box;
+            box-shadow: 0px 0px 0px 3px #ffffff00;
+            color: white;
+            min-height: 43px;
+            padding: 0 13px 0 13px;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all .5s ease;
+        }
+
+        .edit_review:active {
+            transform: scale(.9);
+            transition: all 100ms ease;
+        }
+
+        .edit_review:hover {
+            box-shadow: 0px 0px 0px 3px #30a1b8;
+        }
+
+        .edit_review svg {
+            width: 16px;
+        }
+
+
+
+        .btn {
+            background-color: transparent;
+            position: relative;
+            border: none;
+            float: right;
+            margin-right: 10px;
+            margin-top: 7px;
+        }
+
+        .btn::after {
+            content: 'delete';
+            position: absolute;
+            top: -130%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: fit-content;
+            height: fit-content;
+            background-color: rgb(168, 7, 7);
+            padding: 4px 8px;
+            border-radius: 5px;
+            transition: .2s linear;
+            transition-delay: .2s;
+            color: white;
+            text-transform: uppercase;
+            font-size: 12px;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .icon {
+            transform: scale(1.2);
+            transition: .2s linear;
+        }
+
+        .btn:hover > .icon {
+            transform: scale(1.5);
+        }
+
+        .btn:hover > .icon path {
+            fill: rgb(168, 7, 7);
+        }
+
+        .btn:hover::after {
+            visibility: visible;
+            opacity: 1;
+            top: -160%;
+        }
+
+
+
+
+
+
+
+        .save-review {
+            background: #2389e9;
+            padding: 20px;
+            color: #FFFFFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            transition: all .5s ease-in-out;
+        }
+
+        .save-review:hover {
+            border-radius: 50%;
+            transition: all .5s ease-in-out;
+        }
+
+        .save-review:hover:before {
+            margin-left: 0%;
+            transform: rotate(24deg);
+        }
+
+        .save-review::before {
+            content: "";
+            background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNzUycHQiIGhlaWdodD0iNzUycHQiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDc1MiA3NTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiA8cGF0aCBkPSJtNTczLjE4IDE5OC42MnYwbC0zOTYuMDkgNjMuNzE5Yy03Ljc1IDAuODU5MzgtOS40NzI3IDExLjE5NS0zLjQ0NTMgMTUuNWw5Ny4zMDEgNjguODgzLTE1LjUgMTEyLjhjLTAuODU5MzggNy43NSA3Ljc1IDEyLjkxNCAxMy43NzcgNy43NWw1NS4xMDktNDQuNzczIDI2LjY5MSAxMjQuODVjMS43MjI3IDcuNzUgMTEuMTk1IDkuNDcyNyAxNS41IDIuNTgybDIxNS4yNy0zMzguMzljMy40NDE0LTYuMDI3My0xLjcyNjYtMTMuNzc3LTguNjEzMy0xMi45MTR6bS0zNzIuODQgNzYuNjMzIDMxMy40Mi00OS45NDEtMjMzLjM0IDEwNy42M3ptNzQuMDUxIDE2NS4zMiAxMi45MTQtOTIuMTMzYzgwLjkzOC0zNy4wMjcgMTM5LjQ5LTY0LjU3OCAyMjkuMDQtMTA1LjkxLTEuNzE4OCAxLjcyMjctMC44NTkzNyAwLjg1OTM4LTI0MS45NSAxOTguMDR6bTg4LjY4OCA4Mi42Ni0yNC4xMDktMTEyLjggMTk5Ljc3LTE2Mi43NHoiIGZpbGw9IiNmZmYiLz4KPC9zdmc+Cg==");
+            height: 50px;
+            background-repeat: no-repeat;
+            position: absolute;
+            width: 50px;
+            transition: all .9s ease-in-out;
+            background-size: 100%;
+        }
+
+    </style>
+
     <%
         response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
         response.setHeader("Pragma", "no-cache"); //HTTP 1.0
@@ -237,7 +418,7 @@
                     <c:forEach begin="1" end="${5-star}">
                         <span class="fa fa-star"></span>
                     </c:forEach>
-                    <span>(${requestScope.getAllReview.size()} đánh giá)</span>
+                    <span>(${requestScope.totalReview} đánh giá)</span>
                 </div>
 
 
@@ -329,83 +510,227 @@
         <div>
             <divs style="display: flex; justify-content: space-between;">
                 <h3>Đánh giá sản phẩm</h3>
+                <button class="btn_review-submit js-update s-full-width">Đánh giá</button>
+        </div>
+        <hr>
+        <div>
+            <div class="col-md-6">
+                <h3 class="text-center">Đánh giá trung bình</h3>
+                <h3 class="text-center text-danger">${requestScope.rateAvg}/5</h3>
+                <div class="text-center">
+                    <c:forEach begin="1" end="${star}" var="r">
+                        <span class="fa fa-star checked"></span>
+                    </c:forEach>
+                    <c:forEach begin="1" end="${5-star}">
+                        <span class="fa fa-star"></span>
+                    </c:forEach>
+                </div>
+                <h4 class="text-center text-danger">${requestScope.totalReview} Đánh giá</h4>
+            </div>
+            <div class="col-md-6">
+                <c:set var="numberStar" value="5"></c:set>
+                <c:forEach items="${requestScope.numberReview}" var="i">
+                    ${numberStar} <span class="fa fa-star checked"></span>( ${i} Đánh giá )<div class="progress">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<fmt:formatNumber value = "${i*100/requestScope.numberReview.size() -1}" />" aria-valuemin="0" aria-valuemax="100" style="width:<fmt:formatNumber value = "${i*100/requestScope.numberReview.size() -1}" />%">
+                        </div>
+                    </div>
+                    <c:set var="numberStar" value="${numberStar - 1}"></c:set>
+                </c:forEach>
+            </div>
+
         </div>
 
         <div>
-            <form action="${pageContext.request.contextPath}/user/review" method="post" id="form_review">
-                <input type="hidden" value="${sessionScope.account.acc.userName}" name="userName">
-                <input type="hidden" value="${pro.productID}" name="productID">
-                <div class="review_content">
-                    <hr style="height:1px;border-width:0;color:gray;background-color:gray">
-                    <div style="display: flex; justify-content: center;">
-                        <img src="data:image/jpg;base64,${pro.base64Image}" alt="image"  style="width: 200px;"/>
-                    </div>
-                    <h4 class="text-center">${pro.productName}</h4>
-                    <div style="display: flex;justify-content: space-around;">
+            <div>
 
-                        <div>
-                            <input type="radio" id="1star" name="star" value="1" required="">
-                            <label for="1star" style="font-size: 20px;">1<span class="fa fa-star checked"></span>
-                            </label>
-                        </div>
-                        <div>
-                            <input type="radio" id="2star" name="star" value="2" required="">
-                            <label for="2star" style="font-size: 20px;">2 <span
-                                    class="fa fa-star checked"></span></label>
-                        </div>
-                        <div>
-                            <input type="radio" id="3star" name="star" value="3" required="">
-                            <label for="3star" style="font-size: 20px;">3 <span
-                                    class="fa fa-star checked"></span></label>
-                        </div>
-                        <div>
-                            <input type="radio" id="4star" name="star" value="4" required="">
-                            <label for="4star" style="font-size: 20px;">4 <span
-                                    class="fa fa-star checked"></span></label>
+                <div class="modal js-modal">
+                    <div class="modal-container js-modal-container">
+
+                        <div class="modal-close js-modal-close">
+                            <i class="ti-close"></i>
                         </div>
 
-                        <div>
-                            <input type="radio" id="5star" name="star" value="5" required="">
-                            <label for="5star" style="font-size: 20px;">5 <span
-                                    class="fa fa-star checked"></span></label>
+                        <header class="modal-header">
+                            <i class="modal-heading-icons ti-comment-alt"></i>
+                            Gửi đánh giá
+                        </header>
+
+                        <div class="modal-body">
+                            <form action="${pageContext.request.contextPath}/user/review" method="post" id="form_review">
+                                <input type="hidden" value="${sessionScope.account.acc.userName}" name="userName">
+                                <input type="hidden" value="${pro.productID}" name="productID">
+                                <div style="display: flex; justify-content: center;">
+                                    <img src="data:image/jpg;base64,${pro.base64Image}" alt="image"  style="width: 200px;"/>
+                                </div>
+                                <h4 class="text-center">${pro.productName}</h4>
+                                <div style="display: flex; justify-content: center">
+                                    <div class="rating">
+                                        <input type="radio" name="rating"
+                                               id="star1" value="1">
+                                        <label for="star1" id="star1-label">&#9733;</label>
+                                        <input type="radio" name="rating"
+                                               id="star2" value="2">
+                                        <label for="star2" id="star2-label">&#9733;</label>
+                                        <input type="radio" name="rating"
+                                               id="star3" value="3">
+                                        <label for="star3" id="star3-label">&#9733;</label>
+                                        <input type="radio" name="rating"
+                                               id="star4" value="4">
+                                        <label for="star4" id="star4-label">&#9733;</label>
+                                        <input type="radio" name="rating"
+                                               id="star5" value="5">
+                                        <label for="star5" id="star5-label">&#9733;</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                        <i class="ti-user"></i>
+                                        Tên Đăng Nhập:
+                                        <input class="modal-input "
+                                               placeholder="Name" value="${sessionScope.account.customerName}" readonly>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <i class="ti-email"></i>
+                                        Email:
+                                        <input id="email" class="modal-input "
+                                               placeholder="Email"
+                                               readonly value="${sessionScope.account.email}">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <textarea class="container modal-input" name="contentSend" id="" style="padding:20px; height:80px; margin: 10px 0;"
+                                              placeholder="Hãy ghi cảm nhận của bạn....." required=""></textarea>
+
+                                </div>
+
+                                <div class="group_btn_review">
+
+                                    <button type="button" id="update" onclick="checkInput()">
+                                        <div class="svg-wrapper-1">
+                                            <div class="svg-wrapper">
+                                                <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z" fill="currentColor"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <span>Send</span>
+                                    </button>
+
+                                    <button type="button" id="cancel" class="js-modal-cancel noselect" ><span class="text">Cancel</span><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path></svg></span></button>
+                                </div>
+
+                            </form>
                         </div>
-                    </div>
-                    <div style="display: flex; justify-content: center;">
-                        <textarea class="container" name="contentSend" id="" style="padding:20px; height:120px; margin: 20px 0;"
-                                  placeholder="Hãy ghi cảm nhận của bạn....." required=""></textarea>
+
                     </div>
                 </div>
 
-                <div class="btn_review" style="padding: 0;">
-                    <button type="button" onclick="checkInput()" class="container" id="update">
-                        Gửi
-                        <i class="ti-check"></i>
-                    </button>
-                </div>
-            </form>
+
+            </div>    
+
         </div>
 
 
     </div>
+    <hr>
+    <c:if test="${not empty sessionScope.account}">
+        <div class="container">
+            <h3 class="">Bình luận của bạn</h3>
+            <hr>
+            <c:forEach items="${requestScope.getReviewByAccount}" var="review">
+                <div class="media reviewbyid container" style="margin-bottom: 40px;">
+                    <div class="media-left">
+                        <img src="data:image/jpg;base64,${review.cus.base64Image}" class="media-object" style="width:60px">
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">${review.acc.userName}</h4><span>${review.dateRate}</span>
+                        <p>
+                            <span class="review-content review-content_byid">${review.contentSend}</span> 
+
+                            <button class="btn" onclick="confirmDeleteReview(${review.id}, ${pro.productID})">
+                                <svg viewBox="0 0 15 17.5" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg" class="icon">
+                                <path transform="translate(-2.5 -1.25)" d="M15,18.75H5A1.251,1.251,0,0,1,3.75,17.5V5H2.5V3.75h15V5H16.25V17.5A1.251,1.251,0,0,1,15,18.75ZM5,5V17.5H15V5Zm7.5,10H11.25V7.5H12.5V15ZM8.75,15H7.5V7.5H8.75V15ZM12.5,2.5h-5V1.25h5V2.5Z" id="Fill"></path>
+                                </svg>
+                            </button>
+
+
+                            <button onclick="toggleReviewEdit(${review.id}, ${pro.productID})" class="edit_review">
+                                <svg class="css-i6dzq1" stroke-linejoin="round" stroke-linecap="round" fill="none" stroke-width="2" stroke="#FFFFFF" height="24" width="24" viewBox="0 0 24 24">
+                                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                                </svg>
+                                Edit
+                            </button>
+                        </p>
+                        <div class="review-edit" id="review${review.id}" style="display:none">
+                            <form action="${pageContext.request.contextPath}/user/updatereview" id="updatereview" method="GET">
+                                
+                                <input type="hidden" name="type" value="update">
+                                <input type="hidden" name="pid" value="${pro.productID}">
+                                <input type="hidden" name="id" value="${review.id}">
+                                <textarea class="review-content-edit" name="contentSendc">${review.contentSend}</textarea>
+                                <div class="ratingc">
+                                    <input type="radio" name="ratingc"
+                                           id="star1c" value="1">
+                                    <label for="star1c"  id="star1c-label">1<i class="fa-star fa checked"></i></label>
+                                    <input type="radio" name="ratingc"
+                                           id="star2c" value="2">
+                                    <label for="star2c"  id="star1c-label">2<i class="fa-star fa checked" style=""></i></label>
+                                    <input type="radio" name="ratingc"
+                                           id="star3c" value="3">
+                                    <label for="star3c"  id="star1c-label">3<i class="fa-star fa checked"></i></label>
+                                    <input type="radio" name="ratingc"
+                                           id="star4c" value="4">
+                                    <label for="star4c"  id="star1c-label">4<i class="fa-star fa checked"></i></label>
+                                    <input type="radio" name="ratingc"
+                                           id="star5c" value="5">
+                                    <label for="star5c"  id="star1c-label">5<i class="fa-star fa checked"></i></label>
+                                </div>
+                                <button type="button" class="save-review" data-review-id="${review.id}" onclick="saveReviewChanges(${review.id})"></button>
+                            </form>
+                        </div>
+                        <c:forEach begin="1" end="${review.rate}" var="i">
+                            <span class="fa fa-star checked"></span>
+                        </c:forEach>
+                        <c:forEach begin="1" end="${5-review.rate}">
+                            <span class="fa fa-star"></span>
+                        </c:forEach>
+                    </div>
+                </div>
+                <hr>
+            </c:forEach>
+        </div>
+    </c:if>
 
     <hr>
-    <c:forEach items="${requestScope.getAllReview}" var="review">
-        <div class="media container" style="margin-bottom: 40px;">
-            <div class="media-left">
-                <img src="data:image/jpg;base64,${review.cus.base64Image}" class="media-object" style="width:60px">
+    <div id="content_review" class="content_review container">
+        <h3 class="">Tất cả bình luận</h3>
+        <hr>
+        <c:forEach items="${requestScope.getAllReview}" var="review">
+            <div class="media review container" style="margin-bottom: 40px;">
+                <div class="media-left">
+                    <img src="data:image/jpg;base64,${review.cus.base64Image}" class="media-object" style="width:60px">
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">${review.acc.userName}</h4><span>${review.dateRate}</span>
+                    <p>${review.contentSend}</p>
+                    <c:forEach begin="1" end="${review.rate}" var="i">
+                        <span class="fa fa-star checked"></span>
+                    </c:forEach>
+                    <c:forEach begin="1" end="${5-review.rate}">
+                        <span class="fa fa-star"></span>
+                    </c:forEach>
+                </div>
             </div>
-            <div class="media-body">
-                <h4 class="media-heading">${review.acc.userName}</h4><span>${review.dateRate}</span>
-                <p>${review.contentSend}</p>
-                <c:forEach begin="1" end="${review.rate}" var="i">
-                    <span class="fa fa-star checked"></span>
-                </c:forEach>
-                <c:forEach begin="1" end="${5-review.rate}">
-                    <span class="fa fa-star"></span>
-                </c:forEach>
-            </div>
-        </div>
-    </c:forEach>
+        </c:forEach>
+    </div>
+    <div style="display: grid; place-items: center;">
+        <button class="button" onclick="loadMore()">
+            Loadmore
+        </button>
+    </div>
     <hr>
 
     <div class="container flashsale">
@@ -491,56 +816,174 @@
 
 <script>
 
-                        function buy(id) {
-                            var m = document.f.num.value;
-                            document.f.action = "buy?pid=" + id + "&num=" + m;
-                            if (m > ${pro.unitsInStock} || m <= 0) {
-                                return;
-                            }
-                            document.f.submit();
-                        }
+            function buy(id) {
+                var m = document.f.num.value;
+                document.f.action = "buy?pid=" + id + "&num=" + m;
+                if (m > ${pro.unitsInStock} || m <= 0) {
+                    return;
+                }
+                document.f.submit();
+            }
 
 
-                        window.onscroll = function () {
-                            myFunction()
-                        };
+            window.onscroll = function () {
+                myFunction()
+            };
 
-                        var navbar = document.getElementById("navbar");
-                        var sticky = navbar.offsetTop;
+            var navbar = document.getElementById("navbar");
+            var sticky = navbar.offsetTop;
 
-                        function myFunction() {
-                            if (window.pageYOffset >= sticky) {
-                                navbar.classList.add("sticky")
-                            } else {
-                                navbar.classList.remove("sticky");
-                            }
-                        }
+            function myFunction() {
+                if (window.pageYOffset >= sticky) {
+                    navbar.classList.add("sticky")
+                } else {
+                    navbar.classList.remove("sticky");
+                }
+            }
 
-                        function checkInput() {
-                            var isFormValid = true;
-                            var form = document.getElementById("form_review");
+            function checkInput() {
+                // Get the form element
+                var form = document.getElementById("form_review");
 
-                            // iterate over all the elements in the form
-                            for (var i = 0; i < form.elements.length; i++) {
-                                var element = form.elements[i];
+                // Get the input elements
+                var ratingInputs = form.elements["rating"];
+                var contentSendInput = form.elements["contentSend"];
 
-                                // if an element is required and its value is empty
-                                if (element.required && element.value === "") {
-                                    // set the flag to false
-                                    isFormValid = false;
+                // Check if a rating option is selected
+                var ratingSelected = false;
+                for (var i = 0; i < ratingInputs.length; i++) {
+                    if (ratingInputs[i].checked) {
+                        ratingSelected = true;
+                        break;
+                    }
+                }
+                if (!ratingSelected) {
+                    alert("Please select a rating option.");
+                    return;
+                }
 
-                                    // alert the user that the form is not valid
-                                    alert("Please fill in all the required fields");
-                                    break; // stop iterating further
-                                }
-                            }
+                // Check if the contentSend input is not empty
+                if (contentSendInput.value.trim() == "") {
+                    alert("Please enter your review.");
+                    return;
+                }
 
-                            // if the form is valid, submit it
-                            if (isFormValid) {
-                                form.submit();
-                            }
-                        }
+                // Submit the form if all inputs are valid
+                form.submit();
+            }
 
+
+
+
+            const updateBtns = document.querySelectorAll('.js-update')
+            const modal = document.querySelector('.js-modal')
+            const modalClose = document.querySelector('.js-modal-close')
+            const modalCancel = document.querySelector('.js-modal-cancel')
+            const modalContainer = document.querySelector('.js-modal-container')
+            function showUpdate() {
+                modal.classList.add('open')
+            }
+
+            function hideUpdate() {
+                modal.classList.remove('open')
+            }
+
+            for (const updateBtn of updateBtns) {
+                updateBtn.addEventListener('click', showUpdate)
+            }
+
+            modalClose.addEventListener('click', hideUpdate)
+
+            modalCancel.addEventListener('click', hideUpdate)
+
+            modal.addEventListener('click', hideUpdate)
+
+            modalContainer.addEventListener('click', function (event) {
+                event.stopPropagation()
+            })
+
+
+
+            $(document).ready(function () {
+                // Listen for changes to the rating input
+                $("input[name='rating']").change(function () {
+                    // Get the selected rating value
+                    var rating = parseInt($(this).val());
+                    // Set the color of the stars based on the selected rating
+                    for (var i = 1; i <= rating; i++) {
+                        $("#star" + i + "-label").addClass("gold");
+                    }
+                    for (var j = rating + 1; j <= 5; j++) {
+                        $("#star" + j + "-label").removeClass("gold");
+                    }
+                });
+            });
+
+
+
+            function loadMore() {
+                const amount = document.getElementsByClassName('review').length;
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/user/loadmorereview",
+                    type: "get",
+                    data: {
+                        total: amount,
+                        pid: ${pro.productID}
+
+                    },
+                    success: function (data) {
+                        var row = document.getElementById('content_review');
+                        row.innerHTML += data;
+                    },
+                    error: function (xhr) {
+                        //Do Something to handle error
+                    }
+                });
+            }
+
+
+            function toggleReviewEdit(reviewId) {
+                const reviewEdit = document.getElementById('review' + reviewId);
+                console.log(reviewId);
+                if (reviewEdit) {
+                    reviewEdit.style.display = reviewEdit.style.display === "none" ? "block" : "none";
+                }
+            }
+
+            function confirmDeleteReview(reviewId, pid) {
+                if (confirm("Are you sure you want to delete this review?")) 
+                    window.location.href = "${pageContext.request.contextPath}/user/updatereview?type=delete&id="+reviewId+"&pid="+pid;
+            }
+
+            function saveReviewChanges(id) {
+                var form = document.getElementById("updatereview");
+
+                // Get the input elements
+                var ratingInputs = form.elements["ratingc"];
+                var contentSendInput = form.elements["contentSendc"];
+
+                // Check if a rating option is selected
+                var ratingSelected = false;
+                for (var i = 0; i < ratingInputs.length; i++) {
+                    if (ratingInputs[i].checked) {
+                        ratingSelected = true;
+                        break;
+                    }
+                }
+                if (!ratingSelected) {
+                    alert("Please select a rating option.");
+                    return;
+                }
+
+                // Check if the contentSend input is not empty
+                if (contentSendInput.value.trim() === "") {
+                    alert("Please enter your review.");
+                    return;
+                }
+                if (confirm("Are you sure you want to change this review?")) {
+                    document.getElementById('updatereview').submit();
+                }
+            }
 
 
 </script>

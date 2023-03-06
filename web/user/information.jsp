@@ -184,6 +184,7 @@
                 <h1>Hello ${sessionScope.account.customerName}! Hồ sơ của tôi</h1>
                 <hr style="margin-right: 20px; height: 1px; background-color: black; color: black;">
                 <h3>${requestScope.message}</h3>
+                <form method="post" action="${pageContext.request.contextPath}/user/information" enctype="multipart/form-data">
                 <div class="coi-md-5 img_user">
                     <img style="width: 150px;" src="data:image/jpg;base64,${sessionScope.account.base64Image}"/>
                     <div style="display: flex; width: 184px; flex-direction: column;">
@@ -192,7 +193,7 @@
                         </div>
                     </div>
                 </div>
-                <form method="post" action="${pageContext.request.contextPath}/user/information" enctype="multipart/form-data">
+                
                     <div class="row col-md-9 right_form">
                         <h3 style="color: red">${requestScope.error}</h3>
                         <div class="row form_info">
@@ -262,42 +263,6 @@
             }
         }
 
-
-//        function updateInfo() {
-//            var email = document.getElementById("email");
-//            var customerName = document.getElementById("customerName");
-//            var phone = document.getElementById("phone");
-//            var address = document.getElementById("address");
-//            var gender = document.getElementById("gender1");
-//            var photo = document.getElementById("photo");
-//
-//
-//            $.ajax({
-//                url: "/user/information",
-//                type: "post", //send it through get method
-//                data: {
-//                    email: email,
-//                    customerName: customerName,
-//                    address: address,
-//                    gender: gender,
-//                    photo: photo,
-//                    phone: phone
-//                },
-//                success: function (response) {
-//                    email.innerHTML = email;
-//                    customerName.innerHTML = customerName;
-//                    phone.innerHTML = phone;
-//                    address.innerHTML = address;
-//                },
-//                error: function (xhr) {
-//                    //Do Something to handle error
-//                }
-//            });
-//        }
-
-        window.onload = function () {
-            document.querySelector(".gearbox").style.display = "none";
-        };
 
     </script>
 </body>

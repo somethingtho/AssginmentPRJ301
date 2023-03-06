@@ -80,8 +80,12 @@ public class Review {
         this.rate = rate;
         this.dateRate = dateRate;
     }
-    
-    
+
+    public Review(int id, String contentSend, int rate) {
+        this.id = id;
+        this.contentSend = contentSend;
+        this.rate = rate;
+    }
     
     
     public Review() {

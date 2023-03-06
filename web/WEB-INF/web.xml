@@ -114,6 +114,14 @@
         <url-pattern>/admin/shippers.jsp</url-pattern>
         <url-pattern>/admin/suppliers.jsp</url-pattern>
         <url-pattern>/admin/tables.jsp</url-pattern>
+        <url-pattern>/admin/reviews.jsp</url-pattern>
+        <url-pattern>/admin/orders.jsp</url-pattern>
+        <url-pattern>/admin/updateorder</url-pattern>
+        <url-pattern>/admin/searchorder</url-pattern>
+        <url-pattern>/admin/searchcomments</url-pattern>
+        <url-pattern>/admin/searchcomments.jsp</url-pattern>
+        <url-pattern>/admin/searchorder.jsp</url-pattern>
+        <url-pattern>/admin/orders</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>UserAuthenticationFilter</filter-name>
@@ -369,6 +377,14 @@
         <servlet-name>SearchCommentsServlet</servlet-name>
         <servlet-class>controller.admin.SearchCommentsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoadMoreReviewServlet</servlet-name>
+        <servlet-class>controller.user.LoadMoreReviewServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateReviewByUserServlet</servlet-name>
+        <servlet-class>controller.user.UpdateReviewByUserServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>IndexServlet</servlet-name>
         <url-pattern>/user/index</url-pattern>
@@ -608,6 +624,14 @@
     <servlet-mapping>
         <servlet-name>SearchCommentsServlet</servlet-name>
         <url-pattern>/admin/searchcomments</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadMoreReviewServlet</servlet-name>
+        <url-pattern>/user/loadmorereview</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateReviewByUserServlet</servlet-name>
+        <url-pattern>/user/updatereview</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
