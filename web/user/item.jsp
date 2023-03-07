@@ -21,188 +21,8 @@
 
     </head>
 
-    <style>
-        .button {
-            z-index: 2;
-            display: block;
-            width: fit-content;
-            height: auto;
-            outline: none;
-            border: none;
-            background-color: inherit;
-            font-size: 24px;
-            font-weight: bold;
-            padding: 10px 20px;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .button::before {
-            content: "";
-            display: block;
-            width: 100%;
-            height: 100%;
-            z-index: 3;
-            position: absolute;
-            top: 0%;
-            left: 0%;
-            transform: scaleX(0.2) scaleY(0.5) translate(250%, 100%);
-            border-top: solid 2px #333;
-            border-left: solid 4px #333;
-            transition: all .4s ease-in-out;
-        }
-
-        .button::after {
-            content: "";
-            display: block;
-            width: 100%;
-            height: 100%;
-            z-index: 3;
-            position: absolute;
-            top: 0;
-            left: 0;
-            transform: translate(-50%, -50%) scaleX(0.2) scaleY(0.5);
-            border-bottom: solid 2px #333;
-            border-right: solid 4px #333;
-            transition: all .4s ease-in-out;
-        }
-
-        .button:hover::before {
-            transform: translate(0%, 0%) scaleX(1) scaleY(1);
-            border-top: solid 1px #333;
-            border-left: solid 1px #333;
-        }
-
-        .button:hover::after {
-            transform: scaleX(1) scaleY(1) translate(0%, 0%);
-            border-bottom: solid 1px #333;
-            border-right: solid 1px #333;
-        }
-
-
-        .edit_review {
-            float: right;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
-            border: solid 3px transparent;
-            background-clip: padding-box;
-            box-shadow: 0px 0px 0px 3px #ffffff00;
-            color: white;
-            min-height: 43px;
-            padding: 0 13px 0 13px;
-            border-radius: 50px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all .5s ease;
-        }
-
-        .edit_review:active {
-            transform: scale(.9);
-            transition: all 100ms ease;
-        }
-
-        .edit_review:hover {
-            box-shadow: 0px 0px 0px 3px #30a1b8;
-        }
-
-        .edit_review svg {
-            width: 16px;
-        }
-
-
-
-        .btn {
-            background-color: transparent;
-            position: relative;
-            border: none;
-            float: right;
-            margin-right: 10px;
-            margin-top: 7px;
-        }
-
-        .btn::after {
-            content: 'delete';
-            position: absolute;
-            top: -130%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: fit-content;
-            height: fit-content;
-            background-color: rgb(168, 7, 7);
-            padding: 4px 8px;
-            border-radius: 5px;
-            transition: .2s linear;
-            transition-delay: .2s;
-            color: white;
-            text-transform: uppercase;
-            font-size: 12px;
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .icon {
-            transform: scale(1.2);
-            transition: .2s linear;
-        }
-
-        .btn:hover > .icon {
-            transform: scale(1.5);
-        }
-
-        .btn:hover > .icon path {
-            fill: rgb(168, 7, 7);
-        }
-
-        .btn:hover::after {
-            visibility: visible;
-            opacity: 1;
-            top: -160%;
-        }
-
-
-
-
-
-
-
-        .save-review {
-            background: #2389e9;
-            padding: 20px;
-            color: #FFFFFF;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: none;
-            transition: all .5s ease-in-out;
-        }
-
-        .save-review:hover {
-            border-radius: 50%;
-            transition: all .5s ease-in-out;
-        }
-
-        .save-review:hover:before {
-            margin-left: 0%;
-            transform: rotate(24deg);
-        }
-
-        .save-review::before {
-            content: "";
-            background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNzUycHQiIGhlaWdodD0iNzUycHQiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDc1MiA3NTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiA8cGF0aCBkPSJtNTczLjE4IDE5OC42MnYwbC0zOTYuMDkgNjMuNzE5Yy03Ljc1IDAuODU5MzgtOS40NzI3IDExLjE5NS0zLjQ0NTMgMTUuNWw5Ny4zMDEgNjguODgzLTE1LjUgMTEyLjhjLTAuODU5MzggNy43NSA3Ljc1IDEyLjkxNCAxMy43NzcgNy43NWw1NS4xMDktNDQuNzczIDI2LjY5MSAxMjQuODVjMS43MjI3IDcuNzUgMTEuMTk1IDkuNDcyNyAxNS41IDIuNTgybDIxNS4yNy0zMzguMzljMy40NDE0LTYuMDI3My0xLjcyNjYtMTMuNzc3LTguNjEzMy0xMi45MTR6bS0zNzIuODQgNzYuNjMzIDMxMy40Mi00OS45NDEtMjMzLjM0IDEwNy42M3ptNzQuMDUxIDE2NS4zMiAxMi45MTQtOTIuMTMzYzgwLjkzOC0zNy4wMjcgMTM5LjQ5LTY0LjU3OCAyMjkuMDQtMTA1LjkxLTEuNzE4OCAxLjcyMjctMC44NTkzNyAwLjg1OTM4LTI0MS45NSAxOTguMDR6bTg4LjY4OCA4Mi42Ni0yNC4xMDktMTEyLjggMTk5Ljc3LTE2Mi43NHoiIGZpbGw9IiNmZmYiLz4KPC9zdmc+Cg==");
-            height: 50px;
-            background-repeat: no-repeat;
-            position: absolute;
-            width: 50px;
-            transition: all .9s ease-in-out;
-            background-size: 100%;
-        }
-
-    </style>
-
-    <%
+ 
+   <%
         response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
         response.setHeader("Pragma", "no-cache"); //HTTP 1.0
         response.setDateHeader("Expires", 0);
@@ -673,19 +493,19 @@
                                 <textarea class="review-content-edit" name="contentSendc">${review.contentSend}</textarea>
                                 <div class="ratingc">
                                     <input type="radio" name="ratingc"
-                                           id="star1c" value="1">
+                                           id="star1c" value="1" <c:if test="${review.rate == 1}">checked</c:if>>
                                     <label for="star1c"  id="star1c-label">1<i class="fa-star fa checked"></i></label>
                                     <input type="radio" name="ratingc"
-                                           id="star2c" value="2">
+                                           id="star2c" value="2" <c:if test="${review.rate == 2}">checked</c:if>>
                                     <label for="star2c"  id="star1c-label">2<i class="fa-star fa checked" style=""></i></label>
                                     <input type="radio" name="ratingc"
-                                           id="star3c" value="3">
+                                           id="star3c" value="3" <c:if test="${review.rate == 3}">checked</c:if>>
                                     <label for="star3c"  id="star1c-label">3<i class="fa-star fa checked"></i></label>
                                     <input type="radio" name="ratingc"
-                                           id="star4c" value="4">
+                                           id="star4c" value="4" <c:if test="${review.rate == 4}">checked</c:if>>
                                     <label for="star4c"  id="star1c-label">4<i class="fa-star fa checked"></i></label>
                                     <input type="radio" name="ratingc"
-                                           id="star5c" value="5">
+                                           id="star5c" value="5" <c:if test="${review.rate == 5}">checked</c:if>>
                                     <label for="star5c"  id="star1c-label">5<i class="fa-star fa checked"></i></label>
                                 </div>
                                 <button type="button" class="save-review" data-review-id="${review.id}" onclick="saveReviewChanges(${review.id})"></button>
