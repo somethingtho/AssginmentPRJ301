@@ -68,9 +68,6 @@
             <p>Login with role admin? <a href="${pageContext.request.contextPath}/admin/authentication-login.jsp" class="a2">Login!</a></p>
         </div>
         <script>
-            window.onload = function () {
-                document.querySelector(".gearbox").style.display = "none";
-            };
             
         </script>
     </body>

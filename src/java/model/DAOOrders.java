@@ -26,13 +26,25 @@ import java.util.logging.Logger;
 public class DAOOrders extends DBContext {
 
     public int UpdateOrders(int orderID, boolean status) {
+        Orders order = getOrdersByOrderID(orderID);
+        Vector<OrderDetails> listOrderDetail = order.getOrderDetails();
         int number = 0;
         String sql = "UPDATE Orders SET Status = ? WHERE OrderID = ?";
+        String sql2 ="UPDATE Products Set UnitsInStock = UnitsInStock + ?, UnitsOnOrder = UnitsOnOrder - ?, Discontinued = ? WHERE ProductID = ?";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setBoolean(1, status);
             pre.setInt(2, orderID);
             pre.executeUpdate();
+            
+            PreparedStatement preProduct = connection.prepareStatement(sql2);
+            for (OrderDetails orderDetails : listOrderDetail) {
+                preProduct.setInt(1, orderDetails.getQuantity());
+                preProduct.setInt(2, orderDetails.getQuantity());
+                preProduct.setBoolean(3, false);
+                preProduct.setInt(4, orderDetails.getProduct().getProductID());
+                preProduct.executeUpdate(); 
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -638,7 +650,7 @@ public class DAOOrders extends DBContext {
      */
     public int TotalOrders() {
         int number = 0;
-        String sql = "SELECT COUNT(*) FROM Orders";
+        String sql = "SELECT COUNT(*) FROM Orders WHERE Status = 1";
         ResultSet rs = getData(sql);
         try {
             if (rs.next()) {
@@ -786,7 +798,7 @@ public class DAOOrders extends DBContext {
                 }
             }
             //cap nhat lai so luong san pham
-            String sql3 = "update products set UnitsInStock = UnitsInStock-?, UnitsOnOrders = UnitsOnOrders + ? where ProductID=?";
+            String sql3 = "update products set UnitsInStock = UnitsInStock-?, UnitsOnOrder = UnitsOnOrder + ? where ProductID=?";
             PreparedStatement st3 = connection.prepareStatement(sql3);
             for (Item i : cart.getItems()) {
                 st3.setInt(1, i.getQuantity());

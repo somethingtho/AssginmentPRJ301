@@ -105,7 +105,7 @@ public class DAOOrderDetails extends DBContext {
      */
     public int TotalOrderDetails() {
         int number = 0;
-        String sql = "SELECT COUNT(*) FROM OrderDetails";
+        String sql = "SELECT COUNT(*) FROM OrderDetails INNER JOIN Orders ON Orders.OrderID = OrderDetails.OrderID WHERE Status =1";
         ResultSet rs = getData(sql);
         try {
             if (rs.next()) {

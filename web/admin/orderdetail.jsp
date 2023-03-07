@@ -549,11 +549,11 @@
 
                                             <c:if test="${requestScope.order.status == 3}">
 
-                                                <button class="btn btn-outline-danger text-black-50 col-md-3">
+                                                <button onclick="updateOrder(${orderNew.orderID}, 'reject')" class="btn btn-outline-danger text-black-50 col-md-3">
                                                     Reject
                                                 </button>
 
-                                                <button class="btn btn-success text-white col-md-3">
+                                                <button onclick="updateOrder(${orderNew.orderID}, 'accept')" class="btn btn-success text-white col-md-3">
                                                     Accept
                                                 </button>
 
@@ -606,19 +606,26 @@
             <script src="assets/extra-libs/multicheck/jquery.multicheck.js"></script>
             <script src="assets/extra-libs/DataTables/datatables.min.js"></script>
             <script>
-                /****************************************
-                 *       Basic Table                   *
-                 ****************************************/
-                $("#zero_config").DataTable();
+                                                    /****************************************
+                                                     *       Basic Table                   *
+                                                     ****************************************/
+                                                    $("#zero_config").DataTable();
 
-                function handleClick(lock) {
-                    let txt;
-                    if (lock.value === 'ON')
-                        txt = " khoá ";
-                    else
-                        txt = " mở khoá ";
-                    alert("Bạn đang" + txt + "tài khoản này!");
-                }
+                                                    function handleClick(lock) {
+                                                        let txt;
+                                                        if (lock.value === 'ON')
+                                                            txt = " khoá ";
+                                                        else
+                                                            txt = " mở khoá ";
+                                                        alert("Bạn đang" + txt + "tài khoản này!");
+                                                    }
+
+                                                    function updateOrder(id, type, cid) {
+                                                        if (confirm("Are you sure you want " + type + " order " + "have OrderID = " + id + "?")) {
+                                                            window.location.href = "${pageContext.request.contextPath}/admin/updateorder?oid=" + id + "&type=" + type;
+                                                        }
+                                                    }
+
             </script>
     </body>
 </html>
