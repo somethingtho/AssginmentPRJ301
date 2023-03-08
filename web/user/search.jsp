@@ -68,7 +68,7 @@
                                                 <h5 style="text-align: left;">${i.product.productName}</h5>
                                                 <p>Số lượng: ${i.quantity}</p>
                                                 <div>
-                                                    <p style="text-align: right; color: red;"><fmt:formatNumber value = "${i.product.unitPrice*1.1}" type = "currency"/></p>
+                                                    <p style="text-align: right; color: red;"><fmt:formatNumber value = "${i.product.unitPrice - i.product.unitPrice*i.product.discount}" type = "currency"/></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -223,8 +223,8 @@
                                 <img src="data:image/jpg;base64,${p.base64Image}"/>
                             </div>
                             <p class="product-name">${p.productName}</p>
-                            <div class="gia gia-sale"><fmt:formatNumber value = "${p.unitPrice*1.1}" type = "currency"/></div>
-                            <p class="gia gia-goc"><fmt:formatNumber value = "${p.unitPrice*1.2}" type = "currency"/></p>
+                            <div class="gia gia-sale"><fmt:formatNumber value = "${p.unitPrice - p.unitPrice*p.discount}" type = "currency"/></div>
+                            <p class="gia gia-goc"><fmt:formatNumber value = "${p.unitPrice}" type = "currency"/></p>
                             <div class="buy">BUY NOW</div>
                         </a>
                     </c:forEach>

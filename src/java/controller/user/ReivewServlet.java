@@ -75,9 +75,9 @@ public class ReivewServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         PrintWriter out = response.getWriter();
-        String contentSend = request.getParameter("contentSend");
-        String star_raw = request.getParameter("rating");
-        String productID_raw = request.getParameter("productID");
+        String contentSend = request.getParameter("contentSend").trim();
+        String star_raw = request.getParameter("rating").trim();
+        String productID_raw = request.getParameter("productID").trim();
         HttpSession session = request.getSession();
         Customers cus = (Customers) session.getAttribute("account");
         String userName = cus.getAcc().getUserName();

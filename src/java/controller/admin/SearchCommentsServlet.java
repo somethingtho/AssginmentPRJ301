@@ -60,7 +60,7 @@ public class SearchCommentsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String productID_raw = request.getParameter("productID");
+        String productID_raw = request.getParameter("productID").trim();
         try {
             DAOProducts daoProducts = new DAOProducts();
             DAOReview daoReview = new DAOReview();

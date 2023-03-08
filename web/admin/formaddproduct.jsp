@@ -511,6 +511,26 @@
                                             type="number"
                                             class="required form-control"
                                             />
+                                        
+                                        <label for="discount" class="col-md-3 mt-3"
+                                               >Discount *</label
+                                        >
+                                        <div class="col-sm-12 row">
+                                            <div class="col-md-11">
+                                                <input
+                                                    type="text"
+                                                    class="form-control required"
+                                                    aria-label="Recipient 's username"
+                                                    aria-describedby="basic-addon2"
+                                                    name="discount"
+                                                    />
+                                            </div>
+                                            <div class="col-md-1">
+                                                <span class="input-group-text" id="basic-addon2"
+                                                      >%</span
+                                                >
+                                            </div>
+                                        </div>
 
                                         <label class="col-md-3 mt-3">Ngừng sản xuất</label>
                                         <div class="col-md-9" style="display: flex">

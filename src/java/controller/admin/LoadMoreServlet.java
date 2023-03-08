@@ -65,11 +65,11 @@ public class LoadMoreServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         DAOProducts daoProducts = new DAOProducts();
-        String amount = request.getParameter("total");
+        String amount = request.getParameter("total").trim();
         int total = Integer.parseInt(amount);
-        String discontinued_raw = request.getParameter("discontinued");
-        String category = request.getParameter("categoryID");
-        String orderby_raw = request.getParameter("orderby");
+        String discontinued_raw = request.getParameter("discontinued").trim();
+        String category = request.getParameter("categoryID").trim();
+        String orderby_raw = request.getParameter("orderby").trim();
 //        int[] sid = null;
 //        if (sid_raw != null) {
 //            sid = new int[sid_raw.length];

@@ -69,9 +69,9 @@ public class ChangePassword2Servlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String newPassword = request.getParameter("newPassword");
-        String cfNewPassword = request.getParameter("cfNewPassword");
-        String email = request.getParameter("email");
+        String newPassword = request.getParameter("newPassword").trim();
+        String cfNewPassword = request.getParameter("cfNewPassword").trim();
+        String email = request.getParameter("email").trim();
         HttpSession session = request.getSession();
         DAOCustomers daoCustomers = new DAOCustomers();
         Customers cus = daoCustomers.getCustomerByEmail(email);

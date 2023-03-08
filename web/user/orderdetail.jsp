@@ -65,7 +65,7 @@
                                                 <h5 style="text-align: left;">${i.product.productName}</h5>
                                                 <p>Số lượng: ${i.quantity}</p>
                                                 <div>
-                                                    <p style="text-align: right; color: red;"><fmt:formatNumber value = "${i.product.unitPrice*1.1}" type = "currency"/></p>
+                                                    <p style="text-align: right; color: red;"><fmt:formatNumber value = "${i.product.unitPrice - i.product.unitPrice*i.product.discount}" type = "currency"/></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -232,11 +232,11 @@
                                     </table>
                                 </div>
                                 <div class="col-md-2">
-                                    <p><fmt:formatNumber type="currency" value="${od.product.unitPrice*1.1}"/></p>
-                                    <p><del><fmt:formatNumber type="currency" value="${od.product.unitPrice*1.2}"/></del></p>
+                                    <p><fmt:formatNumber type="currency" value="${od.product.unitPrice - od.product.unitPrice*od.product.discount}"/></p>
+                                    <p><del><fmt:formatNumber type="currency" value="${od.product.unitPrice}"/></del><span style="color: red; float: right;">-<fmt:formatNumber type="percent" value="${od.product.discount}"/></span></p>
                                     <p>Số lượng: ${od.quantity}</p>
                                     <hr>
-                                    <p>Tổng tiền: <fmt:formatNumber type="currency" value="${od.quantity * od.product.unitPrice*1.1}"/></p>
+                                    <p>Tổng tiền: <fmt:formatNumber type="currency" value="${od.quantity * (od.product.unitPrice-od.product.unitPrice*od.product.discount)}"/></p>
                                 </div>
 
                             </div>

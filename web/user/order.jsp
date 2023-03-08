@@ -64,7 +64,7 @@
                                                 <h5 style="text-align: left;">${i.product.productName}</h5>
                                                 <p>Số lượng: ${i.quantity}</p>
                                                 <div>
-                                                    <p style="text-align: right; color: red;"><fmt:formatNumber value = "${i.product.unitPrice*1.1}" type = "currency"/></p>
+                                                    <p style="text-align: right; color: red;"><fmt:formatNumber value = "${i.product.unitPrice - i.product.unitPrice*i.product.discount}" type = "currency"/></p>
                                                 </div>
                                             </div>
                                         </div>

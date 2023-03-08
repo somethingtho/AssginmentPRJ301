@@ -81,9 +81,9 @@ public class LoginServlet extends HttpServlet {
 
         DAOCustomers daoCustomers = new DAOCustomers();
         DAOViews daoView = new DAOViews();
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String remember = request.getParameter("remember");
+        String username = request.getParameter("username").trim();
+        String password = request.getParameter("password").trim();
+        String remember = request.getParameter("remember").trim();
         Customers customer = daoCustomers.getCustomerByUserName(username, password);
         if (customer == null) {
             request.setAttribute("error", "Tài khoản không tồn tại hoặc mật khẩu chưa chính xác!!!!");

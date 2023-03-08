@@ -84,8 +84,8 @@ public class UpdateReviewServlet extends HttpServlet {
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         DAOReview daoReview = new DAOReview();
-        String rid_raw = request.getParameter("rid");
-        String type = request.getParameter("type");
+        String rid_raw = request.getParameter("rid").trim();
+        String type = request.getParameter("type").trim();
         try {
             int rid = Integer.parseInt(rid_raw);
             Review r = daoReview.getReviewByID(rid);

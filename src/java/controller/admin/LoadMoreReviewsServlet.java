@@ -63,7 +63,7 @@ public class LoadMoreReviewsServlet extends HttpServlet {
             throws ServletException, IOException {
         DAOProducts daoProducts = new DAOProducts();
         PrintWriter out = response.getWriter();
-        String total = request.getParameter("total");
+        String total = request.getParameter("total").trim();
         try {
             int amount = Integer.parseInt(total);
             Vector<Products> vector = daoProducts.getNextReviewsProducts(amount);

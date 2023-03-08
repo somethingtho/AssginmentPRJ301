@@ -68,7 +68,7 @@
                                                 <h5 style="text-align: left;">${i.product.productName}</h5>
                                                 <p>Số lượng: ${i.quantity}</p>
                                                 <div>
-                                                    <p style="text-align: right; color: red;"><fmt:formatNumber value = "${i.product.unitPrice*1.1}" type = "currency"/></p>
+                                                    <p style="text-align: right; color: red;"><fmt:formatNumber value = "${i.product.unitPrice - i.product.unitPrice*i.product.discount}" type = "currency"/></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -206,7 +206,7 @@
                                         <h4><a href="${pageContext.request.contextPath}/user/item?pid=${i.product.productID}">${i.product.productName}</a></h4>
                                     </div>
                                     <div class="col-md-4">
-                                        <h5><fmt:formatNumber value = "${i.product.unitPrice*1.1}" type = "currency"/></h5>
+                                        <h5><fmt:formatNumber value = "${i.product.unitPrice - i.product.unitPrice*i.product.discount}" type = "currency"/></h5>
                                     </div>
                                     <table class="table table-striped" style="width: 350px;">
                                         <tbody>
@@ -233,7 +233,7 @@
                                         <input style="width: 60px; text-align: center;" type="number" readonly value="${i.quantity}">
                                         <button style="width: 40px; background-color: orange; border: none;" onclick="addProduct('${i.product.productID}')">+</button>
                                     </div>
-                                    <p style="display: flex; justify-content: space-between;"><span>Tổng tiền:</span><span style="margin-right: 30px;"><fmt:formatNumber value="${i.product.unitPrice*1.1*i.quantity}" type="currency"/></span></p>
+                                    <p style="display: flex; justify-content: space-between;"><span>Tổng tiền:</span><span style="margin-right: 30px;"><fmt:formatNumber value="${(i.product.unitPrice - i.product.unitPrice*i.product.discount)*i.quantity}" type="currency"/></span></p>
                                 </div>
 
                             </div>

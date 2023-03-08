@@ -54,7 +54,7 @@ public class Cart {
     public double getTotalMoney(){
         double t=0;
         for(Item i:items)
-            t+=(i.getQuantity()*i.getPrice());
+            t+=(i.getQuantity()*(i.getPrice()-i.getPrice()*i.getProduct().getDiscount()));
         return t;
     }
     private Products getProductById(int id,Vector<Products> list){
@@ -75,7 +75,7 @@ public class Cart {
                 int id=Integer.parseInt(n[0]);
                 int quantity=Integer.parseInt(n[1]);
                 Products p=getProductById(id, list);
-                Item t=new Item(p,quantity, p.getUnitPrice()*1.1);
+                Item t=new Item(p,quantity, p.getUnitPrice());
                 addItem(t);
             }
         }

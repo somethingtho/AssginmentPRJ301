@@ -93,12 +93,12 @@ public class ProfileAdminServlet extends HttpServlet {
             System.out.println(filePart.getContentType());
             inputStream = filePart.getInputStream();
         }
-        String address = request.getParameter("address");
+        String address = request.getParameter("address").trim();
         Customers cus = (Customers) session.getAttribute("admin");
-        String customerName = request.getParameter("customerName");
-        String phone = request.getParameter("phone");
-        String gender_raw = request.getParameter("gender");
-        String email = request.getParameter("email");
+        String customerName = request.getParameter("customerName").trim();
+        String phone = request.getParameter("phone").trim();
+        String gender_raw = request.getParameter("gender").trim();
+        String email = request.getParameter("email").trim();
         boolean gender;
         
         

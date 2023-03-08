@@ -21,12 +21,12 @@
 
     </head>
 
- 
-   <%
+
+    <%
         response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
         response.setHeader("Pragma", "no-cache"); //HTTP 1.0
         response.setDateHeader("Expires", 0);
-//prevents caching at the proxy server
+        //prevents caching at the proxy server
     %>
 
 
@@ -72,7 +72,7 @@
                                                 <h5 style="text-align: left;">${i.product.productName}</h5>
                                                 <p>Số lượng: ${i.quantity}</p>
                                                 <div>
-                                                    <p style="text-align: right; color: red;"><fmt:formatNumber value = "${i.product.unitPrice*1.1}" type = "currency"/></p>
+                                                    <p style="text-align: right; color: red;"><fmt:formatNumber value = "${i.product.unitPrice - i.product.unitPrice*i.product.discount}" type = "currency"/></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -243,11 +243,28 @@
 
 
                 <div class="price-product">
-                    <h4 class="price"> <del><fmt:formatNumber value = "${pro.unitPrice*1.2}" type = "currency"/> </del> &nbsp; &nbsp; <fmt:formatNumber value = "${pro.unitPrice*1.1}" type = "currency"/> </h4>
+                    <h4 class="price"> <del><fmt:formatNumber value = "${pro.unitPrice}" type = "currency"/> </del> &nbsp; &nbsp; <span style="color: red">(<fmt:formatNumber value = "${pro.discount}" type = "percent"/>)</span> <br><fmt:formatNumber value = "${pro.unitPrice- pro.unitPrice*pro.discount}" type = "currency"/> </h4>
                 </div>
 
                 <p>Loại sản phẩm: ${cate.categoryName}</p>
                 <p>${pro.productName}</p>
+                <c:if test="${requestScope.type eq 'mobile'}">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="ram_select">Ram</label>
+                            <select class="form-control" id="ram_select">
+                                <option>${proInfo.ram}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="memory">Bộ nhớ</label>
+                            <select class="form-control" id="memory">
+                                <option>${proInfo.hardDrive}</option>
+                            </select>
+                        </div>
+                    </div>
+                </c:if>
                 <hr>
                 <form name="f" action="" method="post" class="form_buy">
                     <div style="margin: 20px 0;">
@@ -486,7 +503,7 @@
                         </p>
                         <div class="review-edit" id="review${review.id}" style="display:none">
                             <form action="${pageContext.request.contextPath}/user/updatereview" id="updatereview" method="GET">
-                                
+
                                 <input type="hidden" name="type" value="update">
                                 <input type="hidden" name="pid" value="${pro.productID}">
                                 <input type="hidden" name="id" value="${review.id}">
@@ -494,21 +511,21 @@
                                 <div class="ratingc">
                                     <input type="radio" name="ratingc"
                                            id="star1c" value="1" <c:if test="${review.rate == 1}">checked</c:if>>
-                                    <label for="star1c"  id="star1c-label">1<i class="fa-star fa checked"></i></label>
-                                    <input type="radio" name="ratingc"
-                                           id="star2c" value="2" <c:if test="${review.rate == 2}">checked</c:if>>
-                                    <label for="star2c"  id="star1c-label">2<i class="fa-star fa checked" style=""></i></label>
-                                    <input type="radio" name="ratingc"
-                                           id="star3c" value="3" <c:if test="${review.rate == 3}">checked</c:if>>
-                                    <label for="star3c"  id="star1c-label">3<i class="fa-star fa checked"></i></label>
-                                    <input type="radio" name="ratingc"
-                                           id="star4c" value="4" <c:if test="${review.rate == 4}">checked</c:if>>
-                                    <label for="star4c"  id="star1c-label">4<i class="fa-star fa checked"></i></label>
-                                    <input type="radio" name="ratingc"
-                                           id="star5c" value="5" <c:if test="${review.rate == 5}">checked</c:if>>
-                                    <label for="star5c"  id="star1c-label">5<i class="fa-star fa checked"></i></label>
-                                </div>
-                                <button type="button" class="save-review" data-review-id="${review.id}" onclick="saveReviewChanges(${review.id})"></button>
+                                           <label for="star1c"  id="star1c-label">1<i class="fa-star fa checked"></i></label>
+                                           <input type="radio" name="ratingc"
+                                                  id="star2c" value="2" <c:if test="${review.rate == 2}">checked</c:if>>
+                                           <label for="star2c"  id="star1c-label">2<i class="fa-star fa checked" style=""></i></label>
+                                           <input type="radio" name="ratingc"
+                                                  id="star3c" value="3" <c:if test="${review.rate == 3}">checked</c:if>>
+                                           <label for="star3c"  id="star1c-label">3<i class="fa-star fa checked"></i></label>
+                                           <input type="radio" name="ratingc"
+                                                  id="star4c" value="4" <c:if test="${review.rate == 4}">checked</c:if>>
+                                           <label for="star4c"  id="star1c-label">4<i class="fa-star fa checked"></i></label>
+                                           <input type="radio" name="ratingc"
+                                                  id="star5c" value="5" <c:if test="${review.rate == 5}">checked</c:if>>
+                                           <label for="star5c"  id="star1c-label">5<i class="fa-star fa checked"></i></label>
+                                    </div>
+                                    <button type="button" class="save-review" data-review-id="${review.id}" onclick="saveReviewChanges(${review.id})"></button>
                             </form>
                         </div>
                         <c:forEach begin="1" end="${review.rate}" var="i">
@@ -558,13 +575,14 @@
         <div class="row">
             <c:forEach items="${requestScope.getAllProductsSame}" var="same">
                 <a href="${pageContext.request.contextPath}/user/item?pid=${same.productID}" class="col-sm-3">
+                    <span class="discount"><fmt:formatNumber value = "${same.discount}" type = "percent"/></span>
                     <div class="pro-img">
                         <img src="data:image/jpg;base64,${same.base64Image}"/>
                     </div>
                     <p class="product-name">${same.productName}</p>
 
-                    <div class="gia gia-sale"><fmt:formatNumber value = "${same.unitPrice*1.1}" type = "currency"/></div>
-                    <p class="gia gia-goc"><fmt:formatNumber value = "${same.unitPrice*1.2}" type = "currency"/></p>
+                    <div class="gia gia-sale"><fmt:formatNumber value = "${same.unitPrice - same.unitPrice*same.discount}" type = "currency"/></div>
+                    <p class="gia gia-goc"><fmt:formatNumber value = "${same.unitPrice}" type = "currency"/></p>
                     <div class="buy">MUA NGAY</div>
                 </a>
             </c:forEach>
@@ -771,8 +789,8 @@
             }
 
             function confirmDeleteReview(reviewId, pid) {
-                if (confirm("Are you sure you want to delete this review?")) 
-                    window.location.href = "${pageContext.request.contextPath}/user/updatereview?type=delete&id="+reviewId+"&pid="+pid;
+                if (confirm("Are you sure you want to delete this review?"))
+                    window.location.href = "${pageContext.request.contextPath}/user/updatereview?type=delete&id=" + reviewId + "&pid=" + pid;
             }
 
             function saveReviewChanges(id) {

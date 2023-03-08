@@ -76,11 +76,11 @@ public class AddSupplierServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         DAOSuppliers dao = new DAOSuppliers();
-        String companyName = request.getParameter("companyname");
-        String phone = request.getParameter("phone");
-        String hompage = request.getParameter("homepage");
-        String status_raw = request.getParameter("status");
-        String email = request.getParameter("email");
+        String companyName = request.getParameter("companyname").trim();
+        String phone = request.getParameter("phone").trim();
+        String hompage = request.getParameter("homepage").trim();
+        String status_raw = request.getParameter("status").trim();
+        String email = request.getParameter("email").trim();
         boolean status = status_raw.equals("ON");
         
         Suppliers sup1 = dao.GetSupplierByCompanyName(companyName);

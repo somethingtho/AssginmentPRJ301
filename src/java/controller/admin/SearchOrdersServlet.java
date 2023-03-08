@@ -60,7 +60,7 @@ public class SearchOrdersServlet extends HttpServlet {
             throws ServletException, IOException {
         DAOOrders daoOrders = new DAOOrders();
         PrintWriter out = response.getWriter();
-        String orderID_raw = request.getParameter("orderID");
+        String orderID_raw = request.getParameter("orderID").trim();
         try {
             if (!orderID_raw.matches("\\d+")) {
                 request.setAttribute("error", "Please Input Number!");

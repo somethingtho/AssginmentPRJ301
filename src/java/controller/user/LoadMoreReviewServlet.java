@@ -60,8 +60,8 @@ public class LoadMoreReviewServlet extends HttpServlet {
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         DAOReview daoReview = new DAOReview();
-        String total = request.getParameter("total");
-        String pid = request.getParameter("pid");
+        String total = request.getParameter("total").trim();
+        String pid = request.getParameter("pid").trim();
         try {
             int amount = Integer.parseInt(total);
             int productID = Integer.parseInt(pid);

@@ -1146,3 +1146,13 @@ footer{
     transition: all .9s ease-in-out;
     background-size: 100%;
 }
+
+.discount{
+    float: left;
+    background-color: red;
+    border-radius: 50%;
+    color: white;
+    height: 30px;
+    text-align: center;
+    line-height: 2;
+}

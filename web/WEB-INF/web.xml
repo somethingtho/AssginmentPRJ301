@@ -644,19 +644,19 @@
     </context-param>
     <error-page>
         <error-code>403</error-code>
-        <location>/admin/html/error-403.html</location>
+        <location>/admin/error-403.jsp</location>
     </error-page>
     <error-page>
         <error-code>404</error-code>
-        <location>/admin/html/error-404.html</location>
+        <location>/admin/error-404.jsp</location>
     </error-page>
     <error-page>
         <error-code>405</error-code>
-        <location>/admin/html/error-405.html</location>
+        <location>/admin/error-405.jsp</location>
     </error-page>
     <error-page>
         <error-code>500</error-code>
-        <location>/admin/html/error-500.html</location>
+        <location>/admin/error-500.jsp</location>
     </error-page>
     <multipart-config>
         <location>/tmp</location>

@@ -498,6 +498,7 @@
                                                         <th class="text-end">Danh mục</th>
                                                         <th class="text-end">Số lượng</th>
                                                         <th class="text-end">Giá tiền</th>
+                                                        <th class="text-end">Giảm giá</th>
                                                         <th class="text-end">Tổng</th>
                                                     </tr>
                                                 </thead>
@@ -511,6 +512,7 @@
                                                             <td class="text-end">${orderDetail.product.category.categoryName}</td>
                                                             <td class="text-end">${orderDetail.quantity}</td>
                                                             <td class="text-end"><fmt:formatNumber type="currency" value="${orderDetail.unitPrice}"/></td>
+                                                            <td class="text-end"><fmt:formatNumber type="percent" value="${orderDetail.discount}"/></td>
                                                             <td class="text-end"><fmt:formatNumber type="currency" value="${orderDetail.unitPrice* orderDetail.quantity}"/></td>
                                                         </tr>
                                                         <c:set var="i" value="${i+1}"></c:set>

@@ -19,7 +19,6 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/font/themify-icons/themify-icons.css">
         <link href="${pageContext.request.contextPath}/css/index.css" rel="stylesheet" type="text/css"/>
     </head>
-
     <body class="content">
 
         <fmt:setLocale value = "vi_VN"/>
@@ -28,7 +27,7 @@
             response.setHeader("Pragma", "no-cache"); //HTTP 1.0
             response.setDateHeader("Expires", 0);
             //prevents caching at the proxy server
-        %>
+%>
         <c:set var="o" value="${requestScope.cart}"/>
         <header>
             <div class="logo">
@@ -66,7 +65,7 @@
                                                 <h5 style="text-align: left;">${i.product.productName}</h5>
                                                 <p>Số lượng: ${i.quantity}</p>
                                                 <div>
-                                                    <p style="text-align: right; color: red;"><fmt:formatNumber value = "${i.product.unitPrice*1.1}" type = "currency"/></p>
+                                                    <p style="text-align: right; color: red;"><fmt:formatNumber value = "${i.product.unitPrice - i.product.unitPrice*i.product.discount}" type = "currency"/></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -235,19 +234,17 @@
             <div class="row">
                 <c:set var="count" value="0" scope="page" />
                 <c:forEach items="${requestScope.listAllProducts}" var="p" >
-                    <c:set var="count" value="${count + 1}" scope="page"/>
-                    <c:if test="${count <= 8}">
                         <a href="${pageContext.request.contextPath}/user/item?pid=${p.productID}" class="col-sm-3 card">
                             <input type="hidden" name="pid" value="${p.productID}">
+                            <span class="discount"><fmt:formatNumber value = "${p.discount}" type = "percent"/></span>
                             <div class="pro-img">
                                 <img src="data:image/jpg;base64,${p.base64Image}"/>
                             </div>
                             <p class="product-name text-center">${p.productName}</p>
-                            <div class="gia gia-sale"><fmt:formatNumber value = "${p.unitPrice*1.1}" type = "currency"/></div>
-                            <p class="gia gia-goc"><fmt:formatNumber value = "${p.unitPrice*1.2}" type = "currency"/></p>
+                            <div class="gia gia-sale"><fmt:formatNumber value = "${p.unitPrice- p.unitPrice*p.discount}" type = "currency"/></div>
+                            <p class="gia gia-goc"><fmt:formatNumber value = "${p.unitPrice}" type = "currency"/></p>
                             <div ><button class="buy" style="border: none;">MUA NGAY</button></div>
                         </a>
-                    </c:if>
                 </c:forEach>
             </div>
         </div>
@@ -261,12 +258,13 @@
                 <c:forEach items="${requestScope.listSmartphoneHotSale}" var="p" >
                     <a href="${pageContext.request.contextPath}/user/item?pid=${p.productID}" class="col-sm-3">
                         <input type="hidden" name="pid" value="${p.productID}">
+                        <span class="discount"><fmt:formatNumber value = "${p.discount}" type = "percent"/></span>
                         <div class="pro-img">
                             <img src="data:image/jpg;base64,${p.base64Image}"/>
                         </div>
                         <p class="product-name text-center">${p.productName}</p>
-                        <div class="gia gia-sale"><fmt:formatNumber value = "${p.unitPrice*1.1}" type = "currency"/></div>
-                        <p class="gia gia-goc"><fmt:formatNumber value = "${p.unitPrice*1.2}" type = "currency"/></p>
+                        <div class="gia gia-sale"><fmt:formatNumber value = "${p.unitPrice- p.unitPrice*p.discount}" type = "currency"/></div>
+                        <p class="gia gia-goc"><fmt:formatNumber value = "${p.unitPrice}" type = "currency"/></p>
                         <div class="buy">MUA NGAY</div>
                     </a>
                 </c:forEach>
@@ -283,12 +281,13 @@
                 <c:forEach items="${requestScope.listLaptopHotSale}" var="p" >
                     <a href="${pageContext.request.contextPath}/user/item?pid=${p.productID}" class="col-sm-3">
                         <input type="hidden" name="pid" value="${p.productID}">
+                        <span class="discount"><fmt:formatNumber value = "${p.discount}" type = "percent"/></span>
                         <div class="pro-img">
                             <img src="data:image/jpg;base64,${p.base64Image}"/>
                         </div>
                         <p class="product-name text-center">${p.productName}</p>
-                        <div class="gia gia-sale"><fmt:formatNumber value = "${p.unitPrice*1.1}" type = "currency"/></div>
-                        <p class="gia gia-goc"><fmt:formatNumber value = "${p.unitPrice*1.2}" type = "currency"/></p>
+                        <div class="gia gia-sale"><fmt:formatNumber value = "${p.unitPrice- p.unitPrice*p.discount}" type = "currency"/></div>
+                        <p class="gia gia-goc"><fmt:formatNumber value = "${p.unitPrice}" type = "currency"/></p>
                         <div class="buy">MUA NGAY</div>
                     </a>
                 </c:forEach>
@@ -301,12 +300,13 @@
                 <c:forEach items="${requestScope.listTabletHotSale}" var="p" >
                     <a href="${pageContext.request.contextPath}/user/item?pid=${p.productID}" class="col-sm-3">
                         <input type="hidden" name="pid" value="${p.productID}">
+                        <span class="discount"><fmt:formatNumber value = "${p.discount}" type = "percent"/></span>
                         <div class="pro-img">
                             <img src="data:image/jpg;base64,${p.base64Image}"/>
                         </div>
                         <p class="product-name text-center">${p.productName}</p>
-                        <div class="gia gia-sale"><fmt:formatNumber value = "${p.unitPrice*1.1}" type = "currency"/></div>
-                        <p class="gia gia-goc"><fmt:formatNumber value = "${p.unitPrice*1.2}" type = "currency"/></p>
+                        <div class="gia gia-sale"><fmt:formatNumber value = "${p.unitPrice- p.unitPrice*p.discount}" type = "currency"/></div>
+                        <p class="gia gia-goc"><fmt:formatNumber value = "${p.unitPrice}" type = "currency"/></p>
                         <div class="buy">MUA NGAY</div>
                     </a>
                 </c:forEach>

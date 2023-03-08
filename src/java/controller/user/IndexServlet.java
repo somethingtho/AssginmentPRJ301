@@ -63,6 +63,7 @@ public class IndexServlet extends HttpServlet {
         DAOProducts daoProducts = new DAOProducts();
         DAOSuppliers daoSuppliers = new DAOSuppliers();
         
+        Vector<Products> getProductByDiscount = daoProducts.getProductByDiscount();
         Vector<Products> listAllProducts = daoProducts.getAllProducts();
         Vector<Products> listLaptopHotSale = daoProducts.getLaptopHotSale();
         Vector<Products> listSmartphoneHotSale = daoProducts.getSmartPhoneHotSale();
@@ -76,7 +77,7 @@ public class IndexServlet extends HttpServlet {
         request.setAttribute("listAllSuppliersLaptop", listAllSuppliersLaptop);
         request.setAttribute("listAllSuppliersTablet", listAllSuppliersTablet);
         
-        request.setAttribute("listAllProducts", listAllProducts);
+        request.setAttribute("listAllProducts", getProductByDiscount);
         request.setAttribute("listLaptopHotSale", listLaptopHotSale);
         request.setAttribute("listSmartphoneHotSale", listSmartphoneHotSale);
         request.setAttribute("listTabletHotSale", listTabletHotSale);

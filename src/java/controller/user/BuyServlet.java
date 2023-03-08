@@ -78,8 +78,8 @@ public class BuyServlet extends HttpServlet {
                 }
             }
         }
-        String num=request.getParameter("num");
-        String pid=request.getParameter("pid");
+        String num=request.getParameter("num").trim();
+        String pid=request.getParameter("pid").trim();
         if(txt.isEmpty()){
             txt=pid+":"+num;
         }else{

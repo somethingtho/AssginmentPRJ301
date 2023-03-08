@@ -92,8 +92,8 @@ public class ProcessServlet extends HttpServlet {
             }
         }
         Cart cart=new Cart(txt, list);
-        String num_raw=request.getParameter("num");
-        String id_raw=request.getParameter("id");
+        String num_raw=request.getParameter("num").trim();
+        String id_raw=request.getParameter("id").trim();
         int id,num=0;
         try{
             id=Integer.parseInt(id_raw);

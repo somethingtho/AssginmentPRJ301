@@ -132,10 +132,10 @@ public class ChangePasswordServlet extends HttpServlet {
         Cart cart=new Cart(txt, list);
         request.setAttribute("cart", cart);
         request.setAttribute("size", cart.getItems().size());
-        String oldPassword = request.getParameter("oldPassword");
-        String newPassword = request.getParameter("newPassword");
-        String cfNewPassword = request.getParameter("cfNewPassword");
-        String userName = request.getParameter("userName");
+        String oldPassword = request.getParameter("oldPassword").trim();
+        String newPassword = request.getParameter("newPassword").trim();
+        String cfNewPassword = request.getParameter("cfNewPassword").trim();
+        String userName = request.getParameter("userName").trim();
 
         DAOCustomers daoCustomers = new DAOCustomers();
         Customers cus = daoCustomers.getCustomerByUserName(userName);

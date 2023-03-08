@@ -17,17 +17,19 @@ public class Products {
     private Categories category;
     private double unitPrice;
     private int unitsInStock, unitsOnOrder;
+    private double discount;
     private boolean discontinued;
     private String base64Image;
     private ProductInfo proInfo;
     private Vector<Review> reviews;
 
-    public Products(int productID, String productName, Suppliers supplier, Categories category, double unitPrice, int unitsInStock, int unitsOnOrder, boolean discontinued, String base64Image, ProductInfo proInfo, Vector<Review> reviews) {
+    public Products(int productID, String productName, Suppliers supplier, Categories category, double unitPrice, int unitsInStock, int unitsOnOrder, double discount,boolean discontinued, String base64Image, ProductInfo proInfo, Vector<Review> reviews) {
         this.productID = productID;
         this.productName = productName;
         this.supplier = supplier;
         this.category = category;
         this.unitPrice = unitPrice;
+        this.discount = discount;
         this.unitsInStock = unitsInStock;
         this.unitsOnOrder = unitsOnOrder;
         this.discontinued = discontinued;
@@ -48,14 +50,24 @@ public class Products {
         this.reviews = reviews;
     }
 
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
+
     
     
-    public Products(int productID, String productName, Suppliers supplier, Categories category, double unitPrice, int unitsInStock, int unitsOnOrder, boolean discontinued, String base64Image) {
+    
+    public Products(int productID, String productName, Suppliers supplier, Categories category, double unitPrice, int unitsInStock, int unitsOnOrder, double discount,boolean discontinued, String base64Image) {
         this.productID = productID;
         this.productName = productName;
         this.supplier = supplier;
         this.category = category;
         this.unitPrice = unitPrice;
+        this.discount = discount;
         this.unitsInStock = unitsInStock;
         this.unitsOnOrder = unitsOnOrder;
         this.discontinued = discontinued;
@@ -64,20 +76,21 @@ public class Products {
 
     
     
-    public Products(String productName, Suppliers supplier, Categories category, double unitPrice, int unitsInStock, int unitsOnOrder, boolean discontinued, ProductInfo proInfo) {
+    public Products(String productName, Suppliers supplier, Categories category, double unitPrice, int unitsInStock, int unitsOnOrder, double discount,boolean discontinued, ProductInfo proInfo) {
         this.productName = productName;
         this.supplier = supplier;
         this.category = category;
         this.unitPrice = unitPrice;
         this.unitsInStock = unitsInStock;
         this.unitsOnOrder = unitsOnOrder;
+        this.discount = discount;
         this.discontinued = discontinued;
         this.proInfo = proInfo;
     }
     
     
 
-    public Products(int productID, String productName, Suppliers supplier, Categories category, double unitPrice, int unitsInStock, int unitsOnOrder, boolean discontinued, String base64Image, ProductInfo proInfo) {
+    public Products(int productID, String productName, Suppliers supplier, Categories category, double unitPrice, int unitsInStock, int unitsOnOrder, double discount,boolean discontinued, String base64Image, ProductInfo proInfo) {
         this.productID = productID;
         this.productName = productName;
         this.supplier = supplier;
@@ -86,6 +99,7 @@ public class Products {
         this.unitsInStock = unitsInStock;
         this.unitsOnOrder = unitsOnOrder;
         this.discontinued = discontinued;
+        this.discount = discount;
         this.base64Image = base64Image;
         this.proInfo = proInfo;
     }

@@ -70,10 +70,10 @@ public class ListAllProductsServlet extends HttpServlet {
         
         Vector<Suppliers> listAllSuppliers = daoSuppliers.getAllSuppliers();
 
-        String discontinued_raw = request.getParameter("discontinued");
-        String category = request.getParameter("categoryID");
+        String discontinued_raw = request.getParameter("discontinued").trim();
+        String category = request.getParameter("categoryID").trim();
         String[] sid_raw = request.getParameterValues("supplierID");
-        String orderby_raw = request.getParameter("orderby");
+        String orderby_raw = request.getParameter("orderby").trim();
         int[] sid = null;
         if (sid_raw != null) {
             sid = new int[sid_raw.length];
@@ -126,7 +126,7 @@ public class ListAllProductsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOProducts daoProducts = new DAOProducts();
-        String pid_raw = request.getParameter("pid");
+        String pid_raw = request.getParameter("pid").trim();
         try {
             int pid = Integer.parseInt(pid_raw);
             Products product = daoProducts.getProductByID(pid);

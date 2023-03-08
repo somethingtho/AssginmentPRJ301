@@ -788,12 +788,13 @@ public class DAOOrders extends DBContext {
             if (rs.next()) {
                 int oid = rs.getInt("OrderID");
                 for (Item i : cart.getItems()) {
-                    String sql2 = "INSERT INTO dbo.OrderDetails (OrderID, ProductID, UnitPrice, Quantity, Discount) VALUES (?, ?,  ?, ?, 0.1)";
+                    String sql2 = "INSERT INTO dbo.OrderDetails (OrderID, ProductID, UnitPrice, Quantity, Discount) VALUES (?, ?,  ?, ?, ?)";
                     PreparedStatement st2 = connection.prepareStatement(sql2);
                     st2.setInt(1, oid);
                     st2.setInt(2, i.getProduct().getProductID());
                     st2.setDouble(3, i.getPrice());
                     st2.setInt(4, i.getQuantity());
+                    st2.setDouble(5, i.getProduct().getDiscount());
                     st2.executeUpdate();
                 }
             }
@@ -848,7 +849,7 @@ public class DAOOrders extends DBContext {
                     st2.setInt(2, i.getProduct().getProductID());
                     st2.setDouble(3, i.getPrice());
                     st2.setInt(4, i.getQuantity());
-                    st2.setDouble(5, i.getPrice() * 1.1 - i.getPrice());
+                    st2.setDouble(5, i.getProduct().getDiscount());
                     st2.executeUpdate();
                 }
             }
@@ -916,7 +917,7 @@ public class DAOOrders extends DBContext {
         double total = 0;
         Vector<OrderDetails> orderDetail = daoOrderDetails.getAllOrderDetailsByOrderID(oID);
         for (OrderDetails orderDetails : orderDetail) {
-            total += orderDetails.getUnitPrice() * orderDetails.getQuantity();
+            total += (orderDetails.getUnitPrice() - orderDetails.getUnitPrice()*orderDetails.getDiscount())* orderDetails.getQuantity();
         }
         return total;
     }

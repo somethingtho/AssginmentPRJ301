@@ -75,12 +75,12 @@ public class UpdateProductServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
-        String productID_raw = request.getParameter("pid");
+        String productID_raw = request.getParameter("pid").trim();
         DAOProducts daoProducts = new DAOProducts();
         DAOSuppliers daoSupplier = new DAOSuppliers();
         DAOCategories daoCategories = new DAOCategories();
         DAOProductImage daoProductImage = new DAOProductImage();
-        String id_raw = request.getParameter("imgid");
+        String id_raw = request.getParameter("imgid").trim();
         DAOProductImage daoProImg = new DAOProductImage();
         try {
             int productID = Integer.parseInt(productID_raw);
@@ -130,13 +130,14 @@ public class UpdateProductServlet extends HttpServlet {
         DAOSuppliers daoSupplier = new DAOSuppliers();
         DAOProductImage daoProductImage = new DAOProductImage();
         try {
-            String productIDOld = request.getParameter("pid");
-            String productName = request.getParameter("productName");
-            String categoryID_raw = request.getParameter("categoryID");
-            String supplierID_raw = request.getParameter("supplierID");
-            String price_raw = request.getParameter("price");
-            String stock_raw = request.getParameter("stock");
-            String discontinued = request.getParameter("discontinued");
+            String productIDOld = request.getParameter("pid").trim();
+            String productName = request.getParameter("productName").trim();
+            String categoryID_raw = request.getParameter("categoryID").trim();
+            String supplierID_raw = request.getParameter("supplierID").trim();
+            String price_raw = request.getParameter("price").trim();
+            String stock_raw = request.getParameter("stock").trim();
+            String discount_raw = request.getParameter("discount").trim();
+            String discontinued = request.getParameter("discontinued").trim();
             boolean dis;
             if (discontinued.equals("ON")) {
                 dis = false;
@@ -145,17 +146,17 @@ public class UpdateProductServlet extends HttpServlet {
             }
             Part filePart = request.getPart("photo");
 
-            String size = request.getParameter("size");
-            String weight = request.getParameter("weight");
-            String substance = request.getParameter("substance");
-            String cpu = request.getParameter("cpu");
-            String screen = request.getParameter("screen");
-            String ram = request.getParameter("ram");
-            String camera = request.getParameter("camera");
-            String graphicsCard = request.getParameter("card");
-            String hardDrive = request.getParameter("hdd");
-            String os = request.getParameter("os");
-            String batteryCapacity = request.getParameter("pin");
+            String size = request.getParameter("size").trim();
+            String weight = request.getParameter("weight").trim();
+            String substance = request.getParameter("substance").trim();
+            String cpu = request.getParameter("cpu").trim();
+            String screen = request.getParameter("screen").trim();
+            String ram = request.getParameter("ram").trim();
+            String camera = request.getParameter("camera").trim();
+            String graphicsCard = request.getParameter("card").trim();
+            String hardDrive = request.getParameter("hdd").trim();
+            String os = request.getParameter("os").trim();
+            String batteryCapacity = request.getParameter("pin").trim();
 
             List<Part> fileParts = (List<Part>) request.getParts();
 
@@ -165,6 +166,7 @@ public class UpdateProductServlet extends HttpServlet {
             int supplierID = Integer.parseInt(supplierID_raw);
             double price = Double.parseDouble(price_rep);
             int stock = Integer.parseInt(stock_raw);
+            double discount = Double.parseDouble(discount_raw)/100;
 
             Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
             Categories category = daoCategories.getCategoryByCategoryID(categoryID);
@@ -186,12 +188,7 @@ public class UpdateProductServlet extends HttpServlet {
             product.setSupplier(supplier);
             product.setUnitPrice(price);
             product.setUnitsInStock(stock);
-
-            for (Part filePart1 : fileParts) {
-                out.print(getFileName(filePart1));
-            }
-
-            out.print(daoProducts.UpdateProduct(product, fileParts, filePart));
+            product.setDiscount(discount);
 
             int n  = daoProducts.UpdateProduct(product, fileParts, filePart);
             if(n  >1){

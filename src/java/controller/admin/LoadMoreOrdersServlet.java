@@ -57,7 +57,7 @@ public class LoadMoreOrdersServlet extends HttpServlet {
     throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         DAOOrders daoOrders = new DAOOrders();
-        String total = request.getParameter("total");
+        String total = request.getParameter("total").trim();
         try {
             int amount = Integer.parseInt(total);
             Vector<Orders> vector = daoOrders.getNextOrders(amount);

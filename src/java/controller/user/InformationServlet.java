@@ -144,11 +144,11 @@ public class InformationServlet extends HttpServlet {
             inputStream = filePart.getInputStream();
         }
         Customers cus = (Customers) session.getAttribute("account");
-        String customerName = request.getParameter("customerName");
-        String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
-        String gender_raw = request.getParameter("gender");
-        String email = request.getParameter("email");
+        String customerName = request.getParameter("customerName").trim();
+        String phone = request.getParameter("phone").trim();
+        String address = request.getParameter("address").trim();
+        String gender_raw = request.getParameter("gender").trim();
+        String email = request.getParameter("email").trim();
         boolean gender;
         request.setAttribute("listAllSuppliersSmartPhone", listAllSuppliersSmartPhone);
         request.setAttribute("listAllSuppliersLaptop", listAllSuppliersLaptop);

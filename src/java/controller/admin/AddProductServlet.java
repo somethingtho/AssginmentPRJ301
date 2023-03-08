@@ -110,6 +110,7 @@ public class AddProductServlet extends HttpServlet {
             String supplierID_raw = request.getParameter("supplierID");
             String price_raw = request.getParameter("price");
             String stock_raw = request.getParameter("stock");
+            String discount_raw = request.getParameter("discount");
             String discontinued = request.getParameter("discontinued");
 
             boolean dis;
@@ -139,12 +140,12 @@ public class AddProductServlet extends HttpServlet {
             int supplierID = Integer.parseInt(supplierID_raw);
             double price = Double.parseDouble(price_raw);
             int stock = Integer.parseInt(stock_raw);
-
+            double discount = Double.parseDouble(discount_raw)/100;
             Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
             Categories category = daoCategories.getCategoryByCategoryID(categoryID);
             ProductInfo proInfo = new ProductInfo(size, weight, substance, cpu, ram, screen, camera, graphicsCard, hardDrive, os, batteryCapacity);
 
-            Products product = new Products(productName, supplier, category, price, stock, 0, dis, proInfo);
+            Products product = new Products(productName, supplier, category, price, stock, 0, discount,dis, proInfo);
 
             out.print(daoProducts.AddNewProduct(product, fileParts, filePart));
 

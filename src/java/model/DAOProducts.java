@@ -85,6 +85,7 @@ public class DAOProducts extends DBContext {
                 double unitprice = rs.getDouble("UnitPrice");
                 int unitsInStock = rs.getInt("UnitsInStock");
                 int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                double discount = rs.getDouble("Discount");
                 boolean discontinued = rs.getBoolean("Discontinued");
                 Blob blob = rs.getBlob("Image");
                 InputStream inputStream = blob.getBinaryStream();
@@ -104,7 +105,7 @@ public class DAOProducts extends DBContext {
                     Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
                     Categories category = daoCategories.getCategoryByCategoryID(categoryID);
                     ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
-                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo));
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discount, discontinued, base64Image, proInfo));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -153,8 +154,8 @@ public class DAOProducts extends DBContext {
         DAOProductImage daoImg = new DAOProductImage();
         DAOProducts daoProducts = new DAOProducts();
         DAOProductInfo daoInfo = new DAOProductInfo();
-        String sql = "INSERT INTO dbo.Products(ProductName, SupplierID, CategoryID, UnitPrice, UnitsInStock, UnitsOnOrder, Discontinued, Image) "
-                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO dbo.Products(ProductName, SupplierID, CategoryID, UnitPrice, UnitsInStock, UnitsOnOrder, Discount,Discontinued, Image) "
+                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -164,11 +165,12 @@ public class DAOProducts extends DBContext {
             pre.setDouble(4, product.getUnitPrice());
             pre.setInt(5, product.getUnitsInStock());
             pre.setInt(6, product.getUnitsOnOrder());
-            pre.setBoolean(7, product.isDiscontinued());
+            pre.setDouble(7, product.getDiscount());
+            pre.setBoolean(8, product.isDiscontinued());
             if (filePart != null && !getFileName(filePart).isEmpty()) {
-                pre.setBinaryStream(8, filePart.getInputStream());
+                pre.setBinaryStream(9, filePart.getInputStream());
             } else {
-                pre.setBinaryStream(8, null);
+                pre.setBinaryStream(9, null);
             }
             number = pre.executeUpdate();
 
@@ -207,6 +209,7 @@ public class DAOProducts extends DBContext {
                 double unitprice = rs.getDouble("UnitPrice");
                 int unitsInStock = rs.getInt("UnitsInStock");
                 int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                double discount = rs.getDouble("Discount");
                 boolean discontinued = rs.getBoolean("Discontinued");
                 Blob blob = rs.getBlob("Image");
                 if (blob != null) {
@@ -226,7 +229,7 @@ public class DAOProducts extends DBContext {
                         outputStream.close();
                         Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
                         Categories category = daoCategories.getCategoryByCategoryID(categoryID);
-                        product = new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image);
+                        product = new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discount,discontinued, base64Image);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
@@ -234,7 +237,7 @@ public class DAOProducts extends DBContext {
                     String base64Image = null;
                     Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
                     Categories category = daoCategories.getCategoryByCategoryID(categoryID);
-                    product = new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image);
+                    product = new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discount,discontinued, base64Image);
                 }
             }
         } catch (SQLException ex) {
@@ -257,9 +260,9 @@ public class DAOProducts extends DBContext {
     public int UpdateProduct(Products product, List<Part> input, Part filePart) throws IOException {
         int number = 0;
 
-        String sql = "UPDATE Products SET ProductName = ?, SupplierID = ?, CategoryID = ?, UnitPrice = ?, UnitsInStock = ?, Discontinued = ? WHERE ProductID = ?";
+        String sql = "UPDATE Products SET ProductName = ?, SupplierID = ?, CategoryID = ?, UnitPrice = ?, UnitsInStock = ?, Discount = ?,Discontinued = ? WHERE ProductID = ?";
         if (filePart != null && !getFileName(filePart).isEmpty()) {
-            sql = "UPDATE Products SET ProductName = ?, SupplierID = ?, CategoryID = ?, UnitPrice = ?, UnitsInStock = ?, Discontinued = ?, Image = ? WHERE ProductID = ?";
+            sql = "UPDATE Products SET ProductName = ?, SupplierID = ?, CategoryID = ?, UnitPrice = ?, UnitsInStock = ?, Discount = ?, Discontinued = ?, Image = ? WHERE ProductID = ?";
         }
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -268,12 +271,13 @@ public class DAOProducts extends DBContext {
             pre.setInt(3, product.getCategory().getCategoryID());
             pre.setDouble(4, product.getUnitPrice());
             pre.setInt(5, product.getUnitsInStock());
-            pre.setBoolean(6, product.isDiscontinued());
+            pre.setDouble(6, product.getDiscount());
+            pre.setBoolean(7, product.isDiscontinued());
             if (filePart != null && !getFileName(filePart).isEmpty()) {
-                pre.setBinaryStream(7, filePart.getInputStream());
-                pre.setInt(8, product.getProductID());
+                pre.setBinaryStream(8, filePart.getInputStream());
+                pre.setInt(9, product.getProductID());
             } else {
-                pre.setInt(7, product.getProductID());
+                pre.setInt(8, product.getProductID());
             }
             number = pre.executeUpdate();
 
@@ -328,6 +332,7 @@ public class DAOProducts extends DBContext {
                 double unitprice = rs.getDouble("UnitPrice");
                 int unitsInStock = rs.getInt("UnitsInStock");
                 int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                double discount = rs.getDouble("Discount");
                 boolean discontinued = rs.getBoolean("Discontinued");
                 Blob blob = rs.getBlob("Image");
                 InputStream inputStream = blob.getBinaryStream();
@@ -347,7 +352,7 @@ public class DAOProducts extends DBContext {
                     Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
                     Categories category = daoCategories.getCategoryByCategoryID(categoryID);
                     ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
-                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo));
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discount, discontinued, base64Image, proInfo));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -375,6 +380,7 @@ public class DAOProducts extends DBContext {
                 double unitprice = rs.getDouble("UnitPrice");
                 int unitsInStock = rs.getInt("UnitsInStock");
                 int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                double discount = rs.getDouble("Discount");
                 boolean discontinued = rs.getBoolean("Discontinued");
                 Blob blob = rs.getBlob("Image");
                 InputStream inputStream = blob.getBinaryStream();
@@ -395,7 +401,7 @@ public class DAOProducts extends DBContext {
                     Categories category = daoCategories.getCategoryByCategoryID(categoryID);
                     ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
                     Vector<Review> reviews = daoReview.getAllReviewByProductIDAndAdmin(productID);
-                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo, reviews));
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discount,discontinued, base64Image, proInfo, reviews));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -446,6 +452,7 @@ public class DAOProducts extends DBContext {
                 double unitprice = rs.getDouble("UnitPrice");
                 int unitsInStock = rs.getInt("UnitsInStock");
                 int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                double discount = rs.getDouble("Discount");
                 boolean discontinued = rs.getBoolean("Discontinued");
                 Blob blob = rs.getBlob("Image");
                 InputStream inputStream = blob.getBinaryStream();
@@ -465,7 +472,54 @@ public class DAOProducts extends DBContext {
                     Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
                     Categories category = daoCategories.getCategoryByCategoryID(categoryID);
                     ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
-                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo));
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discount,discontinued, base64Image, proInfo));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return vector;
+    }
+    
+    public Vector<Products> getProductByDiscount() throws IOException {
+        DAOSuppliers daoSuppliers = new DAOSuppliers();
+        DAOCategories daoCategories = new DAOCategories();
+        DAOProductInfo daoProductInfo = new DAOProductInfo();
+        Vector<Products> vector = new Vector<>();
+        String sql = "SELECT TOP 8 * FROM Products WHERE Discontinued = 0 ORDER BY Discount DESC";
+        ResultSet rs = getData(sql);
+        try {
+            while (rs.next()) {
+                int productID = rs.getInt("ProductID");
+                String productName = rs.getString("ProductName");
+                int supplierID = rs.getInt("SupplierID");
+                int categoryID = rs.getInt("CategoryID");
+                double unitprice = rs.getDouble("UnitPrice");
+                int unitsInStock = rs.getInt("UnitsInStock");
+                int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                double discount = rs.getDouble("Discount");
+                boolean discontinued = rs.getBoolean("Discontinued");
+                Blob blob = rs.getBlob("Image");
+                InputStream inputStream = blob.getBinaryStream();
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[4096];
+                int bytesRead = -1;
+
+                try {
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                    byte[] imageBytes = outputStream.toByteArray();
+                    String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
+                    inputStream.close();
+                    outputStream.close();
+                    Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
+                    Categories category = daoCategories.getCategoryByCategoryID(categoryID);
+                    ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discount,discontinued, base64Image, proInfo));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -498,6 +552,7 @@ public class DAOProducts extends DBContext {
                 double unitprice = rs.getDouble("UnitPrice");
                 int unitsInStock = rs.getInt("UnitsInStock");
                 int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                double discount = rs.getDouble("Discount");
                 boolean discontinued = rs.getBoolean("Discontinued");
                 ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
                 Blob blob = rs.getBlob("Image");
@@ -517,7 +572,7 @@ public class DAOProducts extends DBContext {
                     outputStream.close();
                     Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
                     Categories category = daoCategories.getCategoryByCategoryID(categoryID);
-                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo));
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discount,discontinued, base64Image, proInfo));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -551,6 +606,7 @@ public class DAOProducts extends DBContext {
                 double unitprice = rs.getDouble("UnitPrice");
                 int unitsInStock = rs.getInt("UnitsInStock");
                 int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                double discount = rs.getDouble("Discount");
                 boolean discontinued = rs.getBoolean("Discontinued");
                 Blob blob = rs.getBlob("Image");
                 InputStream inputStream = blob.getBinaryStream();
@@ -570,7 +626,7 @@ public class DAOProducts extends DBContext {
                     Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
                     Categories category = daoCategories.getCategoryByCategoryID(categoryID);
                     ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
-                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo));
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discount,discontinued, base64Image, proInfo));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -605,6 +661,7 @@ public class DAOProducts extends DBContext {
                 double unitprice = rs.getDouble("UnitPrice");
                 int unitsInStock = rs.getInt("UnitsInStock");
                 int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                double discount = rs.getDouble("Discount");
                 boolean discontinued = rs.getBoolean("Discontinued");
                 Blob blob = rs.getBlob("Image");
                 InputStream inputStream = blob.getBinaryStream();
@@ -624,7 +681,7 @@ public class DAOProducts extends DBContext {
                     Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
                     Categories category = daoCategories.getCategoryByCategoryID(categoryID);
                     ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
-                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo));
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discount,discontinued, base64Image, proInfo));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -659,6 +716,7 @@ public class DAOProducts extends DBContext {
                 double unitprice = rs.getDouble("UnitPrice");
                 int unitsInStock = rs.getInt("UnitsInStock");
                 int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                double discount = rs.getDouble("Discount");
                 boolean discontinued = rs.getBoolean("Discontinued");
                 Blob blob = rs.getBlob("Image");
                 InputStream inputStream = blob.getBinaryStream();
@@ -678,7 +736,7 @@ public class DAOProducts extends DBContext {
                     Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
                     Categories category = daoCategories.getCategoryByCategoryID(categoryID);
                     ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
-                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo));
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discount,discontinued, base64Image, proInfo));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -711,6 +769,7 @@ public class DAOProducts extends DBContext {
                 double unitprice = rs.getDouble("UnitPrice");
                 int unitsInStock = rs.getInt("UnitsInStock");
                 int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                double discount = rs.getDouble("Discount");
                 boolean discontinued = rs.getBoolean("Discontinued");
                 Blob blob = rs.getBlob("Image");
                 InputStream inputStream = blob.getBinaryStream();
@@ -730,7 +789,7 @@ public class DAOProducts extends DBContext {
                     Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
                     Categories category = daoCategories.getCategoryByCategoryID(categoryID);
                     ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
-                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo));
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discount,discontinued, base64Image, proInfo));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -763,6 +822,7 @@ public class DAOProducts extends DBContext {
                 double unitprice = rs.getDouble("UnitPrice");
                 int unitsInStock = rs.getInt("UnitsInStock");
                 int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                double discount = rs.getDouble("Discount");
                 boolean discontinued = rs.getBoolean("Discontinued");
                 Blob blob = rs.getBlob("Image");
                 InputStream inputStream = blob.getBinaryStream();
@@ -782,7 +842,7 @@ public class DAOProducts extends DBContext {
                     Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
                     Categories category = daoCategories.getCategoryByCategoryID(categoryID);
                     ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
-                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo));
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discount,discontinued, base64Image, proInfo));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -814,6 +874,7 @@ public class DAOProducts extends DBContext {
                 double unitprice = rs.getDouble("UnitPrice");
                 int unitsInStock = rs.getInt("UnitsInStock");
                 int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                double discount = rs.getDouble("Discount");
                 boolean discontinued = rs.getBoolean("Discontinued");
                 Blob blob = rs.getBlob("Image");
                 InputStream inputStream = blob.getBinaryStream();
@@ -833,7 +894,7 @@ public class DAOProducts extends DBContext {
                     Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
                     Categories category = daoCategories.getCategoryByCategoryID(categoryID);
                     ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
-                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo));
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discount,discontinued, base64Image, proInfo));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -910,6 +971,7 @@ public class DAOProducts extends DBContext {
                 double unitprice = rs.getDouble("UnitPrice");
                 int unitsInStock = rs.getInt("UnitsInStock");
                 int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                double discount = rs.getDouble("Discount");
                 boolean discontinued = rs.getBoolean("Discontinued");
                 Blob blob = rs.getBlob("Image");
                 InputStream inputStream = blob.getBinaryStream();
@@ -929,7 +991,7 @@ public class DAOProducts extends DBContext {
                     Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
                     Categories category = daoCategories.getCategoryByCategoryID(categoryID);
                     ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
-                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo));
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discount,discontinued, base64Image, proInfo));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -965,6 +1027,7 @@ public class DAOProducts extends DBContext {
                 double unitprice = rs.getDouble("UnitPrice");
                 int unitsInStock = rs.getInt("UnitsInStock");
                 int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                double discount = rs.getDouble("Discount");
                 boolean discontinued = rs.getBoolean("Discontinued");
                 Blob blob = rs.getBlob("Image");
                 InputStream inputStream = blob.getBinaryStream();
@@ -984,7 +1047,7 @@ public class DAOProducts extends DBContext {
                     Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
                     Categories category = daoCategories.getCategoryByCategoryID(categoryID);
                     ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
-                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo));
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discount,discontinued, base64Image, proInfo));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -1147,6 +1210,7 @@ public class DAOProducts extends DBContext {
                 double unitprice = rs.getDouble("UnitPrice");
                 int unitsInStock = rs.getInt("UnitsInStock");
                 int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                double discount = rs.getDouble("Discount");
                 boolean discontinued = rs.getBoolean("Discontinued");
                 Blob blob = rs.getBlob("Image");
                 InputStream inputStream = blob.getBinaryStream();
@@ -1166,7 +1230,7 @@ public class DAOProducts extends DBContext {
                     Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
                     Categories category = daoCategories.getCategoryByCategoryID(categoryID);
                     ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
-                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo));
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discount,discontinued, base64Image, proInfo));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -1218,6 +1282,7 @@ public class DAOProducts extends DBContext {
                 double unitprice = rs.getDouble("UnitPrice");
                 int unitsInStock = rs.getInt("UnitsInStock");
                 int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                double discount = rs.getDouble("Discount");
                 boolean discontinued = rs.getBoolean("Discontinued");
                 Blob blob = rs.getBlob("Image");
                 InputStream inputStream = blob.getBinaryStream();
@@ -1237,7 +1302,7 @@ public class DAOProducts extends DBContext {
                     Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
                     Categories category = daoCategories.getCategoryByCategoryID(categoryID);
                     ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
-                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo));
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discount,discontinued, base64Image, proInfo));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -1274,6 +1339,7 @@ public class DAOProducts extends DBContext {
                 double unitprice = rs.getDouble("UnitPrice");
                 int unitsInStock = rs.getInt("UnitsInStock");
                 int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                double discount = rs.getDouble("Discount");
                 boolean discontinued = rs.getBoolean("Discontinued");
                 Blob blob = rs.getBlob("Image");
                 InputStream inputStream = blob.getBinaryStream();
@@ -1293,7 +1359,7 @@ public class DAOProducts extends DBContext {
                     Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
                     Categories category = daoCategories.getCategoryByCategoryID(categoryID);
                     ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
-                    p = new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo);
+                    p = new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discount,discontinued, base64Image, proInfo);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -1333,6 +1399,7 @@ public class DAOProducts extends DBContext {
                 double unitprice = rs.getDouble("UnitPrice");
                 int unitsInStock = rs.getInt("UnitsInStock");
                 int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                double discount = rs.getDouble("Discount");
                 boolean discontinued = rs.getBoolean("Discontinued");
                 Blob blob = rs.getBlob("Image");
                 InputStream inputStream = blob.getBinaryStream();
@@ -1352,7 +1419,7 @@ public class DAOProducts extends DBContext {
                     Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
                     Categories category = daoCategories.getCategoryByCategoryID(categoryID);
                     ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
-                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo));
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discount,discontinued, base64Image, proInfo));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -1454,6 +1521,7 @@ public class DAOProducts extends DBContext {
                 double unitprice = rs.getDouble("UnitPrice");
                 int unitsInStock = rs.getInt("UnitsInStock");
                 int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                double discount = rs.getDouble("Discount");
                 boolean discontinued = rs.getBoolean("Discontinued");
                 Blob blob = rs.getBlob("Image");
                 InputStream inputStream = blob.getBinaryStream();
@@ -1473,7 +1541,7 @@ public class DAOProducts extends DBContext {
                     Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
                     Categories category = daoCategories.getCategoryByCategoryID(categoryID);
                     ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
-                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo));
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discount,discontinued, base64Image, proInfo));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -1577,6 +1645,7 @@ public class DAOProducts extends DBContext {
                 double unitprice = rs.getDouble("UnitPrice");
                 int unitsInStock = rs.getInt("UnitsInStock");
                 int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                double discount = rs.getDouble("Discount");
                 boolean discontinued = rs.getBoolean("Discontinued");
                 Blob blob = rs.getBlob("Image");
                 InputStream inputStream = blob.getBinaryStream();
@@ -1596,7 +1665,7 @@ public class DAOProducts extends DBContext {
                     Suppliers supplier = daoSuppliers.getSuppliersBySupplierID(supplierID);
                     Categories category = daoCategories.getCategoryByCategoryID(categoryID);
                     ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
-                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo));
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discount,discontinued, base64Image, proInfo));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -1629,6 +1698,7 @@ public class DAOProducts extends DBContext {
                 double unitprice = rs.getDouble("UnitPrice");
                 int unitsInStock = rs.getInt("UnitsInStock");
                 int unitsOnOrders = rs.getInt("UnitsOnOrder");
+                double discount = rs.getDouble("Discount");
                 boolean discontinued = rs.getBoolean("Discontinued");
                 Blob blob = rs.getBlob("Image");
                 InputStream inputStream = blob.getBinaryStream();
@@ -1649,7 +1719,7 @@ public class DAOProducts extends DBContext {
                     Categories category = daoCategories.getCategoryByCategoryID(categoryID);
                     ProductInfo proInfo = daoProductInfo.getProductInfoByProductID(productID);
                     Vector<Review> reviews = daoReview.getAllReviewByProductIDAndAdmin(productID);
-                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discontinued, base64Image, proInfo, reviews));
+                    vector.add(new Products(productID, productName, supplier, category, unitprice, unitsInStock, unitsOnOrders, discount,discontinued, base64Image, proInfo, reviews));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
