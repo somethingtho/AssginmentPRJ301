@@ -30,6 +30,11 @@ import java.util.logging.Logger;
  */
 public class DAOOrders extends DBContext {
 
+    /**
+     * It returns the sum of all the orders that have a status of 1
+     * 
+     * @return The total money of all orders that have a status of 1.
+     */
     public double TotalMoney() {
         double money = 0;
         String sql = "SELECT SUM(TotalMoney) FROM Orders WHERE Status = 1";
@@ -47,6 +52,11 @@ public class DAOOrders extends DBContext {
         return money;
     }
 
+    /**
+     * It returns the number of orders that have been processed
+     * 
+     * @return The number of orders that have been processed.
+     */
     public int TotalOrdersProcess() {
         int number = 0;
         String sql = "SELECT COUNT(*) FROM Orders WHERE Status = 3";
@@ -61,6 +71,11 @@ public class DAOOrders extends DBContext {
         return number;
     }
 
+    /**
+     * It returns the number of orders that have a status of 0
+     * 
+     * @return The number of orders that have failed.
+     */
     public int TotalOrdersFail() {
         int number = 0;
         String sql = "SELECT COUNT(*) FROM Orders WHERE Status = 0";
@@ -75,6 +90,11 @@ public class DAOOrders extends DBContext {
         return number;
     }
 
+    /**
+     * It returns the number of orders in the database
+     * 
+     * @return The number of orders in the database.
+     */
     public int TotalOrder() {
         int number = 0;
         String sql = "SELECT COUNT(*) FROM Orders";
