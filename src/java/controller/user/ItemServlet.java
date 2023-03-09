@@ -104,7 +104,7 @@ public class ItemServlet extends HttpServlet {
             HttpSession session = request.getSession();
             Customers cus = (Customers) session.getAttribute("account");
 
-            String pid_raw = request.getParameter("pid").trim();
+            String pid_raw = request.getParameter("pid");
             int productID = Integer.parseInt(pid_raw);
             Vector<ProductImage> getAllImageByProductID = daoProductImage.getAllImageProductByProductID(productID);
             Products pro = daoProducts.getProductByID(productID);

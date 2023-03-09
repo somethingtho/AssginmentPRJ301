@@ -63,13 +63,13 @@ public class LoadMoreReviewsServlet extends HttpServlet {
             throws ServletException, IOException {
         DAOProducts daoProducts = new DAOProducts();
         PrintWriter out = response.getWriter();
-        String total = request.getParameter("total").trim();
+        String total = request.getParameter("total");
         try {
             int amount = Integer.parseInt(total);
             Vector<Products> vector = daoProducts.getNextReviewsProducts(amount);
             for (Products products : vector) {
                 out.print("<div class=\"products\">\n"
-                        + "   <h4 class=\"\" style=\"margin-left: 20px\"><a href=\"${pageContext.request.contextPath}/user/item?pid=" + products.getProductID() + "\">" + products.getProductName() + "</a> </h4>\n");
+                        + "   <h4 class=\"\" style=\"margin-left: 20px\"><a href=\""+request.getContextPath() +"/user/item?pid=" + products.getProductID() + "\">" + products.getProductName() + "</a> </h4>\n");
 
                 // Loop through the reviews and include them in the output
                 for (Review review : products.getReviews()) {
@@ -78,7 +78,7 @@ public class LoadMoreReviewsServlet extends HttpServlet {
                             + "      <img src=\"data:image/jpg;base64,"+review.getCus().getBase64Image()+"\" alt=\"user\" width=\"50\" class=\"rounded-circle\" />\n"
                             + "   </div>\n"
                             + "   <div class=\"comment-text w-100\">\n"
-                            + "      <h6 class=\"font-medium\"><a href=\"${pageContext.request.contextPath}/admin/profile?type=customer&id="+review.getCus().getCustomerID()+"\">"+review.getCus().getCustomerName()+"</a></h6>\n"
+                            + "      <h6 class=\"font-medium\"><a href=\"" + request.getContextPath() +"/admin/profile?type=customer&id="+review.getCus().getCustomerID()+"\">"+review.getCus().getCustomerName()+"</a></h6>\n"
                             + "      <span class=\"mb-3 d-block\">("+review.getRate()+" <i class=\"fas fa-star\" style=\"color: gold;\"></i>)"+review.getContentSend()+"\n");
                             if(review.isStatus())out.print("<i class=\"mdi mdi-check-circle\"></i>\n");
                             if(!review.isStatus())out.print("<i class=\"mdi mdi-block-helper\"></i>\n");

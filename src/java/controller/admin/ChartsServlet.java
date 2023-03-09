@@ -6,6 +6,7 @@ package controller.admin;
 
 import static controller.user.LoginServlet.activeSessions;
 import entity.Categories;
+import entity.IntPair;
 import entity.Suppliers;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,6 +19,7 @@ import java.util.*;
 import model.DAOAccounts;
 import model.DAOCategories;
 import model.DAOOrders;
+import model.DAOProducts;
 import model.DAOSuppliers;
 import model.DAOViews;
 
@@ -68,6 +70,7 @@ public class ChartsServlet extends HttpServlet {
         
         DAOAccounts daoAccounts = new DAOAccounts();
         DAOViews daoView = new DAOViews();
+        DAOProducts daoProducts = new DAOProducts();
         DAOOrders daoOrders = new DAOOrders();
         DAOCategories daoCategories = new DAOCategories();
         DAOSuppliers daoSuppliers = new DAOSuppliers();
@@ -79,8 +82,8 @@ public class ChartsServlet extends HttpServlet {
             year = 2023;
         }
 
-        Vector<Integer> accessByMonth = daoView.getAccessByMonth(year);
-        Vector<Integer> ordersByMonth = daoOrders.NumberOrdersByMonth(year);
+        Vector<IntPair> accessByMonth = daoView.getAccessByMonth(year);
+        Vector<IntPair> ordersByMonth = daoOrders.NumberOrdersByMonth(year);
         Vector<Categories> numberProductsOfCategory = daoCategories.NumberProductsByCategories();
         int yearNow = Year.now().getValue();
         Vector<Suppliers> productsBySupplier = daoSuppliers.getNumberProductsBySupplier();
@@ -90,10 +93,18 @@ public class ChartsServlet extends HttpServlet {
         int newOrders = daoOrders.newOrdersInMonth();
         int active = daoAccounts.AccountActive();
         double rateActive = daoAccounts.rateAccountActive();
-        
-        
+        int totalOrdersSuccess = daoOrders.TotalOrders();
+        int totalOrders = daoOrders.TotalOrder();
+        int totalOrderFail = daoOrders.TotalOrdersFail();
+        int totalProcess = daoOrders.TotalOrdersProcess();
+        int totalProducts = daoProducts.TotalProducts();
         request.setAttribute("activeSessions", activeSessions);
         
+        request.setAttribute("totalProducts", totalProducts);
+        request.setAttribute("totalProcess", totalProcess);
+        request.setAttribute("totalOrderFail", totalOrderFail);
+        request.setAttribute("totalOrders", totalOrders);
+        request.setAttribute("totalOrdersSuccess", totalOrdersSuccess);
         request.setAttribute("rateActive", rateActive);
         request.setAttribute("active", active);
         request.setAttribute("newOrders", newOrders);

@@ -65,7 +65,7 @@ public class ListAllSuppliersServlet extends HttpServlet {
         int numperPage = 10;
         int numpage = numPs / numperPage + (numPs % numperPage == 0 ? 0 : 1);
         int start, end;
-        String tpage = request.getParameter("page").trim();
+        String tpage = request.getParameter("page");
         int page;
         try {
             page = Integer.parseInt(tpage);
@@ -98,7 +98,7 @@ public class ListAllSuppliersServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String name = request.getParameter("key").trim();
+        String name = request.getParameter("key");
         DAOSuppliers daoSuppliers = new DAOSuppliers();
         Suppliers s = daoSuppliers.GetSupplierByCompanyName(name);
         Vector<Suppliers> listAllSuppliers = new Vector<>();

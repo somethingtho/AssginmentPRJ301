@@ -58,7 +58,7 @@ public class ReplyServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id_raw = request.getParameter("id").trim();
+        String id_raw = request.getParameter("id");
         DAOFeedback daoFeedback = new DAOFeedback();
         try {
             int id = Integer.parseInt(id_raw);
@@ -84,10 +84,10 @@ public class ReplyServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOFeedback daoFeedback = new DAOFeedback();
-        String id_raw = request.getParameter("id").trim();
+        String id_raw = request.getParameter("id");
         try {
             int id = Integer.parseInt(id_raw);
-            String contentRep = request.getParameter("contentRep").trim();
+            String contentRep = request.getParameter("contentRep");
             Feedback f = daoFeedback.getFeedbackByID(id);
             f.setContentRep(contentRep);
             int n = daoFeedback.UpdateFeedback(f, contentRep);

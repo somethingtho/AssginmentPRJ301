@@ -6,6 +6,7 @@ package model;
 
 import entity.Cart;
 import entity.Customers;
+import entity.IntPair;
 import entity.Item;
 import entity.OrderDetails;
 import entity.Orders;
@@ -15,6 +16,10 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,14 +30,73 @@ import java.util.logging.Logger;
  */
 public class DAOOrders extends DBContext {
 
+    public double TotalMoney() {
+        double money = 0;
+        String sql = "SELECT SUM(TotalMoney) FROM Orders WHERE Status = 1";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                money = rs.getDouble(1);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return money;
+    }
+
+    public int TotalOrdersProcess() {
+        int number = 0;
+        String sql = "SELECT COUNT(*) FROM Orders WHERE Status = 3";
+        ResultSet rs = getData(sql);
+        try {
+            if (rs.next()) {
+                number = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return number;
+    }
+
+    public int TotalOrdersFail() {
+        int number = 0;
+        String sql = "SELECT COUNT(*) FROM Orders WHERE Status = 0";
+        ResultSet rs = getData(sql);
+        try {
+            if (rs.next()) {
+                number = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return number;
+    }
+
+    public int TotalOrder() {
+        int number = 0;
+        String sql = "SELECT COUNT(*) FROM Orders";
+        ResultSet rs = getData(sql);
+        try {
+            if (rs.next()) {
+                number = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return number;
+    }
+
     // The above code is counting the number of orders that are later than 3 days.
-    public int NumberOrderLaterByShipper(int sid){
+    public int NumberOrderLaterByShipper(int sid) {
         int number = 0;
         String sql = "SELECT COUNT(*) FROM dbo.Orders WHERE RequiredDate - OrderDate > 3";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 number = rs.getInt(1);
             }
         } catch (SQLException e) {
@@ -43,7 +107,7 @@ public class DAOOrders extends DBContext {
 
     /**
      * UpdateOrders(int orderID, boolean status)
-     * 
+     *
      * @param orderID the order ID
      * @param status true or false
      * @return The number of rows affected by the update.
@@ -336,11 +400,11 @@ public class DAOOrders extends DBContext {
      * @param year the year that you want to get the number of orders
      * @return A vector of integers.
      */
-    public Vector<Integer> NumberOrdersByMonth(int year) {
-        Vector<Integer> vector = new Vector<>();
+    public Vector<IntPair> NumberOrdersByMonth(int year) {
+        Vector<IntPair> vector = new Vector<>();
 
-//            String sql = "SELECT MONTH(OrderDate),COUNT(OrderID) AS Number FROM dbo.Orders WHERE YEAR(OrderDate) = ? GROUP BY MONTH(OrderDate) ORDER BY MONTH(OrderDate) ASC";
-        String sql = "EXEC dbo.NumberOrdersByMonth @year = ?";
+        String sql = "SELECT MONTH(OrderDate) as month,COUNT(OrderID) AS Number FROM dbo.Orders WHERE YEAR(OrderDate) = ? GROUP BY MONTH(OrderDate) ORDER BY MONTH(OrderDate) ASC";
+//        String sql = "EXEC dbo.NumberOrdersByMonth @year = ?";
 
         PreparedStatement pre;
         try {
@@ -348,8 +412,32 @@ public class DAOOrders extends DBContext {
             pre.setInt(1, year);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
-                vector.add(rs.getInt("Number"));
+                int first = rs.getInt("Month");
+                int second = rs.getInt("Number");
+                vector.add(new IntPair(first, second));
             }
+            int currentYear = LocalDate.now().getYear();
+            int start = 1;
+            int end = 12;
+            if (year == currentYear) {
+                end = LocalDate.now().getMonthValue();
+            }
+            HashSet<Integer> existingInts = new HashSet<>();
+            for (IntPair obj : vector) {
+                IntPair pair = (IntPair) obj;
+                existingInts.add(pair.getFirst());
+            }
+
+            for (int i = end; i >= start; i--) {
+                if (!existingInts.contains(i)) {
+                    vector.add(new IntPair(i, 0)); // add the missing IntPair to the list
+                }
+            }
+            Collections.sort(vector, new Comparator<IntPair>() {
+                public int compare(IntPair p1, IntPair p2) {
+                    return Integer.compare(p1.getFirst(), p2.getFirst());
+                }
+            });
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -960,6 +1048,9 @@ public class DAOOrders extends DBContext {
     public static void main(String[] args) throws IOException {
         DAOOrders dao = new DAOOrders();
         DAOOrderDetails daoOrderDetails = new DAOOrderDetails();
-        System.out.println(dao.getOrdersByOrderID(3));
+        Vector<IntPair> v = dao.NumberOrdersByMonth(2022);
+        for (IntPair integer : v) {
+            System.out.println(integer);
+        }
     }
 }

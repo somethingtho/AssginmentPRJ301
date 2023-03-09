@@ -4,10 +4,15 @@
  */
 package model;
 
+import entity.IntPair;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,18 +58,43 @@ public class DAOViews extends DBContext {
      * @param year the year you want to get the data from
      * @return A vector of integers.
      */
-    public Vector<Integer> getAccessByMonth(int year) {
-        Vector<Integer> vector = new Vector<>();
+    public Vector<IntPair> getAccessByMonth(int year) {
+        Vector<IntPair> vector = new Vector<>();
 
-//        String sql = "SELECT MONTH(DateView),SUM(Access) AS Total FROM Views WHERE YEAR(DateView) = ? GROUP BY MONTH(DateView) ORDER BY MONTH(DateView)";
-        String sql = "EXEC dbo.getAccessByMonth @year = ?";
+        String sql = "SELECT MONTH(DateView) AS Month,SUM(Access) AS Total FROM Views WHERE YEAR(DateView) = ? GROUP BY MONTH(DateView) ORDER BY MONTH(DateView)";
+//        String sql = "EXEC dbo.getAccessByMonth @year = ?";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1,year);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
-                vector.add(rs.getInt("Total"));
+                int first = rs.getInt("Month");
+                int second =rs.getInt("Total");        
+                vector.add(new IntPair(first, second));
             }
+            
+            int currentYear = LocalDate.now().getYear();
+            int start = 1;
+            int end = 12;
+            if (year == currentYear) {
+                end = LocalDate.now().getMonthValue();
+            }
+            HashSet<Integer> existingInts = new HashSet<>();
+            for (IntPair obj : vector) {
+                IntPair pair = (IntPair) obj;
+                existingInts.add(pair.getFirst());
+            }
+
+            for (int i = end; i >= start; i--) {
+                if (!existingInts.contains(i)) {
+                    vector.add(new IntPair(i, 0));
+                }
+            }
+            Collections.sort(vector, new Comparator<IntPair>() {
+                public int compare(IntPair p1, IntPair p2) {
+                    return Integer.compare(p1.getFirst(), p2.getFirst());
+                }
+            });
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

@@ -81,9 +81,9 @@ public class FeedbackServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String email = request.getParameter("email").trim();
-            String contentSend = request.getParameter("contentSend").trim();
-            String role_raw = request.getParameter("role").trim();
+            String email = request.getParameter("email");
+            String contentSend = request.getParameter("contentSend");
+            String role_raw = request.getParameter("role");
             int role = Integer.parseInt(role_raw);
             DAOFeedback daoFeedback = new DAOFeedback();
             HttpSession session = request.getSession();

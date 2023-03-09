@@ -59,7 +59,7 @@ public class OrderDetailsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String oid_raw = request.getParameter("oid").trim();
+        String oid_raw = request.getParameter("oid");
         DAOOrders daoOrders = new DAOOrders();
         DAOOrderDetails daoOrderDetails = new DAOOrderDetails();
         try {

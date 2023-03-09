@@ -105,9 +105,9 @@ public class ChangePassword2Servlet extends HttpServlet {
         Cart cart = new Cart(txt, list);
         request.setAttribute("cart", cart);
         request.setAttribute("size", cart.getItems().size());
-        String newPassword = request.getParameter("newPassword").trim();
-        String cfNewPassword = request.getParameter("cfNewPassword").trim();
-        String email = request.getParameter("email").trim();
+        String newPassword = request.getParameter("newPassword");
+        String cfNewPassword = request.getParameter("cfNewPassword");
+        String email = request.getParameter("email");
         HttpSession session = request.getSession();
         DAOCustomers daoCustomers = new DAOCustomers();
         Customers cus = daoCustomers.getCustomerByEmail(email);

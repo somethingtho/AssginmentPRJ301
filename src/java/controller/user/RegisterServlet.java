@@ -76,10 +76,10 @@ public class RegisterServlet extends HttpServlet {
         DAOAccounts daoAccounts = new DAOAccounts();
         DAOCustomers daoCustomers = new DAOCustomers();
         
-        String user = request.getParameter("username").trim();
-        String pass = request.getParameter("password").trim();
-        String cfpass = request.getParameter("cfpassword").trim();
-        String email = request.getParameter("email").trim();
+        String user = request.getParameter("username");
+        String pass = request.getParameter("password");
+        String cfpass = request.getParameter("cfpassword");
+        String email = request.getParameter("email");
 
         if (user == null) {
             request.setAttribute("error", "Tên đăng nhập không được bỏ trống vui lòng nhập lại!!!");

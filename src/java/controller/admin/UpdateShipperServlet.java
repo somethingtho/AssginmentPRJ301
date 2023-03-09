@@ -58,7 +58,7 @@ public class UpdateShipperServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String shipperID_raw = request.getParameter("shipid").trim();
+        String shipperID_raw = request.getParameter("shipid");
         DAOShippers daoShipper = new DAOShippers();
 
         try {
@@ -85,11 +85,11 @@ public class UpdateShipperServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String companyname = request.getParameter("companyName").trim();
-        String phone = request.getParameter("phone").trim();
-        String email = request.getParameter("email").trim();
-        String status_raw = request.getParameter("status").trim();
-        String id_raw = request.getParameter("shipperID").trim();
+        String companyname = request.getParameter("companyName");
+        String phone = request.getParameter("phone");
+        String email = request.getParameter("email");
+        String status_raw = request.getParameter("status");
+        String id_raw = request.getParameter("shipperID");
         DAOShippers dao = new DAOShippers();
 
         boolean status;

@@ -74,7 +74,7 @@ public class AddCategoriesServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String categoryName = request.getParameter("catename").trim();
+        String categoryName = request.getParameter("catename");
         DAOCategories dao = new DAOCategories();
         Categories cate = dao.getCategoryByCategoryName(categoryName);
         

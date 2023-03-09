@@ -70,9 +70,9 @@ public class SearchServlet extends HttpServlet {
         request.setAttribute("listAllSuppliersLaptop", listAllSuppliersLaptop);
         request.setAttribute("listAllSuppliersTablet", listAllSuppliersTablet);
         String orderby_raw = request.getParameter("orderby");
-        String key = request.getParameter("key").trim();
-        String from_raw = request.getParameter("from").trim();
-        String to_raw = request.getParameter("to").trim();
+        String key = request.getParameter("key");
+        String from_raw = request.getParameter("from");
+        String to_raw = request.getParameter("to");
         double maxPrice = daoProducts.getMaxPrice()*1.2;
         double minPrice = daoProducts.getMinPrice();
         double from = minPrice , to = maxPrice*1.2;

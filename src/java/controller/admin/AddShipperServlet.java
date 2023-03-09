@@ -76,10 +76,10 @@ public class AddShipperServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
-        String companyname = request.getParameter("companyname").trim();
-        String phone = request.getParameter("phone").trim();
-        String email = request.getParameter("email").trim();
-        String status_raw = request.getParameter("status").trim();
+        String companyname = request.getParameter("companyname");
+        String phone = request.getParameter("phone");
+        String email = request.getParameter("email");
+        String status_raw = request.getParameter("status");
         DAOShippers dao = new DAOShippers();
         boolean status;
         try {

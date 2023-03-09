@@ -70,8 +70,8 @@ public class ProfileServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
-        String type = request.getParameter("type").trim();
-        String id_raw = request.getParameter("id").trim();
+        String type = request.getParameter("type");
+        String id_raw = request.getParameter("id");
         DAOSuppliers daoSuppliers = new DAOSuppliers();
         DAOShippers daoShippers = new DAOShippers();
         DAOCustomers daoCustomers = new DAOCustomers();
@@ -175,15 +175,15 @@ public class ProfileServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             boolean lock = true;
-            String type = request.getParameter("type").trim();
-            String companyName = request.getParameter("name").trim();
+            String type = request.getParameter("type");
+            String companyName = request.getParameter("name");
             DAOSuppliers daoSuppliers = new DAOSuppliers();
             DAOShippers daoShippers = new DAOShippers();
             DAOCustomers daoCustomers = new DAOCustomers();
-            String check = request.getParameter("lock").trim();
-            String newName = request.getParameter("compName").trim();
-            String phone = request.getParameter("phone").trim();
-            String email = request.getParameter("email").trim();
+            String check = request.getParameter("lock");
+            String newName = request.getParameter("compName");
+            String phone = request.getParameter("phone");
+            String email = request.getParameter("email");
             if (check.equals("ON")) {
                 lock = false;
             }

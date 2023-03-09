@@ -60,7 +60,7 @@ public class LoadMoreNewOrders extends HttpServlet {
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         DAOOrders daoOrders = new DAOOrders();
-        String total = request.getParameter("total").trim();
+        String total = request.getParameter("total");
         try {
             int amount = Integer.parseInt(total);
             Vector<Orders> vector = daoOrders.getNextNewOrders(amount);
@@ -75,9 +75,9 @@ public class LoadMoreNewOrders extends HttpServlet {
                         + "                                                        />\n"
                         + "                                                </div>\n"
                         + "                                                <div class=\"comment-text w-100\">\n"
-                        + "                                                    <a href=\"${pageContext.request.contextPath}/admin/profile?type=customer&id=" + orders.getCus().getCustomerID() + "\">" + orders.getCus().getCustomerName() + "</a>\n"
+                        + "                                                    <a href=\"" + request.getContextPath() +"/admin/profile?type=customer&id=" + orders.getCus().getCustomerID() + "\">" + orders.getCus().getCustomerName() + "</a>\n"
                         + "                                                    <span class=\"mb-3 d-block\">\n"
-                        + "                                                        <a href=\"${pageContext.request.contextPath}/admin/orderdetail?id=" + orders.getCus().getCustomerID() + "&oid=" + orders.getOrderID() + "\">OrderID: " + orders.getOrderID() + "</a><br>\n"
+                        + "                                                        <a href=\"" +request.getContextPath()+"/admin/orderdetail?id=" + orders.getCus().getCustomerID() + "&oid=" + orders.getOrderID() + "\">OrderID: " + orders.getOrderID() + "</a><br>\n"
                         + "                                                        OrderDate: " + orders.getOrderDate() + "<br>\n"
                         + "                                                        RequiredDate: " + orders.getRequireDate() + "<br>\n"
                         + "                                                        Total Products: " + orders.getOrderDetails().size() + "<br>\n"
@@ -89,7 +89,7 @@ public class LoadMoreNewOrders extends HttpServlet {
                         + "                                                            type=\"button\"\n"
                         + "                                                            class=\"btn btn-cyan btn-sm text-white\"\n"
                         + "                                                            >\n"
-                        + "                                                            <a class=\"text-white\" href=\"${pageContext.request.contextPath}/admin/orderdetail?id=" + orders.getCus().getCustomerID() + "&oid=" + orders.getOrderID() + "\">\n"
+                        + "                                                            <a class=\"text-white\" href=\"" +request.getContextPath()+"/admin/orderdetail?id=" + orders.getCus().getCustomerID() + "&oid=" + orders.getOrderID() + "\">\n"
                         + "                                                                Information \n"
                         + "                                                            </a>\n"
                         + "                                                        </button>\n"

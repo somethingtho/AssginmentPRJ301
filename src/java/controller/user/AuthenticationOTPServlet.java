@@ -66,17 +66,17 @@ public class AuthenticationOTPServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String otpSend = request.getParameter("otpSend").trim();
-        String text1 = request.getParameter("text1").trim();
-        String text2 = request.getParameter("text2").trim();
-        String text3 = request.getParameter("text3").trim();
-        String text4 = request.getParameter("text4").trim();
-        String text5 = request.getParameter("text5").trim();
-        String text6 = request.getParameter("text6").trim();
-        String email = request.getParameter("email").trim();
+        String otpSend = request.getParameter("otpSend");
+        String text1 = request.getParameter("text1");
+        String text2 = request.getParameter("text2");
+        String text3 = request.getParameter("text3");
+        String text4 = request.getParameter("text4");
+        String text5 = request.getParameter("text5");
+        String text6 = request.getParameter("text6");
+        String email = request.getParameter("email");
         String otp = text1 + text2 + text3 + text4 + text5 + text6;
         
-        if(otp.trim().equals(otpSend)){
+        if(otp.equals(otpSend)){
             request.setAttribute("email", email);
             request.getRequestDispatcher("changepassword2.jsp").forward(request, response);
         }else{

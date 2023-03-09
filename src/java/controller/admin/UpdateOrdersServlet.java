@@ -55,8 +55,8 @@ public class UpdateOrdersServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         PrintWriter out = response.getWriter();
-        String oid_raw = request.getParameter("oid").trim();
-        String type = request.getParameter("type").trim();
+        String oid_raw = request.getParameter("oid");
+        String type = request.getParameter("type");
         DAOOrders daoOrders = new DAOOrders();
         try {
             boolean status = type.equals("accept");

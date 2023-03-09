@@ -93,12 +93,12 @@ public class ProfileAdminServlet extends HttpServlet {
             System.out.println(filePart.getContentType());
             inputStream = filePart.getInputStream();
         }
-        String address = request.getParameter("address").trim();
+        String address = request.getParameter("address");
         Customers cus = (Customers) session.getAttribute("admin");
-        String customerName = request.getParameter("customerName").trim();
-        String phone = request.getParameter("phone").trim();
-        String gender_raw = request.getParameter("gender").trim();
-        String email = request.getParameter("email").trim();
+        String customerName = request.getParameter("customerName");
+        String phone = request.getParameter("phone");
+        String gender_raw = request.getParameter("gender");
+        String email = request.getParameter("email");
         boolean gender;
         
         
@@ -140,7 +140,7 @@ public class ProfileAdminServlet extends HttpServlet {
         if (contentDisp != null) {
             String[] tokens = contentDisp.split(";");
             for (String token : tokens) {
-                if (token.trim().startsWith("filename")) {
+                if (token.startsWith("filename")) {
                     return token.substring(token.indexOf("=") + 2, token.length() - 1);
                 }
             }

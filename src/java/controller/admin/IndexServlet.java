@@ -6,6 +6,7 @@
 package controller.admin;
 
 import entity.Customers;
+import entity.IntPair;
 import entity.Orders;
 import entity.Review;
 import java.io.IOException;
@@ -88,7 +89,7 @@ public class IndexServlet extends HttpServlet {
         
         
         int totalCustomers = daoCustomer.TotalCustomers();
-        int totalCategories = daoCategory.TotalCategories();
+        double totalMoney = daoOrders.TotalMoney();
         int totalSuppliers = daoSupplier.TotalSuppliers();
         int totalOrders = daoOrders.TotalOrders();
         int totalOrderDetails = daoOrderDetails.TotalOrderDetails();
@@ -99,8 +100,8 @@ public class IndexServlet extends HttpServlet {
         Vector<Review> top5Review = daoReview.getTop5Review();
         Vector<Customers> newCustomers = daoCustomer.getNewCustomers();
         Vector<Customers> customerVjp = daoCustomer.getTop5Customers();
-        Vector<Integer> accessByMonth = daoView.getAccessByMonth(year);
-        Vector<Integer> ordersByMonth = daoOrders.NumberOrdersByMonth(year);
+        Vector<IntPair> accessByMonth = daoView.getAccessByMonth(year);
+        Vector<IntPair> ordersByMonth = daoOrders.NumberOrdersByMonth(year);
         Vector<Orders> getNewOrders = daoOrders.getNewOrders();
         int yearNow = Year.now().getValue();
         
@@ -112,7 +113,7 @@ public class IndexServlet extends HttpServlet {
         request.setAttribute("ordersByMonth", ordersByMonth);
         request.setAttribute("customerVjp", customerVjp);
         request.setAttribute("totalCustomers", totalCustomers);
-        request.setAttribute("totalCategories", totalCategories);
+        request.setAttribute("totalMoney", totalMoney);
         request.setAttribute("totalSuppliers", totalSuppliers);
         request.setAttribute("totalOrders", totalOrders);
         request.setAttribute("totalOrderDetails", totalOrderDetails);

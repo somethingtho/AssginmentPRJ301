@@ -70,7 +70,7 @@ public class ForgotPasswordServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         DAOCustomers daoCustomers = new DAOCustomers();
-        String email = request.getParameter("email").trim();
+        String email = request.getParameter("email");
         Customers cus = daoCustomers.getCustomerByEmail(email);
         if(cus != null){
             SendEmail send = new SendEmail();

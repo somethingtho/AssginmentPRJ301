@@ -60,7 +60,7 @@ public class UpdateSupplierServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOSuppliers daoSuppliers = new DAOSuppliers();
-        String supID_raw = request.getParameter("supid").trim();
+        String supID_raw = request.getParameter("supid");
 
         try {
             int supID = Integer.parseInt(supID_raw);
@@ -89,12 +89,12 @@ public class UpdateSupplierServlet extends HttpServlet {
 
         DAOSuppliers daoSuppliers = new DAOSuppliers();
 
-        String companyName = request.getParameter("companyName").trim();
-        String email = request.getParameter("email").trim();
-        String phoneNumber = request.getParameter("phoneNumber").trim();
-        String homePage = request.getParameter("homePage").trim();
-        String status_raw = request.getParameter("status").trim();
-        String supplierID_raw = request.getParameter("supplierID").trim();
+        String companyName = request.getParameter("companyName");
+        String email = request.getParameter("email");
+        String phoneNumber = request.getParameter("phoneNumber");
+        String homePage = request.getParameter("homePage");
+        String status_raw = request.getParameter("status");
+        String supplierID_raw = request.getParameter("supplierID");
         boolean status = status_raw.equals("ON");
 
         try {

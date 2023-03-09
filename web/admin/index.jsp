@@ -344,9 +344,9 @@
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="bg-dark p-10 text-white text-center">
-                                                        <i class="mdi mdi-group fs-3 font-16"></i>
-                                                        <h5 class="mb-0 mt-1">${requestScope.totalCategories}</h5>
-                                                        <small class="font-light">Total Categories</small>
+                                                        <i class="mdi mdi-cash fs-3 font-16"></i>
+                                                        <h5 class="mb-0 mt-1"><fmt:formatNumber value = "${requestScope.totalMoney}" type = "currency"/></h5>
+                                                        <small class="font-light">Total Money</small>
                                                     </div>
                                                 </div>
                                                 <div class="col-6 mt-3">
@@ -633,39 +633,25 @@
 
 
 
-                                                                if (${requestScope.year eq requestScope.yearNow}) {
-                                                                    var now = new Date();
-                                                                    var year = now.getFullYear();
-                                                                    var month = now.getMonth();
 
-                                                                    var monthNames = Array.from({length: month + 1}, (_, i) => {
-                                                                        var date = new Date(year, i, 1);
-                                                                        return date.toLocaleString('default', {month: 'long'});
-                                                                    });
-                                                                } else {
-                                                                    var year = new Date().getFullYear();
-
-                                                                    var monthNames = [];
-
-                                                                    for (let month = 0; month < 12; month++) {
-                                                                        var date = new Date(year, month, 1);
-                                                                        monthName = date.toLocaleString('default', {month: 'long'});
-                                                                        monthNames.push(monthName);
-                                                                    }
-
-                                                                }
 
 
                                                                 var data1 = [];
                                                                 var data2 = [];
-
+                                                                var months = [];
                 <c:forEach var="item" items="${requestScope.accessByMonth}">
-                                                                data1.push(${item});
+                                                                data1.push(${item.second});
+                                                                months.push(${item.first});
                 </c:forEach>
 
                 <c:forEach var="item" items="${requestScope.ordersByMonth}">
-                                                                data2.push(${item});
+                                                                data2.push(${item.second});
                 </c:forEach>
+                    
+                                                                const monthNames = months.map((month) => {
+                                                                    const date = new Date(Date.UTC(2000, month - 1, 1)); // Create a Date object with the month and year
+                                                                    return date.toLocaleString('default', {month: 'long'}); // Get the full month name
+                                                                });
                                                                 function drawChart() {
                                                                     var chartData = {
                                                                         series: [

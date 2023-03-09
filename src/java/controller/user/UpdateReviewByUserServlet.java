@@ -59,9 +59,9 @@ public class UpdateReviewByUserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
-        String type = request.getParameter("type").trim();
-        String id_raw = request.getParameter("id").trim();
-        String pid_raw = request.getParameter("pid").trim();
+        String type = request.getParameter("type");
+        String id_raw = request.getParameter("id");
+        String pid_raw = request.getParameter("pid");
         
         try {
             DAOReview daoReview = new DAOReview();

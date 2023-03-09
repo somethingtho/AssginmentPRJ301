@@ -100,7 +100,7 @@ public class ListAlLAccountsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String email = request.getParameter("key").trim();
+        String email = request.getParameter("key");
         DAOCustomers daoCustomer = new DAOCustomers();
         Customers cus = daoCustomer.getCustomerByEmail(email);
         Vector<Customers> listAllCustomers = new Vector<>();

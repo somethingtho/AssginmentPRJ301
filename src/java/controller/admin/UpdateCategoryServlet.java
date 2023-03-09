@@ -66,7 +66,7 @@ public class UpdateCategoryServlet extends HttpServlet {
             throws ServletException, IOException {
         DAOCategories daoCategory = new DAOCategories();
 
-        String categoryID_raw = request.getParameter("cid").trim();
+        String categoryID_raw = request.getParameter("cid");
         try {
             int categoryID = Integer.parseInt(categoryID_raw);
             Categories category = daoCategory.getCategoryByCategoryID(categoryID);
@@ -93,8 +93,8 @@ public class UpdateCategoryServlet extends HttpServlet {
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         try {
-            String categoryName = request.getParameter("catename").trim();
-            String categoryID_raw = request.getParameter("categoryID").trim();
+            String categoryName = request.getParameter("catename");
+            String categoryID_raw = request.getParameter("categoryID");
             int categoryID = Integer.parseInt(categoryID_raw);
             DAOCategories daoCategories = new DAOCategories();
             Categories categoryNew = daoCategories.getCategoryByCategoryID(categoryID);

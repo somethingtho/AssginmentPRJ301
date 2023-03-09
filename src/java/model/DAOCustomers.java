@@ -50,7 +50,7 @@ public class DAOCustomers extends DBContext {
         DAOAccounts daoAccounts = new DAOAccounts();
         Vector<Customers> vector = new Vector<>();
         String sql = "SELECT * FROM dbo.Customers INNER JOIN \n"
-                + "(SELECT CustomerID, SUM(TotalMoney) AS TotalMoney FROM dbo.Orders GROUP BY CustomerID) AS a \n"
+                + "(SELECT CustomerID, SUM(TotalMoney) AS TotalMoney FROM dbo.Orders WHERE Status = 1 GROUP BY CustomerID) AS a \n"
                 + "ON a.CustomerID = Customers.CustomerID ";
 
         try {

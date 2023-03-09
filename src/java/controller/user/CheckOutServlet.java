@@ -93,9 +93,9 @@ public class CheckOutServlet extends HttpServlet {
             }
             Cart cart = new Cart(txt, list);
             Customers cus = (Customers) session.getAttribute("account");
-            String shipperID_raw = request.getParameter("shippers").trim();
+            String shipperID_raw = request.getParameter("shippers");
             int shipperID = Integer.parseInt(shipperID_raw);
-            String payment_raw = request.getParameter("payments").trim();
+            String payment_raw = request.getParameter("payments");
             String required = request.getParameter("requiredDate") +" "+ request.getParameter("requiredTime");
             boolean payment = payment_raw.equals("QR");
             int status = 3;

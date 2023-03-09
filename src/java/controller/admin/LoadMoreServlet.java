@@ -65,11 +65,11 @@ public class LoadMoreServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         DAOProducts daoProducts = new DAOProducts();
-        String amount = request.getParameter("total").trim();
+        String amount = request.getParameter("total");
         int total = Integer.parseInt(amount);
-        String discontinued_raw = request.getParameter("discontinued").trim();
-        String category = request.getParameter("categoryID").trim();
-        String orderby_raw = request.getParameter("orderby").trim();
+        String discontinued_raw = request.getParameter("discontinued");
+        String category = request.getParameter("categoryID");
+        String orderby_raw = request.getParameter("orderby");
 //        int[] sid = null;
 //        if (sid_raw != null) {
 //            sid = new int[sid_raw.length];
@@ -107,11 +107,11 @@ public class LoadMoreServlet extends HttpServlet {
                     + "                                            >\n"
                     + "                                            <button\n"
                     + "                                                class=\"btn_sample\">\n"
-                    + "                                                <a href=\"${pageContext.request.contextPath}/user/item?pid="+products.getProductID()+"\" class=\"mb-0\">(#"+products.getProductID()+") - "+products.getProductName()+"</a>\n"
+                    + "                                                <a href=\"" +request.getContextPath()+"/user/item?pid="+products.getProductID()+"\" class=\"mb-0\">(#"+products.getProductID()+") - "+products.getProductName()+"</a>\n"
                     + "                                            </button>\n"
                     + "                                            <button\n"
                     + "                                                class=\"btn_sample\">\n"
-                    + "                                                <a href=\"${pageContext.request.contextPath}/admin/updateproduct?pid="+products.getProductID()+"\">Chỉnh sửa</a>\n"
+                    + "                                                <a href=\"" +request.getContextPath()+"/admin/updateproduct?pid="+products.getProductID()+"\">Chỉnh sửa</a>\n"
                     + "                                            </button>\n"
                     + "                                        </div>\n"
                     + "                                    </div>\n"
