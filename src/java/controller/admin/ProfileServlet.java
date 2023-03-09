@@ -123,8 +123,10 @@ public class ProfileServlet extends HttpServlet {
                 int totalOrderSuccess = daoOrders.TotalOrderSuccessByShipper(id);
                 int totalOrderFail = daoOrders.TotalOrderFailByShipper(id);
                 Vector<Suppliers> listSuppliers = daoSuppliers.GetNumberProductsByShipper(id);
-                Vector<Orders> listOrdersByShipperID = daoOrders.getAllOrders();
+                Vector<Orders> listOrdersByShipperID = daoOrders.getOrderByShipperID(id);
+                int numberOrderLate = daoOrders.NumberOrderLaterByShipper(id);
 
+                request.setAttribute("numberOrderLate", numberOrderLate);
                 request.setAttribute("listSuppliers", listSuppliers);
                 request.setAttribute("totalOrderSuccess", totalOrderSuccess);
                 request.setAttribute("totalOrderFail", totalOrderFail);

@@ -363,6 +363,11 @@ public class DAOProducts extends DBContext {
         return vector;
     }
 
+    /**
+     * It gets the first two products from the database and returns them as a vector
+     * 
+     * @return A vector of Products
+     */
     public Vector<Products> getReviewsProductsByAdmin() throws IOException {
         DAOSuppliers daoSuppliers = new DAOSuppliers();
         DAOCategories daoCategories = new DAOCategories();
@@ -1679,6 +1684,12 @@ public class DAOProducts extends DBContext {
     }
     
     
+    /**
+     * It gets the next 4 products from the database and returns them as a vector
+     * 
+     * @param amount the amount of products that have been loaded
+     * @return A vector of Products
+     */
     public Vector<Products> getNextReviewsProducts(int amount) {
         Vector<Products> vector = new Vector<>();
         String sql = "SELECT Products.* FROM Products ORDER BY ProductID ASC OFFSET ? ROWS FETCH NEXT 4 ROWS ONLY";

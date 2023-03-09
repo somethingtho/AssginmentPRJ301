@@ -39,16 +39,19 @@ public class DAOCustomers extends DBContext {
     }
 
     /**
-     * I get all customers from database, then I get total money of each customer, then I put them into
-     * a map, then I sort the map by value, then I return the map
-     * 
+     * I get all customers from database, then I get total money of each
+     * customer, then I put them into a map, then I sort the map by value, then
+     * I return the map
+     *
      * @return A map of customers and their total money spent.
      */
     public Vector<Customers> getTop5Customers() {
         DAOOrders daoOrders = new DAOOrders();
         DAOAccounts daoAccounts = new DAOAccounts();
         Vector<Customers> vector = new Vector<>();
-        String sql = "SELECT TOP 5 Customers.*, Orders.TotalMoney FROM dbo.Customers INNER JOIN dbo.Orders ON Orders.CustomerID = Customers.CustomerID ORDER BY TotalMoney";
+        String sql = "SELECT * FROM dbo.Customers INNER JOIN \n"
+                + "(SELECT CustomerID, SUM(TotalMoney) AS TotalMoney FROM dbo.Orders GROUP BY CustomerID) AS a \n"
+                + "ON a.CustomerID = Customers.CustomerID ";
 
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -85,15 +88,14 @@ public class DAOCustomers extends DBContext {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        
-        
+
         return vector;
 
     }
 
     /**
      * It returns the rate of orders that are completed by a customer
-     * 
+     *
      * @param id CustomerID
      * @return The rate of orders that are completed.
      */
@@ -136,9 +138,9 @@ public class DAOCustomers extends DBContext {
     }
 
     /**
-     * It takes a vector of customers, a start index, and an end index, and returns a vector of
-     * customers
-     * 
+     * It takes a vector of customers, a start index, and an end index, and
+     * returns a vector of customers
+     *
      * @param vector the vector of customers
      * @param start the index of the first element in the vector to be returned
      * @param end the end index of the vector
@@ -154,10 +156,11 @@ public class DAOCustomers extends DBContext {
     }
 
     /**
-     * It's a function that returns a customer object, which contains an account object, which contains
-     * a role, username, password, registration date, and status.
+     * It's a function that returns a customer object, which contains an account
+     * object, which contains a role, username, password, registration date, and
+     * status.
      * </code>
-     * 
+     *
      * @param pass the password of the account
      * @param user admin
      * @return A Customers object.
@@ -210,7 +213,7 @@ public class DAOCustomers extends DBContext {
 
     /**
      * It's a function that locks or unlocks an account
-     * 
+     *
      * @param c is the object of the class Customers
      * @return The number of rows affected by the update.
      */
@@ -237,8 +240,9 @@ public class DAOCustomers extends DBContext {
     }
 
     /**
-     * It gets the customer's information from the database and returns it as a Customer object
-     * 
+     * It gets the customer's information from the database and returns it as a
+     * Customer object
+     *
      * @param id the id of the customer
      * @return A Customers object.
      */
@@ -282,12 +286,11 @@ public class DAOCustomers extends DBContext {
 
         return cus;
     }
-    
-    
+
     /**
-     * I get the image from the database, convert it to a byte array, then convert it to a base64
-     * string, then return the customer object
-     * 
+     * I get the image from the database, convert it to a byte array, then
+     * convert it to a base64 string, then return the customer object
+     *
      * @param email String
      * @return A Customers object.
      */
@@ -334,9 +337,9 @@ public class DAOCustomers extends DBContext {
     }
 
     /**
-     * I get the image from the database, convert it to a byte array, then convert it to a base64
-     * string, then return the customer object
-     * 
+     * I get the image from the database, convert it to a byte array, then
+     * convert it to a base64 string, then return the customer object
+     *
      * @param email String
      * @return A Customers object.
      */
@@ -383,10 +386,10 @@ public class DAOCustomers extends DBContext {
     }
 
     /**
-     * I'm trying to get the image from the database and convert it to base64 string to display it on
-     * the web page.
+     * I'm trying to get the image from the database and convert it to base64
+     * string to display it on the web page.
      * </code>
-     * 
+     *
      * @param cid customerID
      * @return A Customers object.
      */
@@ -435,7 +438,7 @@ public class DAOCustomers extends DBContext {
 
     /**
      * It gets a list of customers who have bought from a specific supplier
-     * 
+     *
      * @param supplierID int
      * @return A vector of Customers
      */
@@ -486,9 +489,9 @@ public class DAOCustomers extends DBContext {
     }
 
     /**
-     * I get the data from the database, then I convert the image from blob to base64 and add it to the
-     * vector
-     * 
+     * I get the data from the database, then I convert the image from blob to
+     * base64 and add it to the vector
+     *
      * @return A vector of Customers objects.
      */
     public Vector<Customers> getNewCustomers() {
@@ -538,7 +541,7 @@ public class DAOCustomers extends DBContext {
 
     /**
      * It gets all the customers from the database and returns them as a vector
-     * 
+     *
      * @return A vector of Customers objects.
      */
     public Vector<Customers> getAllCustomers() {
@@ -582,9 +585,9 @@ public class DAOCustomers extends DBContext {
     }
 
     /**
-     * The function takes an integer as an argument and deletes the row in the Customers table where
-     * the CustomerID is equal to the argument
-     * 
+     * The function takes an integer as an argument and deletes the row in the
+     * Customers table where the CustomerID is equal to the argument
+     *
      * @param id the id of the customer to be deleted
      * @return The number of rows affected by the SQL statement.
      */
@@ -603,7 +606,7 @@ public class DAOCustomers extends DBContext {
 
     /**
      * The function is used to update the customer's information in the database
-     * 
+     *
      * @param customer is a Customer object
      * @param file the image file
      * @return The number of rows affected by the update.
@@ -638,8 +641,9 @@ public class DAOCustomers extends DBContext {
     }
 
     /**
-     * It gets the customer's information from the database and returns it as a Customers object
-     * 
+     * It gets the customer's information from the database and returns it as a
+     * Customers object
+     *
      * @param userName String
      * @param password 123456
      * @return A Customers object.
@@ -691,9 +695,10 @@ public class DAOCustomers extends DBContext {
     }
 
     /**
-     * It gets the customer's information from the database and returns it as a Customers object.
+     * It gets the customer's information from the database and returns it as a
+     * Customers object.
      * </code>
-     * 
+     *
      * @param userName String
      * @return A Customers object.
      */
@@ -745,7 +750,7 @@ public class DAOCustomers extends DBContext {
 
     /**
      * Insert a new customer into the database
-     * 
+     *
      * @param cus is a Customers object
      * @return The number of rows affected by the SQL statement.
      */
@@ -784,7 +789,7 @@ public class DAOCustomers extends DBContext {
 
     /**
      * It updates the password of a customer in the database
-     * 
+     *
      * @param cus is the object of the class Customers
      * @return The number of rows affected by the update.
      */
@@ -804,9 +809,9 @@ public class DAOCustomers extends DBContext {
     }
 
     /**
-     * I want to get all the data from the Customers table and the Accounts table, then put them into a
-     * vector
-     * 
+     * I want to get all the data from the Customers table and the Accounts
+     * table, then put them into a vector
+     *
      * @return A vector of Customers objects.
      */
     public Vector<Customers> getAllCustomersByAdmin() {
@@ -856,7 +861,7 @@ public class DAOCustomers extends DBContext {
 
     /**
      * It returns the number of customers in the database
-     * 
+     *
      * @return The number of customers in the database.
      */
     public int TotalCustomers() {

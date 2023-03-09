@@ -816,7 +816,7 @@
                                         <tbody>
                                             <c:forEach items="${requestScope.listOrdersByShipperID}" var="sample">
                                                 <tr>
-                                                    <td>${sample.orderID}</td>
+                                                    <td><a href="${pageContext.request.contextPath}/admin/orderdetail?id=${requestScope.entity.shipperID}&oid=${sample.orderID}">${sample.orderID}</a></td>
                                                     <td><a href="${pageContext.request.contextPath}/admin/profile?type=customer&id=${sample.cus.customerID}">${sample.cus.customerName}</a></td>
                                                     <td>${sample.cus.phone}</td>
                                                     <td>
@@ -840,7 +840,7 @@
                                                     <td>
                                                         <c:choose>
                                                             <c:when test="${sample.status == 1}">Success</c:when>
-                                                            <c:when test="${sample.status == 0}">Success</c:when>
+                                                            <c:when test="${sample.status == 0}">Fail</c:when>
                                                             <c:otherwise>Process</c:otherwise>
                                                         </c:choose>
                                                     </td>
@@ -898,6 +898,11 @@
                             </div>        
 
 
+                            <div  class="col-md-12">
+                                <div class="card" >
+                                    <canvas  id="chartLate"></canvas>
+                                </div>
+                            </div>
 
                         </c:if>     
 
@@ -1079,10 +1084,6 @@
 
 
 
-
-
-
-
                                                                 var mValues = ["Success", "Fail"];
                                                                 var nValues = [${requestScope.totalOrderSuccess},${requestScope.totalOrderFail}];
 
@@ -1109,6 +1110,34 @@
                                                                     }
                                                                 });
 
+
+
+                                                                var mValues = ["Early", "Later"];
+                                                                var nValues = [${requestScope.totalOrders - requestScope.numberOrderLate},${requestScope.numberOrderLate}];
+
+
+                                                                var barColors = [
+                                                                    "#2b5797",
+                                                                    "#b91d47"
+                                                                    
+                                                                ];
+
+                                                                new Chart("chartLate", {
+                                                                    type: "pie",
+                                                                    data: {
+                                                                        labels: mValues,
+                                                                        datasets: [{
+                                                                                backgroundColor: barColors,
+                                                                                data: nValues
+                                                                            }]
+                                                                    },
+                                                                    options: {
+                                                                        title: {
+                                                                            display: true,
+                                                                            text: "Number Orders Late/Early"
+                                                                        }
+                                                                    }
+                                                                });
             </script>
     </body>
 </html>

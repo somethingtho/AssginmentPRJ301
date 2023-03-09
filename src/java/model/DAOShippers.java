@@ -18,6 +18,8 @@ import java.util.logging.Logger;
  * @author daova
  */
 public class DAOShippers extends DBContext {
+
+    
     
     /**
      * It returns a Shippers object with the given Phone 

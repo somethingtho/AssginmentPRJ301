@@ -25,26 +25,59 @@ import java.util.logging.Logger;
  */
 public class DAOOrders extends DBContext {
 
+    // The above code is counting the number of orders that are later than 3 days.
+    public int NumberOrderLaterByShipper(int sid){
+        int number = 0;
+        String sql = "SELECT COUNT(*) FROM dbo.Orders WHERE RequiredDate - OrderDate > 3";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            if(rs.next()){
+                number = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return number;
+    }
+
+    /**
+     * UpdateOrders(int orderID, boolean status)
+     * 
+     * @param orderID the order ID
+     * @param status true or false
+     * @return The number of rows affected by the update.
+     */
     public int UpdateOrders(int orderID, boolean status) {
         Orders order = getOrdersByOrderID(orderID);
         Vector<OrderDetails> listOrderDetail = order.getOrderDetails();
         int number = 0;
         String sql = "UPDATE Orders SET Status = ? WHERE OrderID = ?";
-        String sql2 ="UPDATE Products Set UnitsInStock = UnitsInStock + ?, UnitsOnOrder = UnitsOnOrder - ?, Discontinued = ? WHERE ProductID = ?";
+        String sql2 = "UPDATE Products Set UnitsInStock = UnitsInStock + ?, UnitsOnOrder = UnitsOnOrder - ?, Discontinued = ? WHERE ProductID = ?";
+
         try {
-            PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setBoolean(1, status);
-            pre.setInt(2, orderID);
-            pre.executeUpdate();
-            
-            PreparedStatement preProduct = connection.prepareStatement(sql2);
-            for (OrderDetails orderDetails : listOrderDetail) {
-                preProduct.setInt(1, orderDetails.getQuantity());
-                preProduct.setInt(2, orderDetails.getQuantity());
-                preProduct.setBoolean(3, false);
-                preProduct.setInt(4, orderDetails.getProduct().getProductID());
-                preProduct.executeUpdate(); 
+            if (status) {
+                sql = "UPDATE Orders SET Status = ?, ShippedDate = GETDATE() WHERE OrderID = ?";
+                PreparedStatement pre = connection.prepareStatement(sql);
+                pre.setBoolean(1, status);
+                pre.setInt(2, orderID);
+                pre.executeUpdate();
+
+            } else {
+                PreparedStatement pre = connection.prepareStatement(sql);
+                pre.setBoolean(1, status);
+                pre.setInt(2, orderID);
+                pre.executeUpdate();
+                PreparedStatement preProduct = connection.prepareStatement(sql2);
+                for (OrderDetails orderDetails : listOrderDetail) {
+                    preProduct.setInt(1, orderDetails.getQuantity());
+                    preProduct.setInt(2, orderDetails.getQuantity());
+                    preProduct.setBoolean(3, false);
+                    preProduct.setInt(4, orderDetails.getProduct().getProductID());
+                    preProduct.executeUpdate();
+                }
             }
+
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -53,7 +86,7 @@ public class DAOOrders extends DBContext {
 
     /**
      * It gets the top 5 orders from the database and returns them as a vector
-     * 
+     *
      * @return A vector of Orders
      */
     public Vector<Orders> getProcessOrders() {
@@ -88,8 +121,9 @@ public class DAOOrders extends DBContext {
     }
 
     /**
-     * It gets the top 5 orders with status 3 (new orders) and returns them as a vector
-     * 
+     * It gets the top 5 orders with status 3 (new orders) and returns them as a
+     * vector
+     *
      * @return A vector of Orders
      */
     public Vector<Orders> getNewOrders() {
@@ -127,7 +161,7 @@ public class DAOOrders extends DBContext {
 
     /**
      * It gets the next 5 orders from the database, and returns them as a vector
-     * 
+     *
      * @param amount the amount of rows that have been loaded
      * @return A vector of Orders
      */
@@ -164,10 +198,10 @@ public class DAOOrders extends DBContext {
 
         return vector;
     }
-    
+
     /**
      * It gets the next 5 orders from the database, and returns them as a vector
-     * 
+     *
      * @param amount the amount of rows to skip
      * @return A vector of Orders
      */
@@ -177,7 +211,7 @@ public class DAOOrders extends DBContext {
         DAOCustomers daoCustomers = new DAOCustomers();
         DAOOrderDetails daoOrderDetails = new DAOOrderDetails();
         String sql = "SELECT * FROM Orders WHERE Status = 1 OR Status = 0 ORDER BY OrderDate DESC OFFSET ? ROWS FETCH NEXT 5 ROWS ONLY";
-        
+
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, amount);
@@ -204,10 +238,11 @@ public class DAOOrders extends DBContext {
 
         return vector;
     }
-    
+
     /**
-     * It returns the number of rows in the Orders table where the Status column is equal to 3
-     * 
+     * It returns the number of rows in the Orders table where the Status column
+     * is equal to 3
+     *
      * @return The number of orders that have a status of 3.
      */
     public int getSizeNewOrders() {
@@ -225,10 +260,11 @@ public class DAOOrders extends DBContext {
 
         return number;
     }
-    
+
     /**
-     * It returns the number of rows in the Orders table where the Status column is equal to 1 or 0
-     * 
+     * It returns the number of rows in the Orders table where the Status column
+     * is equal to 1 or 0
+     *
      * @return The number of rows in the table.
      */
     public int getSizeOrders() {
@@ -246,8 +282,7 @@ public class DAOOrders extends DBContext {
 
         return number;
     }
-    
-    
+
     /**
      * It returns the number of orders that have been placed in the current
      * month
@@ -917,7 +952,7 @@ public class DAOOrders extends DBContext {
         double total = 0;
         Vector<OrderDetails> orderDetail = daoOrderDetails.getAllOrderDetailsByOrderID(oID);
         for (OrderDetails orderDetails : orderDetail) {
-            total += (orderDetails.getUnitPrice() - orderDetails.getUnitPrice()*orderDetails.getDiscount())* orderDetails.getQuantity();
+            total += (orderDetails.getUnitPrice() - orderDetails.getUnitPrice() * orderDetails.getDiscount()) * orderDetails.getQuantity();
         }
         return total;
     }
