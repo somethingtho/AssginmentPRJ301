@@ -20,6 +20,15 @@
         <title>${requestScope.titlePage}</title>
 
     </head>
+    <style>.discount{
+            float: left;
+            background-color: red;
+            border-radius: 50%;
+            color: white;
+            height: 30px;
+            text-align: center;
+            line-height: 2;
+        }</style>
     <body>
         <button onclick="topFunction()" id="myBtn" title="Go to top"><i style="text-align: center" class="ti-arrow-up"></i></button>
             <fmt:setLocale value = "vi_VN"/>
@@ -28,7 +37,7 @@
                 response.setHeader("Pragma", "no-cache"); //HTTP 1.0
                 response.setDateHeader("Expires", 0);
                 //prevents caching at the proxy server
-%>
+            %>
             <c:set var="o" value="${requestScope.cart}"/>
         <header>
             <div class="logo">
@@ -238,6 +247,7 @@
                     <hr style="margin-right: 2rem; margin-top: 0; height: 1px; background-color: black; color: black; margin-bottom: 2rem;">
                     <c:forEach items="${requestScope.listAllType}" var="p">
                         <a href="${pageContext.request.contextPath}/user/item?pid=${p.productID}" class="col-sm-3">
+                            <span class="discount"><fmt:formatNumber value = "${p.discount}" type = "percent"/></span>
                             <div class="pro-img">
                                 <img src="data:image/jpg;base64,${p.base64Image}"/>
                             </div>
@@ -283,7 +293,7 @@
             </div>
             <div class="col-sm-4 website_help center-block">
                 <h3>Website</h3>
-                <p><a href="">Bán hàng cùng chúng tôi</a></p>
+                <p><a href="${pageContext.request.contextPath}/admin/authentication-register.jsp">Bán hàng cùng chúng tôi</a></p>
                 <p><a href="">Tuyển dụng</a></p>
                 <p><a href="#">Điều khoản sử dụng</a></p>
                 <p><a href="#">Chính sách bảo mật</a></p>

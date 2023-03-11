@@ -30,7 +30,7 @@
       rel="icon"
       type="image/png"
       sizes="16x16"
-      href="assets/images/logo.png"
+      href="${pageContext.request.contextPath}/assets/images/logo.png"
     />
     <!-- Custom CSS -->
     <link href="dist/css/style.min.css" rel="stylesheet" type="text/css"/>
@@ -67,7 +67,7 @@
             YOU SEEM TO BE TRYING TO FIND HIS WAY HOME
           </p>
           <a
-            href="/demoall/user/index"
+            href="${pageContext.request.contextPath}/user/index"
             class="
               btn btn-danger btn-rounded
               waves-effect waves-light
@@ -97,9 +97,11 @@
     <!-- ============================================================== -->
     <!-- All Required js -->
     <!-- ============================================================== -->
-    <script src="assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="assets/libs/jquery/dist/jquery.min.js" type="text/javascript"></script>
     <!-- Bootstrap tether Core JavaScript -->
-    <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
     <!-- ============================================================== -->
     <!-- This page plugin js -->
     <!-- ============================================================== -->

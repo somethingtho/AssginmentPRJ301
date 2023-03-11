@@ -27,7 +27,7 @@ public class DAOFeedback extends DBContext {
 
     /**
      * It returns a vector of all the emails in the Feedback table
-     * 
+     *
      * @return A vector of strings.
      */
     public Vector<String> getAllEmailFeedback() {
@@ -77,6 +77,10 @@ public class DAOFeedback extends DBContext {
                             Shippers shipper = daoShippers.getShipperByEmail(email);
                             vector.add(new Feedback(id, contentSend, contentRep, status, role, dateSend, dateRep, shipper));
                         }
+                        if (role == 3) {
+                            Customers customer = daoCustomer.getCustomerByEmail(email);
+                            vector.add(new Feedback(id, contentSend, contentRep, status, customer, email, role, dateSend, dateRep));
+                        }
                     } else {
                         Customers customer = daoCustomer.getCustomerByID(idAccount);
                         vector.add(new Feedback(id, contentSend, contentRep, status, customer, email, role, dateSend, dateRep));
@@ -108,14 +112,14 @@ public class DAOFeedback extends DBContext {
 
                 int dateSendCompare = dateSend1.compareTo(dateSend2);
                 if (dateSendCompare != 0) {
-                    return dateSendCompare;
+                    return -dateSendCompare;
                 }
 
                 if (dateRep1 == null || dateRep2 == null) {
                     return 0; // cannot compare
                 }
 
-                return dateRep1.compareTo(dateRep2);
+                return -dateRep1.compareTo(dateRep2);
             }
         };
 
@@ -132,6 +136,8 @@ public class DAOFeedback extends DBContext {
      */
     public Vector<Feedback> getAllFeedbackByEmail(Feedback f) {
         Vector<Feedback> vector = new Vector<>();
+        DAOSuppliers daoSuppliers = new DAOSuppliers();
+        DAOShippers daoShippers = new DAOShippers();
         DAOCustomers daoCustomer = new DAOCustomers();
         String sql = "SELECT * FROM Feedback WHERE Email = ?";
         try {
@@ -148,11 +154,22 @@ public class DAOFeedback extends DBContext {
                 int role = rs.getInt("Role");
                 String dateSend = rs.getString("DateSend");
                 String dateRep = rs.getString("DateRep");
-                if (idAccount != null) {
+                if (idAccount == 0) {
+                    if (role == 2) {
+                        Suppliers supplier = daoSuppliers.GetSupplierByEmail(email);
+                        vector.add(new Feedback(id, contentSend, contentRep, status, role, dateSend, dateRep, supplier));
+                    }
+                    if (role == 0) {
+                        Shippers shipper = daoShippers.getShipperByEmail(email);
+                        vector.add(new Feedback(id, contentSend, contentRep, status, role, dateSend, dateRep, shipper));
+                    }
+                    if (role == 3) {
+                        Customers customer = daoCustomer.getCustomerByEmail(email);
+                        vector.add(new Feedback(id, contentSend, contentRep, status, customer, email, role, dateSend, dateRep));
+                    }
+                } else {
                     Customers customer = daoCustomer.getCustomerByID(idAccount);
                     vector.add(new Feedback(id, contentSend, contentRep, status, customer, email, role, dateSend, dateRep));
-                } else {
-                    vector.add(new Feedback(id, contentSend, contentRep, status, email, role, dateSend, dateRep));
                 }
             }
         } catch (SQLException ex) {
@@ -186,7 +203,7 @@ public class DAOFeedback extends DBContext {
                 int role = rs.getInt("Role");
                 String dateSend = rs.getString("DateSend");
                 String dateRep = rs.getString("DateRep");
-                if (idAccount != null) {
+                if (idAccount != 0) {
                     Customers customer = daoCustomer.getCustomerByID(idAccount);
                     f = new Feedback(id, contentSend, contentRep, status, customer, email, role, dateSend, dateRep);
                 } else {
@@ -380,10 +397,14 @@ public class DAOFeedback extends DBContext {
 
     public static void main(String[] args) {
         DAOFeedback dao = new DAOFeedback();
-        Vector<Feedback> list = dao.getLastFeedback();
-        for (Feedback feedback : list) {
-            System.out.println(feedback);
+        Vector<String> v = dao.getAllEmailFeedback();
+        for (String string : v) {
+            System.out.println(string);
         }
+//        Vector<Feedback> list = dao.getLastFeedback();
+//        for (Feedback feedback : list) {
+//            System.out.println(feedback.getEmail());
+//        }
     }
 
 }

@@ -86,11 +86,7 @@ public class ProfileAdminServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Part filePart = request.getPart("photo");
 
-        if (filePart != null && !getFileName(filePart).isEmpty()) {
-
-            System.out.println(filePart.getName());
-            System.out.println(filePart.getSize());
-            System.out.println(filePart.getContentType());
+        if (filePart != null && filePart.getSize() > 0) {
             inputStream = filePart.getInputStream();
         }
         String address = request.getParameter("address");
@@ -100,14 +96,12 @@ public class ProfileAdminServlet extends HttpServlet {
         String gender_raw = request.getParameter("gender");
         String email = request.getParameter("email");
         boolean gender;
-        
-        
         Customers check = daoCustomers.getCustomerByEmail(email);
         Customers check2 = daoCustomers.getCustomerByPhone(phone);
         if (check != null && cus != null) {
             if (!check.getAcc().getUserName().equalsIgnoreCase(cus.getAcc().getUserName())) {
                 request.setAttribute("error", "Email đã được sử dụng vui lòng chọn Email khác!");
-                request.getRequestDispatcher("information.jsp").forward(request, response);
+                request.getRequestDispatcher("profileadmin.jsp").forward(request, response);
             }
 
         }
@@ -115,7 +109,7 @@ public class ProfileAdminServlet extends HttpServlet {
         if (check2 != null  && cus != null) {
             if (!check2.getAcc().getUserName().equalsIgnoreCase(cus.getAcc().getUserName())) {
                 request.setAttribute("error", "Số điện thoại đã được sử dụng vui lòng chọn Số điện thoại khác!");
-                request.getRequestDispatcher("information.jsp").forward(request, response);
+                request.getRequestDispatcher("profileadmin.jsp").forward(request, response);
             }
         }
         try {
@@ -129,9 +123,10 @@ public class ProfileAdminServlet extends HttpServlet {
             Customers update = daoCustomers.getCustomerByUserName(cus.getAcc().getUserName());
             cus.setBase64Image(update.getBase64Image());
             session.setAttribute("admin", cus);
-            request.setAttribute("message", "Cập nhật thành công!");
+            request.setAttribute("error", "Cập nhật thành công!");
             request.getRequestDispatcher("profileadmin.jsp").forward(request, response);
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     

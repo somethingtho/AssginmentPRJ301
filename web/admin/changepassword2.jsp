@@ -16,6 +16,11 @@
         <title>Change Password</title>
     </head>
 
+    <style>
+        .btn:last-child{
+            float: right;
+        }
+    </style>
     <body>
         <div style="display: grid; place-items: center">
             <div class="card" >
@@ -27,7 +32,7 @@
                         <h3 style="color: red">${requestScope.error}</h3>
                         <div class="form-group">
                             <label for="email">Email:</label>
-                            <input readonly="" class="form-control" name="email" id="email" type="email">
+                            <input readonly="" class="form-control" name="email" value="${requestScope.email}" id="email" type="email">
                         </div>
                         <div class="form-group">
                             <label for="password">Password:</label>
@@ -37,7 +42,8 @@
                             <label for="confirm-password">Confirm Password:</label>
                             <input required="" class="form-control" name="cfNewPassword" id="confirm-password" type="password">
                         </div>
-                        <input type="button" onclick="checkForm()" class="btn" value="submit">    </form>
+                        <input type="button" onclick="checkForm()" class="btn" value="submit"> 
+                        <input type="button" onclick="gotoHome()" class="btn" value="GO Home"></form>
                 </div>
             </div>
         </div>
@@ -52,11 +58,13 @@
                 if (password !== cfpassword) {
                     alert('Password and Confirm Password the same!');
                     return;
-                }else{
+                } else {
                     document.getElementById('form_change').submit();
                 }
             }
-
+            function gotoHome() {
+                window.location.href = "${pageContext.request.contextPath}/admin/index";
+            }
         </script>
     </body>
 </html>

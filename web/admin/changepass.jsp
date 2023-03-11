@@ -566,12 +566,18 @@
 
                     var oldPassword = document.getElementById('oldPassword');
                     var newPassword = document.getElementById('newPassword');
-                    if (oldPassword !== newPassword) {
-                        alert("Mật khẩu mới và Mật khẩu xác nhận phải giống nhau!");
+                    var cfnewPassword = document.getElementById('cfNewPassword');
+                    if (oldPassword === "") {
+                        alert("Nhập mật khẩu cũ!");
                         return;
                     } else {
-                        alert("Submited");
-                        document.getElementById('example-form').submit();
+                        if (newPassword.value !== cfnewPassword.value) {
+                            alert("Nhập mật mới và mật khẩu xác nhận phải giống nhau!");
+                            return;
+                        } else {
+                            alert("Submited");
+                            document.getElementById('example-form').submit();
+                        }
                     }
                 },
             });

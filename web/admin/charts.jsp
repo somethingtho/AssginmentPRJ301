@@ -574,69 +574,85 @@
                             </div>
                         </div>
                     </div>
-                    <!-- End Charts -->
+
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Money By Month</h5>
+                                <form action="${pageContext.request.contextPath}/admin/charts" method="get">
+                                    <select name="yearM" onchange="this.form.submit()">
+                                        <optgroup label="Year">
+                                            <option value="2023" <c:if test="${requestScope.yearM == 2023}">selected</c:if>>2023</option>
+                                            <option value="2022" <c:if test="${requestScope.yearM == 2022}">selected</c:if>>2022</option>
+                                        </select>
+                                    </form>
+                                    <div id="chart4" style="width:100%; height: 400px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Charts -->
+                        <!-- ============================================================== -->
+                        <!-- End PAge Content -->
+                        <!-- ============================================================== -->
+                        <!-- ============================================================== -->
+                        <!-- Right sidebar -->
+                        <!-- ============================================================== -->
+                        <!-- .right-sidebar -->
+                        <!-- ============================================================== -->
+                        <!-- End Right sidebar -->
+                        <!-- ============================================================== -->
+                    </div>
                     <!-- ============================================================== -->
-                    <!-- End PAge Content -->
+                    <!-- End Container fluid  -->
                     <!-- ============================================================== -->
                     <!-- ============================================================== -->
-                    <!-- Right sidebar -->
+                    <!-- footer -->
                     <!-- ============================================================== -->
-                    <!-- .right-sidebar -->
+                    <footer class="footer text-center">
+
+                    </footer>
                     <!-- ============================================================== -->
-                    <!-- End Right sidebar -->
+                    <!-- End footer -->
                     <!-- ============================================================== -->
                 </div>
                 <!-- ============================================================== -->
-                <!-- End Container fluid  -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- footer -->
-                <!-- ============================================================== -->
-                <footer class="footer text-center">
-
-                </footer>
-                <!-- ============================================================== -->
-                <!-- End footer -->
+                <!-- End Page wrapper  -->
                 <!-- ============================================================== -->
             </div>
             <!-- ============================================================== -->
-            <!-- End Page wrapper  -->
+            <!-- End Wrapper -->
             <!-- ============================================================== -->
-        </div>
-        <!-- ============================================================== -->
-        <!-- End Wrapper -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- All Jquery -->
-        <!-- ============================================================== -->
-        <script src="assets/libs/jquery/dist/jquery.min.js"></script>
-        <!-- Bootstrap tether Core JavaScript -->
-        <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- slimscrollbar scrollbar JavaScript -->
-        <script src="assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
-        <script src="assets/extra-libs/sparkline/sparkline.js"></script>
-        <!--Wave Effects -->
-        <script src="dist/js/waves.js"></script>
-        <!--Menu sidebar -->
-        <script src="dist/js/sidebarmenu.js"></script>
-        <!--Custom JavaScript -->
-        <script src="dist/js/custom.min.js"></script>
-        <!-- this page js -->
-        <script src="assets/libs/chart/matrix.interface.js"></script>
-        <script src="assets/libs/chart/excanvas.min.js"></script>
-        <script src="assets/libs/flot/jquery.flot.js"></script>
-        <script src="assets/libs/flot/jquery.flot.pie.js"></script>
-        <script src="assets/libs/flot/jquery.flot.time.js"></script>
-        <script src="assets/libs/flot/jquery.flot.stack.js"></script>
-        <script src="assets/libs/flot/jquery.flot.crosshair.js"></script>
-        <script src="assets/libs/chart/jquery.peity.min.js"></script>
-        <script src="assets/libs/chart/matrix.charts.js"></script>
-        <script src="assets/libs/chart/jquery.flot.pie.min.js"></script>
-        <script src="assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
-        <script src="assets/libs/chart/turning-series.js"></script>
-        <script src="dist/js/pages/chart/chart-page-init.js"></script>
+            <!-- ============================================================== -->
+            <!-- All Jquery -->
+            <!-- ============================================================== -->
+            <script src="assets/libs/jquery/dist/jquery.min.js"></script>
+            <!-- Bootstrap tether Core JavaScript -->
+            <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+            <!-- slimscrollbar scrollbar JavaScript -->
+            <script src="assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+            <script src="assets/extra-libs/sparkline/sparkline.js"></script>
+            <!--Wave Effects -->
+            <script src="dist/js/waves.js"></script>
+            <!--Menu sidebar -->
+            <script src="dist/js/sidebarmenu.js"></script>
+            <!--Custom JavaScript -->
+            <script src="dist/js/custom.min.js"></script>
+            <!-- this page js -->
+            <script src="assets/libs/chart/matrix.interface.js"></script>
+            <script src="assets/libs/chart/excanvas.min.js"></script>
+            <script src="assets/libs/flot/jquery.flot.js"></script>
+            <script src="assets/libs/flot/jquery.flot.pie.js"></script>
+            <script src="assets/libs/flot/jquery.flot.time.js"></script>
+            <script src="assets/libs/flot/jquery.flot.stack.js"></script>
+            <script src="assets/libs/flot/jquery.flot.crosshair.js"></script>
+            <script src="assets/libs/chart/jquery.peity.min.js"></script>
+            <script src="assets/libs/chart/matrix.charts.js"></script>
+            <script src="assets/libs/chart/jquery.flot.pie.min.js"></script>
+            <script src="assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+            <script src="assets/libs/chart/turning-series.js"></script>
+            <script src="dist/js/pages/chart/chart-page-init.js"></script>
 
-        <script>
+            <script>
                                         var now = new Date();
                                         var offset = +7 * 60; // offset in minutes
                                         var lastDate = now.getTime() + offset * 60 * 1000;
@@ -889,6 +905,62 @@
                                         chart3.render();
 
 
+
+                                        var datae = [];
+                                        var monthss = [];
+            <c:forEach var="item" items="${requestScope.totalMoneyByMonth}">
+                                        datae.push(${item.second});
+                                        monthss.push(${item.first});
+            </c:forEach>
+
+
+                                        const monthNamess = monthss.map((month) => {
+                                            const date = new Date(Date.UTC(2000, month - 1, 1)); // Create a Date object with the month and year
+                                            return date.toLocaleString('default', {month: 'long'}); // Get the full month name
+                                        });
+
+
+                                        var options = {
+                                            chart: {
+                                                type: 'bar',
+                                                height: 350
+                                            },
+                                            series: [{
+                                                    name: 'Money',
+                                                    data: datae
+                                                }],
+                                            xaxis: {
+                                                categories: monthNamess
+                                            },
+                                            yaxis: {
+                                                labels: {
+                                                    formatter: function (val) {
+                                                        return "$" + val.toFixed(2); // set currency format
+                                                    }
+                                                }
+                                            },
+                                            tooltip: {
+                                                y: {
+                                                    formatter: function (val) {
+                                                        return "$" + val.toFixed(2); // set currency format for tooltip values
+                                                    }
+                                                }
+                                            },
+                                            plotOptions: {
+                                                bar: {
+                                                    dataLabels: {
+                                                        position: 'top',
+                                                        formatter: function (val) {
+                                                            return "$" + val.toFixed(2); // set currency format for data labels
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        var chart3 = new ApexCharts(document.querySelector("#chart4"), options);
+
+                                        chart3.render();
 
         </script>
     </body>

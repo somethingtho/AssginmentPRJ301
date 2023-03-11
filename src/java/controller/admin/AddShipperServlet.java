@@ -95,7 +95,7 @@ public class AddShipperServlet extends HttpServlet {
                     request.setAttribute("message", "Thêm đơn vị vận chuyển thành công");
                 }
             }
-            Vector<Shippers> listAllShippers = dao.getAllShippers();
+            Vector<Shippers> listAllShippers = dao.getAllShippersByAdmin();
             request.setAttribute("listAllShippers", listAllShippers);
             request.getRequestDispatcher("formaddshipper.jsp").forward(request, response);
         } catch (Exception e) {

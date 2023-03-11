@@ -234,7 +234,7 @@
                                 >
                             </li>
 
-                            
+
                             <li class="sidebar-item">
                                 <a
                                     class="sidebar-link waves-effect waves-dark sidebar-link"
@@ -244,7 +244,7 @@
                                     ><span class="hide-menu">Orders</span></a
                                 >
                             </li>
-                            
+
                             <li class="sidebar-item">
                                 <a
                                     class="sidebar-link waves-effect waves-dark sidebar-link"
@@ -379,6 +379,7 @@
                 </div>
 
             </aside>
+
             <div class="page-wrapper">
 
                 <div class="page-breadcrumb">
@@ -398,10 +399,13 @@
                         </div>
                     </div>
                 </div>
-                <form action="${pageContext.request.contextPath}/admin/profileadmin" method="POST" id="form1" enctype="multipart/form-data">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <h3 style="color: red">${requestScope.message}</h3>
+
+
+                <div class="container-fluid">
+                    <form action="${pageContext.request.contextPath}/admin/profileadmin" method="POST" id="form1" enctype="multipart/form-data">
+                        <div class="row forms">
+                            <h3 style="color: red">${requestScope.error}</h3>
+
                             <div class="col-md-6" >
                                 <div class="card">
                                     <div class="card-body" style="height: 383px">
@@ -410,6 +414,7 @@
                                             <div style="margin-bottom: 20px;">
                                                 <img style="width: 150px;" src="data:image/jpg;base64,${sessionScope.admin.base64Image}" alt="" />
                                             </div>
+
 
                                             <div style="margin-bottom: 20px;">
                                                 <input style="margin-left: 30px;"
@@ -423,7 +428,7 @@
                                                     for="validatedCustomFile"
                                                     ></label
                                                 >
-                                                </form>
+
                                             </div>
                                             <div>
                                                 <h4>${sessionScope.admin.acc.userName}</h4>
@@ -439,6 +444,7 @@
                                 <div class="card">
                                     <div class="card-body" style="height: 383px;">
                                         <h4 class="card-title">Thông tin của bạn</h4>
+                                        <input type="hidden" name="submit_both_forms" value="true">
                                         <div class="form-group row">
                                             <label
                                                 for="customerName"
@@ -512,7 +518,7 @@
 
                                         <div class="form-group row">
                                             <label
-                                                for="email"
+                                                for=""
                                                 class="col-sm-3 text-end control-label col-form-label"
                                                 >Giới tính:</label
                                             >
@@ -521,30 +527,31 @@
                                                 <input  type="radio" name="gender" id="gender2" value="female" <c:if test="${!sessionScope.admin.gender}">checked</c:if>><label for="gender2">Nữ</label>
                                             </div>
                                         </div>
-
-
-
                                         <div class="border-top">
                                             <div class="card-body">
-                                                <button onclick="this.form.submit()" class="btn btn-primary">
+                                                <button onclick="submitForms()" type="button" class="btn btn-primary">
                                                     Submit
                                                 </button>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
 
+
                         </div>
+                    </form>
+                    <footer class="footer text-center">
 
-                        <footer class="footer text-center">
+
+                    </footer>
+
+                </div>
 
 
-                        </footer>
-
-                    </div>
-                </form>
             </div>
+
 
             <script src="assets/libs/jquery/dist/jquery.min.js"></script>
             <!-- Bootstrap tether Core JavaScript -->
@@ -567,8 +574,9 @@
                                                      *       Basic Table                   *
                                                      ****************************************/
                                                     $("#zero_config").DataTable();
-
-
+                                                    function submitForms() {
+                                                        document.getElementById("form1").submit();
+                                                    }
 
             </script>
     </body>

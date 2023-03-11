@@ -79,7 +79,7 @@ public class DAOCategories extends DBContext {
      */
     public Vector<Categories> getAllCategoriesAndNumberProducts() {
         Vector<Categories> vector = new Vector<>();
-        String sql = "SELECT Categories.CategoryID, CategoryName, COUNT(*) AS NumberOfCategory FROM dbo.Products INNER JOIN dbo.Categories ON Categories.CategoryID = Products.CategoryID\n"
+        String sql = "SELECT Categories.CategoryID, CategoryName, COUNT(ProductID) AS NumberOfCategory FROM dbo.Products RIGHT JOIN dbo.Categories ON Categories.CategoryID = Products.CategoryID\n"
                 + "GROUP BY Categories.CategoryID, CategoryName";
         ResultSet rs = getData(sql);
         try {

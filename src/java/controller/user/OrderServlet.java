@@ -70,7 +70,7 @@ public class OrderServlet extends HttpServlet {
         HttpSession session = request.getSession();
         DAOOrders daoOrders = new DAOOrders();
         Customers cus = (Customers) session.getAttribute("account");
-        Vector<Orders> ordersByCustomerID = daoOrders.getOrdersByCustomerID(cus.getCustomerID());
+        
         DAOSuppliers daoSuppliers = new DAOSuppliers();
         DAOProducts daoProducts = new DAOProducts();
         
@@ -97,9 +97,20 @@ public class OrderServlet extends HttpServlet {
         request.setAttribute("cart", cart);
         request.setAttribute("size", cart.getItems().size());
         
+        String from = request.getParameter("from");
+        String to = request.getParameter("to");
+        if(from != null && to != null){
+            Vector<Orders> ordersByCustomerID = daoOrders.getOrdersByCustomerIDSearch(cus.getCustomerID(), from, to);
+            request.setAttribute("ordersByCustomerID", ordersByCustomerID);
+            request.setAttribute("from", from);
+            request.setAttribute("to", to);
+        }else{
+            Vector<Orders> ordersByCustomerID = daoOrders.getOrdersByCustomerID(cus.getCustomerID());
+            request.setAttribute("ordersByCustomerID", ordersByCustomerID);
+        }
         
         
-        request.setAttribute("ordersByCustomerID", ordersByCustomerID);
+        
         request.getRequestDispatcher("order.jsp").forward(request, response);
         
         

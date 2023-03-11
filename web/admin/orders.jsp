@@ -282,7 +282,7 @@
                                     </li>
 
                                     <li class="sidebar-item">
-                                        <a href="profile.jsp" class="sidebar-link"
+                                        <a href="${pageContext.request.contextPath}/admin/profileadmin" class="sidebar-link"
                                            ><i class="mdi mdi-account-card-details"></i
                                             ><span class="hide-menu"> Hồ sơ </span></a
                                         >

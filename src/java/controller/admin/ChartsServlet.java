@@ -67,7 +67,7 @@ public class ChartsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         DAOAccounts daoAccounts = new DAOAccounts();
         DAOViews daoView = new DAOViews();
         DAOProducts daoProducts = new DAOProducts();
@@ -81,7 +81,14 @@ public class ChartsServlet extends HttpServlet {
         } else {
             year = 2023;
         }
-
+        String yearM_raw = request.getParameter("yearM");
+        int yearM;
+        if (yearM_raw != null) {
+            yearM = Integer.parseInt(yearM_raw);
+        } else {
+            yearM = 2023;
+        }
+        Vector<IntPair> totalMoneyByMonth = daoOrders.TotalMoneyByMonth(yearM);
         Vector<IntPair> accessByMonth = daoView.getAccessByMonth(year);
         Vector<IntPair> ordersByMonth = daoOrders.NumberOrdersByMonth(year);
         Vector<Categories> numberProductsOfCategory = daoCategories.NumberProductsByCategories();
@@ -99,7 +106,8 @@ public class ChartsServlet extends HttpServlet {
         int totalProcess = daoOrders.TotalOrdersProcess();
         int totalProducts = daoProducts.TotalProducts();
         request.setAttribute("activeSessions", activeSessions);
-        
+
+        request.setAttribute("totalMoneyByMonth", totalMoneyByMonth);
         request.setAttribute("totalProducts", totalProducts);
         request.setAttribute("totalProcess", totalProcess);
         request.setAttribute("totalOrderFail", totalOrderFail);
@@ -115,9 +123,10 @@ public class ChartsServlet extends HttpServlet {
         request.setAttribute("numberProductsOfCategory", numberProductsOfCategory);
         request.setAttribute("yearNow", yearNow);
         request.setAttribute("year", year);
+        request.setAttribute("yearM", yearM);
         request.setAttribute("accessByMonth", accessByMonth);
         request.setAttribute("ordersByMonth", ordersByMonth);
-        
+
         request.getRequestDispatcher("charts.jsp").forward(request, response);
     }
 

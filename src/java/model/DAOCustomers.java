@@ -35,7 +35,7 @@ public class DAOCustomers extends DBContext {
 
     public static void main(String[] args) {
         DAOCustomers dao = new DAOCustomers();
-        System.out.println(dao.LoginAdmin("1234", "admin"));
+        System.out.println(dao.LoginAdmin("sa", "123456"));
     }
 
     /**

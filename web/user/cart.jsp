@@ -335,12 +335,12 @@
             </div>
             <div class="col-sm-4 website_help center-block">
                 <h3>Website</h3>
-                <p><a href="">Bán hàng cùng chúng tôi</a></p>
+                <p><a href="${pageContext.request.contextPath}/admin/authentication-register.jsp">Bán hàng cùng chúng tôi</a></p>
                 <p><a href="">Tuyển dụng</a></p>
                 <p><a href="#">Điều khoản sử dụng</a></p>
                 <p><a href="#">Chính sách bảo mật</a></p>
                 <p><a href="#">Bảo vệ quyền sở hữu trí tuệ</a></p>
-                <p><a target="_blank" rel="noopener noreferrer" href="help.jsp">Trợ giúp <i class="ti-help"></i></a></p>
+                <p><a target="_blank" rel="noopener noreferrer" href="${pageContext.request.contextPath}/user/help.jsp">Trợ giúp <i class="ti-help"></i></a></p>
             </div>
 
             <div class="col-sm-4 row">

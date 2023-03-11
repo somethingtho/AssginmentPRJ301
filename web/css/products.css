@@ -750,3 +750,13 @@ input[type=range]::-webkit-slider-runnable-track {
         float: right;
     }
 }
+
+.discount{
+    float: left;
+    background-color: red;
+    border-radius: 50%;
+    color: white;
+    height: 30px;
+    text-align: center;
+    line-height: 2;
+}

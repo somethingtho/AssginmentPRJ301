@@ -90,6 +90,9 @@ public class ReplyServlet extends HttpServlet {
             String contentRep = request.getParameter("contentRep");
             Feedback f = daoFeedback.getFeedbackByID(id);
             f.setContentRep(contentRep);
+            PrintWriter out = response.getWriter();
+            out.print(id);
+            out.print(contentRep);
             int n = daoFeedback.UpdateFeedback(f, contentRep);
             Vector<Feedback> listAllMessage = daoFeedback.getAllFeedbackByEmail(f);
             request.setAttribute("listAllMessage", listAllMessage);

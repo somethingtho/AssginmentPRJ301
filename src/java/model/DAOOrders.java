@@ -464,6 +464,52 @@ public class DAOOrders extends DBContext {
 
         return vector;
     }
+    
+    public Vector<IntPair> TotalMoneyByMonth(int year) {
+        Vector<IntPair> vector = new Vector<>();
+
+        String sql = "SELECT MONTH(OrderDate) as month,SUM(TotalMoney) AS Number FROM dbo.Orders WHERE YEAR(OrderDate) = ? AND Status = 1 GROUP BY MONTH(OrderDate) ORDER BY MONTH(OrderDate) ASC";
+//        String sql = "EXEC dbo.NumberOrdersByMonth @year = ?";
+
+        PreparedStatement pre;
+        try {
+            pre = connection.prepareStatement(sql);
+            pre.setInt(1, year);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                int first = rs.getInt("Month");
+                int second = rs.getInt("Number");
+                vector.add(new IntPair(first, second));
+            }
+            int currentYear = LocalDate.now().getYear();
+            int start = 1;
+            int end = 12;
+            if (year == currentYear) {
+                end = LocalDate.now().getMonthValue();
+            }
+            HashSet<Integer> existingInts = new HashSet<>();
+            for (IntPair obj : vector) {
+                IntPair pair = (IntPair) obj;
+                existingInts.add(pair.getFirst());
+            }
+
+            for (int i = end; i >= start; i--) {
+                if (!existingInts.contains(i)) {
+                    vector.add(new IntPair(i, 0)); // add the missing IntPair to the list
+                }
+            }
+            Collections.sort(vector, new Comparator<IntPair>() {
+                public int compare(IntPair p1, IntPair p2) {
+                    return Integer.compare(p1.getFirst(), p2.getFirst());
+                }
+            });
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return vector;
+    }
+    
 
     /**
      * I want to get the total money of all orders of a customer
@@ -855,6 +901,46 @@ public class DAOOrders extends DBContext {
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, cid);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                int orderID = rs.getInt("OrderID");
+                int customerID = rs.getInt("CustomerID");
+                String orderDate = rs.getString("OrderDate");
+                String requiredDate = rs.getString("RequiredDate");
+                String shippedDate = rs.getString("ShippedDate");
+                int shipVia = rs.getInt("ShipVia");
+                String shipAddress = rs.getString("ShipAddress");
+                boolean payments = rs.getBoolean("Payments");
+                int status = rs.getInt("Status");
+                Vector<OrderDetails> listOrderDetail = daoOrderDetail.getAllOrderDetailsByOrderID(orderID);
+                Shippers shipper = daoShippers.getShipperByShipperID(shipVia);
+                Customers customer = daoCustomers.getCustomerByCustomerID(customerID);
+                double totalMoney = rs.getDouble("TotalMoney");
+                vector.add(new Orders(orderID, orderDate, requiredDate, shippedDate, shipper, shipAddress, payments, status, listOrderDetail, totalMoney, customer));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return vector;
+    }
+    
+    /**
+     * This function is used to get all orders of a customer by customer ID
+     *
+     * @param cid customer id
+     * @return A vector of Orders
+     */
+    public Vector<Orders> getOrdersByCustomerIDSearch(int cid, String from, String to) {
+        DAOShippers daoShippers = new DAOShippers();
+        DAOCustomers daoCustomers = new DAOCustomers();
+        DAOOrderDetails daoOrderDetail = new DAOOrderDetails();
+        Vector<Orders> vector = new Vector<>();
+        String sql = "SELECT * FROM Orders WHERE CustomerID = ? AND OrderDate  >= ? OR OrderDate <= ? ORDER BY OrderDate DESC";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, cid);
+            pre.setString(2, from);
+            pre.setString(3, to);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 int orderID = rs.getInt("OrderID");

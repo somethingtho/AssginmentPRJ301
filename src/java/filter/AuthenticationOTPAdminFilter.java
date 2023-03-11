@@ -106,9 +106,6 @@ public class AuthenticationOTPAdminFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession();
-        if(req.getAttribute("otpSend") == null && req.getAttribute("email") == null){
-            res.sendRedirect("authentication-login.jsp");
-        }	
 
 
 	Throwable problem = null;

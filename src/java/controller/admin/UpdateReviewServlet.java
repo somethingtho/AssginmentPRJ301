@@ -94,7 +94,7 @@ public class UpdateReviewServlet extends HttpServlet {
             daoReview.changeReview(r, type);
         } catch (Exception e) {
         }
-        response.sendRedirect("index");
+        response.sendRedirect("comments");
     }
 
     /**

@@ -608,7 +608,7 @@
         </div>
         <div class="col-sm-4 website_help center-block">
             <h3>Website</h3>
-            <p><a href="">Bán hàng cùng chúng tôi</a></p>
+            <p><a href="${pageContext.request.contextPath}/admin/authentication-register.jsp">Bán hàng cùng chúng tôi</a></p>
             <p><a href="">Tuyển dụng</a></p>
             <p><a href="#">Điều khoản sử dụng</a></p>
             <p><a href="#">Chính sách bảo mật</a></p>

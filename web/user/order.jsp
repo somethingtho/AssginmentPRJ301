@@ -181,7 +181,20 @@
             <div class="col-md-8 row right">
                 <h1>Hello ${sessionScope.account.customerName}! Đơn hàng của bạn</h1>
                 <hr style="margin-right: 20px; height: 1px; background-color: black; color: black;">
-                <h4>Đây là tất cả đơn hàng của bạn đã mua</h4>
+                <div style="display: flex; justify-content: space-between">
+                    <div><h4>Đây là tất cả đơn hàng của bạn đã mua</h4><c:if test="${not empty requestScope.from && not empty requestScope.to}"><h5>From: ${requestScope.from} To: ${requestScope.to}</h5></c:if></div>
+                    <div>
+                        <form action="${pageContext.request.contextPath}/user/order" >
+                            <span>Lọc theo ngày:</span>
+                            <label for="from">From</label>
+                            <input id="from" name="from" type="date" value="${requestScope.from}">
+                            <label for="to">To</label>
+                            <input id="to" type="date" name="to" value="${requestScope.to}">
+                            <button type="button" onclick="checkForm()" class="ti-search"></button>
+                        </form>
+                    </div>
+                </div>
+
                 <div class="container right_form">
                     <table style="width: 99rem;" class="table">
                         <tr>
@@ -215,7 +228,7 @@
                                             <c:when test="${order.status == 0}">Đã huỷ</c:when>
                                             <c:otherwise >Chờ xử lý</c:otherwise>
                                         </c:choose>
-                                    </tr>
+                                </tr>
                             </c:forEach>
                         </c:forEach>
                     </table>
@@ -241,9 +254,42 @@
             }
         }
 
-        window.onload = function () {
-            document.querySelector(".gearbox").style.display = "none";
-        };
+
+        const fromDate = document.getElementById("from");
+        const toDate = document.getElementById("to");
+
+        // Add an event listener to detect changes in both input fields
+        fromDate.addEventListener("change", () => {
+            // Check if the "from" date is after the "to" date
+            if (fromDate.value > toDate.value) {
+                // Swap the values of the two input fields
+                const temp = fromDate.value;
+                fromDate.value = toDate.value;
+                toDate.value = temp;
+            }
+        });
+
+        toDate.addEventListener("change", () => {
+            // Check if the "to" date is before the "from" date
+            if (toDate.value < fromDate.value) {
+                // Swap the values of the two input fields
+                const temp = toDate.value;
+                toDate.value = fromDate.value;
+                fromDate.value = temp;
+            }
+        });
+
+        function checkForm() {
+            const fromInput = document.getElementById("from");
+            const toInput = document.getElementById("to");
+
+            if (fromInput.value === "" || toInput.value === "") {
+                alert("Please select both a 'From' and a 'To' date.");
+            } else {
+                document.forms[1].submit();
+            }
+        }
+
     </script>
 </body>
 </html>

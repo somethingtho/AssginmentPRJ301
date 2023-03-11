@@ -293,7 +293,7 @@
                                     </li>
 
                                     <li class="sidebar-item">
-                                        <a href="profile.jsp" class="sidebar-link"><i class="mdi
+                                        <a href="${pageContext.request.contextPath}/admin/profileadmin" class="sidebar-link"><i class="mdi
                                                                                       mdi-account-card-details"></i><span class="hide-menu">
                                                 Hồ sơ </span></a>
                                     </li>
@@ -353,6 +353,8 @@
                                                             <c:when test="${not empty message.cus}">
                                                                 <h6 class="font-medium"><a href="${pageContext.request.contextPath}/admin/profile?type=customer&id=${message.cus.customerID}">${message.cus.customerName}</a></h6>
                                                                 </c:when>
+                                                                <c:when test="${not empty message.supplier}"><a href="${pageContext.request.contextPath}/admin/profile?type=sup&id=${message.supplier.supplierID}">${message.supplier.companyName}</a></c:when>
+                                                                <c:when test="${not empty message.shipper}"><a href="${pageContext.request.contextPath}/admin/profile?type=ship&id=${message.shipper.shipperID}">${message.shipper.companyName}</a></c:when>
                                                                 <c:otherwise><h6 class="font-medium">${message.email}</h6></c:otherwise>
                                                         </c:choose>
                                                         <div class="box bg-light-info">
@@ -379,7 +381,7 @@
                                 <c:if test="${empty requestScope.listAllMessage.get(requestScope.listAllMessage.size()-1).contentRep}">
                                     <div class="card-body border-top">
                                         <form action="${pageContext.request.contextPath}/admin/reply" method="POST">
-                                            <input type="hidden" value="${requestScope.listAllMessage.get(0).id}" name="id">
+                                            <input type="hidden" value="${requestScope.listAllMessage.get(requestScope.listAllMessage.size()-1).id}" name="id">
                                             <div class="row">
                                                 <div class="col-9">
                                                     <div class="input-field mt-0 mb-0">
