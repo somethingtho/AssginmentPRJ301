@@ -99,7 +99,7 @@
                                     src="${pageContext.request.contextPath}/images/logo_text.png"
                                     alt="homepage"
                                     class="light-logo"
-                                    width="140"
+                                    width="140" height="50"
                                     />
                             </span>
 

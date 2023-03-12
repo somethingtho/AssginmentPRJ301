@@ -80,7 +80,7 @@
                             <span class="logo-text" style="margin-right: 15px">
                                 <img
                                     src="${pageContext.request.contextPath}/images/logo_text.png"
-                                    width="140"
+                                    width="140" height="50"
                                     alt="homepage"
                                     class="light-logo"
                                     />

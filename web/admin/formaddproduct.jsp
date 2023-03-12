@@ -71,7 +71,7 @@
                                 <img src="assets/images/logo.png" alt="homepage" class="light-logo" width="50" />
                             </b>
                             <span class="logo-text " style="margin-right: 15px">
-                                <img src="${pageContext.request.contextPath}/images/logo_text.png" alt="homepage" class="light-logo" width="140" />
+                                <img src="${pageContext.request.contextPath}/images/logo_text.png" alt="homepage" class="light-logo" width="140" height="50" />
                             </span>
                         </a>
                         <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i

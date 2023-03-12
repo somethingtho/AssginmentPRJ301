@@ -81,7 +81,7 @@
                                 <img src="assets/images/logo.png" alt="homepage" class="light-logo" width="50" />
                             </b>
                             <span class="logo-text " style="margin-right: 15px">
-                                <img src="${pageContext.request.contextPath}/images/logo_text.png" alt="homepage" class="light-logo" width="140" />
+                                <img src="${pageContext.request.contextPath}/images/logo_text.png" alt="homepage" class="light-logo" width="140" height="50" />
                             </span>
                         </a>
                         <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i
@@ -752,9 +752,23 @@
                                                                         title: {
                                                                             display: true,
                                                                             text: "Number Orders Successes/Fails"
+                                                                        },
+                                                                        tooltips: {
+                                                                            callbacks: {
+                                                                                label: function (tooltipItem, data) {
+                                                                                    var dataset = data.datasets[tooltipItem.datasetIndex];
+                                                                                    var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
+                                                                                        return previousValue + currentValue;
+                                                                                    });
+                                                                                    var currentValue = dataset.data[tooltipItem.index];
+                                                                                    var percentage = parseFloat(((currentValue / total) * 100).toFixed(2));
+                                                                                    return percentage + '%';
+                                                                                }
+                                                                            }
                                                                         }
                                                                     }
                                                                 });
+
 
             </script>
     </body>

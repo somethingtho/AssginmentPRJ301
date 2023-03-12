@@ -564,7 +564,7 @@ public class DAOOrders extends DBContext {
     public int TotalOrdersByCustomers(int id) {
         int number = 0;
         String sql = "SELECT COUNT(*) FROM dbo.Orders INNER JOIN dbo.Customers ON Customers.CustomerID = Orders.CustomerID\n"
-                + "WHERE Customers.CustomerID = ?";
+                + "WHERE Customers.CustomerID = ? AND (Status = 1 OR Status = 0)";
 
         try {
             PreparedStatement pre = connection.prepareStatement(sql);

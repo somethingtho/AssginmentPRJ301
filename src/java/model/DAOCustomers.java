@@ -35,7 +35,7 @@ public class DAOCustomers extends DBContext {
 
     public static void main(String[] args) {
         DAOCustomers dao = new DAOCustomers();
-        System.out.println(dao.LoginAdmin("sa", "123456"));
+        System.out.println(dao.rateOrders(2));
     }
 
     /**
@@ -49,9 +49,9 @@ public class DAOCustomers extends DBContext {
         DAOOrders daoOrders = new DAOOrders();
         DAOAccounts daoAccounts = new DAOAccounts();
         Vector<Customers> vector = new Vector<>();
-        String sql = "SELECT * FROM dbo.Customers INNER JOIN \n"
+        String sql = "SELECT TOP 5 * FROM dbo.Customers INNER JOIN \n"
                 + "(SELECT CustomerID, SUM(TotalMoney) AS TotalMoney FROM dbo.Orders WHERE Status = 1 GROUP BY CustomerID) AS a \n"
-                + "ON a.CustomerID = Customers.CustomerID ";
+                + "ON a.CustomerID = Customers.CustomerID ORDER BY TotalMoney DESC";
 
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
@@ -107,24 +107,25 @@ public class DAOCustomers extends DBContext {
                 + "WHERE Customers.CustomerID = ?\n"
                 + "GROUP BY Status";
 
-        HashMap<Boolean, Integer> numbers = new HashMap<>();
+        HashMap<Integer, Integer> numbers = new HashMap<>();
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setInt(1, id);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
-                Boolean status = rs.getBoolean("Status");
+                int status = rs.getInt("Status");
                 Integer number = rs.getInt("Number");
                 numbers.put(status, number);
             }
             int total = daoOrders.TotalOrdersByCustomers(id);
             System.out.println(total);
             if (total != 0) {
-                for (Map.Entry<Boolean, Integer> entry : numbers.entrySet()) {
-                    Boolean key = entry.getKey();
+                for (Map.Entry<Integer, Integer> entry : numbers.entrySet()) {
+                    Integer key = entry.getKey();
                     Integer val = entry.getValue();
                     System.out.println(key);
-                    if (key == true) {
+                    System.out.println(val);
+                    if (key == 1) {
                         rate = (double) val / total;
                     }
                 }

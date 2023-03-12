@@ -96,6 +96,7 @@ public class IndexServlet extends HttpServlet {
         int totalShippers = daoShippers.TotalShippers();
         int totalProducts = daoProducts.TotalProducts();
         int totalFeedback = daoFeedback.TotalFeedbacks();
+        int totalOrdersProcess = daoOrders.TotalOrdersProcess();
         
         Vector<Review> top5Review = daoReview.getTop5Review();
         Vector<Customers> newCustomers = daoCustomer.getNewCustomers();
@@ -106,6 +107,7 @@ public class IndexServlet extends HttpServlet {
         int yearNow = Year.now().getValue();
         
         
+        request.setAttribute("totalOrdersProcess", totalOrdersProcess);
         request.setAttribute("yearNow", yearNow);
         request.setAttribute("year", year);
         request.setAttribute("getNewOrders", getNewOrders);
