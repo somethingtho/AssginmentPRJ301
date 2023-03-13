@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.text.NumberFormat;
 import java.util.*;
 import model.DAOOrders;
 
@@ -37,7 +38,7 @@ public class LoadMoreNewOrders extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoadMoreNewOrders</title>");            
+            out.println("<title>Servlet LoadMoreNewOrders</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet LoadMoreNewOrders at " + request.getContextPath() + "</h1>");
@@ -61,6 +62,8 @@ public class LoadMoreNewOrders extends HttpServlet {
         PrintWriter out = response.getWriter();
         DAOOrders daoOrders = new DAOOrders();
         String total = request.getParameter("total");
+        Locale locale = new Locale("vi", "VN"); // Create a Vietnamese locale
+        NumberFormat format = NumberFormat.getCurrencyInstance(locale);
         try {
             int amount = Integer.parseInt(total);
             Vector<Orders> vector = daoOrders.getNextNewOrders(amount);
@@ -75,13 +78,13 @@ public class LoadMoreNewOrders extends HttpServlet {
                         + "                                                        />\n"
                         + "                                                </div>\n"
                         + "                                                <div class=\"comment-text w-100\">\n"
-                        + "                                                    <a href=\"" + request.getContextPath() +"/admin/profile?type=customer&id=" + orders.getCus().getCustomerID() + "\">" + orders.getCus().getCustomerName() + "</a>\n"
+                        + "                                                    <a href=\"" + request.getContextPath() + "/admin/profile?type=customer&id=" + orders.getCus().getCustomerID() + "\">" + orders.getCus().getCustomerName() + "</a>\n"
                         + "                                                    <span class=\"mb-3 d-block\">\n"
-                        + "                                                        <a href=\"" +request.getContextPath()+"/admin/orderdetail?id=" + orders.getCus().getCustomerID() + "&oid=" + orders.getOrderID() + "\">OrderID: " + orders.getOrderID() + "</a><br>\n"
+                        + "                                                        <a href=\"" + request.getContextPath() + "/admin/orderdetail?id=" + orders.getCus().getCustomerID() + "&oid=" + orders.getOrderID() + "\">OrderID: " + orders.getOrderID() + "</a><br>\n"
                         + "                                                        OrderDate: " + orders.getOrderDate() + "<br>\n"
                         + "                                                        RequiredDate: " + orders.getRequireDate() + "<br>\n"
                         + "                                                        Total Products: " + orders.getOrderDetails().size() + "<br>\n"
-                        + "                                                        TotalMoney: <fmt:formatNumber value = \"" + orders.getTotalMoney() + "\" type = \"currency\"/><br>\n"
+                        + "                                                        TotalMoney: " + format.format(orders.getTotalMoney()) + " <br>\n"
                         + "                                                    </span>\n"
                         + "                                                    <div class=\"comment-footer\">\n"
                         + "                                                        <span class=\"text-muted float-end\">" + orders.getOrderDate() + "</span>\n"
@@ -89,7 +92,7 @@ public class LoadMoreNewOrders extends HttpServlet {
                         + "                                                            type=\"button\"\n"
                         + "                                                            class=\"btn btn-cyan btn-sm text-white\"\n"
                         + "                                                            >\n"
-                        + "                                                            <a class=\"text-white\" href=\"" +request.getContextPath()+"/admin/orderdetail?id=" + orders.getCus().getCustomerID() + "&oid=" + orders.getOrderID() + "\">\n"
+                        + "                                                            <a class=\"text-white\" href=\"" + request.getContextPath() + "/admin/orderdetail?id=" + orders.getCus().getCustomerID() + "&oid=" + orders.getOrderID() + "\">\n"
                         + "                                                                Information \n"
                         + "                                                            </a>\n"
                         + "                                                        </button>\n"

@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller.admin;
 
 import entity.Orders;
@@ -12,41 +11,46 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.text.NumberFormat;
 import java.util.*;
 import model.DAOOrders;
+
 /**
  *
  * @author ADMIN
  */
 public class LoadMoreOrdersServlet extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoadMoreOrdersServlet</title>");  
+            out.println("<title>Servlet LoadMoreOrdersServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoadMoreOrdersServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet LoadMoreOrdersServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -54,11 +58,15 @@ public class LoadMoreOrdersServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         DAOOrders daoOrders = new DAOOrders();
-        String total = request.getParameter("total");
+
+        Locale locale = new Locale("vi", "VN");
+        NumberFormat format = NumberFormat.getCurrencyInstance(locale);
+        String type = request.getParameter("type");
         try {
+            String total = request.getParameter("total");
             int amount = Integer.parseInt(total);
             Vector<Orders> vector = daoOrders.getNextOrders(amount);
             for (Orders orders : vector) {
@@ -72,13 +80,13 @@ public class LoadMoreOrdersServlet extends HttpServlet {
                         + "                                                        />\n"
                         + "                                                </div>\n"
                         + "                                                <div class=\"comment-text w-100\">\n");
-                        out.print("                                                    <a href="+ request.getContextPath()+"/admin/profile?type=customer&id=" + orders.getCus().getCustomerID() + "\">" + orders.getCus().getCustomerName() + "</a>\n");
-                        out.print("                                                    <span class=\"mb-3 d-block\">\n"
-                        + "                                                        <a href=\"" + request.getContextPath()+"/admin/orderdetail?id=" + orders.getCus().getCustomerID() + "&oid=" + orders.getOrderID() + "\">OrderID: " + orders.getOrderID() + "</a><br>\n"
+                out.print("                                                    <a href=" + request.getContextPath() + "/admin/profile?type=customer&id=" + orders.getCus().getCustomerID() + "\">" + orders.getCus().getCustomerName() + "</a>\n");
+                out.print("                                                    <span class=\"mb-3 d-block\">\n"
+                        + "                                                        <a href=\"" + request.getContextPath() + "/admin/orderdetail?id=" + orders.getCus().getCustomerID() + "&oid=" + orders.getOrderID() + "\">OrderID: " + orders.getOrderID() + "</a><br>\n"
                         + "                                                        OrderDate: " + orders.getOrderDate() + "<br>\n"
                         + "                                                        RequiredDate: " + orders.getRequireDate() + "<br>\n"
                         + "                                                        Total Products: " + orders.getOrderDetails().size() + "<br>\n"
-                        + "                                                        TotalMoney: <fmt:formatNumber value = \"" + orders.getTotalMoney() + "\" type = \"currency\"/><br>\n"
+                        + "                                                        TotalMoney: " + format.format(orders.getTotalMoney()) + " <br>\n"
                         + "                                                    </span>\n"
                         + "                                                    <div class=\"comment-footer\">\n"
                         + "                                                        <span class=\"text-muted float-end\">" + orders.getOrderDate() + "</span>\n"
@@ -86,7 +94,7 @@ public class LoadMoreOrdersServlet extends HttpServlet {
                         + "                                                            type=\"button\"\n"
                         + "                                                            class=\"btn btn-cyan btn-sm text-white\"\n"
                         + "                                                            >\n");
-                        out.print("                                                            <a class=\"text-white\" href=\""+request.getContextPath()+"/admin/orderdetail?id=" + orders.getCus().getCustomerID() + "&oid=" + orders.getOrderID() + "\">\n"
+                out.print("                                                            <a class=\"text-white\" href=\"" + request.getContextPath() + "/admin/orderdetail?id=" + orders.getCus().getCustomerID() + "&oid=" + orders.getOrderID() + "\">\n"
                         + "                                                                Information \n"
                         + "                                                            </a>\n"
                         + "                                                        </button>\n"
@@ -96,10 +104,12 @@ public class LoadMoreOrdersServlet extends HttpServlet {
             }
         } catch (Exception e) {
         }
-    } 
 
-    /** 
+    }
+
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -107,12 +117,13 @@ public class LoadMoreOrdersServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override
