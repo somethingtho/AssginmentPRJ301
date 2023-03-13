@@ -32,7 +32,7 @@
 
             <div class="row login_header">
                 <div class="logo col-md-1">
-                    <a href="index"><img id="logo" src="${pageContext.request.contextPath}/images/logo.png" /></a>
+                    <a href="${pageContext.request.contextPath}/user/index"><img id="logo" src="${pageContext.request.contextPath}/admin/assets/images/logo.png" /></a>
                 </div>
                 <h1 class="text-center">Hỗ trợ mật khẩu!!!!</h1>
             </div>

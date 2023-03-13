@@ -34,7 +34,7 @@
         <c:set var="o" value="${requestScope.cart}"/>
         <header>
             <div class="logo">
-                <a href="${pageContext.request.contextPath}/user/index"><img id="logo" src="${pageContext.request.contextPath}/images/logo.png" /></a>
+                <a href="${pageContext.request.contextPath}/user/index"><img id="logo" src="${pageContext.request.contextPath}/admin/assets/images/logo.png" /></a>
             </div>
             <div class="search row">
                 <form action="${pageContext.request.contextPath}/user/search" class=" btn_search">
@@ -68,7 +68,7 @@
                                                 <h5 style="text-align: left;">${i.product.productName}</h5>
                                                 <p>Số lượng: ${i.quantity}</p>
                                                 <div>
-                                                    <p style="text-align: right; color: red;"><fmt:formatNumber value = "${i.product.unitPrice - i.product.unitPrice*i.product.discount}" type = "currency"/></p>
+                                                    <p style="text-align: right; color: red;"><fmt:formatNumber value = "${Math.round((i.product.unitPrice - i.product.unitPrice*i.product.discount)/1000)*1000}" type = "currency"/></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -78,7 +78,7 @@
 
                                 <div class="row">
                                     <p class="col-md-6">Tổng sản phẩm: ${requestScope.size}</p> 
-                                    <p class="col-md-6">Tổng tiền(Tạm tính):  <fmt:formatNumber value="${o.totalMoney}" type="currency"/></p> 
+                                    <p class="col-md-6">Tổng tiền(Tạm tính):  <fmt:formatNumber value="${Math.round((o.totalMoney)/1000)*1000}" type="currency"/></p> 
 
                                 </div>
                                 <hr style="margin-bottom: 10px; height: 1px; background-color: black; color: black;">
@@ -206,7 +206,7 @@
                                         <h4><a href="${pageContext.request.contextPath}/user/item?pid=${i.product.productID}">${i.product.productName}</a></h4>
                                     </div>
                                     <div class="col-md-4">
-                                        <h5><fmt:formatNumber value = "${i.product.unitPrice - i.product.unitPrice*i.product.discount}" type = "currency"/></h5>
+                                        <h5><fmt:formatNumber value = "${Math.round((i.product.unitPrice - i.product.unitPrice*i.product.discount)/1000)*1000}" type = "currency"/></h5>
                                     </div>
                                     <table class="table table-striped" style="width: 350px;">
                                         <tbody>
@@ -233,7 +233,7 @@
                                         <input style="width: 60px; text-align: center;" type="number" readonly value="${i.quantity}">
                                         <button style="width: 40px; background-color: orange; border: none;" onclick="addProduct('${i.product.productID}')">+</button>
                                     </div>
-                                    <p style="display: flex; justify-content: space-between;"><span>Tổng tiền:</span><span style="margin-right: 30px;"><fmt:formatNumber value="${(i.product.unitPrice - i.product.unitPrice*i.product.discount)*i.quantity}" type="currency"/></span></p>
+                                    <p style="display: flex; justify-content: space-between;"><span>Tổng tiền:</span><span style="margin-right: 30px;"><fmt:formatNumber value="${Math.round(((i.product.unitPrice - i.product.unitPrice*i.product.discount)*i.quantity)/1000)*1000}" type="currency"/></span></p>
                                 </div>
 
                             </div>
@@ -245,7 +245,7 @@
                                     <h5>Tạm tính (${requestScope.size} sản phẩm)</h5>
                                 </div>
                                 <div class="col-md-5">
-                                    <h5 style="margin-right: 5px">Tổng tiền: <fmt:formatNumber value="${o.totalMoney}" type="currency"/></h5>
+                                    <h5 style="margin-right: 5px">Tổng tiền: <fmt:formatNumber value="${Math.round((o.totalMoney)/1000)*1000}" type="currency"/></h5>
                                 </div>
                             </div>
                             <hr style="margin-right: 20px; height: 1px; background-color: black; color: black;">
@@ -296,7 +296,7 @@
                                         <h4 style="font-weight: bold;">Thành tiền: </h4>
                                     </div>
                                     <div class="col-md-4">
-                                        <h4 style="color: red;"><fmt:formatNumber type="currency" value="${o.totalMoney}"/></h4>
+                                        <h4 style="color: red;"><fmt:formatNumber type="currency" value="${Math.round((o.totalMoney)/1000)*1000}"/></h4>
                                     </div>
                                 </div>
 

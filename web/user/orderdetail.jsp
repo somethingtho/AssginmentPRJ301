@@ -31,7 +31,7 @@
         <c:set var="o" value="${requestScope.cart}"/>
         <header>
             <div class="logo">
-                <a href="${pageContext.request.contextPath}/user/index"><img id="logo" src="${pageContext.request.contextPath}/images/logo.png" /></a>
+                <a href="${pageContext.request.contextPath}/user/index"><img id="logo" src="${pageContext.request.contextPath}/admin/assets/images/logo.png" /></a>
             </div>
             <div class="search row">
                 <form action="${pageContext.request.contextPath}/user/search" class=" btn_search">
@@ -65,7 +65,7 @@
                                                 <h5 style="text-align: left;">${i.product.productName}</h5>
                                                 <p>Số lượng: ${i.quantity}</p>
                                                 <div>
-                                                    <p style="text-align: right; color: red;"><fmt:formatNumber value = "${i.product.unitPrice - i.product.unitPrice*i.product.discount}" type = "currency"/></p>
+                                                    <p style="text-align: right; color: red;"><fmt:formatNumber value = "${Math.round((i.product.unitPrice - i.product.unitPrice*i.product.discount)/1000)*1000}" type = "currency"/></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -75,7 +75,7 @@
 
                                 <div class="row">
                                     <p class="col-md-6">Tổng sản phẩm: ${requestScope.size}</p> 
-                                    <p class="col-md-6">Tổng tiền(Tạm tính):  <fmt:formatNumber value="${o.totalMoney}" type="currency"/></p> 
+                                    <p class="col-md-6">Tổng tiền(Tạm tính):  <fmt:formatNumber value="${Math.round((o.totalMoney/1000))*1000}" type="currency"/></p> 
 
                                 </div>
                                 <hr style="margin-bottom: 10px; height: 1px; background-color: black; color: black;">
@@ -232,11 +232,11 @@
                                     </table>
                                 </div>
                                 <div class="col-md-2">
-                                    <p><fmt:formatNumber type="currency" value="${od.product.unitPrice - od.product.unitPrice*od.product.discount}"/></p>
+                                    <p><fmt:formatNumber type="currency" value="${Math.round((od.product.unitPrice - od.product.unitPrice*od.product.discount)/1000)*1000}"/></p>
                                     <p><del><fmt:formatNumber type="currency" value="${od.product.unitPrice}"/></del><span style="color: red; float: right;">-<fmt:formatNumber type="percent" value="${od.product.discount}"/></span></p>
                                     <p>Số lượng: ${od.quantity}</p>
                                     <hr>
-                                    <p>Tổng tiền: <fmt:formatNumber type="currency" value="${od.quantity * (od.product.unitPrice-od.product.unitPrice*od.product.discount)}"/></p>
+                                    <p>Tổng tiền: <fmt:formatNumber type="currency" value="${Math.round((od.quantity * (od.product.unitPrice-od.product.unitPrice*od.product.discount))/1000)*1000}"/></p>
                                 </div>
 
                             </div>
@@ -251,14 +251,14 @@
                                     <tbody>
                                         <tr>
                                             <td class="ti-money"> Tổng tiền</td>
-                                            <td><fmt:formatNumber type="currency" value="${requestScope.totalMoney}"/></td>
+                                            <td><fmt:formatNumber type="currency" value="${Math.round((requestScope.totalMoney)/1000)*1000}"/></td>
                                         </tr>
                                         <tr>
                                             <td class="ti-check-box"> Số tiền đã thanh toán</td>
                                             <td>
                                                 <c:choose>
-                                                    <c:when test="${requestScope.order.status == 1}"><fmt:formatNumber type="currency" value="${requestScope.totalMoney}"/></c:when>
-                                                    <c:when test="${requestScope.order.status == 3 && requestScope.order.payments}"><fmt:formatNumber type="currency" value="${requestScope.totalMoney}"/></c:when>
+                                                    <c:when test="${requestScope.order.status == 1}"><fmt:formatNumber type="currency" value="${Math.round((requestScope.totalMoney)/1000)*1000}"/></c:when>
+                                                    <c:when test="${requestScope.order.status == 3 && requestScope.order.payments}"><fmt:formatNumber type="currency" value="${Math.round((requestScope.totalMoney)/1000)*1000}"/></c:when>
                                                     <c:otherwise>0đ</c:otherwise>
                                                 </c:choose>
                                             </td>
@@ -317,10 +317,6 @@
                         navbar.classList.remove("sticky");
                     }
                 }
-
-                window.onload = function () {
-                    document.querySelector(".gearbox").style.display = "none";
-                };
             </script>
             </body>
             </html>

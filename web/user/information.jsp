@@ -32,7 +32,7 @@
         <c:set var="o" value="${requestScope.cart}"/>
         <header>
             <div class="logo">
-                <a href="${pageContext.request.contextPath}/user/index"><img id="logo" src="${pageContext.request.contextPath}/images/logo.png" /></a>
+                <a href="${pageContext.request.contextPath}/user/index"><img id="logo" src="${pageContext.request.contextPath}/admin/assets/images/logo.png" /></a>
             </div>
             <div class="search row">
                 <form action="${pageContext.request.contextPath}/user/search" class=" btn_search">
@@ -76,7 +76,7 @@
 
                                 <div class="row">
                                     <p class="col-md-6">Tổng sản phẩm: ${requestScope.size}</p> 
-                                    <p class="col-md-6">Tổng tiền(Tạm tính):  <fmt:formatNumber value="${o.totalMoney}" type="currency"/></p> 
+                                    <p class="col-md-6">Tổng tiền(Tạm tính):  <fmt:formatNumber value="${Math.round((o.totalMoney)/1000)*1000}" type="currency"/></p> 
 
                                 </div>
                                 <hr style="margin-bottom: 10px; height: 1px; background-color: black; color: black;">

@@ -345,7 +345,7 @@
                                                 <div class="col-6">
                                                     <div class="bg-dark p-10 text-white text-center">
                                                         <i class="mdi mdi-cash fs-3 font-16"></i>
-                                                        <h5 class="mb-0 mt-1"><fmt:formatNumber value = "${requestScope.totalMoney}" type = "currency"/></h5>
+                                                        <h5 class="mb-0 mt-1"><fmt:formatNumber value = "${Math.round((requestScope.totalMoney)/1000)*1000}" type = "currency"/></h5>
                                                         <small class="font-light">Total Money</small>
                                                     </div>
                                                 </div>
@@ -419,6 +419,7 @@
                                                     src="data:image/jpg;base64,${orderNew.cus.base64Image}"
                                                     alt="user"
                                                     width="50"
+                                                    height="50"
                                                     class="rounded-circle"
                                                     />
                                             </div>
@@ -429,7 +430,7 @@
                                                     OrderDate: ${orderNew.orderDate}<br>
                                                     RequiredDate: ${orderNew.requireDate}<br>
                                                     Total Products: ${orderNew.orderDetails.size()}<br>
-                                                    TotalMoney: <fmt:formatNumber value = "${orderNew.totalMoney}" type = "currency"/><br>
+                                                    TotalMoney: <fmt:formatNumber value = "${Math.round((orderNew.totalMoney)/1000)*1000}" type = "currency"/><br>
                                                 </span>
                                                 <div class="comment-footer">
                                                     <span class="text-muted float-end">${orderNew.orderDate}</span>
@@ -478,7 +479,7 @@
                                     <c:forEach items="${requestScope.top5Review}" var="r">
                                         <div class="d-flex flex-row comment-row mt-0">
                                             <div class="p-2">
-                                                <img src="data:image/jpg;base64,${r.cus.base64Image}" alt="user" width="50" class="rounded-circle" />
+                                                <img src="data:image/jpg;base64,${r.cus.base64Image}" alt="user" width="50" height="50" class="rounded-circle" />
                                             </div>
                                             <div class="comment-text w-100">
                                                 <h6 class="font-medium"><a href="${pageContext.request.contextPath}/admin/profile?type=customer&id=${r.cus.customerID}">${r.cus.customerName}</a></h6>
@@ -575,7 +576,7 @@
                                                             <c:when test="${vjp.acc.status}">Hoạt động</c:when>
                                                             <c:otherwise>Khoá</c:otherwise>
                                                         </c:choose></td>
-                                                    <td><fmt:formatNumber value = "${vjp.totalMoney}" type = "currency"/></td>
+                                                    <td><fmt:formatNumber value = "${Math.round((vjp.totalMoney)/1000)*1000}" type = "currency"/></td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>

@@ -30,7 +30,7 @@
         <c:set var="o" value="${requestScope.cart}"/>
         <header>
             <div class="logo">
-                <a href="${pageContext.request.contextPath}/user/index"><img id="logo" src="${pageContext.request.contextPath}/images/logo.png" /></a>
+                <a href="${pageContext.request.contextPath}/user/index"><img id="logo" src="${pageContext.request.contextPath}/admin/assets/images/logo.png" /></a>
             </div>
             <div class="search row">
                 <form action="${pageContext.request.contextPath}/user/search" class=" btn_search">
@@ -64,7 +64,7 @@
                                                 <h5 style="text-align: left;">${i.product.productName}</h5>
                                                 <p>Số lượng: ${i.quantity}</p>
                                                 <div>
-                                                    <p style="text-align: right; color: red;"><fmt:formatNumber value = "${i.product.unitPrice - i.product.unitPrice*i.product.discount}" type = "currency"/></p>
+                                                    <p style="text-align: right; color: red;"><fmt:formatNumber value = "${Math.round((i.product.unitPrice - i.product.unitPrice*i.product.discount)/1000)*1000}" type = "currency"/></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -74,7 +74,7 @@
 
                                 <div class="row">
                                     <p class="col-md-6">Tổng sản phẩm: ${requestScope.size}</p> 
-                                    <p class="col-md-6">Tổng tiền(Tạm tính):  <fmt:formatNumber value="${o.totalMoney}" type="currency"/></p> 
+                                    <p class="col-md-6">Tổng tiền(Tạm tính):  <fmt:formatNumber value="${Math.round((o.totalMoney)/1000)*1000}" type="currency"/></p> 
 
                                 </div>
                                 <hr style="margin-bottom: 10px; height: 1px; background-color: black; color: black;">
@@ -202,6 +202,7 @@
                             <th>Sản phẩm</th>
                             <th>Ngày đặt mua</th>
                             <th>Trạng thái</th>
+                            <th>Tổng tiền</th>
                         </tr>
 
                         <c:forEach items="${requestScope.ordersByCustomerID}" var="order">
@@ -228,6 +229,8 @@
                                             <c:when test="${order.status == 0}">Đã huỷ</c:when>
                                             <c:otherwise >Chờ xử lý</c:otherwise>
                                         </c:choose>
+                                    </td>
+                                    <td><fmt:formatNumber value="${Math.round((order.totalMoney)/1000)*1000}" type="currency" /></td>
                                 </tr>
                             </c:forEach>
                         </c:forEach>

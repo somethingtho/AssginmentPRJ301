@@ -343,7 +343,7 @@
                                                         OrderDate: ${requestScope.order.orderDate}<br>
                                                         RequiredDate: ${requestScope.order.requireDate}<br>
                                                         Total Products: ${requestScope.order.orderDetails.size()}<br>
-                                                        TotalMoney: <fmt:formatNumber value = "${requestScope.order.totalMoney}" type = "currency"/><br>
+                                                        TotalMoney: <fmt:formatNumber value = "${Math.round((requestScope.order.totalMoney)/1000)*1000}" type = "currency"/><br>
                                                     </span>
                                                     <div class="comment-footer">
                                                         <span class="text-muted float-end">${requestScope.order.orderDate}</span>

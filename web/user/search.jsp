@@ -34,7 +34,7 @@
         <c:set var="o" value="${requestScope.cart}"/>
         <header>
             <div class="logo">
-                <a href="index"><img id="logo" src="${pageContext.request.contextPath}/images/logo.png" /></a>
+                <a href="${pageContext.request.contextPath}/user/index"><img id="logo" src="${pageContext.request.contextPath}/admin/assets/images/logo.png" /></a>
             </div>
             <div class="search row">
                 <form action="${pageContext.request.contextPath}/user/search" class=" btn_search">
@@ -68,7 +68,7 @@
                                                 <h5 style="text-align: left;">${i.product.productName}</h5>
                                                 <p>Số lượng: ${i.quantity}</p>
                                                 <div>
-                                                    <p style="text-align: right; color: red;"><fmt:formatNumber value = "${i.product.unitPrice - i.product.unitPrice*i.product.discount}" type = "currency"/></p>
+                                                    <p style="text-align: right; color: red;"><fmt:formatNumber value = "${Math.round((i.product.unitPrice - i.product.unitPrice*i.product.discount)/1000)*1000}" type = "currency"/></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -78,7 +78,7 @@
 
                                 <div class="row">
                                     <p class="col-md-6">Tổng sản phẩm: ${requestScope.size}</p> 
-                                    <p class="col-md-6">Tổng tiền(Tạm tính):  <fmt:formatNumber value="${o.totalMoney}" type="currency"/></p> 
+                                    <p class="col-md-6">Tổng tiền(Tạm tính):  <fmt:formatNumber value=" ${Math.round((o.totalMoney)/1000)*1000}" type="currency"/></p> 
 
                                 </div>
                                 <hr style="margin-bottom: 10px; height: 1px; background-color: black; color: black;">
@@ -223,7 +223,7 @@
                                 <img src="data:image/jpg;base64,${p.base64Image}"/>
                             </div>
                             <p class="product-name">${p.productName}</p>
-                            <div class="gia gia-sale"><fmt:formatNumber value = "${p.unitPrice - p.unitPrice*p.discount}" type = "currency"/></div>
+                            <div class="gia gia-sale"><fmt:formatNumber value = "${Math.round((p.unitPrice - p.unitPrice*p.discount)/1000)*1000}" type = "currency"/></div>
                             <p class="gia gia-goc"><fmt:formatNumber value = "${p.unitPrice}" type = "currency"/></p>
                             <div class="buy">BUY NOW</div>
                         </a>

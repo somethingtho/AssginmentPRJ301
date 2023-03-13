@@ -463,7 +463,7 @@
                                             <h4>Email: ${entity.email}</h4>
                                             <h4>Số điện thoại: ${entity.phone}</h4>
                                             <h4>Tỉ lệ nhận hàng: <fmt:formatNumber type = "percent" maxIntegerDigits="3" value = "${requestScope.rate}" /></h4>
-                                            <h4>Tổng tiền: <fmt:formatNumber type="currency" value="${requestScope.total}"/></h4>
+                                            <h4>Tổng tiền: <fmt:formatNumber type="currency" value="${Math.round((requestScope.total)/1000)*1000}"/></h4>
                                         </div>
                                     </div>
                                 </div>
@@ -651,7 +651,7 @@
                                                     </c:choose>
                                                 </td>
                                                 <td>
-                                                    <fmt:formatNumber type="currency" value="${o.totalMoney}"/>
+                                                    <fmt:formatNumber type="currency" value="${Math.round((o.totalMoney)/1000)*1000}"/>
                                                 </td>
                                             </tr>
                                         </c:forEach>

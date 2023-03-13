@@ -493,7 +493,7 @@
                                             <div class="col-6 mt-3">
                                                 <div class="bg-dark p-10 text-white text-center">
                                                     <i class="mdi mdi-credit-card fs-3 mb-1 font-16"></i>
-                                                    <h5 class="mb-0 mt-1"><fmt:formatNumber type="currency" value="${requestScope.totalMoney}"/></h5>
+                                                    <h5 class="mb-0 mt-1"><fmt:formatNumber type="currency" value="${Math.round((requestScope.totalMoney)/1000)*1000}"/></h5>
                                                     <small class="font-light">Total Money</small>
                                                 </div>
                                             </div>
@@ -769,7 +769,7 @@
                                                     </td>
                                                     <td>
 
-                                                        <fmt:formatNumber type="currency" value="${o.totalMoney}"/>
+                                                        <fmt:formatNumber type="currency" value="${Math.round((o.totalMoney)/1000)*1000}"/>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -835,7 +835,7 @@
                                                         </c:choose>
                                                     </td>
                                                     <td>
-                                                        <fmt:formatNumber type="currency" value="${sample.totalMoney}"/>
+                                                        <fmt:formatNumber type="currency" value="${Math.round((sample.totalMoney)/1000)*1000}"/>
                                                     </td>
                                                     <td>
                                                         <c:choose>

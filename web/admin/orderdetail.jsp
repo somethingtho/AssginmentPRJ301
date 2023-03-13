@@ -540,7 +540,7 @@
                                                     <c:otherwise><i class="mdi"></i>Process</c:otherwise>
                                                 </c:choose>
                                             </p>
-                                            <h3><b>Tổng tiền: </b> <fmt:formatNumber type="currency" value="${order.totalMoney}"/></h3>
+                                            <h3><b>Tổng tiền: </b> <fmt:formatNumber type="currency" value="${Math.round((order.totalMoney)/1000)*1000}"/></h3>
                                         </div>
                                         <div class="clearfix"></div>
                                         <hr />

@@ -48,7 +48,7 @@
                     <div class="navbar-header" data-logobg="skin5">
                         <a class="navbar-brand" href="${pageContext.request.contextPath}/admin/index">
                             <b class="logo-icon"  style="margin: 0px;">
-                                <img src="assets/images/logo.png" alt="homepage" class="light-logo" width="50" />
+                                <img src="assets/images/logo.png" alt="homepage" class="light-logo" width="50" height ="50" />
                             </b>
                             <span class="logo-text " style="margin-right: 15px">
                                 <img src="${pageContext.request.contextPath}/images/logo_text.png" alt="homepage" class="light-logo" width="140" height="50" />
@@ -332,6 +332,7 @@
                                                         src="data:image/jpg;base64,${orderNew.cus.base64Image}"
                                                         alt="user"
                                                         width="50"
+                                                        height="50"
                                                         class="rounded-circle"
                                                         />
                                                 </div>
@@ -342,7 +343,7 @@
                                                         OrderDate: ${orderNew.orderDate}<br>
                                                         RequiredDate: ${orderNew.requireDate}<br>
                                                         Total Products: ${orderNew.orderDetails.size()}<br>
-                                                        TotalMoney: <fmt:formatNumber value = "${orderNew.totalMoney}" type = "currency"/><br>
+                                                        TotalMoney: <fmt:formatNumber value = "${Math.round((orderNew.totalMoney)/1000)*1000}" type = "currency"/><br>
                                                     </span>
                                                     <div class="comment-footer">
                                                         <span class="text-muted float-end">${orderNew.orderDate}</span>
@@ -401,6 +402,7 @@
                                                         src="data:image/jpg;base64,${orderNew.cus.base64Image}"
                                                         alt="user"
                                                         width="50"
+                                                        height="50"
                                                         class="rounded-circle"
                                                         />
                                                 </div>
@@ -411,7 +413,7 @@
                                                         OrderDate: ${orderNew.orderDate}<br>
                                                         RequiredDate: ${orderNew.requireDate}<br>
                                                         Total Products: ${orderNew.orderDetails.size()}<br>
-                                                        TotalMoney: <fmt:formatNumber value = "${orderNew.totalMoney}" type = "currency"/><br>
+                                                        TotalMoney: <fmt:formatNumber value = "${Math.round((orderNew.totalMoney)/1000)*1000}" type = "currency"/><br>
                                                     </span>
                                                     <div class="comment-footer">
                                                         <span class="text-muted float-end">${orderNew.orderDate}</span>

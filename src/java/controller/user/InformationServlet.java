@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.Vector;
 import model.DAOCustomers;
 import model.DAOProducts;
@@ -111,7 +112,7 @@ public class InformationServlet extends HttpServlet {
             throws ServletException, IOException {
         DAOProducts daoProducts = new DAOProducts();
         DAOSuppliers daoSuppliers = new DAOSuppliers();
-
+        PrintWriter out = response.getWriter();
         Vector<Products> listAllProducts = daoProducts.getAllProducts();
         Cookie[] arr = request.getCookies();
         String txt = "";
@@ -129,20 +130,22 @@ public class InformationServlet extends HttpServlet {
         Vector<Suppliers> listAllSuppliersSmartPhone = daoSuppliers.getAllSuppliersSmartPhone();
         Vector<Suppliers> listAllSuppliersLaptop = daoSuppliers.getAllSuppliersLaptop();
         Vector<Suppliers> listAllSuppliersTablet = daoSuppliers.getAllSuppliersTablet();
-        
-        
+
         DAOCustomers daoCustomers = new DAOCustomers();
         InputStream inputStream = null;
         HttpSession session = request.getSession();
-        Part filePart = request.getPart("photo");
 
-        if (filePart != null && !getFileName(filePart).isEmpty()) {
+        Collection<Part> parts = request.getParts();
 
-            System.out.println(filePart.getName());
-            System.out.println(filePart.getSize());
-            System.out.println(filePart.getContentType());
-            inputStream = filePart.getInputStream();
+        for (Part part : parts) {
+            String fileName = extractFileName(part);
+            if (fileName != null && !fileName.isEmpty() && isImageFile(fileName)) {
+                inputStream = part.getInputStream();
+                out.print(fileName);
+                out.print(isImageFile(fileName));
+            }
         }
+
         Customers cus = (Customers) session.getAttribute("account");
         String customerName = request.getParameter("customerName");
         String phone = request.getParameter("phone");
@@ -184,7 +187,6 @@ public class InformationServlet extends HttpServlet {
             request.getRequestDispatcher("information.jsp").forward(request, response);
         } catch (Exception e) {
         }
-
     }
 
     private String getFileName(Part part) {
@@ -198,6 +200,31 @@ public class InformationServlet extends HttpServlet {
             }
         }
         return null;
+    }
+
+    private String extractFileName(Part part) {
+        String contentDisp = part.getHeader("content-disposition");
+        String[] tokens = contentDisp.split(";");
+        for (String token : tokens) {
+            if (token.trim().startsWith("filename")) {
+                return token.substring(token.indexOf("=") + 2, token.length() - 1);
+            }
+        }
+        return null;
+    }
+
+    private boolean isImageFile(String filePath) {
+        // Get the file extension
+        String extension = filePath.substring(filePath.lastIndexOf(".") + 1);
+
+        // Check if the file extension is an image file extension
+        return extension.equalsIgnoreCase("jpg")
+                || extension.equalsIgnoreCase("jpeg")
+                || extension.equalsIgnoreCase("jfif")
+                || extension.equalsIgnoreCase("webp")
+                || extension.equalsIgnoreCase("png")
+                || extension.equalsIgnoreCase("gif")
+                || extension.equalsIgnoreCase("bmp");
     }
 
     /**
