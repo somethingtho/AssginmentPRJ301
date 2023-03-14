@@ -320,7 +320,17 @@
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title mb-0"><a href="${pageContext.request.contextPath}/admin/orders">Đơn hàng chưa xử lý(${requestScope.sizeNew})</a></h4>
+                                    <form action="${pageContext.request.contextPath}/admin/searchorder" id="form1">
+                                        <input type="hidden" name="status" value="process">
+                                        <div class="row">
+                                            <div class="col-md-7">
+                                                <h4 class="card-title mb-0"><a href="${pageContext.request.contextPath}/admin/orders">Đơn hàng chưa xử lý(${requestScope.sizeNew})</a></h4>
+                                            </div>
+                                            <div class="col-md-2"><label for="from1">From&nbsp;&nbsp;&nbsp;</label><input id="from1" name="from1" type="date"></div>
+                                            <div class="col-md-2"><label for="to1">To&nbsp;&nbsp;&nbsp;</label><input id="to1" type="date" name="to1"></div>
+                                            <div class="col-md-1"><button class="btn-orange border-0 text-white" type="button" onclick="checkForm1()" >Search</button></div>
+                                        </div>
+                                    </form>
                                 </div>
                                 <div class="comment-widgets scrollable">
                                     <!-- Comment Row -->
@@ -390,7 +400,19 @@
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title mb-0"><a href="${pageContext.request.contextPath}/admin/orders">Đơn hàng đã xử lý(${requestScope.sizeOrders})</a></h4>
+                                    <div class="card-body">
+                                        <form action="${pageContext.request.contextPath}/admin/searchorder" id="form2">
+                                            <input type="hidden" name="status" value="done">
+                                            <div class="row">
+                                                <div class="col-md-7">
+                                                    <h4 class="card-title mb-0"><a href="${pageContext.request.contextPath}/admin/orders">Đơn hàng đã xử lý(${requestScope.sizeOrders})</a></h4>                                            </div>
+                                                    <div class="col-md-2"><label for="from2">From&nbsp;&nbsp;&nbsp;</label><input name="from2" id="from2" type="date"></div>
+                                                    <div class="col-md-2"><label for="to2">To&nbsp;&nbsp;&nbsp;</label><input id="to2" name="to2" type="date"></div>
+                                                <div class="col-md-1"><button class="btn-orange border-0 text-white" type="button" onclick="checkForm2()" >Search</button></div>
+                                            </div>
+                                        </form>
+                                    </div>
+
                                 </div>
                                 <div class="comment-widgets scrollable">
                                     <!-- Comment Row -->
@@ -513,6 +535,66 @@
                                                         //Do Something to handle error
                                                     }
                                                 });
+                                            }
+
+                                            const fromDate1 = document.getElementById("from1");
+                                            const toDate1 = document.getElementById("to1");
+
+                                            fromDate1.addEventListener("change", () => {
+                                                if (fromDate.value > toDate.value) {
+                                                    const temp = fromDate1.value;
+                                                    fromDate1.value = toDate1.value;
+                                                    toDate1.value = temp;
+                                                }
+                                            });
+
+                                            toDate1.addEventListener("change", () => {
+                                                if (toDate1.value < fromDate1.value) {
+                                                    const temp = toDate1.value;
+                                                    toDate1.value = fromDate1.value;
+                                                    fromDate1.value = temp;
+                                                }
+                                            });
+
+                                            function checkForm1() {
+                                                const fromInput = document.getElementById("from1");
+                                                const toInput = document.getElementById("to1");
+
+                                                if (fromInput.value === "" || toInput.value === "") {
+                                                    alert("Please select both a 'From' and a 'To' date.");
+                                                } else {
+                                                    document.getElementById('form1').submit();
+                                                }
+                                            }
+                                            
+                                            const fromDate2 = document.getElementById("from2");
+                                            const toDate2 = document.getElementById("to2");
+
+                                            fromDate2.addEventListener("change", () => {
+                                                if (fromDate2.value > toDate2.value) {
+                                                    const temp = fromDate2.value;
+                                                    fromDate2.value = toDate2.value;
+                                                    toDate2.value = temp;
+                                                }
+                                            });
+
+                                            toDate2.addEventListener("change", () => {
+                                                if (toDate1.value < fromDate1.value) {
+                                                    const temp = toDate2.value;
+                                                    toDate2.value = fromDate2.value;
+                                                    fromDate2.value = temp;
+                                                }
+                                            });
+
+                                            function checkForm2() {
+                                                const fromInput = document.getElementById("from2");
+                                                const toInput = document.getElementById("to2");
+
+                                                if (fromInput.value === "" || toInput.value === "") {
+                                                    alert("Please select both a 'From' and a 'To' date.");
+                                                } else {
+                                                    document.getElementById('form2').submit();
+                                                }
                                             }
             </script>
     </body>

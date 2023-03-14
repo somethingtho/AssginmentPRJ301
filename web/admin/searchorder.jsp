@@ -48,7 +48,7 @@
                     <div class="navbar-header" data-logobg="skin5">
                         <a class="navbar-brand" href="${pageContext.request.contextPath}/admin/index">
                             <b class="logo-icon"  style="margin: 0px;">
-                                <img src="assets/images/logo.png" alt="homepage" class="light-logo" width="50" />
+                                <img src="assets/images/logo.png" alt="homepage" class="light-logo" width="50" height ="50" />
                             </b>
                             <span class="logo-text " style="margin-right: 15px">
                                 <img src="${pageContext.request.contextPath}/images/logo_text.png" alt="homepage" class="light-logo" width="140" height="50" />
@@ -315,29 +315,164 @@
 
 
                 <div class="container-fluid">
-                    <h3 class="text-danger">${requestScope.error}</h3>
-                    <c:if test="${not empty requestScope.order}">
-                        <div class="row">
-                            <!-- column -->
+                    <div class="row">
+                        <!-- column -->
+                        <c:if test="${requestScope.type == 'process'}">
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4 class="card-title mb-0"><a href="${pageContext.request.contextPath}/admin/orders">Đơn hàng #(${requestScope.order.orderID})</a></h4>
+                                        <form action="${pageContext.request.contextPath}/admin/searchorder" id="form1">
+                                            <input type="hidden" name="status" value="process">
+                                            <div class="row">
+                                                <div class="col-md-7">
+                                                    <h4 class="card-title mb-0">Đơn hàng chưa xử lý(${requestScope.getNewOrders.size()})<br><br> Từ ${requestScope.from1} đến ${requestScope.to1}</h4>
+                                                </div>
+                                                <div class="col-md-2"><label for="from1">From&nbsp;&nbsp;&nbsp;</label><input  value="${requestScope.from1}" id="from1" name="from1" type="date"></div>
+                                                <div class="col-md-2"><label for="to1">To&nbsp;&nbsp;&nbsp;</label><input  value="${requestScope.to1}" id="to1" type="date" name="to1"></div>
+                                                <div class="col-md-1"><button class="btn-orange border-0 text-white" type="button" onclick="checkForm1()" >Search</button></div>
+                                            </div>
+                                        </form>
                                     </div>
                                     <div class="comment-widgets scrollable">
                                         <!-- Comment Row -->
                                         <div id="content">
-                                            <div class="d-flex flex-row comment-row mt-0 orders">
+                                            <c:forEach items="${requestScope.getNewOrders}" var="orderNew">
+                                                <div class="d-flex flex-row comment-row mt-0 orders">
+                                                    <div class="p-2">
+                                                        <img
+                                                            src="data:image/jpg;base64,${orderNew.cus.base64Image}"
+                                                            alt="user"
+                                                            width="50"
+                                                            height="50"
+                                                            class="rounded-circle"
+                                                            />
+                                                    </div>
+                                                    <div class="comment-text w-100">
+                                                        <a href="${pageContext.request.contextPath}/admin/profile?type=customer&id=${orderNew.cus.customerID}">${orderNew.cus.customerName}</a>
+                                                        <span class="mb-3 d-block">
+                                                            <a href="${pageContext.request.contextPath}/admin/orderdetail?id=${orderNew.cus.customerID}&oid=${orderNew.orderID}">OrderID: ${orderNew.orderID}</a><br>
+                                                            OrderDate: ${orderNew.orderDate}<br>
+                                                            RequiredDate: ${orderNew.requireDate}<br>
+                                                            Total Products: ${orderNew.orderDetails.size()}<br>
+                                                            TotalMoney: <fmt:formatNumber value = "${Math.round((orderNew.totalMoney)/1000)*1000}" type = "currency"/><br>
+                                                        </span>
+                                                        <div class="comment-footer">
+                                                            <span class="text-muted float-end">${orderNew.orderDate}</span>
+                                                            <button
+                                                                type="button"
+                                                                class="btn btn-cyan btn-sm text-white"
+                                                                >
+                                                                <a class="text-white" href="${pageContext.request.contextPath}/admin/orderdetail?id=${orderNew.cus.customerID}&oid=${orderNew.orderID}">
+                                                                    Information 
+                                                                </a>
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                onclick="updateOrder(${orderNew.orderID}, 'accept')"
+                                                                class="btn btn-success btn-sm text-white"
+                                                                >
+                                                                Accept
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                onclick="updateOrder(${orderNew.orderID}, 'reject')"
+                                                                class="btn btn-danger btn-sm text-white"
+                                                                >
+                                                                Reject
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div> 
+                                            </c:forEach>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:if>
+
+                        <c:if test="${requestScope.type == 'done'}">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="card-body">
+                                            <form action="${pageContext.request.contextPath}/admin/searchorder" id="form2">
+                                                <input type="hidden" name="status" value="done">
+                                                <div class="row">
+                                                    <div class="col-md-7">
+                                                        <h4 class="card-title mb-0">Đơn hàng đã xử lý(${requestScope.getProcessOrders.size()})<br><br> Từ ${requestScope.from2} đến ${requestScope.to2}</h4>                                            </div>
+                                                    <div class="col-md-2"><label for="from2">From&nbsp;&nbsp;&nbsp;</label><input name="from2" value="${requestScope.from2}" id="from2" type="date"></div>
+                                                    <div class="col-md-2"><label for="to2">To&nbsp;&nbsp;&nbsp;</label><input id="to2" value="${requestScope.to2}" name="to2" type="date"></div>
+                                                    <div class="col-md-1"><button class="btn-orange border-0 text-white" type="button" onclick="checkForm2()" >Search</button></div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                    <div class="comment-widgets scrollable">
+                                        <!-- Comment Row -->
+                                        <div id="contentOrders">
+                                            <c:forEach items="${requestScope.getProcessOrders}" var="orderNew">
+                                                <div class="d-flex flex-row comment-row mt-0 ordersProcess">
+                                                    <div class="p-2">
+                                                        <img
+                                                            src="data:image/jpg;base64,${orderNew.cus.base64Image}"
+                                                            alt="user"
+                                                            width="50"
+                                                            height="50"
+                                                            class="rounded-circle"
+                                                            />
+                                                    </div>
+                                                    <div class="comment-text w-100">
+                                                        <a href="${pageContext.request.contextPath}/admin/profile?type=customer&id=${orderNew.cus.customerID}">${orderNew.cus.customerName}</a>
+                                                        <span class="mb-3 d-block">
+                                                            <a href="${pageContext.request.contextPath}/admin/orderdetail?id=${orderNew.cus.customerID}&oid=${orderNew.orderID}">OrderID: ${orderNew.orderID}</a><br>
+                                                            OrderDate: ${orderNew.orderDate}<br>
+                                                            RequiredDate: ${orderNew.requireDate}<br>
+                                                            Total Products: ${orderNew.orderDetails.size()}<br>
+                                                            TotalMoney: <fmt:formatNumber value = "${Math.round((orderNew.totalMoney)/1000)*1000}" type = "currency"/><br>
+                                                        </span>
+                                                        <div class="comment-footer">
+                                                            <span class="text-muted float-end">${orderNew.orderDate}</span>
+                                                            <button
+                                                                type="button"
+                                                                class="btn btn-cyan btn-sm text-white"
+                                                                >
+                                                                <a class="text-white" href="${pageContext.request.contextPath}/admin/orderdetail?id=${orderNew.cus.customerID}&oid=${orderNew.orderID}">
+                                                                    Information 
+                                                                </a>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div> 
+                                            </c:forEach>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:if>
+
+
+                        <c:if test="${empty requestScope.type}">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="card-body">
+                                            <h4 class="card-title mb-0"><a href="${pageContext.request.contextPath}/admin/orderdetail?id=${requestScope.order.cus.customerID}&oid=${requestScope.order.orderID}">OrderID: #${requestScope.order.orderID}</a></h4>    
+                                        </div> 
+                                        <div class="comment-widgets scrollable">
+                                            <!-- Comment Row -->
+                                            <div class="d-flex flex-row white-box comment-row mt-0 ordersProcess">
                                                 <div class="p-2">
                                                     <img
                                                         src="data:image/jpg;base64,${requestScope.order.cus.base64Image}"
                                                         alt="user"
                                                         width="50"
+                                                        height="50"
                                                         class="rounded-circle"
                                                         />
                                                 </div>
                                                 <div class="comment-text w-100">
-                                                    <a href="${pageContext.request.contextPath}/admin/profile?type=customer&id=${requestScope.order.cus.customerID}">${requestScope.order.cus.customerName}</a>
+                                                    <a href="${pageContext.request.contextPath}/admin/profile?type=customer&id=${requestScope.order.cus.customerID}">${requestScope.ordercus.customerName}</a>
                                                     <span class="mb-3 d-block">
                                                         <a href="${pageContext.request.contextPath}/admin/orderdetail?id=${requestScope.order.cus.customerID}&oid=${requestScope.order.orderID}">OrderID: ${requestScope.order.orderID}</a><br>
                                                         OrderDate: ${requestScope.order.orderDate}<br>
@@ -355,32 +490,17 @@
                                                                 Information 
                                                             </a>
                                                         </button>
-                                                        <c:if test="${requestScope.order.status == 3}">
-                                                            <button
-                                                                type="button"
-                                                                onclick="updateOrder(${requestScope.order.orderID}, 'accept')"
-                                                                class="btn btn-success btn-sm text-white"
-                                                                >
-                                                                Accept
-                                                            </button>
-                                                            <button
-                                                                type="button"
-                                                                onclick="updateOrder(${requestScope.order.orderID}, 'reject')"
-                                                                class="btn btn-danger btn-sm text-white"
-                                                                >
-                                                                Reject
-                                                            </button>
-                                                        </c:if>
                                                     </div>
                                                 </div>
                                             </div> 
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                        </div>
-                    </c:if>
+                            </div>
+                        </c:if>
+
+                    </div>
                     <footer class="footer text-center">
 
                     </footer>
@@ -406,51 +526,72 @@
             <script src="assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
             <script src="dist/js/pages/chart/chart-page-init.js"></script>
             <script>
-                                                                    function updateOrder(id, type, cid) {
-                                                                        if (confirm("Are you sure you want " + type + " order " + "have OrderID = " + id + "?")) {
-                                                                            window.location.href = "${pageContext.request.contextPath}/admin/updateorder?oid=" + id + "&type=" + type;
-                                                                        }
-                                                                    }
+                                                        function updateOrder(id, type, cid) {
+                                                            if (confirm("Are you sure you want " + type + " order " + "have OrderID = " + id + "?")) {
+                                                                window.location.href = "${pageContext.request.contextPath}/admin/updateorder?oid=" + id + "&type=" + type;
+                                                            }
+                                                        }
 
-                                                                    function loadMoreNewOrders() {
-                                                                        var amount = document.getElementsByClassName('orders').length;
 
-                                                                        $.ajax({
-                                                                            url: "${pageContext.request.contextPath}/admin/loadmoreneworders",
-                                                                            type: "get",
-                                                                            data: {
-                                                                                total: amount
-                                                                            },
+                                                        const fromDate1 = document.getElementById("from1");
+                                                        const toDate1 = document.getElementById("to1");
 
-                                                                            success: function (data) {
-                                                                                var row = document.getElementById('content');
-                                                                                row.innerHTML += data;
-                                                                            },
-                                                                            error: function (xhr) {
-                                                                                //Do Something to handle error
-                                                                            }
-                                                                        });
-                                                                    }
+                                                        fromDate1.addEventListener("change", () => {
+                                                            if (fromDate.value > toDate.value) {
+                                                                const temp = fromDate1.value;
+                                                                fromDate1.value = toDate1.value;
+                                                                toDate1.value = temp;
+                                                            }
+                                                        });
 
-                                                                    function loadMoreOrders() {
-                                                                        var amount = document.getElementsByClassName('ordersProcess').length;
+                                                        toDate1.addEventListener("change", () => {
+                                                            if (toDate1.value < fromDate1.value) {
+                                                                const temp = toDate1.value;
+                                                                toDate1.value = fromDate1.value;
+                                                                fromDate1.value = temp;
+                                                            }
+                                                        });
 
-                                                                        $.ajax({
-                                                                            url: "${pageContext.request.contextPath}/admin/loadmoreorders",
-                                                                            type: "get",
-                                                                            data: {
-                                                                                total: amount
-                                                                            },
+                                                        function checkForm1() {
+                                                            const fromInput = document.getElementById("from1");
+                                                            const toInput = document.getElementById("to1");
 
-                                                                            success: function (data) {
-                                                                                var row = document.getElementById('contentOrders');
-                                                                                row.innerHTML += data;
-                                                                            },
-                                                                            error: function (xhr) {
-                                                                                //Do Something to handle error
-                                                                            }
-                                                                        });
-                                                                    }
+                                                            if (fromInput.value === "" || toInput.value === "") {
+                                                                alert("Please select both a 'From' and a 'To' date.");
+                                                            } else {
+                                                                document.getElementById('form1').submit();
+                                                            }
+                                                        }
+
+                                                        const fromDate2 = document.getElementById("from2");
+                                                        const toDate2 = document.getElementById("to2");
+
+                                                        fromDate2.addEventListener("change", () => {
+                                                            if (fromDate2.value > toDate2.value) {
+                                                                const temp = fromDate2.value;
+                                                                fromDate2.value = toDate2.value;
+                                                                toDate2.value = temp;
+                                                            }
+                                                        });
+
+                                                        toDate2.addEventListener("change", () => {
+                                                            if (toDate1.value < fromDate1.value) {
+                                                                const temp = toDate2.value;
+                                                                toDate2.value = fromDate2.value;
+                                                                fromDate2.value = temp;
+                                                            }
+                                                        });
+
+                                                        function checkForm2() {
+                                                            const fromInput = document.getElementById("from2");
+                                                            const toInput = document.getElementById("to2");
+
+                                                            if (fromInput.value === "" || toInput.value === "") {
+                                                                alert("Please select both a 'From' and a 'To' date.");
+                                                            } else {
+                                                                document.getElementById('form2').submit();
+                                                            }
+                                                        }
             </script>
     </body>
 </html>

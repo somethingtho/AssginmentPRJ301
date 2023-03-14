@@ -1134,6 +1134,48 @@ public class DAOOrders extends DBContext {
         }
         return order;
     }
+    
+    /**
+     * This function is used to get an order by orderID
+     *
+     * @param oID OrderID
+     * @return A list of orders.
+     */
+    public Vector<Orders> SearchOrders(String from, String to, String type) {
+        DAOShippers daoShippers = new DAOShippers();
+        DAOCustomers daoCustomers = new DAOCustomers();
+        DAOOrderDetails daoOrderDetail = new DAOOrderDetails();
+        Vector<Orders> vector = new Vector<>();
+        String sql = "SELECT * FROM Orders WHERE OrderDate Between ? AND ?";
+        if(type.equals("process")) sql = "SELECT * FROM Orders WHERE Status = 3 AND OrderDate Between ? AND ?";
+        if(type.equalsIgnoreCase("done")) sql ="SELECT * FROM Orders WHERE (Status = 1 OR Status = 0) AND OrderDate Between ? AND ?";
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            
+            pre.setString(1, from);
+            pre.setString(2, to);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                int orderID = rs.getInt("OrderID");
+                int customerID = rs.getInt("CustomerID");
+                String orderDate = rs.getString("OrderDate");
+                String requiredDate = rs.getString("RequiredDate");
+                String shippedDate = rs.getString("ShippedDate");
+                int shipVia = rs.getInt("ShipVia");
+                String shipAddress = rs.getString("ShipAddress");
+                boolean payments = rs.getBoolean("Payments");
+                int status = rs.getInt("Status");
+                double totalMoney = rs.getDouble("TotalMoney");
+                Vector<OrderDetails> listOrderDetail = daoOrderDetail.getAllOrderDetailsByOrderID(orderID);
+                Shippers shipper = daoShippers.getShipperByShipperID(shipVia);
+                Customers customer = daoCustomers.getCustomerByCustomerID(customerID);
+                vector.add(new Orders(orderID, orderDate, requiredDate, shippedDate, shipper, shipAddress, payments, status, listOrderDetail, totalMoney, customer));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return vector;
+    }
 
     /**
      * It gets the total money of an order by its ID
@@ -1154,9 +1196,9 @@ public class DAOOrders extends DBContext {
     public static void main(String[] args) throws IOException {
         DAOOrders dao = new DAOOrders();
         DAOOrderDetails daoOrderDetails = new DAOOrderDetails();
-        Vector<IntPair> v = dao.NumberOrdersByMonth(2022);
-        for (IntPair integer : v) {
-            System.out.println(integer);
+        Vector<Orders> v = dao.SearchOrders("2023-03-08", "2023-03-16", "process");
+        for (Orders orders : v) {
+            System.out.println(orders);
         }
     }
 }

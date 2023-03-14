@@ -338,7 +338,7 @@
                                                 <li class="chat-item">
                                                     <c:if test="${not empty message.cus}">
                                                         <div class="chat-img">
-                                                            <img src="data:image/jpg;base64,${message.cus.base64Image}" alt="user" />
+                                                            <img src="data:image/jpg;base64,${message.cus.base64Image}" width="50" height="50" alt="user" />
                                                         </div>
                                                     </c:if>
                                                     

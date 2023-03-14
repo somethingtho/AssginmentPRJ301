@@ -128,6 +128,87 @@ public class DAOFeedback extends DBContext {
         return vector;
     }
 
+    // Getting the last feedback from the database.
+    public Vector<Feedback> getLastFeedbackByEmail(String e) {
+        Vector<Feedback> vector = new Vector<>();
+        DAOCustomers daoCustomer = new DAOCustomers();
+        DAOSuppliers daoSuppliers = new DAOSuppliers();
+        DAOShippers daoShippers = new DAOShippers();
+        String sql = "Select TOP 1 * FROM Feedback WHERE email = ? ORDER BY DateSend DESC";
+
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, e);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt("ID");
+                Integer idAccount = rs.getInt("IDAccount");
+                String contentSend = rs.getString("ContentSend");
+                String contentRep = rs.getString("ContentRep");
+                boolean status = rs.getBoolean("Status");
+                String email = rs.getString("Email");
+                int role = rs.getInt("Role");
+                String dateSend = rs.getString("DateSend");
+                String dateRep = rs.getString("DateRep");
+                if (idAccount == 0) {
+                    if (role == 2) {
+                        Suppliers supplier = daoSuppliers.GetSupplierByEmail(email);
+                        vector.add(new Feedback(id, contentSend, contentRep, status, role, dateSend, dateRep, supplier));
+                    }
+                    if (role == 0) {
+                        Shippers shipper = daoShippers.getShipperByEmail(email);
+                        vector.add(new Feedback(id, contentSend, contentRep, status, role, dateSend, dateRep, shipper));
+                    }
+                    if (role == 3) {
+                        Customers customer = daoCustomer.getCustomerByEmail(email);
+                        vector.add(new Feedback(id, contentSend, contentRep, status, customer, email, role, dateSend, dateRep));
+                    }
+                } else {
+                    Customers customer = daoCustomer.getCustomerByID(idAccount);
+                    vector.add(new Feedback(id, contentSend, contentRep, status, customer, email, role, dateSend, dateRep));
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        // Define a custom Comparator for sorting Feedback objects
+        Comparator<Feedback> feedbackComparator = new Comparator<Feedback>() {
+            public int compare(Feedback f1, Feedback f2) {
+                // First, sort by status
+                int statusCompare = Boolean.compare(f1.isStatus(), f2.isStatus());
+                if (statusCompare != 0) {
+                    return statusCompare;
+                }
+
+                // If statuses are the same, sort by dateSend and dateRep
+                String dateSend1 = f1.getDateSend();
+                String dateRep1 = f1.getDateRep();
+                String dateSend2 = f2.getDateSend();
+                String dateRep2 = f2.getDateRep();
+
+                if (dateSend1 == null || dateSend2 == null) {
+                    return 0; // cannot compare
+                }
+
+                int dateSendCompare = dateSend1.compareTo(dateSend2);
+                if (dateSendCompare != 0) {
+                    return -dateSendCompare;
+                }
+
+                if (dateRep1 == null || dateRep2 == null) {
+                    return 0; // cannot compare
+                }
+
+                return -dateRep1.compareTo(dateRep2);
+            }
+        };
+
+        Collections.sort(vector, feedbackComparator);
+
+        return vector;
+    }
+
     /**
      * It gets all feedbacks from the database by email
      *

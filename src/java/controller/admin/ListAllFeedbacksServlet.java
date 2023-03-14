@@ -74,7 +74,11 @@ public class ListAllFeedbacksServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        String email = request.getParameter("email");
+        DAOFeedback daoFeedback = new DAOFeedback();
+        Vector<Feedback> listAllFeedbacks = daoFeedback.getLastFeedbackByEmail(email);
+        request.setAttribute("listAllFeedbacks", listAllFeedbacks);
+        request.getRequestDispatcher("feedbacks.jsp").forward(request, response);
     }
 
     /** 

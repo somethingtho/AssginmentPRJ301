@@ -43,7 +43,7 @@
                            href="${pageContext.request.contextPath}/admin/index">
                             <b class="logo-icon" style="margin: 0px;">
                                 <img src="assets/images/logo.png" alt="homepage"
-                                     class="light-logo" width="50" />
+                                     class="light-logo" width="50" height="50"/>
                             </b>
                             <span class="logo-text " style="margin-right: 15px">
                                 <img
@@ -94,10 +94,9 @@
                                 <a class="nav-link waves-effect waves-dark"
                                    href="javascript:void(0)"><i
                                         class="mdi mdi-magnify fs-4"></i></a>
-                                <form class="app-search position-absolute">
-                                    <input type="text" class="form-control" placeholder="Search
-                                           &amp; enter" />
-                                    <a class="srh-btn"><i class="mdi mdi-window-close"></i></a>
+                                        <form class="app-search position-absolute" action="${pageContext.request.contextPath}/admin/feedbacks" method="POST">
+                                            <input type="email" class="form-control" name="email" placeholder="Input Email & Enter" />
+                                    <a class="srh-btn"><i class="mdi mdi-window-close"></i></a> 
                                 </form>
                             </li>
                         </ul>
@@ -342,14 +341,14 @@
                                                 <c:when test="${not empty f.cus}">
                                                     <div class="p-2">
                                                         <img src="data:image/jpg;base64,${f.cus.base64Image}"
-                                                             alt="user" width="50" class="rounded-circle" />
+                                                             alt="user" width="50" height="50" class="rounded-circle" />
                                                     </div>
                                                 </c:when>
 
                                                 <c:otherwise>
                                                     <div class="p-2">
                                                         <img src="assets/images/users/d1.jpg"
-                                                             alt="user" width="50" class="rounded-circle" />
+                                                             alt="user" width="50" height="50" class="rounded-circle" />
                                                     </div>
                                                 </c:otherwise>
                                             </c:choose>

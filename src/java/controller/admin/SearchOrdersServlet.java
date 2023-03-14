@@ -58,17 +58,44 @@ public class SearchOrdersServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOOrders daoOrders = new DAOOrders();
         PrintWriter out = response.getWriter();
+        DAOOrders daoOrders = new DAOOrders();
         String orderID_raw = request.getParameter("orderID");
+        String from1 = request.getParameter("from1");
+        String to1 = request.getParameter("to1");
+        String from2 = request.getParameter("from2");
+        String to2 = request.getParameter("to2");
+        String type = request.getParameter("status");
+//        out.print(from1);
+//        out.print(to1);
+//        out.print(orderID_raw);
+//        out.print(type);
+//        out.print(from2);
+//        out.print(to2);
+
         try {
-            if (!orderID_raw.matches("\\d+")) {
+            if (orderID_raw != null && !orderID_raw.matches("\\d+") ) {
                 request.setAttribute("error", "Please Input Number!");
             } else {
-                int orderID = Integer.parseInt(orderID_raw);
-                Orders order = daoOrders.getOrdersByOrderID(orderID);
-                request.setAttribute("order", order);
+                if(from1 != null && to1 != null && type.equalsIgnoreCase("process")){
+                    Vector<Orders> getNewOrders = daoOrders.SearchOrders(from1, to1, type);
+                    request.setAttribute("getNewOrders", getNewOrders);
+                    request.setAttribute("from1", from1);
+                    request.setAttribute("to1", to1);
+                }
+                if(from2 != null && to2 != null && type.equalsIgnoreCase("done")){
+                    Vector<Orders> getProcessOrders = daoOrders.SearchOrders(from2, to2, type);
+                    request.setAttribute("getProcessOrders", getProcessOrders);
+                    request.setAttribute("from2", from2);
+                    request.setAttribute("to2", to2);
+                }
+                if(orderID_raw != null && type == null){
+                    Orders order = daoOrders.getOrdersByOrderID(Integer.parseInt(orderID_raw));
+                    request.setAttribute("order", order);
+                }
             }
+            request.setAttribute("type", type);
+            
             request.getRequestDispatcher("searchorder.jsp").forward(request, response);
         } catch (Exception e) {
         }
